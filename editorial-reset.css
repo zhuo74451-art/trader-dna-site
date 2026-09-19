@@ -101,6 +101,9 @@ body.editorial-reset .v3-hero-material:has(.v4-landing-specimen) .v3-object-labe
   left:24px!important;right:24px!important;top:22px!important;
   color:rgba(239,237,230,.52)!important;
 }
+body.editorial-reset .hero:has(.v4-landing-specimen) .hero-object>p,
+body.editorial-reset .v3-hero-material:has(.v4-landing-specimen) .v3-object-label b,
+body.editorial-reset .v3-hero-material:has(.v4-landing-specimen) .v4-material-id{display:none!important}
 body.editorial-reset .v3-hero-material:has(.v4-landing-specimen) .v3-object-word{display:none!important}
 body.editorial-reset .v3-hero-material:has(.v4-landing-specimen) .v4-material-id{
   right:24px!important;top:64px!important;color:rgba(239,237,230,.34)!important;
