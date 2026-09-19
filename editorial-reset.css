@@ -121,6 +121,9 @@ body.editorial-reset .quiz-wrap .orb,
 body.editorial-reset .quiz-stage::before{display:none!important}
 
 /* RESULT HERO — identity first, artifact second. */
+body.editorial-reset .result.v4-issue{
+  padding-top:0!important;
+}
 body.editorial-reset .result.v4-issue .result-hero{
   min-height:calc(100svh - 58px)!important;
   padding-left:clamp(28px,7vw,110px)!important;
@@ -434,6 +437,25 @@ body.editorial-reset .result.v4-issue .v3-share-placeholder span{color:rgba(10,1
     width:auto!important;
     aspect-ratio:1.18!important;
     transform:none!important;
+  }
+  body.editorial-reset .result.v4-issue .v4-result-mark-meta{
+    padding:4.2% 5.4% 0!important;
+    font-size:5px!important;
+    letter-spacing:.08em!important;
+    gap:6px!important;
+  }
+  body.editorial-reset .result.v4-issue .v4-result-mark-meta b{display:none!important}
+  body.editorial-reset .result.v4-issue .v4-issued-seal{
+    top:6.2%!important;
+    right:6%!important;
+    font-size:5px!important;
+    letter-spacing:.1em!important;
+  }
+  body.editorial-reset .result.v4-issue .result-hero .v4-result-mark::after{
+    right:6%!important;
+    bottom:5.2%!important;
+    font-size:5px!important;
+    letter-spacing:.12em!important;
   }
 
   body.editorial-reset .result.v4-issue .v3-decision-scenes{
