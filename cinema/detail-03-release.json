@@ -280,7 +280,11 @@
     "localAssertions": 55,
     "legacyWorkerUpgrade": "PASS",
     "legacyAssertions": 9,
-    "physicalMobileDevices": "NOT_RUN"
+    "physicalMobileDevices": "NOT_RUN",
+    "publicHttp": "PASS",
+    "publicHttpAssertions": 16,
+    "liveBrowser": "PASS",
+    "liveAssertions": 56
   },
   "portraitMedia": {
     "photograph": 30,
@@ -288,5 +292,21 @@
     "painting": 1,
     "illustration": 0
   },
-  "publicUrl": "https://zhuo74451-art.github.io/trader-dna-site/cinema-detail-03.html"
+  "publicUrl": "https://zhuo74451-art.github.io/trader-dna-site/cinema-detail-03.html",
+  "deployment": {
+    "release": "detail-03-final",
+    "verifiedAt": "2026-09-20T08:40:55.934057+00:00",
+    "deployedCommit": "f35192ed36bf7c2c798fa3b0d9c5e4c91aa10140",
+    "pagesBuildStatus": "built",
+    "publicUrl": "https://zhuo74451-art.github.io/trader-dna-site/cinema-detail-03.html",
+    "publicHttp": "PASS",
+    "publicHttpChecks": 16,
+    "liveBrowser": "PASS",
+    "liveBrowserChecks": 56,
+    "javascriptErrors": [],
+    "resourceErrors": [],
+    "coldAndWarmCacheCovered": true,
+    "physicalDeviceTesting": "NOT_RUN",
+    "canonicalSourceBranch": "design/detail-03-20260920"
+  }
 }

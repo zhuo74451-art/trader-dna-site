@@ -1,0 +1,103 @@
+{
+  "base": "https://zhuo74451-art.github.io/trader-dna-site",
+  "expectedCommit": "f35192ed36bf7c2c798fa3b0d9c5e4c91aa10140",
+  "checks": [
+    {
+      "path": "cinema-detail-03.html",
+      "status": 200,
+      "sha256": "29b69f1003903380306863075f7c4279bf09cb71dd072be9e2b00cf7d1895b9c",
+      "pass": true
+    },
+    {
+      "path": "cinema-material-02.html",
+      "status": 200,
+      "sha256": "29b69f1003903380306863075f7c4279bf09cb71dd072be9e2b00cf7d1895b9c",
+      "pass": true
+    },
+    {
+      "path": "cinema-20260920.html",
+      "status": 200,
+      "sha256": "29b69f1003903380306863075f7c4279bf09cb71dd072be9e2b00cf7d1895b9c",
+      "pass": true
+    },
+    {
+      "path": "sw.js",
+      "status": 200,
+      "sha256": "f7c5a824dc514a1d0d62ce5d8cd76d75a908f983da92af8d1db305946e252cc8",
+      "pass": true
+    },
+    {
+      "path": "cinema/detail-c9ce3bd7f6e2.css",
+      "status": 200,
+      "sha256": "c9ce3bd7f6e2ece51b5a7258c190a6724bd6e6dcc326b86652c15ad4ee2ecea9",
+      "pass": true
+    },
+    {
+      "path": "cinema/detail-8302ac81f194.js",
+      "status": 200,
+      "sha256": "8302ac81f194fdcc8b2c99f2f473234e98327a3d65ad9e63b5ac15641c4cba4f",
+      "pass": true
+    },
+    {
+      "path": "cinema/detail-weave-d39631e4ddf5.js",
+      "status": 200,
+      "sha256": "d39631e4ddf50feeb74b899c3fa0399e8bc0fdbee94ae6815f1d5a55540da1f6",
+      "pass": true
+    },
+    {
+      "path": "cinema/detail-refine-dfc5ed80d4af.js",
+      "status": 200,
+      "sha256": "dfc5ed80d4afe887ee90e3d47da6c212850b93898352e9d74f283a1b87d34279",
+      "pass": true
+    },
+    {
+      "path": "cinema/portraits-detail-24faa388955e.json",
+      "status": 200,
+      "sha256": "24faa388955e3d77467195129309572a3180769a1b082c2b637b12e9ff8d1eae",
+      "pass": true
+    },
+    {
+      "path": "cinema/detail-update-f0ae51e6da72.js",
+      "status": 200,
+      "sha256": "f0ae51e6da720425af1e5c8db7018b4c80ac29aad39251a932174c21ad344922",
+      "pass": true
+    },
+    {
+      "path": "cinema/core-event-persistence-0379480c0f31.js",
+      "status": 200,
+      "sha256": "0379480c0f31b7a465c4a37c880815fa8e97ae743b7b9aff5b6cde01dcb857a4",
+      "pass": true
+    },
+    {
+      "path": "cinema/core-app-d11d974f04a1.js",
+      "status": 200,
+      "sha256": "d11d974f04a165ea9296c7f30a227ef3d897a7e8ddb3cbcafc9004ed0832def7",
+      "pass": true
+    },
+    {
+      "path": "cinema/core-visual-v3-share-card-3a21b5764f97.js",
+      "status": 200,
+      "sha256": "3a21b5764f97147e33ab6164ed4972f1b3973272f8c3423683a313b0cb262054",
+      "pass": true
+    },
+    {
+      "path": "cinema/core-visual-v4-result-365ae6c4bde4.js",
+      "status": 200,
+      "sha256": "365ae6c4bde44dfe2bab3061e7045089ab09d89d7431fbfd8f19aac82bb83677",
+      "pass": true
+    },
+    {
+      "path": "cinema/assets/paul-tudor-jones-2006.jpg",
+      "status": 200,
+      "sha256": "6e007a3664f33fbe154fdd0ad251b0773ab72321e218854f65002846daa49527",
+      "pass": true
+    },
+    {
+      "path": "cinema/assets/ed-seykota-official.jpg",
+      "status": 200,
+      "sha256": "730866828c724ea8a65ce36d2b68661ca33da085bd24895b8e52d05995e861d9",
+      "pass": true
+    }
+  ],
+  "result": "PASS"
+}
