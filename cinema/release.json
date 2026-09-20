@@ -1,8 +1,10 @@
 {
-  "edition": "cinema-01",
-  "revision": "01d3887da872",
+  "edition": "material-02",
+  "revision": "7206ac9666a0",
   "entry": "cinema-20260920.html",
-  "builtAt": "2026-09-20T02:42:52.741924Z",
+  "alias": "cinema-material-02.html",
+  "parentPublicCommit": "330de34a4c038c3f77e916170d31ee02354018bb",
+  "builtAt": "2026-09-20T03:22:07.125739+00:00",
   "assessmentUnchanged": {
     "app.js": "d11d974f04a165ea9296c7f30a227ef3d897a7e8ddb3cbcafc9004ed0832def7",
     "event-persistence.js": "0379480c0f31b7a465c4a37c880815fa8e97ae743b7b9aff5b6cde01dcb857a4",
@@ -11,236 +13,50 @@
     "data/questions-3.json": "6197c9ddf32d8cc03c9c94ab19a8133a9742db5fab8aa694bd6d02a874ad6353",
     "data/types.json": "ba06fa95764d9e2950c5372daa1b286d490bd3a12c89c07d0c4df8ddd8a43773"
   },
-  "portraitsBundled": 32,
+  "newCharacterAssets": [],
+  "newPortraitAssets": [],
+  "deferredPortraitDisplay": [
+    "Paul Tudor Jones"
+  ],
   "qa": {
     "local": "PASS",
-    "checks": 30
+    "checks": 37
   },
   "files": [
     {
       "path": "cinema-20260920.html",
-      "bytes": 1634,
-      "sha256": "01d3887da872387286cadb76466fc1323db7b8fffcc45df886cdce1e3049f253"
+      "bytes": 1641,
+      "sha256": "7206ac9666a04ef6bb2a3d9085553e8ad6322a4b80dc0e3d8d83d068ac17d861"
     },
     {
-      "path": "cinema/refine-runtime-8c6d9b512c29.js",
-      "bytes": 23851,
-      "sha256": "8c6d9b512c29c06208d42a9874ca254b299aabe430235f1693de9b83228a87a2"
-    },
-    {
-      "path": "cinema/cinema.js",
-      "bytes": 16116,
-      "sha256": "52794636e8c69b20385cb9a6872d6a8a36d4c6df2955c1bf6eed4a4683a448a1"
-    },
-    {
-      "path": "cinema/portraits-8c1a1b5f0578.json",
-      "bytes": 15346,
-      "sha256": "8c1a1b5f05781d09c41fbbcef1d5dad4d83294965d80b22b34022be7151a7657"
-    },
-    {
-      "path": "cinema/visual-runtime.js",
-      "bytes": 15140,
-      "sha256": "8eac0684e234c9e24598188a1ccbe8112c1aa289f84aedd301bef998df00a953"
-    },
-    {
-      "path": "cinema/cinema-52794636e8c6.js",
-      "bytes": 16116,
-      "sha256": "52794636e8c69b20385cb9a6872d6a8a36d4c6df2955c1bf6eed4a4683a448a1"
-    },
-    {
-      "path": "cinema/visual-runtime-8eac0684e234.js",
-      "bytes": 15140,
-      "sha256": "8eac0684e234c9e24598188a1ccbe8112c1aa289f84aedd301bef998df00a953"
+      "path": "cinema-material-02.html",
+      "bytes": 1641,
+      "sha256": "7206ac9666a04ef6bb2a3d9085553e8ad6322a4b80dc0e3d8d83d068ac17d861"
     },
     {
       "path": "cinema/cinema.css",
-      "bytes": 42118,
-      "sha256": "0fbb8d176c3bfbedd832e1cec8b8b54e55f265eae5e88b14b382067c3d5edb89"
+      "bytes": 54526,
+      "sha256": "1e59327cccc14a61293c05c2f4aa08c791c66f171e2c5e0e9fc8b5d0c6cdd716"
     },
     {
-      "path": "cinema/refine-runtime.js",
-      "bytes": 23851,
-      "sha256": "8c6d9b512c29c06208d42a9874ca254b299aabe430235f1693de9b83228a87a2"
+      "path": "cinema/cinema.js",
+      "bytes": 20115,
+      "sha256": "25471e8badaf8f78da1aacde003fe4fe071a7d5b0c55d52fe577a27e439f06af"
     },
     {
-      "path": "cinema/portraits.json",
-      "bytes": 15346,
-      "sha256": "8c1a1b5f05781d09c41fbbcef1d5dad4d83294965d80b22b34022be7151a7657"
+      "path": "sw.js",
+      "bytes": 3552,
+      "sha256": "c7fc71367af2ac42a3aa3fd578e2af522c0059f6651d9bf7374582e2a7069a9c"
     },
     {
-      "path": "cinema/cinema-0fbb8d176c3b.css",
-      "bytes": 42118,
-      "sha256": "0fbb8d176c3bfbedd832e1cec8b8b54e55f265eae5e88b14b382067c3d5edb89"
+      "path": "cinema/material-1e59327cccc1.css",
+      "bytes": 54526,
+      "sha256": "1e59327cccc14a61293c05c2f4aa08c791c66f171e2c5e0e9fc8b5d0c6cdd716"
     },
     {
-      "path": "cinema/assets/daniel-kahneman-local.jpg",
-      "bytes": 135191,
-      "sha256": "ddf5e97a04d16dabe6f781b868dededc88df65efcc066d4820573d1fc60631f8"
-    },
-    {
-      "path": "cinema/assets/howard-marks-local.jpg",
-      "bytes": 165623,
-      "sha256": "137c8f9ee7c3fd2bf74457a1dba1359dc1dfff05ad4013df3556702ee931af68"
-    },
-    {
-      "path": "cinema/assets/marie-curie-local.jpg",
-      "bytes": 109261,
-      "sha256": "dbdb4f13b9719396a295cce1f31ac01b302b36ce8638def952656dfc5dcb69eb"
-    },
-    {
-      "path": "cinema/assets/jesse-livermore-local.jpg",
-      "bytes": 76824,
-      "sha256": "5a6d5500cb49feca47857caa11bd0918a0f91125345e40e20f524da99e4f67a4"
-    },
-    {
-      "path": "cinema/assets/paul-tudor-jones-local.jpg",
-      "bytes": 100159,
-      "sha256": "48995ab70ac588e117e997cbf7575d73de5c5a56dca093124fb712858ed7c095"
-    },
-    {
-      "path": "cinema/assets/peter-thiel-local.jpg",
-      "bytes": 115912,
-      "sha256": "ed48b48c184faa766108b6ca4864137a1a2b14d8775b803c5bffe491f4c270f5"
-    },
-    {
-      "path": "cinema/assets/benjamin-graham-local.jpg",
-      "bytes": 139557,
-      "sha256": "fa071ceaf3afbd1ef60c76dd20450a740e6ad01d1545be150d0e45f1cf7c1a9e"
-    },
-    {
-      "path": "cinema/assets/peter-lynch-local.jpg",
-      "bytes": 158311,
-      "sha256": "97530638f64cc2ae50e0f60783de706955518099c4489977bab4127a1a7585d7"
-    },
-    {
-      "path": "cinema/assets/jack-bogle-local.jpg",
-      "bytes": 136556,
-      "sha256": "3b7903f10cfba275be08ebe1f211f26352f604cb204c78256efbaffe97927b87"
-    },
-    {
-      "path": "cinema/assets/elon-musk-local.jpg",
-      "bytes": 154542,
-      "sha256": "dd2305c038a6f587919480f3a087f0fb9e1f46b5e88a2baee6f50f7aac71cf3d"
-    },
-    {
-      "path": "cinema/assets/jeff-bezos-local.jpg",
-      "bytes": 147567,
-      "sha256": "a996c40d0cb880be04d7af346fc1eef0c3ca2f70d6cd060f54c566e4fdbf70db"
-    },
-    {
-      "path": "cinema/assets/jim-simons-local.jpg",
-      "bytes": 199281,
-      "sha256": "5890907cdeedc95d32d8847d3182ebf06386b6e2e54766fb3258d762fd683e47"
-    },
-    {
-      "path": "cinema/assets/john-maynard-keynes-local.jpg",
-      "bytes": 127965,
-      "sha256": "773281275f2878b94775824f5f5612c78a8709631d7a76ebed0db34761ff8801"
-    },
-    {
-      "path": "cinema/assets/john-d-rockefeller-local.jpg",
-      "bytes": 173071,
-      "sha256": "f57ab59e4792d44c14d507a9ab9c8f9fc59e7869e633c47c962c22382ef32624"
-    },
-    {
-      "path": "cinema/assets/michael-mauboussin-local.jpg",
-      "bytes": 86417,
-      "sha256": "aea0cc436bdffdca1481d7a393c9d6fe5de371fc754109b0b4f62e2f8eff8c80"
-    },
-    {
-      "path": "cinema/assets/li-lu-local.jpg",
-      "bytes": 117946,
-      "sha256": "eae7f9964daa02a59fd1b8e8c1dc125c205a9fd72449df75fcc3b00536d9df2a"
-    },
-    {
-      "path": "cinema/assets/warren-buffett-local.jpg",
-      "bytes": 142201,
-      "sha256": "c8278bcf5a46e01cb0ecc63becf7b2faa040631769fb8c7dcddc876af345a3b2"
-    },
-    {
-      "path": "cinema/assets/edward-thorp-local.jpg",
-      "bytes": 127903,
-      "sha256": "d7a17f811b74bc77fb336763dc936cb8bed1acdb3bceee74a409824a9c48709d"
-    },
-    {
-      "path": "cinema/assets/philip-fisher-local.jpg",
-      "bytes": 98719,
-      "sha256": "7a249417d570c37b9928e80e099f3186f698a3629df07965798ade3f4ee2ec12"
-    },
-    {
-      "path": "cinema/assets/marc-andreessen-local.jpg",
-      "bytes": 149194,
-      "sha256": "4b924072ce2351b96b5f344c9408ed8c6073b2eefa18fddda942fda5000483c5"
-    },
-    {
-      "path": "cinema/assets/david-tepper-local.jpg",
-      "bytes": 125100,
-      "sha256": "1426a3ec19031abeb451458d491875022ff0c5464c1ea2bc543255530446b419"
-    },
-    {
-      "path": "cinema/assets/dwight-eisenhower-local.jpg",
-      "bytes": 232041,
-      "sha256": "896f5d2038bf26bd7116c54fdab72588e82bf332f2fd49fbd16774ba51ade14b"
-    },
-    {
-      "path": "cinema/assets/nassim-nicholas-taleb-local.jpg",
-      "bytes": 146142,
-      "sha256": "80edf71448d37bbe22e4fe8111de84593e4306f3029d309933d9c235c56bae5e"
-    },
-    {
-      "path": "cinema/assets/marcus-aurelius-local.jpg",
-      "bytes": 200400,
-      "sha256": "0a3f2de494289b0acc023b2c4736732ee52b5f90bba010adb29029f31e53009b"
-    },
-    {
-      "path": "cinema/assets/george-soros-local.jpg",
-      "bytes": 212137,
-      "sha256": "223e727c5c8e094d4d21504dde83f75f04fe8ceecc79ac7d6f84483d617fca55"
-    },
-    {
-      "path": "cinema/assets/terrain.webp",
-      "bytes": 4800,
-      "sha256": "204c061f444c3dd44af55cf7270dce1ac606ad738ef426cc8e43fdaf281f36a3"
-    },
-    {
-      "path": "cinema/assets/charles-darwin-local.jpg",
-      "bytes": 161284,
-      "sha256": "d13a25e3f57839485b986b5e197810b2be4977a9faee7b44be22b4bac93bf638"
-    },
-    {
-      "path": "cinema/assets/scan-study.webp",
-      "bytes": 2618,
-      "sha256": "76eb328a00bfbe27bba6262887eb2fa69b5ab3594c479072665317af8ff063fb"
-    },
-    {
-      "path": "cinema/assets/stanley-druckenmiller-local.jpg",
-      "bytes": 78174,
-      "sha256": "dfb9980de54d6dbfb06f2e6daff19425002f3a17785495e71254354bbfe41618"
-    },
-    {
-      "path": "cinema/assets/chester-nimitz-local.jpg",
-      "bytes": 196347,
-      "sha256": "c519dd14872f070ba951d4b40cc5ab1688e51ebb62258c23c6cbcc0ede11cdf4"
-    },
-    {
-      "path": "cinema/assets/ed-seykota-local.jpg",
-      "bytes": 119068,
-      "sha256": "c95d27df21ea13c796a0185639b6c3181b8888d11777dc021dc4d6302876ee47"
-    },
-    {
-      "path": "cinema/assets/steve-jobs-local.jpg",
-      "bytes": 161874,
-      "sha256": "66272d5583f109481b7f85bdeb4638b9e8933438c070c690d9d7dc354e4eb22a"
-    },
-    {
-      "path": "cinema/assets/charlie-munger-local.jpg",
-      "bytes": 106830,
-      "sha256": "0b5f6a1caabcb6ddd8078ed11b4d12fdfdc01ad24a2a0ec2ace97110f25c8f29"
-    },
-    {
-      "path": "cinema/assets/miyamoto-musashi-local.jpg",
-      "bytes": 254107,
-      "sha256": "f0c065f436491039333d0dd1744e0bb98d4b5db1cb5c6b5e8adc8d0b4c4b73be"
+      "path": "cinema/material-25471e8badaf.js",
+      "bytes": 20115,
+      "sha256": "25471e8badaf8f78da1aacde003fe4fe071a7d5b0c55d52fe577a27e439f06af"
     }
   ]
 }
