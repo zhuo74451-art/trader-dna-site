@@ -1,0 +1,292 @@
+{
+  "css": "cinema/detail-c9ce3bd7f6e2.css",
+  "js": "cinema/detail-8302ac81f194.js",
+  "weave": "cinema/detail-weave-d39631e4ddf5.js",
+  "refine": "cinema/detail-refine-dfc5ed80d4af.js",
+  "portraits": "cinema/portraits-detail-24faa388955e.json",
+  "core": {
+    "event-persistence.js": "cinema/core-event-persistence-0379480c0f31.js",
+    "app.js": "cinema/core-app-d11d974f04a1.js",
+    "visual-v3-share-card.js": "cinema/core-visual-v3-share-card-3a21b5764f97.js",
+    "visual-v4-result.js": "cinema/core-visual-v4-result-365ae6c4bde4.js"
+  },
+  "updater": "cinema/detail-update-f0ae51e6da72.js",
+  "release": "detail-03-final",
+  "entry": "cinema-detail-03.html",
+  "htmlSha256": "29b69f1003903380306863075f7c4279bf09cb71dd072be9e2b00cf7d1895b9c",
+  "builtAt": "2026-09-20T08:37:02.063866+00:00",
+  "publicBaseline": "08b8cc7603c57ffdde764b34c077f85c1b95b690",
+  "assessmentVersion": "standard-v1-2026-09",
+  "assessmentAndDataUnchanged": true,
+  "files": [
+    {
+      "path": "cinema-20260920.html",
+      "bytes": 1907,
+      "sha256": "29b69f1003903380306863075f7c4279bf09cb71dd072be9e2b00cf7d1895b9c"
+    },
+    {
+      "path": "cinema-detail-03.html",
+      "bytes": 1907,
+      "sha256": "29b69f1003903380306863075f7c4279bf09cb71dd072be9e2b00cf7d1895b9c"
+    },
+    {
+      "path": "cinema-material-02.html",
+      "bytes": 1907,
+      "sha256": "29b69f1003903380306863075f7c4279bf09cb71dd072be9e2b00cf7d1895b9c"
+    },
+    {
+      "path": "cinema/assets/benjamin-graham-source.jpg",
+      "bytes": 212904,
+      "sha256": "442ee48e03fdad062136f1dd7cb50a71998a820dc14ec7e0bfb49e9287fd88b2"
+    },
+    {
+      "path": "cinema/assets/charles-darwin-local.jpg",
+      "bytes": 161284,
+      "sha256": "d13a25e3f57839485b986b5e197810b2be4977a9faee7b44be22b4bac93bf638"
+    },
+    {
+      "path": "cinema/assets/charlie-munger-local.jpg",
+      "bytes": 106830,
+      "sha256": "0b5f6a1caabcb6ddd8078ed11b4d12fdfdc01ad24a2a0ec2ace97110f25c8f29"
+    },
+    {
+      "path": "cinema/assets/chester-nimitz-local.jpg",
+      "bytes": 196347,
+      "sha256": "c519dd14872f070ba951d4b40cc5ab1688e51ebb62258c23c6cbcc0ede11cdf4"
+    },
+    {
+      "path": "cinema/assets/daniel-kahneman-source.jpg",
+      "bytes": 284179,
+      "sha256": "799541f8171f706a0b5e789eb7a07af2c0352284cc8f1c31d231c3a36e3d1721"
+    },
+    {
+      "path": "cinema/assets/david-tepper-local.jpg",
+      "bytes": 125100,
+      "sha256": "1426a3ec19031abeb451458d491875022ff0c5464c1ea2bc543255530446b419"
+    },
+    {
+      "path": "cinema/assets/dwight-eisenhower-local.jpg",
+      "bytes": 232041,
+      "sha256": "896f5d2038bf26bd7116c54fdab72588e82bf332f2fd49fbd16774ba51ade14b"
+    },
+    {
+      "path": "cinema/assets/ed-seykota-official.jpg",
+      "bytes": 125169,
+      "sha256": "730866828c724ea8a65ce36d2b68661ca33da085bd24895b8e52d05995e861d9"
+    },
+    {
+      "path": "cinema/assets/edward-thorp-local.jpg",
+      "bytes": 127903,
+      "sha256": "d7a17f811b74bc77fb336763dc936cb8bed1acdb3bceee74a409824a9c48709d"
+    },
+    {
+      "path": "cinema/assets/elon-musk-local.jpg",
+      "bytes": 154542,
+      "sha256": "dd2305c038a6f587919480f3a087f0fb9e1f46b5e88a2baee6f50f7aac71cf3d"
+    },
+    {
+      "path": "cinema/assets/george-soros-local.jpg",
+      "bytes": 212137,
+      "sha256": "223e727c5c8e094d4d21504dde83f75f04fe8ceecc79ac7d6f84483d617fca55"
+    },
+    {
+      "path": "cinema/assets/howard-marks-local.jpg",
+      "bytes": 165623,
+      "sha256": "137c8f9ee7c3fd2bf74457a1dba1359dc1dfff05ad4013df3556702ee931af68"
+    },
+    {
+      "path": "cinema/assets/jack-bogle-source.jpg",
+      "bytes": 274549,
+      "sha256": "8f525836a607813d268ada2d2bc6e28315c99a87db98f3f0e8e7939094584049"
+    },
+    {
+      "path": "cinema/assets/jeff-bezos-local.jpg",
+      "bytes": 147567,
+      "sha256": "a996c40d0cb880be04d7af346fc1eef0c3ca2f70d6cd060f54c566e4fdbf70db"
+    },
+    {
+      "path": "cinema/assets/jesse-livermore-source.jpg",
+      "bytes": 136359,
+      "sha256": "0dcbddc51b0dae8eb56efe94ac1ddbc916a0541f89caea2db2f6c767f42ea6a1"
+    },
+    {
+      "path": "cinema/assets/jim-simons-local.jpg",
+      "bytes": 199281,
+      "sha256": "5890907cdeedc95d32d8847d3182ebf06386b6e2e54766fb3258d762fd683e47"
+    },
+    {
+      "path": "cinema/assets/john-d-rockefeller-local.jpg",
+      "bytes": 173071,
+      "sha256": "f57ab59e4792d44c14d507a9ab9c8f9fc59e7869e633c47c962c22382ef32624"
+    },
+    {
+      "path": "cinema/assets/john-maynard-keynes-local.jpg",
+      "bytes": 127965,
+      "sha256": "773281275f2878b94775824f5f5612c78a8709631d7a76ebed0db34761ff8801"
+    },
+    {
+      "path": "cinema/assets/li-lu-local.jpg",
+      "bytes": 117946,
+      "sha256": "eae7f9964daa02a59fd1b8e8c1dc125c205a9fd72449df75fcc3b00536d9df2a"
+    },
+    {
+      "path": "cinema/assets/marc-andreessen-local.jpg",
+      "bytes": 149194,
+      "sha256": "4b924072ce2351b96b5f344c9408ed8c6073b2eefa18fddda942fda5000483c5"
+    },
+    {
+      "path": "cinema/assets/marcus-aurelius-local.jpg",
+      "bytes": 200400,
+      "sha256": "0a3f2de494289b0acc023b2c4736732ee52b5f90bba010adb29029f31e53009b"
+    },
+    {
+      "path": "cinema/assets/marie-curie-source.jpg",
+      "bytes": 297524,
+      "sha256": "3a51ec0520f0341fb0a271b1b7e3630b9a441a583ad000187b3bffcdd6f4360e"
+    },
+    {
+      "path": "cinema/assets/michael-mauboussin-local.jpg",
+      "bytes": 86417,
+      "sha256": "aea0cc436bdffdca1481d7a393c9d6fe5de371fc754109b0b4f62e2f8eff8c80"
+    },
+    {
+      "path": "cinema/assets/miyamoto-musashi-local.jpg",
+      "bytes": 254107,
+      "sha256": "f0c065f436491039333d0dd1744e0bb98d4b5db1cb5c6b5e8adc8d0b4c4b73be"
+    },
+    {
+      "path": "cinema/assets/nassim-nicholas-taleb-source.jpg",
+      "bytes": 304601,
+      "sha256": "353b432fdd2646da4c9e774bedd846eb2f0368671880b691952f9448dc395be1"
+    },
+    {
+      "path": "cinema/assets/paul-tudor-jones-2006.jpg",
+      "bytes": 824526,
+      "sha256": "6e007a3664f33fbe154fdd0ad251b0773ab72321e218854f65002846daa49527"
+    },
+    {
+      "path": "cinema/assets/peter-lynch-local.jpg",
+      "bytes": 158311,
+      "sha256": "97530638f64cc2ae50e0f60783de706955518099c4489977bab4127a1a7585d7"
+    },
+    {
+      "path": "cinema/assets/peter-thiel-local.jpg",
+      "bytes": 115912,
+      "sha256": "ed48b48c184faa766108b6ca4864137a1a2b14d8775b803c5bffe491f4c270f5"
+    },
+    {
+      "path": "cinema/assets/philip-fisher-local.jpg",
+      "bytes": 98719,
+      "sha256": "7a249417d570c37b9928e80e099f3186f698a3629df07965798ade3f4ee2ec12"
+    },
+    {
+      "path": "cinema/assets/scan-study.webp",
+      "bytes": 2618,
+      "sha256": "76eb328a00bfbe27bba6262887eb2fa69b5ab3594c479072665317af8ff063fb"
+    },
+    {
+      "path": "cinema/assets/stanley-druckenmiller-local.jpg",
+      "bytes": 78174,
+      "sha256": "dfb9980de54d6dbfb06f2e6daff19425002f3a17785495e71254354bbfe41618"
+    },
+    {
+      "path": "cinema/assets/steve-jobs-local.jpg",
+      "bytes": 161874,
+      "sha256": "66272d5583f109481b7f85bdeb4638b9e8933438c070c690d9d7dc354e4eb22a"
+    },
+    {
+      "path": "cinema/assets/warren-buffett-local.jpg",
+      "bytes": 142201,
+      "sha256": "c8278bcf5a46e01cb0ecc63becf7b2faa040631769fb8c7dcddc876af345a3b2"
+    },
+    {
+      "path": "cinema/cinema.css",
+      "bytes": 77837,
+      "sha256": "c9ce3bd7f6e2ece51b5a7258c190a6724bd6e6dcc326b86652c15ad4ee2ecea9"
+    },
+    {
+      "path": "cinema/cinema.js",
+      "bytes": 24840,
+      "sha256": "8302ac81f194fdcc8b2c99f2f473234e98327a3d65ad9e63b5ac15641c4cba4f"
+    },
+    {
+      "path": "cinema/core-app-d11d974f04a1.js",
+      "bytes": 15743,
+      "sha256": "d11d974f04a165ea9296c7f30a227ef3d897a7e8ddb3cbcafc9004ed0832def7"
+    },
+    {
+      "path": "cinema/core-event-persistence-0379480c0f31.js",
+      "bytes": 3831,
+      "sha256": "0379480c0f31b7a465c4a37c880815fa8e97ae743b7b9aff5b6cde01dcb857a4"
+    },
+    {
+      "path": "cinema/core-visual-v3-share-card-3a21b5764f97.js",
+      "bytes": 19674,
+      "sha256": "3a21b5764f97147e33ab6164ed4972f1b3973272f8c3423683a313b0cb262054"
+    },
+    {
+      "path": "cinema/core-visual-v4-result-365ae6c4bde4.js",
+      "bytes": 8788,
+      "sha256": "365ae6c4bde44dfe2bab3061e7045089ab09d89d7431fbfd8f19aac82bb83677"
+    },
+    {
+      "path": "cinema/detail-8302ac81f194.js",
+      "bytes": 24840,
+      "sha256": "8302ac81f194fdcc8b2c99f2f473234e98327a3d65ad9e63b5ac15641c4cba4f"
+    },
+    {
+      "path": "cinema/detail-c9ce3bd7f6e2.css",
+      "bytes": 77837,
+      "sha256": "c9ce3bd7f6e2ece51b5a7258c190a6724bd6e6dcc326b86652c15ad4ee2ecea9"
+    },
+    {
+      "path": "cinema/detail-refine-dfc5ed80d4af.js",
+      "bytes": 23788,
+      "sha256": "dfc5ed80d4afe887ee90e3d47da6c212850b93898352e9d74f283a1b87d34279"
+    },
+    {
+      "path": "cinema/detail-update-f0ae51e6da72.js",
+      "bytes": 180,
+      "sha256": "f0ae51e6da720425af1e5c8db7018b4c80ac29aad39251a932174c21ad344922"
+    },
+    {
+      "path": "cinema/detail-weave-d39631e4ddf5.js",
+      "bytes": 10913,
+      "sha256": "d39631e4ddf50feeb74b899c3fa0399e8bc0fdbee94ae6815f1d5a55540da1f6"
+    },
+    {
+      "path": "cinema/detail-weave.js",
+      "bytes": 10913,
+      "sha256": "d39631e4ddf50feeb74b899c3fa0399e8bc0fdbee94ae6815f1d5a55540da1f6"
+    },
+    {
+      "path": "cinema/portraits-detail-24faa388955e.json",
+      "bytes": 22440,
+      "sha256": "24faa388955e3d77467195129309572a3180769a1b082c2b637b12e9ff8d1eae"
+    },
+    {
+      "path": "cinema/visual-runtime-8eac0684e234.js",
+      "bytes": 15140,
+      "sha256": "8eac0684e234c9e24598188a1ccbe8112c1aa289f84aedd301bef998df00a953"
+    },
+    {
+      "path": "sw.js",
+      "bytes": 3796,
+      "sha256": "f7c5a824dc514a1d0d62ce5d8cd76d75a908f983da92af8d1db305946e252cc8"
+    }
+  ],
+  "checks": {
+    "localAcceptance": "PASS",
+    "localAssertions": 55,
+    "legacyWorkerUpgrade": "PASS",
+    "legacyAssertions": 9,
+    "physicalMobileDevices": "NOT_RUN"
+  },
+  "portraitMedia": {
+    "photograph": 30,
+    "sculpture": 1,
+    "painting": 1,
+    "illustration": 0
+  },
+  "publicUrl": "https://zhuo74451-art.github.io/trader-dna-site/cinema-detail-03.html"
+}

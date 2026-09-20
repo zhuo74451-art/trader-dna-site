@@ -1,4 +1,4 @@
-const CACHE_NAME="trader-dna-event-material-7206ac9666a0";
+const CACHE_NAME="trader-dna-event-detail-29b69f100390";
 const PRECACHE=[".","./index.html","./app.js","./event-persistence.js","./styles.css","./styles-responsive.css","./visual-v3.css","./visual-v3-motion.css","./visual-v3-polish.css","./visual-v3-refine.css","./visual-v3-result-depth.css","./visual-v4.css","./visual-v4-result.css","./director-v5-live.css","./visual-v3.js","./visual-v3-refine.js","./visual-v3-share-card.js","./visual-v4.js","./visual-v4-result.js","./director-v5-live.js","./data/questions-1.json","./data/questions-2.json","./data/questions-3.json","./data/types.json","./assets/portraits/warren-buffett.jpg","./assets/portraits/charles-darwin.jpg","./assets/portraits/charlie-munger.jpg","./assets/portraits/howard-marks.jpg","./assets/portraits/philip-fisher.svg","./assets/portraits/peter-thiel.jpg","./assets/portraits/marc-andreessen.jpg","./assets/portraits/paul-tudor-jones.jpg","./assets/portraits/chester-nimitz.jpg","./assets/portraits/stanley-druckenmiller.svg","./assets/portraits/jeff-bezos.jpg","./assets/portraits/jesse-livermore.svg","./assets/portraits/steve-jobs.jpg","./assets/portraits/nassim-nicholas-taleb.svg","./assets/portraits/george-soros.jpg","./assets/portraits/daniel-kahneman.svg","./assets/portraits/benjamin-graham.svg","./assets/portraits/michael-mauboussin.svg","./assets/portraits/peter-lynch.svg","./assets/portraits/li-lu.svg","./assets/portraits/dwight-eisenhower.jpg","./assets/portraits/marcus-aurelius.jpg","./assets/portraits/ed-seykota.svg","./assets/portraits/marie-curie.svg","./assets/portraits/jim-simons.jpg","./assets/portraits/edward-thorp.svg","./assets/portraits/jack-bogle.svg","./assets/portraits/elon-musk.jpg","./assets/portraits/david-tepper.svg","./assets/portraits/john-maynard-keynes.svg","./assets/portraits/john-d-rockefeller.svg","./assets/portraits/miyamoto-musashi.png","./data/portraits.json"];
 const CACHE_PREFIX='trader-dna-event-';
 
@@ -27,7 +27,7 @@ self.addEventListener('fetch',event=>{
     const isVisualPreview=/\/(?:editorial-(?:preview|reset)|cinema)/.test(url.pathname);
     if(isVisualPreview){
       try{
-        return await fetch(request,{cache:'no-store'});
+        const fresh=await fetch(request,{cache:'no-store'});if(fresh.ok){const c=await caches.open(CACHE_NAME);await c.put(request,fresh.clone());}return fresh;
       }catch(error){
         const previewCached=await caches.match(request,{ignoreSearch:false});
         if(previewCached) return previewCached;
@@ -52,3 +52,5 @@ self.addEventListener('fetch',event=>{
     }
   })());
 });
+
+self.addEventListener("message",event=>{if(event.data?.type==="TRADERDNA_VERSION")event.ports?.[0]?.postMessage({cacheName:CACHE_NAME});});

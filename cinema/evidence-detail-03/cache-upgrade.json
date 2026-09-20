@@ -1,0 +1,111 @@
+{
+  "checks": [
+    {
+      "name": "five real legacy answers stored",
+      "pass": true
+    },
+    {
+      "name": "reproduced stale page even after query change",
+      "pass": true
+    },
+    {
+      "name": "fresh pathname escapes already-controlled legacy cache",
+      "pass": true
+    },
+    {
+      "name": "same in-progress attempt survives upgrade",
+      "pass": true
+    },
+    {
+      "name": "decision register restored exactly",
+      "pass": true
+    },
+    {
+      "name": "new worker actively controls page and retired only legacy app caches",
+      "pass": true
+    },
+    {
+      "name": "no stored answers changed by upgrade",
+      "pass": true
+    },
+    {
+      "name": "original bookmarked alias now updates",
+      "pass": true
+    },
+    {
+      "name": "bookmark navigation retains attempt",
+      "pass": true
+    }
+  ],
+  "model": "Explicit cache-first + ignoreSearch legacy worker reproduction; no cache or storage clearing after seeding.",
+  "result": "PASS",
+  "requests": [
+    {
+      "url": "/seed.html",
+      "published": false
+    },
+    {
+      "url": "/sw.js",
+      "published": false
+    },
+    {
+      "url": "/cinema-material-02.html",
+      "published": false
+    },
+    {
+      "url": "/sw.js",
+      "published": false
+    },
+    {
+      "url": "/cinema-detail-03.html",
+      "published": true
+    },
+    {
+      "url": "/sw.js",
+      "published": true
+    },
+    {
+      "url": "/index.html",
+      "published": true
+    },
+    {
+      "url": "/sw.js",
+      "published": true
+    },
+    {
+      "url": "/cinema-material-02.html",
+      "published": true
+    },
+    {
+      "url": "/sw.js",
+      "published": true
+    }
+  ],
+  "navs": [
+    {
+      "url": "http://127.0.0.1:4345/seed.html",
+      "sw": false,
+      "epoch": "old"
+    },
+    {
+      "url": "http://127.0.0.1:4345/cinema-material-02.html",
+      "sw": true,
+      "epoch": "old"
+    },
+    {
+      "url": "http://127.0.0.1:4345/cinema-material-02.html?new=1",
+      "sw": true,
+      "epoch": "old"
+    },
+    {
+      "url": "http://127.0.0.1:4345/cinema-detail-03.html",
+      "sw": true,
+      "epoch": "new"
+    },
+    {
+      "url": "http://127.0.0.1:4345/cinema-material-02.html",
+      "sw": true,
+      "epoch": "new"
+    }
+  ]
+}
