@@ -1,9 +1,11 @@
 # Current cinema presentation
 
-Active entry: `cinema-detail-04.html`.
-Public URL: https://zhuo74451-art.github.io/trader-dna-site/cinema-detail-04.html
+Active presentation entry: `cinema-detail-04.html`.
+Public presentation URL: https://zhuo74451-art.github.io/trader-dna-site/cinema-detail-04.html
+Stable event entry: `scan01.html`.
+Event QR sheet: `event-qr-20261003.html`.
 
-The `cinema-material-02.html` and `cinema-20260920.html` aliases serve the same Detail 04 HTML. `cinema-detail-03.html` is preserved for rollback. The unrelated `index.html` is not the cinema design authority and has not been replaced.
+The `scan01.html`, `cinema-material-02.html` and `cinema-20260920.html` aliases serve the same Detail 04 runtime. The event QR points to the stable `scan01.html` alias with `start=scan01` and UTM parameters, so future visual releases can update the alias without reprinting the QR. `cinema-detail-03.html` is preserved for rollback. The unrelated `index.html` is not the cinema design authority and has not been replaced.
 
 Functional release commit: `e00e18385e1b0c55e705e67ff3930482cb02acd6`.
 Presentation source, deterministic build and acceptance tests: `cinema/detail04/`.

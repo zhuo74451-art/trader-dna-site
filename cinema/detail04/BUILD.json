@@ -1,10 +1,10 @@
 {
-  "css": "cinema/detail04-60ec654ef23c.css",
+  "css": "cinema/detail04-362b30692ca6.css",
   "js": "cinema/detail04-17a04b5616ca.js",
   "visual": "cinema/visual04-3e3d37bdb302.js",
   "share": "cinema/share04-9bba9b7bb371.js",
   "entry": "cinema-detail-04.html",
   "release": "detail-04-final",
-  "htmlSha256": "99a570cb56b1b3bf2b952acfa71962a308d759a89eb285286aa36baee56e3f95",
-  "baseCommit": "983a90d74fdfcf293d6fea3a917767b32566fcf3"
+  "htmlSha256": "8514578cdb33ed3dfdc0a91b44cc93c6c60763d38aa94a23433aecca1e93b551",
+  "baseCommit": "1d2e7924250668069ecba1bce701533c6931f0ea"
 }
