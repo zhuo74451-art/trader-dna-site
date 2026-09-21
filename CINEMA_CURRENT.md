@@ -2,18 +2,17 @@
 
 Active presentation entry: `cinema-detail-04.html`.
 Public presentation URL: https://zhuo74451-art.github.io/trader-dna-site/cinema-detail-04.html
-Stable event entry: `scan01.html`.
-Event QR sheet: `event-qr-20261003.html`.
+Stable runtime alias: `scan01.html`.
+Permanent printed QR entry: https://82trade-team.github.io/dna/
 
-The `scan01.html`, `cinema-material-02.html` and `cinema-20260920.html` aliases serve the same Detail 04 runtime. The event QR points to the stable `scan01.html` alias with `start=scan01` and UTM parameters, so future visual releases can update the alias without reprinting the QR. `cinema-detail-03.html` is preserved for rollback. The unrelated `index.html` is not the cinema design authority and has not been replaced.
+The printed QR belongs to the separate public gateway repository `82trade-team/dna`. That URL is the only long-lived QR authority. It currently redirects to this repository's `scan01.html` alias. Future V5/V6 visual releases should update the gateway target and/or `scan01.html`; do not create a second printed QR.
 
-Functional release commit: `098b6cc81c91f18d2307875f1717fe2a6696bfb3`.
+`scan01.html`, `cinema-material-02.html` and `cinema-20260920.html` serve the same Detail 04 runtime. `cinema-detail-03.html` is preserved for rollback. The unrelated `index.html` is not the cinema design authority and has not been replaced.
+
 Presentation source, deterministic build and acceptance tests: `cinema/detail04/`.
 Immutable script/style paths and exact entry hash: `cinema/detail04/BUILD.json`.
 Local full regression: `cinema/detail04/ACCEPTANCE_MOBILE_20260921.json`.
-Local mobile/QR gate: `cinema/detail04/MOBILE_QR_GATE.json`.
 Public full regression: `cinema/detail04/LIVE_ACCEPTANCE_20260921.json`.
-Public mobile/QR gate: `cinema/detail04/MOBILE_QR_GATE_LIVE.json`.
-QR generation/print contract: `cinema/detail04/QR_GATE.md`.
+Permanent QR routing contract: `cinema/detail04/QR_GATE.md`.
 
-Continue from these files and the actual rendered site. Do not reopen scoring, question count, type mapping, completion/persistence, backend or auth while refining presentation. The new share adapter prevents the legacy auto-renderer from replacing the intended poster preview. Keep preview and exported PNG on the same artifact.
+Continue from these files and the actual rendered site. Do not reopen scoring, question count, type mapping, completion/persistence, backend or auth while refining presentation. Keep preview and exported PNG on the same artifact.
