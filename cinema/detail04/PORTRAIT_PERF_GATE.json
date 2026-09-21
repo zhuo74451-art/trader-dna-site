@@ -1,0 +1,36 @@
+{
+  "base": "http://127.0.0.1:4346",
+  "type": "IAGF",
+  "revealToResultMs": 4042,
+  "resultToPortraitReadyMs": 11,
+  "revealToPortraitReadyMs": 4053,
+  "cardRequests": [
+    {
+      "kind": "request",
+      "url": "http://127.0.0.1:4346/cinema/assets/portrait-cards/george-soros-local.webp",
+      "t": 1789958628968
+    },
+    {
+      "kind": "request",
+      "url": "http://127.0.0.1:4346/cinema/assets/portrait-cards/paul-tudor-jones-2006.webp",
+      "t": 1789958628969
+    }
+  ],
+  "originalCardRequests": [],
+  "sources": [
+    {
+      "src": "http://127.0.0.1:4346/cinema/assets/portrait-cards/george-soros-local.webp",
+      "w": 720,
+      "h": 900,
+      "complete": true
+    },
+    {
+      "src": "http://127.0.0.1:4346/cinema/assets/portrait-cards/paul-tudor-jones-2006.webp",
+      "w": 720,
+      "h": 860,
+      "complete": true
+    }
+  ],
+  "errors": [],
+  "result": "PASS"
+}

@@ -1,10 +1,12 @@
 {
-  "css": "cinema/detail04-362b30692ca6.css",
-  "js": "cinema/detail04-17a04b5616ca.js",
+  "css": "cinema/detail04-a4b0c970666f.css",
+  "js": "cinema/detail04-53b019c46f38.js",
   "visual": "cinema/visual04-3e3d37bdb302.js",
+  "refine": "cinema/detail-refine04-e55404caac86.js",
   "share": "cinema/share04-9bba9b7bb371.js",
+  "portraitManifest": "cinema/portraits-detail04-card-0dca88dce1bb.json",
   "entry": "cinema-detail-04.html",
   "release": "detail-04-final",
-  "htmlSha256": "8514578cdb33ed3dfdc0a91b44cc93c6c60763d38aa94a23433aecca1e93b551",
-  "baseCommit": "1d2e7924250668069ecba1bce701533c6931f0ea"
+  "htmlSha256": "94429c916244d2ec20953737505aafd519ebe40fa310037ef3ada5cadfd698b5",
+  "baseCommit": "845de211702296e747434d9f6dffe9bc9a01a3ea"
 }

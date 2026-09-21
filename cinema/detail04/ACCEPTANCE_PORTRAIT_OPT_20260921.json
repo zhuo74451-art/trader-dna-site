@@ -1,0 +1,289 @@
+{
+  "base": "http://127.0.0.1:4346",
+  "checks": [
+    {
+      "name": "warm service-worker controlled context",
+      "pass": true
+    },
+    {
+      "name": "current Detail 04 entry",
+      "pass": true
+    },
+    {
+      "name": "single stylesheet owner",
+      "pass": true
+    },
+    {
+      "name": "desktop landing fits",
+      "pass": true
+    },
+    {
+      "name": "register matches saved answers at Q1",
+      "pass": true
+    },
+    {
+      "name": "question metadata clears sticky navigation Q1",
+      "pass": true,
+      "data": {
+        "top": 106,
+        "nav": 74
+      }
+    },
+    {
+      "name": "register matches saved answers at Q2",
+      "pass": true
+    },
+    {
+      "name": "register matches saved answers at Q3",
+      "pass": true
+    },
+    {
+      "name": "register matches saved answers at Q4",
+      "pass": true
+    },
+    {
+      "name": "register matches saved answers at Q5",
+      "pass": true
+    },
+    {
+      "name": "register matches saved answers at Q6",
+      "pass": true
+    },
+    {
+      "name": "register matches saved answers at Q7",
+      "pass": true
+    },
+    {
+      "name": "question metadata clears sticky navigation Q7",
+      "pass": true,
+      "data": {
+        "top": 106,
+        "nav": 74
+      }
+    },
+    {
+      "name": "register matches saved answers at Q8",
+      "pass": true
+    },
+    {
+      "name": "register matches saved answers at Q9",
+      "pass": true
+    },
+    {
+      "name": "register matches saved answers at Q10",
+      "pass": true
+    },
+    {
+      "name": "register matches saved answers at Q11",
+      "pass": true
+    },
+    {
+      "name": "register matches saved answers at Q12",
+      "pass": true
+    },
+    {
+      "name": "register matches saved answers at Q13",
+      "pass": true
+    },
+    {
+      "name": "question metadata clears sticky navigation Q13",
+      "pass": true,
+      "data": {
+        "top": 106,
+        "nav": 74
+      }
+    },
+    {
+      "name": "register matches saved answers at Q14",
+      "pass": true
+    },
+    {
+      "name": "register matches saved answers at Q15",
+      "pass": true
+    },
+    {
+      "name": "register matches saved answers at Q16",
+      "pass": true
+    },
+    {
+      "name": "register matches saved answers at Q17",
+      "pass": true
+    },
+    {
+      "name": "register matches saved answers at Q18",
+      "pass": true
+    },
+    {
+      "name": "three live phase rails",
+      "pass": true
+    },
+    {
+      "name": "no Q12 black curtain is created",
+      "pass": true
+    },
+    {
+      "name": "final receipt is visible, not a black hold",
+      "pass": true
+    },
+    {
+      "name": "18 real answers completed",
+      "pass": true
+    },
+    {
+      "name": "canonical scoring unchanged",
+      "pass": true
+    },
+    {
+      "name": "3D backboard and foreground retained",
+      "pass": true
+    },
+    {
+      "name": "rotate inspection still works",
+      "pass": true
+    },
+    {
+      "name": "stacked case files survive actual scroll",
+      "pass": true,
+      "data": [
+        {
+          "position": "sticky",
+          "top": 100
+        },
+        {
+          "position": "sticky",
+          "top": 124.078125
+        },
+        {
+          "position": "sticky",
+          "top": 739.078125
+        }
+      ]
+    },
+    {
+      "name": "Paul portrait region present",
+      "pass": true
+    },
+    {
+      "name": "optimized card photograph replaces line drawing",
+      "pass": true
+    },
+    {
+      "name": "optimized card dimensions retained",
+      "pass": true
+    },
+    {
+      "name": "portrait also present in dossier dialog",
+      "pass": true
+    },
+    {
+      "name": "dossier keeps full-resolution original",
+      "pass": true
+    },
+    {
+      "name": "dossier full source dimensions retained",
+      "pass": true
+    },
+    {
+      "name": "actual PNG download 4:5",
+      "pass": true
+    },
+    {
+      "name": "actual PNG download 9:16",
+      "pass": true
+    },
+    {
+      "name": "refresh restores saved identity",
+      "pass": true
+    },
+    {
+      "name": "full 54-question route preserved",
+      "pass": true
+    },
+    {
+      "name": "all 32 archive assets render with framing and provenance",
+      "pass": true
+    },
+    {
+      "name": "long question and progress fit 320",
+      "pass": true
+    },
+    {
+      "name": "result fits 320",
+      "pass": true
+    },
+    {
+      "name": "archive pair fits 320",
+      "pass": true
+    },
+    {
+      "name": "share fits 320",
+      "pass": true
+    },
+    {
+      "name": "long question and progress fit 390",
+      "pass": true
+    },
+    {
+      "name": "result fits 390",
+      "pass": true
+    },
+    {
+      "name": "archive pair fits 390",
+      "pass": true
+    },
+    {
+      "name": "share fits 390",
+      "pass": true
+    },
+    {
+      "name": "long question and progress fit 768",
+      "pass": true
+    },
+    {
+      "name": "result fits 768",
+      "pass": true
+    },
+    {
+      "name": "archive pair fits 768",
+      "pass": true
+    },
+    {
+      "name": "share fits 768",
+      "pass": true
+    },
+    {
+      "name": "long question and progress fit 1920",
+      "pass": true
+    },
+    {
+      "name": "result fits 1920",
+      "pass": true
+    },
+    {
+      "name": "archive pair fits 1920",
+      "pass": true
+    },
+    {
+      "name": "share fits 1920",
+      "pass": true
+    },
+    {
+      "name": "keyboard and reduced-motion full quick flow",
+      "pass": true
+    },
+    {
+      "name": "no JavaScript errors",
+      "pass": true,
+      "data": []
+    },
+    {
+      "name": "no site resource errors",
+      "pass": true,
+      "data": []
+    }
+  ],
+  "errors": [],
+  "bad": [],
+  "controller": "http://127.0.0.1:4346/sw.js",
+  "result": "PASS"
+}

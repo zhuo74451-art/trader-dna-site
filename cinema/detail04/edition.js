@@ -76,8 +76,16 @@ function d4Navigation(){
  button.onclick=()=>{const open=bar.dataset.menuOpen!=='true';bar.dataset.menuOpen=String(open);button.setAttribute('aria-expanded',String(open));button.textContent=open?'關閉 −':'選單 +'};
  nav.addEventListener('click',close);root.addEventListener('click',close);
 }
+let d4WarmPortraitCode='';
+function d4WarmSameTypePortraits(){
+ const code=(root.querySelector('.reveal-code')||root.querySelector('.result .code'))?.textContent.trim();
+ if(!code||code===d4WarmPortraitCode||!Object.keys(manifest).length)return;
+ const people=types()?.[code]?.people;if(!Array.isArray(people)||!people.length)return;
+ d4WarmPortraitCode=code;
+ people.map(parse).forEach((person,index)=>{const m=manifest[person.name];if(m?.kind!=='image')return;const img=new Image();img.decoding='async';img.fetchPriority=index<2?'high':'auto';img.src=new URL(m.cardUrl||m.url,location.href).href;});
+}
 function detailSurfaces(){
- d4Navigation();d4Reveal();
+ d4Navigation();d4Reveal();d4WarmSameTypePortraits();
  // A legacy share renderer can finish after this edition. Keep the preview and download on the same exported artifact.
  const shareStudio=root.querySelector('.v3-share-studio'),shareImage=shareStudio?.querySelector('.v3-share-stage>img');
  if(shareStudio?.dataset.cinemaExport==='ready'&&exportURL&&shareImage&&shareImage.src!==exportURL)shareImage.src=exportURL;

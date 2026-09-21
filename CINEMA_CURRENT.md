@@ -14,5 +14,7 @@ Immutable script/style paths and exact entry hash: `cinema/detail04/BUILD.json`.
 Local full regression: `cinema/detail04/ACCEPTANCE_MOBILE_20260921.json`.
 Public full regression: `cinema/detail04/LIVE_ACCEPTANCE_20260921.json`.
 Permanent QR routing contract: `cinema/detail04/QR_GATE.md`.
+Portrait-card performance gate: `cinema/detail04/PORTRAIT_PERF_GATE.json`.
+Portrait optimization: all 32 archive cards use 720px WebP derivatives; same-type portraits are warmed during identity reveal while dossier dialogs retain the original full-resolution image.
 
 Continue from these files and the actual rendered site. Do not reopen scoring, question count, type mapping, completion/persistence, backend or auth while refining presentation. Keep preview and exported PNG on the same artifact.
