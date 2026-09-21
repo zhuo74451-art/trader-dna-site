@@ -1,0 +1,36 @@
+{
+  "base": "https://zhuo74451-art.github.io/trader-dna-site",
+  "type": "IAGF",
+  "revealToResultMs": 3223,
+  "resultToPortraitReadyMs": 6,
+  "revealToPortraitReadyMs": 3229,
+  "cardRequests": [
+    {
+      "kind": "request",
+      "url": "https://zhuo74451-art.github.io/trader-dna-site/cinema/assets/portrait-cards/george-soros-local.webp",
+      "t": 1789958952243
+    },
+    {
+      "kind": "request",
+      "url": "https://zhuo74451-art.github.io/trader-dna-site/cinema/assets/portrait-cards/paul-tudor-jones-2006.webp",
+      "t": 1789958952243
+    }
+  ],
+  "originalCardRequests": [],
+  "sources": [
+    {
+      "src": "https://zhuo74451-art.github.io/trader-dna-site/cinema/assets/portrait-cards/george-soros-local.webp",
+      "w": 720,
+      "h": 900,
+      "complete": true
+    },
+    {
+      "src": "https://zhuo74451-art.github.io/trader-dna-site/cinema/assets/portrait-cards/paul-tudor-jones-2006.webp",
+      "w": 720,
+      "h": 860,
+      "complete": true
+    }
+  ],
+  "errors": [],
+  "result": "PASS"
+}
