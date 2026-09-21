@@ -1,0 +1,243 @@
+{
+  "base": "https://zhuo74451-art.github.io/trader-dna-site",
+  "url": "https://zhuo74451-art.github.io/trader-dna-site/scan01.html?start=scan01&utm_source=event&utm_medium=qr&utm_campaign=20261003",
+  "slowLimit": 12000,
+  "checks": [
+    {
+      "name": "iphone-se detail04",
+      "pass": true
+    },
+    {
+      "name": "iphone-se no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "iphone-se touch targets",
+      "pass": true,
+      "data": 112
+    },
+    {
+      "name": "iphone-se three phase rails",
+      "pass": true,
+      "data": 3
+    },
+    {
+      "name": "iphone-se mobile menu visible",
+      "pass": true
+    },
+    {
+      "name": "iphone-se menu opens",
+      "pass": true
+    },
+    {
+      "name": "iphone-se menu stays in viewport",
+      "pass": true,
+      "data": {
+        "x": 12,
+        "y": 61,
+        "width": 296,
+        "height": 70
+      }
+    },
+    {
+      "name": "iphone-se q2 clears sticky header",
+      "pass": true
+    },
+    {
+      "name": "iphone-8 detail04",
+      "pass": true
+    },
+    {
+      "name": "iphone-8 no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "iphone-8 touch targets",
+      "pass": true,
+      "data": 112
+    },
+    {
+      "name": "iphone-8 three phase rails",
+      "pass": true,
+      "data": 3
+    },
+    {
+      "name": "iphone-8 mobile menu visible",
+      "pass": true
+    },
+    {
+      "name": "iphone-8 menu opens",
+      "pass": true
+    },
+    {
+      "name": "iphone-8 menu stays in viewport",
+      "pass": true,
+      "data": {
+        "x": 12,
+        "y": 61,
+        "width": 351,
+        "height": 70
+      }
+    },
+    {
+      "name": "iphone-8 q2 clears sticky header",
+      "pass": true
+    },
+    {
+      "name": "iphone-15 detail04",
+      "pass": true
+    },
+    {
+      "name": "iphone-15 no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "iphone-15 touch targets",
+      "pass": true,
+      "data": 112
+    },
+    {
+      "name": "iphone-15 three phase rails",
+      "pass": true,
+      "data": 3
+    },
+    {
+      "name": "iphone-15 mobile menu visible",
+      "pass": true
+    },
+    {
+      "name": "iphone-15 menu opens",
+      "pass": true
+    },
+    {
+      "name": "iphone-15 menu stays in viewport",
+      "pass": true,
+      "data": {
+        "x": 12,
+        "y": 61,
+        "width": 369,
+        "height": 70
+      }
+    },
+    {
+      "name": "iphone-15 q2 clears sticky header",
+      "pass": true
+    },
+    {
+      "name": "iphone-max detail04",
+      "pass": true
+    },
+    {
+      "name": "iphone-max no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "iphone-max touch targets",
+      "pass": true,
+      "data": 112
+    },
+    {
+      "name": "iphone-max three phase rails",
+      "pass": true,
+      "data": 3
+    },
+    {
+      "name": "iphone-max mobile menu visible",
+      "pass": true
+    },
+    {
+      "name": "iphone-max menu opens",
+      "pass": true
+    },
+    {
+      "name": "iphone-max menu stays in viewport",
+      "pass": true,
+      "data": {
+        "x": 12,
+        "y": 61,
+        "width": 406,
+        "height": 70
+      }
+    },
+    {
+      "name": "iphone-max q2 clears sticky header",
+      "pass": true
+    },
+    {
+      "name": "landscape detail04",
+      "pass": true
+    },
+    {
+      "name": "landscape no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "landscape touch targets",
+      "pass": true,
+      "data": 128
+    },
+    {
+      "name": "landscape three phase rails",
+      "pass": true,
+      "data": 3
+    },
+    {
+      "name": "landscape q2 clears sticky header",
+      "pass": true
+    },
+    {
+      "name": "ipad detail04",
+      "pass": true
+    },
+    {
+      "name": "ipad no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "ipad touch targets",
+      "pass": true,
+      "data": 128
+    },
+    {
+      "name": "ipad three phase rails",
+      "pass": true,
+      "data": 3
+    },
+    {
+      "name": "ipad q2 clears sticky header",
+      "pass": true
+    },
+    {
+      "name": "QR UTM survives completion",
+      "pass": true,
+      "data": {
+        "utm_source": "event",
+        "utm_medium": "qr",
+        "utm_campaign": "20261003"
+      }
+    },
+    {
+      "name": "slow-network direct QR reaches Q1",
+      "pass": true,
+      "data": 6000
+    },
+    {
+      "name": "offline refresh resumes after first QR load",
+      "pass": true
+    },
+    {
+      "name": "no JS errors",
+      "pass": true,
+      "data": []
+    },
+    {
+      "name": "no bad site responses",
+      "pass": true,
+      "data": []
+    }
+  ],
+  "errors": [],
+  "bad": [],
+  "slowNetworkMs": 6000,
+  "result": "PASS"
+}

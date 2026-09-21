@@ -14,6 +14,6 @@ Decode gate: PASS at native size, 300 px, 240 px, 180 px, 240 px + 12° rotation
 
 Print rule: use black QR on white, preserve the built-in quiet zone, and keep the printed QR at least 30 mm wide. Do not place a logo over the modules or invert the colors.
 
-Mobile/browser gate: see `MOBILE_QR_GATE.json`. Full regression after safe-area finishing: see `ACCEPTANCE_MOBILE_20260921.json`.
+Local mobile/browser gate: `MOBILE_QR_GATE.json`. Public Pages mobile/browser gate: `MOBILE_QR_GATE_LIVE.json` (PASS; throttled 250 kbps / 400 ms direct QR reached Q1 in 6.0 s). Full local regression: `ACCEPTANCE_MOBILE_20260921.json`. Full public regression: `LIVE_ACCEPTANCE_20260921.json`.
 
 `event-qr-20261003.html` is a noindex print/display sheet. The QR uses the stable `scan01.html` alias so future visual releases can replace the underlying implementation without reprinting the code.
