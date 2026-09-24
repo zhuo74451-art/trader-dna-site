@@ -185,6 +185,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 .highlightControls button:hover{background:#3a3a3a}
 .highlightControls button:active{transform:scale(.96)}
+.highlightControls button:disabled{
+  opacity:.32;
+  cursor:default;
+  transform:none;
+}
 .highlightControls button:focus-visible{
   outline:2px solid #fff;
   outline-offset:3px;
@@ -289,6 +294,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   color:#111;
 }
 .chapterHead{
+  width:min(100%,1480px);
+  margin-inline:auto;
   display:grid;
   grid-template-columns:1fr;
   justify-items:center;
@@ -310,7 +317,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 .productObject{
   position:relative;
-  width:100%;
+  width:min(100%,1480px);
+  margin-inline:auto;
   min-height:680px;
   overflow:hidden;
   border:1px solid rgba(0,0,0,.08);
@@ -453,6 +461,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   font-weight:760;
 }
 .dnaButton span{font-size:16px;font-weight:500}
+.dnaButton:hover{background:#fff;border-color:#fff}
+.dnaButton:focus-visible{
+  outline:2px solid #fff;
+  outline-offset:4px;
+}
 .dnaMeta{
   margin-top:30px;
   display:flex;
@@ -780,7 +793,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
       <h2>行情分析、公開課程、學員交流。</h2>
     </div>
     <div class="highlightControls" aria-label="Highlights controls">
-      <button type="button" data-highlight-dir="-1" aria-label="上一個 highlight">←</button>
+      <button type="button" data-highlight-dir="-1" aria-label="上一個 highlight" disabled>←</button>
       <button type="button" data-highlight-dir="1" aria-label="下一個 highlight">→</button>
     </div>
   </div>
@@ -837,7 +850,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
           <div class="dnaKicker">82TRADE / TRADER DNA / SCAN 01</div>
           <h3>市場會暴露<br><em>你的另一面</em></h3>
           <p class="dnaHeroCopy">18 個選擇，辨認你在判斷、出手與改變主意時，反覆出現的決策輪廓。</p>
-          <div class="dnaButton">開始 SCAN 01 <span>→</span></div>
+          <a class="dnaButton" href="https://zhuo74451-art.github.io/trader-dna-site/editorial-preview.html">開始 SCAN 01 <span>→</span></a>
           <div class="dnaMeta"><span>18 QUESTIONS</span><span>≈ 3 MIN</span><span>NO RIGHT ANSWER</span></div>
         </div>
         <div class="dnaHeroObject" aria-hidden="true">
@@ -902,25 +915,51 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
   return()=>tl.kill();
 });
 
-document.querySelectorAll("[data-highlight-dir]").forEach((button)=>{
-  button.addEventListener("click",()=>{
-    const track=document.querySelector(".highlightsTrack");
-    if(!track)return;
-    const cards=Array.from(track.children).filter((node)=>node instanceof HTMLElement);
-    if(!cards.length)return;
-    const scrollPadding=parseFloat(getComputedStyle(track).scrollPaddingInlineStart)||0;
-    const snapPosition=(card)=>Math.max(0,card.offsetLeft-scrollPadding);
-    const current=cards.reduce((nearest,card,index)=>{
-      const nearestDistance=Math.abs(snapPosition(cards[nearest])-track.scrollLeft);
-      const cardDistance=Math.abs(snapPosition(card)-track.scrollLeft);
-      return cardDistance<nearestDistance?index:nearest;
-    },0);
+const highlightTrack=document.querySelector(".highlightsTrack");
+const highlightButtons=Array.from(document.querySelectorAll("[data-highlight-dir]"));
+const getHighlightCards=()=>highlightTrack
+  ? Array.from(highlightTrack.children).filter((node)=>node instanceof HTMLElement)
+  : [];
+const getHighlightSnapPosition=(card)=>{
+  if(!highlightTrack)return 0;
+  const padding=parseFloat(getComputedStyle(highlightTrack).scrollPaddingInlineStart)||0;
+  return Math.max(0,card.offsetLeft-padding);
+};
+const getHighlightIndex=()=>{
+  const cards=getHighlightCards();
+  if(!highlightTrack||!cards.length)return 0;
+  return cards.reduce((nearest,card,index)=>{
+    const nearestDistance=Math.abs(getHighlightSnapPosition(cards[nearest])-highlightTrack.scrollLeft);
+    const cardDistance=Math.abs(getHighlightSnapPosition(card)-highlightTrack.scrollLeft);
+    return cardDistance<nearestDistance?index:nearest;
+  },0);
+};
+const syncHighlightButtons=()=>{
+  const cards=getHighlightCards();
+  if(!cards.length)return;
+  const index=getHighlightIndex();
+  highlightButtons.forEach((button)=>{
     const dir=Number(button.getAttribute("data-highlight-dir"))||1;
-    const target=Math.max(0,Math.min(cards.length-1,current+dir));
+    button.disabled=dir<0?index===0:index===cards.length-1;
+  });
+};
+highlightButtons.forEach((button)=>{
+  button.addEventListener("click",()=>{
+    const cards=getHighlightCards();
+    if(!highlightTrack||!cards.length)return;
+    const dir=Number(button.getAttribute("data-highlight-dir"))||1;
+    const target=Math.max(0,Math.min(cards.length-1,getHighlightIndex()+dir));
     const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    track.scrollTo({left:snapPosition(cards[target]),behavior:reduced?"auto":"smooth"});
+    highlightTrack.scrollTo({
+      left:getHighlightSnapPosition(cards[target]),
+      behavior:reduced?"auto":"smooth"
+    });
   });
 });
+if(highlightTrack){
+  highlightTrack.addEventListener("scroll",syncHighlightButtons,{passive:true});
+  syncHighlightButtons();
+}
 
 
 const marketVideo=document.getElementById("market-highlight-video");
