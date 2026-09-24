@@ -1,0 +1,78 @@
+name: Visual QA Snapshots
+
+on:
+  push:
+    paths:
+      - "82trade-brand-master/**"
+      - ".github/workflows/visual-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  snapshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start local preview
+        run: |
+          python3 -m http.server 4173 > /tmp/82trade-http.log 2>&1 &
+          echo $! > /tmp/82trade-http.pid
+          sleep 2
+          curl -f http://127.0.0.1:4173/82trade-brand-master/ > /dev/null
+
+      - name: Locate browser
+        id: browser
+        shell: bash
+        run: |
+          BROWSER="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -z "$BROWSER" ]; then
+            echo "No Chromium browser found on runner"
+            exit 1
+          fi
+          echo "path=$BROWSER" >> "$GITHUB_OUTPUT"
+          "$BROWSER" --version
+
+      - name: Capture desktop and mobile scene states
+        shell: bash
+        env:
+          BROWSER: ${{ steps.browser.outputs.path }}
+        run: |
+          set -euo pipefail
+          mkdir -p qa-snapshots
+          BASE="http://127.0.0.1:4173/82trade-brand-master/"
+          capture () {
+            local name="$1"
+            local url="$2"
+            local size="$3"
+            "$BROWSER"               --headless=new               --no-sandbox               --disable-gpu               --hide-scrollbars               --run-all-compositor-stages-before-draw               --virtual-time-budget=2200               --window-size="$size"               --screenshot="qa-snapshots/$name.png"               "$url"
+          }
+
+          capture hero-desktop "$BASE#master-top" "1440,900"
+          capture real-world-desktop "$BASE#real-world" "1440,900"
+          capture worldview-desktop "$BASE#worldview" "1440,900"
+          capture highlights-desktop "$BASE#highlights" "1440,900"
+          capture academy-desktop "$BASE#academy" "1440,900"
+          capture trader-dna-desktop "$BASE#trader-dna" "1440,900"
+          capture enter-desktop "$BASE#enter" "1440,900"
+
+          capture hero-mobile "$BASE#master-top" "390,844"
+          capture worldview-mobile "$BASE#worldview" "390,844"
+          capture highlights-mobile "$BASE#highlights" "390,844"
+          capture academy-mobile "$BASE#academy" "390,844"
+          capture trader-dna-mobile "$BASE#trader-dna" "390,844"
+
+          "$BROWSER"             --headless=new             --no-sandbox             --disable-gpu             --hide-scrollbars             --force-prefers-reduced-motion=reduce             --run-all-compositor-stages-before-draw             --virtual-time-budget=1200             --window-size="1440,900"             --screenshot="qa-snapshots/hero-reduced-motion.png"             "$BASE#master-top"
+
+          file qa-snapshots/*.png
+          ls -lh qa-snapshots
+
+      - name: Upload QA snapshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: 82trade-visual-qa
+          path: qa-snapshots/*.png
+          if-no-files-found: error
+          retention-days: 7
