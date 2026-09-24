@@ -163,6 +163,71 @@ diagnostics.mobile = await mobile.evaluate(() => ({
 }));
 await mobile.close();
 
+const narrow = await openPage({ width: 360, height: 800, deviceScaleFactor: 1 }, true);
+for (const [name, selector] of [
+  ["hero-narrow-360", "#master-top"],
+  ["highlights-narrow-360", "#highlights"],
+  ["academy-narrow-360", "#academy"],
+  ["trader-dna-narrow-360", "#trader-dna"],
+  ["enter-narrow-360", "#enter"],
+]) {
+  await sceneShot(narrow, name, selector);
+}
+diagnostics.narrow360 = await narrow.evaluate(() => ({
+  clientWidth: document.documentElement.clientWidth,
+  scrollWidth: document.documentElement.scrollWidth,
+  scrollHeight: document.documentElement.scrollHeight,
+}));
+await narrow.close();
+
+const wide = await openPage({ width: 1728, height: 1117, deviceScaleFactor: 1 }, true);
+for (const [name, selector] of [
+  ["hero-wide-1728", "#master-top"],
+  ["highlights-wide-1728", "#highlights"],
+  ["academy-wide-1728", "#academy"],
+  ["trader-dna-wide-1728", "#trader-dna"],
+  ["enter-wide-1728", "#enter"],
+]) {
+  await sceneShot(wide, name, selector);
+}
+diagnostics.wide1728 = await wide.evaluate(() => ({
+  clientWidth: document.documentElement.clientWidth,
+  scrollWidth: document.documentElement.scrollWidth,
+  scrollHeight: document.documentElement.scrollHeight,
+}));
+await wide.close();
+
+const keyboard = await openPage({ width: 390, height: 844, deviceScaleFactor: 1 }, true);
+const focusSequence = [];
+for (let i = 0; i < 8; i += 1) {
+  await keyboard.keyboard.press("Tab");
+  focusSequence.push(
+    await keyboard.evaluate(() => {
+      const el = document.activeElement;
+      if (!(el instanceof HTMLElement)) return null;
+      return {
+        tag: el.tagName,
+        text: (el.innerText || el.textContent || "").trim().slice(0, 80),
+        aria: el.getAttribute("aria-label"),
+        href: el instanceof HTMLAnchorElement ? el.href : null,
+      };
+    }),
+  );
+}
+const menuSummaryFocused = await keyboard.evaluate(() =>
+  document.activeElement?.matches("summary") ?? false,
+);
+if (menuSummaryFocused) {
+  await keyboard.keyboard.press("Enter");
+}
+diagnostics.keyboard = {
+  focusSequence,
+  mobileMenuOpen: await keyboard.evaluate(
+    () => document.querySelector("details.mobileMenu")?.hasAttribute("open") ?? false,
+  ),
+};
+await keyboard.close();
+
 const motion = await openPage({ width: 1440, height: 900, deviceScaleFactor: 1 }, false);
 await motion.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
 await new Promise((r) => setTimeout(r, 1300));
