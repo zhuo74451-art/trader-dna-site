@@ -83,6 +83,14 @@ for (const [name, selector] of [
 }
 
 await desktop.evaluate(() => {
+  const section = document.querySelector("#highlights");
+  if (section) {
+    const y = window.scrollY + section.getBoundingClientRect().top;
+    window.scrollTo({ top: y, behavior: "instant" });
+  }
+});
+await new Promise((r) => setTimeout(r, 200));
+await desktop.evaluate(() => {
   document.querySelector('[data-highlight-page="2"]')?.click();
 });
 await new Promise((r) => setTimeout(r, 650));
@@ -149,9 +157,87 @@ await motion.screenshot({
 });
 await motion.close();
 
+const referenceErrors = [];
+
+async function captureReference(url, prefix, targets = []) {
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
+  await page.emulateMediaFeatures([
+    { name: "prefers-reduced-motion", value: "reduce" },
+  ]);
+
+  try {
+    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });
+    await new Promise((r) => setTimeout(r, 5000));
+
+    for (const label of ["Accept All Cookies", "Accept Cookies", "Allow all"]) {
+      const clicked = await page.evaluate((text) => {
+        const buttons = Array.from(document.querySelectorAll("button"));
+        const button = buttons.find((el) => el.textContent?.trim() === text);
+        if (!button) return false;
+        button.click();
+        return true;
+      }, label).catch(() => false);
+      if (clicked) {
+        await new Promise((r) => setTimeout(r, 500));
+        break;
+      }
+    }
+
+    await page.screenshot({
+      path: path.join(outDir, `${prefix}-top.png`),
+      fullPage: false,
+    });
+
+    for (const [name, text] of targets) {
+      const found = await page.evaluate((needle) => {
+        const candidates = Array.from(
+          document.querySelectorAll("h1,h2,h3,h4,p,section,div"),
+        ).filter((el) => (el.textContent || "").includes(needle));
+        const target = candidates.sort(
+          (a, b) => (a.textContent?.length || 0) - (b.textContent?.length || 0),
+        )[0];
+        if (!target) return false;
+        const y = window.scrollY + target.getBoundingClientRect().top - 120;
+        window.scrollTo({ top: Math.max(0, y), behavior: "instant" });
+        return true;
+      }, text);
+
+      if (!found) {
+        referenceErrors.push({ url, target: text, error: "text_not_found" });
+        continue;
+      }
+
+      await new Promise((r) => setTimeout(r, 900));
+      await page.screenshot({
+        path: path.join(outDir, `${prefix}-${name}.png`),
+        fullPage: false,
+      });
+    }
+  } catch (error) {
+    referenceErrors.push({
+      url,
+      error: error instanceof Error ? error.message : String(error),
+    });
+  } finally {
+    await page.close();
+  }
+}
+
+await captureReference("https://www.coinbase.com/onchain", "ref-coinbase", [
+  ["imagine", "Let’s imagine a new internet"],
+  ["vision", "Introducing Onchain Vision"],
+  ["explore", "Explore onchain"],
+]);
+
+await captureReference("https://www.apple.com/macbook-pro/", "ref-apple", [
+  ["hero-copy", "Fast runs in the family."],
+  ["performance", "Pick your quick."],
+]);
+
 fs.writeFileSync(
   path.join(outDir, "diagnostics.json"),
-  JSON.stringify({ consoleErrors, imageErrors, diagnostics }, null, 2),
+  JSON.stringify({ consoleErrors, imageErrors, diagnostics, referenceErrors }, null, 2),
 );
 
 await browser.close();
