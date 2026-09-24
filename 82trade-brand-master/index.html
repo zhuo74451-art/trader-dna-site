@@ -4,19 +4,48 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>82TRADE — Apple × Coinbase Donor Master</title>
+<title>82TRADE — Coinbase × Apple Visual Master</title>
 <style>
 html,body{margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Arial,sans-serif}
 .page{
+  --cb-blue:#0052ff;
+  --cb-blue-wash:#f5f8ff;
+  --cb-ink:#0a0b0d;
+  --cb-muted:#5b616e;
+  --cb-line:#eef0f3;
+  --cb-enter-expressive:cubic-bezier(.33,0,0,1);
+  --cb-enter-functional:cubic-bezier(0,0,.15,1);
+  --cb-global:cubic-bezier(.6,0,.15,1);
+  --cb-exit-functional:cubic-bezier(.6,0,1,1);
+  --s1:8px;
+  --s2:16px;
+  --s3:24px;
+  --s4:32px;
+  --s5:40px;
+  --s6:48px;
+  --s8:64px;
+  --s10:80px;
   min-height:100vh;
   overflow-x:clip;
-  background:#f5f5f7;
-  color:#090909;
+  background:#fff;
+  color:var(--cb-ink);
   font-family:Geist,'Noto Sans TC',sans-serif;
 }
 .page *{box-sizing:border-box}
 .page a{color:inherit;text-decoration:none}
+.page [data-reveal]{
+  opacity:0;
+  transform:translate3d(0,40px,0) scale(.98);
+  transition:
+    opacity 500ms var(--cb-enter-functional),
+    transform 500ms var(--cb-enter-expressive);
+}
+.page [data-reveal][data-visible="true"]{
+  opacity:1;
+  transform:translate3d(0,0,0) scale(1);
+}
+
 .header{
   position:fixed;
   inset:0 0 auto;
@@ -25,271 +54,449 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 4.5vw;
-  border-bottom:1px solid rgba(255,255,255,.08);
-  background:rgba(5,5,5,.78);
-  color:#f0eee7;
-  backdrop-filter:blur(14px);
+  padding:0 4vw;
+  border-bottom:1px solid rgba(10,11,13,.08);
+  background:rgba(255,255,255,.86);
+  color:var(--cb-ink);
+  backdrop-filter:blur(18px) saturate(1.15);
 }
 .brand{
   font-size:15px;
-  font-weight:850;
-  letter-spacing:-.055em;
+  font-weight:800;
+  letter-spacing:-.04em;
 }
 .nav{
   display:flex;
-  gap:28px;
-  font-size:12px;
-  color:rgba(240,238,231,.68);
+  gap:32px;
+  font-size:14px;
+  font-weight:500;
+  color:rgba(10,11,13,.62);
+}
+.nav a,
+.brand,
+.mobileMenu summary{
+  transition:opacity 200ms var(--cb-global);
 }
 .nav a:hover,
-.nav a:focus-visible{color:#fff}
+.nav a:focus-visible{color:var(--cb-ink)}
 .brand:focus-visible,
 .nav a:focus-visible{
-  outline:2px solid currentColor;
+  outline:2px solid var(--cb-blue);
   outline-offset:4px;
 }
-.mobileMenu{
-  display:none;
-  position:relative;
-}
+.mobileMenu{display:none;position:relative}
 .mobileMenu summary{
   list-style:none;
   cursor:pointer;
-  font-size:11px;
-  color:rgba(240,238,231,.82);
+  font-size:13px;
 }
 .mobileMenu summary::-webkit-details-marker{display:none}
 .mobileMenu summary:focus-visible{
-  outline:2px solid #fff;
+  outline:2px solid var(--cb-blue);
   outline-offset:4px;
 }
 .mobileMenu nav{
   position:absolute;
   top:calc(100% + 18px);
   right:0;
-  width:min(76vw,280px);
-  padding:10px 18px 16px;
+  width:min(78vw,300px);
+  padding:12px 20px 18px;
   display:grid;
-  color:#111;
-  background:rgba(245,245,247,.97);
-  border:1px solid rgba(0,0,0,.08);
-  box-shadow:0 18px 54px rgba(0,0,0,.14);
-  backdrop-filter:blur(16px);
+  background:rgba(255,255,255,.98);
+  border:1px solid rgba(10,11,13,.08);
+  border-radius:16px;
+  box-shadow:0 18px 54px rgba(10,11,13,.12);
 }
 .mobileMenu nav a{
   padding:14px 0;
-  border-bottom:1px solid rgba(0,0,0,.09);
-  font-size:14px;
+  border-bottom:1px solid rgba(10,11,13,.08);
+  font-size:15px;
 }
 .mobileMenu nav a:last-child{border-bottom:0}
+
 .kicker{
-  margin:0 0 18px;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:10px;
-  font-weight:700;
-  letter-spacing:.18em;
+  margin:0 0 20px;
+  color:var(--cb-muted);
+  font-size:12px;
+  line-height:1.35;
+  font-weight:650;
+  letter-spacing:.08em;
+  text-transform:uppercase;
 }
+
 .hero{
   position:relative;
   min-height:100svh;
   overflow:hidden;
-  background:#020202;
-  color:#fff;
+  padding:72px 4vw 0;
+  background:#fff;
+  color:var(--cb-ink);
 }
-.heroBg{
+.heroAccent{
   position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center;
-  transform-origin:center;
+  inset:72px 0 0 auto;
+  width:37vw;
+  background:var(--cb-blue);
+  transform-origin:right center;
 }
-.heroShade{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.34);
+.heroGrid{
+  position:relative;
+  z-index:1;
+  min-height:calc(100svh - 72px);
+  display:grid;
+  grid-template-columns:minmax(0,1.45fr) minmax(320px,.55fr);
+  grid-template-rows:auto 1fr auto;
+  gap:36px 5vw;
+  align-items:end;
+  padding:48px 0 38px;
 }
 .heroMeta{
-  position:absolute;
-  top:116px;
-  left:4.5vw;
-  right:4.5vw;
+  grid-column:1/-1;
+  align-self:start;
   display:flex;
   justify-content:space-between;
   gap:24px;
-  color:rgba(255,255,255,.65);
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:10px;
-  letter-spacing:.16em;
+  padding-right:calc(37vw + 3vw);
+  color:#6b7280;
+  font-size:12px;
+  line-height:1.4;
+  font-weight:600;
+  letter-spacing:.08em;
 }
 .heroTitleMask{
-  position:absolute;
-  left:4.5vw;
-  right:4.5vw;
-  bottom:15vh;
+  grid-column:1;
+  grid-row:2;
+  align-self:center;
   overflow:hidden;
+  padding:4vh 0;
 }
 .heroTitle{
   margin:0;
-  font-size:clamp(74px,14vw,260px);
-  line-height:.78;
-  letter-spacing:-.085em;
-  font-weight:900;
+  font-size:clamp(82px,12.2vw,220px);
+  line-height:.79;
+  letter-spacing:-.078em;
+  font-weight:650;
 }
-.heroTitle span{
-  display:block;
-  width:max-content;
-  max-width:100%;
-}
-.heroTitle span:last-child{
-  margin-left:auto;
+.heroTitle span{display:block;width:max-content;max-width:100%}
+.heroTitle span:last-child{color:var(--cb-blue)}
+.heroAside{
+  grid-column:2;
+  grid-row:2;
+  align-self:center;
+  position:relative;
+  z-index:2;
+  padding:44px 3vw 44px 4vw;
+  color:#fff;
 }
 .heroLine{
-  position:absolute;
-  left:4.5vw;
-  bottom:6.5vh;
   margin:0;
-  max-width:540px;
-  font-size:clamp(15px,1.25vw,20px);
-  line-height:1.5;
-  color:rgba(255,255,255,.76);
+  max-width:420px;
+  font-size:clamp(22px,2vw,34px);
+  line-height:1.23;
+  letter-spacing:-.03em;
+  font-weight:500;
+}
+.heroActions{
+  margin-top:36px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.heroPrimary,
+.heroSecondary{
+  min-height:54px;
+  padding:0 24px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  font-size:15px;
+  font-weight:650;
+  transition:
+    transform 100ms var(--cb-global),
+    background-color 200ms var(--cb-global),
+    color 200ms var(--cb-global);
+}
+.heroPrimary{
+  background:#fff;
+  color:var(--cb-ink);
+}
+.heroSecondary{
+  border:1px solid rgba(255,255,255,.42);
+  color:#fff;
+}
+.heroPrimary:hover{background:#eef2ff}
+.heroSecondary:hover{background:rgba(255,255,255,.12)}
+.heroPrimary:active,
+.heroSecondary:active{transform:scale(.98)}
+.heroPrimary:focus-visible,
+.heroSecondary:focus-visible{
+  outline:2px solid #fff;
+  outline-offset:4px;
 }
 .scrollCue{
-  position:absolute;
-  right:4.5vw;
-  bottom:6vh;
+  grid-column:1/-1;
+  grid-row:3;
   display:flex;
   align-items:center;
-  gap:13px;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:9px;
-  letter-spacing:.22em;
-  color:rgba(255,255,255,.55);
+  justify-content:flex-start;
+  gap:16px;
+  color:#777d89;
+  font-size:11px;
+  font-weight:650;
+  letter-spacing:.1em;
 }
 .scrollCue i{
   display:block;
-  width:54px;
+  width:72px;
   height:1px;
-  background:rgba(255,255,255,.38);
+  background:#b7bcc6;
 }
+
 .takeover{
   position:relative;
   z-index:0;
-  min-height:100svh;
+  min-height:112svh;
   display:grid;
   place-items:center;
   overflow:hidden;
-  background:#f5f5f7;
+  background:var(--cb-blue);
+  color:#fff;
+}
+.takeoverLabel{
+  position:absolute;
+  z-index:2;
+  top:40px;
+  left:4vw;
+  right:4vw;
+  display:flex;
+  justify-content:space-between;
+  gap:24px;
+  color:rgba(255,255,255,.7);
+  font-size:11px;
+  font-weight:650;
+  letter-spacing:.1em;
 }
 .takeoverFrame{
   position:relative;
-  width:min(66vw,1120px);
-  height:min(64vh,720px);
+  width:min(68vw,1160px);
+  height:min(66vh,760px);
   overflow:hidden;
-  border-radius:22px;
-  background:#111;
+  border-radius:32px;
+  background:#0a0a0a;
+  box-shadow:0 30px 90px rgba(0,0,0,.26);
+}
+.takeoverFrame:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.58),rgba(0,0,0,0) 42%);
+  pointer-events:none;
 }
 .takeoverFrame img{
+  display:block;
   width:100%;
   height:100%;
   object-fit:cover;
+  transform-origin:center;
 }
+.takeoverCaption{
+  position:absolute;
+  z-index:2;
+  left:36px;
+  right:36px;
+  bottom:32px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:24px;
+  color:#fff;
+}
+.takeoverCaption span{
+  font-size:12px;
+  font-weight:650;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.takeoverCaption strong{
+  max-width:520px;
+  text-align:right;
+  font-size:clamp(22px,2.6vw,40px);
+  line-height:1.04;
+  letter-spacing:-.045em;
+  font-weight:560;
+}
+
 .worldview{
-  min-height:92svh;
-  padding:12vh clamp(20px,5vw,72px);
+  min-height:110svh;
+  padding:14vh 4vw;
   display:grid;
-  grid-template-columns:.65fr 1.35fr;
-  align-content:center;
-  gap:28px 6vw;
-  background:#090909;
-  color:#f5f2e9;
+  grid-template-columns:minmax(0,1fr) minmax(360px,.72fr);
+  gap:8vw;
+  align-items:center;
+  background:#fff;
+  color:var(--cb-ink);
 }
-.worldview .kicker{align-self:start}
+.worldviewCopy{max-width:980px}
 .worldview h2{
   margin:0;
-  font-size:clamp(68px,10vw,170px);
+  font-size:clamp(76px,9.6vw,168px);
   line-height:.84;
-  letter-spacing:-.075em;
-  font-weight:840;
+  letter-spacing:-.073em;
+  font-weight:560;
 }
+.worldviewBody{
+  margin:42px 0 0;
+  max-width:620px;
+  color:#4d5563;
+  font-size:clamp(18px,1.55vw,26px);
+  line-height:1.5;
+  letter-spacing:-.018em;
+}
+.worldviewMedia{
+  position:relative;
+  margin:0;
+  aspect-ratio:1/1;
+  min-width:0;
+}
+.worldviewBlue{
+  position:absolute;
+  inset:8% -8% -8% 8%;
+  background:var(--cb-blue);
+  border-radius:32px;
+  transform:translate3d(22px,22px,0);
+  transition:transform 500ms var(--cb-enter-expressive);
+}
+.worldviewMedia[data-visible="true"] .worldviewBlue{
+  transform:translate3d(0,0,0);
+}
+.worldviewMedia img{
+  position:relative;
+  z-index:1;
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:32px;
+  box-shadow:0 24px 80px rgba(10,11,13,.14);
+  transition:transform 500ms var(--cb-enter-expressive);
+}
+.worldviewMedia:hover img{transform:translate3d(-6px,-6px,0)}
+.worldviewMedia figcaption{
+  position:absolute;
+  z-index:2;
+  inset:auto 22px 20px 22px;
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  color:#fff;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-shadow:0 1px 16px rgba(0,0,0,.45);
+}
+
 .highlights{
-  padding:12vh 0 14vh;
+  padding:13vh 0 14vh;
   overflow:hidden;
-  background:#090909;
-  color:#f5f2e9;
-  border-top:1px solid rgba(255,255,255,.08);
+  background:#0a0b0d;
+  color:#fff;
 }
+.highlights .kicker{color:#8e96a3}
 .highlightsHead{
-  padding:0 clamp(20px,5vw,72px) 54px;
+  padding:0 4vw 56px;
   display:grid;
   grid-template-columns:minmax(0,1fr) auto;
   gap:40px;
   align-items:end;
 }
 .highlightsHead h2{
-  max-width:1120px;
+  max-width:1180px;
   margin:0;
   font-size:clamp(54px,7.4vw,118px);
   line-height:.9;
   letter-spacing:-.065em;
-  font-weight:820;
+  font-weight:560;
 }
 .highlightControls{
   display:flex;
   gap:10px;
-  padding-bottom:4px;
+  padding-bottom:6px;
 }
-.highlightControls button{
-  width:48px;
-  height:48px;
+.highlightControls button,
+.videoControl{
   display:grid;
   place-items:center;
   border:0;
   border-radius:999px;
-  background:#2b2b2b;
+  cursor:pointer;
+  transition:
+    transform 100ms var(--cb-global),
+    background-color 200ms var(--cb-global),
+    opacity 200ms var(--cb-global);
+}
+.highlightControls button{
+  width:52px;
+  height:52px;
+  background:#24272d;
   color:#fff;
   font:600 18px/1 system-ui,sans-serif;
-  cursor:pointer;
-  transition:background-color .18s ease,transform .18s ease;
 }
-.highlightControls button:hover{background:#3a3a3a}
-.highlightControls button:active{transform:scale(.96)}
+.highlightControls button:hover{background:#343840}
+.highlightControls button:active,
+.videoControl:active{transform:scale(.98)}
 .highlightControls button:disabled{
-  opacity:.32;
+  opacity:.28;
   cursor:default;
   transform:none;
 }
-.highlightControls button:focus-visible{
+.highlightControls button:focus-visible,
+.videoControl:focus-visible{
   outline:2px solid #fff;
   outline-offset:3px;
 }
 .highlightsTrack{
   display:grid;
   grid-auto-flow:column;
-  grid-auto-columns:min(78vw,1120px);
-  gap:18px;
+  grid-auto-columns:min(74vw,1080px);
+  gap:24px;
   overflow-x:auto;
   overscroll-behavior-inline:contain;
   scroll-snap-type:inline mandatory;
-  scroll-padding-inline:clamp(20px,5vw,72px);
-  padding:0 clamp(20px,5vw,72px) 18px;
+  scroll-padding-inline:4vw;
+  padding:0 4vw 18px;
   scrollbar-width:none;
   -webkit-overflow-scrolling:touch;
 }
 .highlightsTrack::-webkit-scrollbar{display:none}
 .highlightCard{
+  position:relative;
   scroll-snap-align:start;
   scroll-snap-stop:always;
   min-width:0;
+  opacity:.62;
+  transform:scale(.985);
+  transition:
+    opacity 300ms var(--cb-global),
+    transform 300ms var(--cb-enter-expressive);
+}
+.highlightCard[data-active="true"]{
+  opacity:1;
+  transform:scale(1);
 }
 .highlightMedia{
   position:relative;
   aspect-ratio:16/9;
   overflow:hidden;
-  border-radius:28px;
+  border-radius:32px;
   background:#111;
+}
+.highlightMedia:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(to bottom,rgba(0,0,0,.08),rgba(0,0,0,0) 45%,rgba(0,0,0,.42));
 }
 .highlightMedia img,
 .highlightMedia video{
@@ -297,100 +504,106 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   width:100%;
   height:100%;
   object-fit:cover;
+  transition:transform 500ms var(--cb-enter-expressive);
 }
-.highlightMedia video{
-  background:#050505;
-}
+.highlightCard:hover .highlightMedia img,
+.highlightCard:hover .highlightMedia video{transform:scale(1.018)}
+.highlightMedia video{background:#050505}
 .videoControl{
   position:absolute;
+  z-index:3;
   right:18px;
   bottom:18px;
-  width:48px;
-  height:48px;
-  display:grid;
-  place-items:center;
-  border:0;
-  border-radius:999px;
-  background:rgba(245,245,247,.9);
+  width:50px;
+  height:50px;
+  background:rgba(255,255,255,.92);
   color:#111;
   font:700 15px/1 system-ui,sans-serif;
-  cursor:pointer;
-  backdrop-filter:blur(14px);
+  backdrop-filter:blur(12px);
   box-shadow:0 8px 28px rgba(0,0,0,.18);
-  transition:transform .18s ease,background-color .18s ease;
 }
 .videoControl:hover{background:#fff}
-.videoControl:active{transform:scale(.96)}
-.videoControl:focus-visible{
-  outline:2px solid #fff;
-  outline-offset:3px;
-}
 .highlightMeta{
+  position:absolute;
+  z-index:2;
+  left:26px;
+  right:88px;
+  bottom:24px;
   display:flex;
-  align-items:baseline;
+  align-items:flex-end;
   justify-content:space-between;
   gap:24px;
-  padding:18px 2px 0;
-  border-top:1px solid rgba(255,255,255,.12);
-  margin-top:16px;
+  color:#fff;
+  pointer-events:none;
+  text-shadow:0 2px 16px rgba(0,0,0,.5);
 }
 .highlightMeta span{
-  color:rgba(245,242,233,.42);
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:9px;
-  letter-spacing:.16em;
+  max-width:140px;
+  font-size:10px;
+  line-height:1.35;
+  font-weight:700;
+  letter-spacing:.08em;
 }
 .highlightMeta h3{
   margin:0;
-  font-size:clamp(24px,2.8vw,42px);
-  line-height:1;
-  letter-spacing:-.045em;
-  font-weight:650;
+  text-align:right;
+  font-size:clamp(28px,3.5vw,56px);
+  line-height:.95;
+  letter-spacing:-.05em;
+  font-weight:560;
 }
 
 .productChapter{
-  min-height:110svh;
-  padding:13vh clamp(20px,5vw,72px);
+  min-height:112svh;
+  padding:14vh 4vw;
   display:flex;
   flex-direction:column;
   justify-content:center;
-  gap:42px;
+  gap:48px;
 }
 .academyChapter{
-  background:#f5f5f7;
-  color:#111;
+  background:var(--cb-blue-wash);
+  color:var(--cb-ink);
 }
 .dnaChapter{
   background:#fff;
-  color:#111;
+  color:var(--cb-ink);
 }
 .chapterHead{
   width:min(100%,1480px);
   margin-inline:auto;
-  display:grid;
-  grid-template-columns:1fr;
-  justify-items:center;
-  text-align:center;
-  gap:22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:48px;
 }
 .chapterHead h2{
   margin:0;
-  font-size:clamp(72px,11vw,168px);
+  font-size:clamp(78px,10.4vw,166px);
   line-height:.82;
-  letter-spacing:-.08em;
-  font-weight:850;
+  letter-spacing:-.075em;
+  font-weight:560;
 }
 .chapterAction{
-  justify-self:center;
+  flex:0 0 auto;
+  min-height:52px;
+  padding:0 22px;
   display:inline-flex;
   align-items:center;
-  min-height:28px;
-  color:rgba(17,17,17,.62);
-  font-size:13px;
+  justify-content:center;
+  border-radius:999px;
+  background:var(--cb-blue);
+  color:#fff;
+  font-size:14px;
+  font-weight:650;
+  transition:
+    transform 100ms var(--cb-global),
+    background-color 200ms var(--cb-global);
 }
-.chapterAction:hover{color:#111}
+.chapterAction:hover{background:#0046da}
+.chapterAction:active{transform:scale(.98)}
 .chapterAction:focus-visible{
-  outline:2px solid #111;
+  outline:2px solid var(--cb-blue);
   outline-offset:4px;
 }
 .productObject{
@@ -399,12 +612,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   margin-inline:auto;
   min-height:680px;
   overflow:hidden;
-  border:1px solid rgba(0,0,0,.08);
-  border-radius:44px;
-  box-shadow:0 40px 120px rgba(0,0,0,.12);
+  border-radius:48px;
+  box-shadow:0 42px 120px rgba(10,11,13,.12);
 }
 .academyObject{
-  height:min(64vw,760px);
+  height:min(64vw,780px);
   background:#090909;
 }
 .academySurface{
@@ -420,9 +632,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   gap:24px;
   border-bottom:1px solid rgba(255,255,255,.12);
   color:rgba(245,242,233,.64);
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:9px;
-  letter-spacing:.14em;
+  font-size:10px;
+  font-weight:650;
+  letter-spacing:.08em;
 }
 .academyWordmark{
   display:block;
@@ -448,10 +660,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   height:100%;
   object-fit:cover;
   filter:saturate(.55) contrast(1.06);
+  transition:transform 500ms var(--cb-enter-expressive),filter 300ms var(--cb-global);
 }
-.academyCourseLead{
-  min-height:0;
+.academyCourseGrid figure:hover img{
+  transform:scale(1.018);
+  filter:saturate(.72) contrast(1.06);
 }
+.academyCourseLead{min-height:0}
 .academyCourseSide{
   min-width:0;
   display:flex;
@@ -459,9 +674,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   justify-content:center;
   gap:12px;
 }
-.academyCourseSide figure{
-  aspect-ratio:16/9;
-}
+.academyCourseSide figure{aspect-ratio:16/9}
+
 .dnaObject{
   background:#0a0a0a;
   color:#f0eee8;
@@ -470,7 +684,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   min-height:680px;
   width:100%;
   padding:0 42px 54px;
-  background:#0a0a0a;
+  background:
+    radial-gradient(circle at 78% 44%,rgba(0,82,255,.13),transparent 34%),
+    #0a0a0a;
   color:#f0eee8;
 }
 .dnaTopbar{
@@ -483,19 +699,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 .dnaBrand{
   font-size:12px;
-  font-weight:850;
-  letter-spacing:.18em;
+  font-weight:800;
+  letter-spacing:.14em;
   white-space:nowrap;
 }
-.dnaBrand span{
-  color:#77736b;
-  font-weight:520;
-}
+.dnaBrand span{color:#77736b;font-weight:520}
 .dnaStatus{
   color:#706d67;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
   font-size:9px;
-  letter-spacing:.18em;
+  font-weight:650;
+  letter-spacing:.16em;
 }
 .dnaHero{
   min-height:608px;
@@ -511,38 +724,42 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   font-size:clamp(58px,7.4vw,112px);
   line-height:.91;
   letter-spacing:-.065em;
-  font-weight:650;
+  font-weight:560;
 }
 .dnaHero h3 em{
-  color:#88847c;
+  color:#8b8a86;
   font-style:normal;
-  font-weight:500;
+  font-weight:430;
 }
 .dnaHeroCopy{
-  max-width:660px;
+  max-width:680px;
   margin:0 0 36px;
   color:#b9b5ad;
   font-size:clamp(17px,1.65vw,24px);
-  line-height:1.65;
+  line-height:1.6;
   letter-spacing:-.015em;
 }
 .dnaButton{
   width:max-content;
   min-width:238px;
-  min-height:52px;
-  padding:0 18px;
+  min-height:54px;
+  padding:0 20px;
   display:inline-flex;
   align-items:center;
   justify-content:space-between;
   gap:34px;
-  background:#e9e4d9;
+  border-radius:999px;
+  background:#fff;
   color:#0a0a0a;
-  border:1px solid #e9e4d9;
-  font-size:12px;
-  font-weight:760;
+  font-size:13px;
+  font-weight:700;
+  transition:
+    transform 100ms var(--cb-global),
+    background-color 200ms var(--cb-global);
 }
 .dnaButton span{font-size:16px;font-weight:500}
-.dnaButton:hover{background:#fff;border-color:#fff}
+.dnaButton:hover{background:#e7ecff}
+.dnaButton:active{transform:scale(.98)}
 .dnaButton:focus-visible{
   outline:2px solid #fff;
   outline-offset:4px;
@@ -552,10 +769,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   display:flex;
   flex-wrap:wrap;
   gap:18px 28px;
-  color:#66635d;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  color:#6f6b64;
   font-size:9px;
-  letter-spacing:.14em;
+  font-weight:650;
+  letter-spacing:.12em;
 }
 .dnaHeroObject{
   justify-self:end;
@@ -569,6 +786,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   overflow:hidden;
   border:1px solid #4b4943;
   background:#0d0d0c;
+  box-shadow:0 0 0 1px rgba(0,82,255,.08),0 30px 90px rgba(0,0,0,.35);
+  transition:transform 500ms var(--cb-enter-expressive),border-color 300ms var(--cb-global);
+}
+.dnaHeroObject:hover .registerFrame{
+  transform:translate3d(0,-8px,0);
+  border-color:rgba(87,139,250,.55);
 }
 .registerFrame:before,
 .registerFrame:after{
@@ -583,7 +806,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   left:17px;
   top:16px;
   color:#77736b;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
   font-size:10px;
   letter-spacing:.12em;
 }
@@ -615,45 +837,44 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   font-size:48px;
   line-height:.9;
   letter-spacing:.16em;
-  font-weight:600;
+  font-weight:560;
 }
 .registerCore small{
   display:block;
   margin-top:12px;
   color:#77736b;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
   font-size:8px;
-  letter-spacing:.16em;
+  letter-spacing:.14em;
 }
 .registerCoord{
   position:absolute;
   right:15px;
   bottom:15px;
   color:#5e5b55;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
   font-size:8px;
   letter-spacing:.13em;
 }
 .dnaHeroObject>p{
   margin:14px 0 0;
   color:#5e5b55;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
   font-size:8px;
   line-height:1.7;
   letter-spacing:.12em;
   text-align:right;
 }
+
 .participation{
   min-height:100svh;
-  padding:12vh clamp(20px,5vw,72px) 0;
+  padding:13vh 4vw 0;
   display:grid;
   grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);
   gap:8vw;
   align-content:end;
-  background:#090909;
-  color:#f5f2e9;
+  background:var(--cb-blue);
+  color:#fff;
   overflow:hidden;
 }
+.participation .kicker{color:rgba(255,255,255,.64)}
 .closingLead{
   align-self:start;
   width:min(100%,820px);
@@ -663,7 +884,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   margin:0;
   font-size:clamp(70px,9vw,150px);
   line-height:.88;
-  letter-spacing:-.075em;
+  letter-spacing:-.073em;
+  font-weight:560;
 }
 .closingDestinations{
   align-self:end;
@@ -673,7 +895,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 .primaryDestinations{
   display:grid;
-  border-top:1px solid rgba(255,255,255,.2);
+  border-top:1px solid rgba(255,255,255,.36);
 }
 .primaryDestinations a{
   min-height:112px;
@@ -681,27 +903,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   grid-template-columns:44px minmax(0,1fr) auto;
   align-items:center;
   gap:20px;
-  border-bottom:1px solid rgba(255,255,255,.2);
+  border-bottom:1px solid rgba(255,255,255,.36);
+  transition:opacity 200ms var(--cb-global),transform 100ms var(--cb-global);
 }
 .primaryDestinations span{
-  color:rgba(245,242,233,.42);
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:9px;
-  letter-spacing:.14em;
+  color:rgba(255,255,255,.56);
+  font-size:10px;
+  font-weight:650;
+  letter-spacing:.1em;
 }
 .primaryDestinations strong{
   font-size:clamp(32px,3.6vw,58px);
   line-height:1;
-  letter-spacing:-.055em;
-  font-weight:680;
+  letter-spacing:-.05em;
+  font-weight:560;
 }
-.primaryDestinations b{
-  font-size:24px;
-  font-weight:400;
-}
-.primaryDestinations a:hover strong{
-  opacity:.68;
-}
+.primaryDestinations b{font-size:24px;font-weight:400}
+.primaryDestinations a:hover{opacity:.7}
+.primaryDestinations a:active{transform:scale(.98)}
 .primaryDestinations a:focus-visible,
 .finalLinks a:focus-visible{
   outline:2px solid #fff;
@@ -712,78 +931,165 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:0 28px;
-  border-top:1px solid rgba(255,255,255,.12);
+  border-top:1px solid rgba(255,255,255,.24);
 }
 .finalLinks a{
   padding:16px 0;
-  border-bottom:1px solid rgba(255,255,255,.12);
-  color:rgba(245,242,233,.68);
-  font-size:12px;
+  border-bottom:1px solid rgba(255,255,255,.24);
+  color:rgba(255,255,255,.72);
+  font-size:13px;
+  transition:opacity 200ms var(--cb-global);
 }
+.finalLinks a:hover{opacity:.64}
 .closingWordmark{
   grid-column:1/-1;
   justify-self:center;
   margin:8vh 0 -.11em;
   font-size:clamp(150px,23vw,420px);
   line-height:.68;
-  letter-spacing:-.095em;
-  font-weight:900;
-  color:rgba(245,242,233,.12);
+  letter-spacing:-.09em;
+  font-weight:650;
+  color:rgba(255,255,255,.16);
   white-space:nowrap;
   user-select:none;
 }
+
+@media(max-width:1100px){
+  .heroGrid{grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr)}
+  .heroAccent{width:40vw}
+  .heroMeta{padding-right:42vw}
+  .worldview{grid-template-columns:minmax(0,1fr) minmax(320px,.8fr);gap:5vw}
+}
+
 @media(max-width:900px){
+  .header{height:64px;padding-inline:20px}
   .nav{display:none}
   .mobileMenu{display:block}
-  .heroMeta{top:92px;left:20px;right:20px;font-size:8px}
+
+  .hero{
+    min-height:auto;
+    padding:64px 20px 0;
+  }
+  .heroAccent{
+    inset:auto -20px 0;
+    width:calc(100% + 40px);
+    height:43%;
+  }
+  .heroGrid{
+    min-height:100svh;
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto 1fr auto;
+    gap:26px;
+    padding:28px 0 26px;
+  }
+  .heroMeta{
+    grid-column:1;
+    padding-right:0;
+    font-size:10px;
+  }
   .heroMeta span:last-child{display:none}
-  .heroTitleMask{left:20px;right:20px;bottom:22vh}
-  .heroTitle{font-size:clamp(58px,15.5vw,92px);line-height:.84}
-  .heroTitle span:last-child{margin-left:0}
-  .heroLine{left:20px;right:20px;bottom:12vh;font-size:14px}
-  .scrollCue{right:20px;bottom:5vh}
+  .heroTitleMask{
+    grid-column:1;
+    grid-row:2;
+    align-self:start;
+    padding:3vh 0 0;
+  }
+  .heroTitle{
+    font-size:clamp(64px,19vw,108px);
+    line-height:.82;
+    font-weight:600;
+  }
+  .heroAside{
+    grid-column:1;
+    grid-row:3;
+    align-self:end;
+    padding:10vh 0 5vh;
+  }
+  .heroLine{
+    max-width:330px;
+    font-size:clamp(24px,8vw,36px);
+  }
+  .heroActions{margin-top:28px}
+  .heroPrimary,.heroSecondary{
+    min-height:50px;
+    padding-inline:20px;
+    font-size:14px;
+  }
+  .scrollCue{
+    grid-column:1;
+    grid-row:4;
+    color:rgba(255,255,255,.64);
+  }
+  .scrollCue i{background:rgba(255,255,255,.42)}
+
   .takeover{
     min-height:auto;
-    padding:8vh 20px 12vh;
+    padding:88px 20px 90px;
+  }
+  .takeoverLabel{
+    top:24px;
+    left:20px;
+    right:20px;
+    font-size:9px;
   }
   .takeoverFrame{
     width:100%;
     height:auto;
     aspect-ratio:4/3;
-    border-radius:12px;
+    border-radius:20px;
   }
+  .takeoverCaption{
+    left:18px;
+    right:18px;
+    bottom:16px;
+    display:block;
+  }
+  .takeoverCaption span{font-size:8px}
+  .takeoverCaption strong{
+    display:block;
+    margin-top:8px;
+    max-width:300px;
+    text-align:left;
+    font-size:24px;
+  }
+
   .worldview{
-    min-height:82svh;
+    min-height:auto;
+    padding:11vh 20px;
     grid-template-columns:1fr;
+    gap:56px;
   }
-  .worldview h2{font-size:clamp(48px,14vw,68px)}
-  .highlights{
-    padding:9vh 0 10vh;
+  .worldview h2{font-size:clamp(54px,16vw,76px)}
+  .worldviewBody{margin-top:28px;font-size:18px}
+  .worldviewMedia{
+    width:min(100%,560px);
+    justify-self:end;
   }
+  .worldviewBlue{inset:7% -3% -7% 7%;border-radius:20px}
+  .worldviewMedia img{border-radius:20px}
+  .worldviewMedia figcaption{
+    left:14px;
+    right:14px;
+    bottom:12px;
+    font-size:7px;
+  }
+
+  .highlights{padding:10vh 0 11vh}
   .highlightsHead{
-    padding:0 20px 30px;
+    padding:0 20px 34px;
     grid-template-columns:1fr;
     gap:24px;
   }
-  .highlightsHead h2{
-    font-size:clamp(44px,12.5vw,60px);
-  }
-  .highlightControls{
-    justify-self:start;
-  }
-  .highlightControls button{
-    width:44px;
-    height:44px;
-  }
+  .highlightsHead h2{font-size:clamp(46px,13vw,64px)}
+  .highlightControls{justify-self:start}
+  .highlightControls button{width:46px;height:46px}
   .highlightsTrack{
     grid-auto-columns:86vw;
-    gap:12px;
+    gap:14px;
     scroll-padding-inline:20px;
     padding:0 20px 14px;
   }
-  .highlightMedia{
-    border-radius:18px;
-  }
+  .highlightMedia{border-radius:22px}
   .videoControl{
     right:12px;
     bottom:12px;
@@ -791,65 +1097,51 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     height:44px;
   }
   .highlightMeta{
-    margin-top:12px;
-    padding-top:14px;
+    left:16px;
+    right:64px;
+    bottom:14px;
   }
-  .highlightMeta h3{
-    font-size:24px;
-  }
+  .highlightMeta span{font-size:7px}
+  .highlightMeta h3{font-size:26px}
 
   .productChapter{
     min-height:auto;
-    padding-top:10vh;
-    padding-bottom:10vh;
-    gap:28px;
+    padding:11vh 20px;
+    gap:30px;
   }
   .chapterHead{
-    grid-template-columns:1fr;
+    display:grid;
     justify-items:start;
-    text-align:left;
-    align-items:start;
-    gap:20px;
+    gap:18px;
   }
-  .chapterHead h2{font-size:clamp(50px,15vw,62px)}
-  .chapterAction{justify-self:start}
+  .chapterHead h2{font-size:clamp(58px,16vw,76px)}
+  .chapterAction{
+    min-height:48px;
+    padding-inline:20px;
+  }
   .productObject{
     min-height:0;
-    border-radius:20px;
+    border-radius:24px;
   }
   .academyObject{height:auto}
-  .academySurface{
-    height:auto;
-    padding:0 14px 14px;
-  }
-  .academySurfaceTop{
-    height:58px;
-    font-size:7px;
-  }
-  .academyWordmark{
-    width:min(170px,48vw);
-  }
+  .academySurface{height:auto;padding:0 14px 14px}
+  .academySurfaceTop{height:58px;font-size:8px}
+  .academyWordmark{width:min(170px,48vw)}
   .academyCourseGrid{
     height:auto;
     padding-top:12px;
     grid-template-columns:1fr;
     gap:12px;
   }
-  .academyCourseLead{
-    aspect-ratio:16/9;
-  }
+  .academyCourseLead{aspect-ratio:16/9}
   .academyCourseSide{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:10px;
   }
-  .academyCourseSide figure{
-    aspect-ratio:16/9;
-  }
-  .dnaScreen{
-    min-height:0;
-    padding:0 20px 34px;
-  }
+  .academyCourseSide figure{aspect-ratio:16/9}
+
+  .dnaScreen{min-height:0;padding:0 20px 34px}
   .dnaTopbar{height:58px}
   .dnaBrand{font-size:10px}
   .dnaBrand span{display:none}
@@ -862,63 +1154,67 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   }
   .dnaHero h3{
     margin:18px 0 24px;
-    font-size:clamp(44px,14vw,64px);
+    font-size:clamp(46px,14vw,66px);
   }
   .dnaHeroCopy{
     margin-bottom:28px;
     font-size:16px;
     line-height:1.6;
   }
-  .dnaButton{
-    width:100%;
-    min-width:0;
-  }
-  .dnaMeta{
-    gap:10px 18px;
-    font-size:7px;
-  }
+  .dnaButton{width:100%;min-width:0}
+  .dnaMeta{gap:10px 18px;font-size:7px}
   .dnaHeroObject{
     justify-self:start;
     width:100%;
     max-width:420px;
   }
+
   .participation{
     min-height:auto;
     grid-template-columns:1fr;
     gap:54px;
-    padding-top:11vh;
+    padding:11vh 20px 0;
   }
-  .participation h2{font-size:clamp(48px,14vw,68px)}
-  .closingDestinations{
-    padding-bottom:2vh;
-  }
+  .participation h2{font-size:clamp(52px,15vw,72px)}
+  .closingDestinations{padding-bottom:2vh}
   .primaryDestinations a{
     min-height:88px;
     grid-template-columns:30px minmax(0,1fr) auto;
     gap:14px;
   }
-  .primaryDestinations strong{
-    font-size:clamp(30px,9vw,42px);
-  }
-  .finalLinks{
-    grid-template-columns:1fr;
-    margin-top:26px;
-  }
+  .primaryDestinations strong{font-size:clamp(30px,9vw,42px)}
+  .finalLinks{grid-template-columns:1fr;margin-top:26px}
   .closingWordmark{
     grid-column:1;
     margin-top:3vh;
     font-size:31vw;
-    color:rgba(245,242,233,.11);
   }
 }
+
 @media(prefers-reduced-motion:reduce){
+  .page [data-reveal]{
+    opacity:1!important;
+    transform:none!important;
+    transition:none!important;
+  }
+  .heroPrimary,
+  .heroSecondary,
+  .highlightCard,
   .highlightControls button,
-  .videoControl{
-    transition:none;
+  .videoControl,
+  .chapterAction,
+  .dnaButton,
+  .primaryDestinations a,
+  .worldviewMedia img,
+  .highlightMedia img,
+  .highlightMedia video,
+  .academyCourseGrid img,
+  .registerFrame{
+    transition:none!important;
   }
   .takeover{
     min-height:auto;
-    padding:8vh clamp(20px,5vw,72px) 12vh;
+    padding:8vh clamp(20px,4vw,64px) 12vh;
   }
   .takeoverFrame{
     width:100%!important;
@@ -926,24 +1222,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     aspect-ratio:4/3;
     border-radius:0!important;
   }
+  .takeoverFrame img{transform:none!important}
 }
 @media(min-width:900px) and (prefers-reduced-motion:reduce){
-  .takeoverFrame{
-    height:76svh!important;
-    aspect-ratio:auto;
-  }
+  .takeoverFrame{height:76svh!important;aspect-ratio:auto}
 }
 @media(min-width:900px) and (prefers-reduced-motion:no-preference){
   .takeover{z-index:90}
 }
 
-/* GitHub Pages preview only: production loads Geist/Noto from brand-site. */
-.page{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Arial,sans-serif;
-}
+/* Public preview only: source app provides its own font stack. */
+.page{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Arial,sans-serif}
 </style>
 </head>
 <body>
+
 <main class="page" id="root">
 <header class="header">
   <a href="#master-top" class="brand">82TRADE</a>
@@ -965,35 +1258,50 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 </header>
 
 <section id="master-top" class="hero">
-  <img class="heroBg" data-hero-bg src="https://raw.githubusercontent.com/82trade-team/82trade-web/f71ab46f2b8acfbec12a9d2e6061d635a21dceee/apps/brand-site/public/img/hero-background.png" alt="" aria-hidden="true">
-  <div class="heroShade" aria-hidden="true"></div>
-  <div class="heroMeta" data-hero-meta>
-    <span>82TRADE</span>
-    <span>TRADING · LEARNING · COMMUNITY</span>
-  </div>
-  <div class="heroTitleMask">
-    <h1 class="heroTitle" data-hero-title><span>READ THE</span><span>MARKET.</span></h1>
-  </div>
-  <p class="heroLine" data-hero-line>看懂市場，建立自己的交易判斷。</p>
-  <div class="scrollCue" data-scroll-cue>
-    <span>SCROLL</span><i aria-hidden="true"></i>
+  <div class="heroAccent" data-hero-accent aria-hidden="true"></div>
+  <div class="heroGrid">
+    <div class="heroMeta" data-hero-meta>
+      <span>82TRADE</span><span>TRADING · LEARNING · COMMUNITY</span>
+    </div>
+    <div class="heroTitleMask">
+      <h1 class="heroTitle" data-hero-title><span>READ THE</span><span>MARKET.</span></h1>
+    </div>
+    <div class="heroAside">
+      <p class="heroLine" data-hero-line>看懂市場，建立自己的交易判斷。</p>
+      <div class="heroActions" data-hero-actions>
+        <a class="heroPrimary" href="https://82trade-academy.pages.dev/courses">Academy ↗</a>
+        <a class="heroSecondary" href="https://82trade-team.github.io/dna/">Trader DNA ↗</a>
+      </div>
+    </div>
+    <div class="scrollCue" data-scroll-cue><span>SCROLL TO ENTER</span><i aria-hidden="true"></i></div>
   </div>
 </section>
 
 <section class="takeover">
+  <div class="takeoverLabel" aria-hidden="true"><span>REAL WORLD / 82TRADE</span><span>01</span></div>
   <div class="takeoverFrame">
-    <img src="./assets/classroom-14-gallery.webp" alt="82TRADE 真實課堂">
+    <img data-takeover-media src="./assets/classroom-14-gallery.webp" alt="82TRADE 真實課堂">
+    <div class="takeoverCaption"><span>不是模擬世界。</span><strong>真實的人、真實的課堂、真實的判斷。</strong></div>
   </div>
 </section>
 
 <section class="worldview">
-  <p class="kicker">82TRADE</p>
-  <h2>從看懂，<br>到懂得做。</h2>
+  <div class="worldviewCopy" data-reveal>
+    <p class="kicker">82TRADE / WORLDVIEW</p>
+    <h2>從看懂，<br>到懂得做。</h2>
+    <p class="worldviewBody">行情分析、公開課程、學員交流。</p>
+  </div>
+  <figure class="worldviewMedia" data-reveal>
+    <div class="worldviewBlue" aria-hidden="true"></div>
+    <img src="./assets/classroom-08-gallery.webp" alt="82TRADE 課堂與學員現場">
+    <figcaption><span>LEARN THE SIGNAL</span><span>BUILD THE JUDGEMENT</span></figcaption>
+  </figure>
 </section>
 
 <section class="highlights" aria-label="82TRADE highlights">
-  <div class="highlightsHead">
+  <div class="highlightsHead" data-reveal>
     <div>
+      <p class="kicker">82TRADE / HIGHLIGHTS</p>
       <h2>行情分析、公開課程、學員交流。</h2>
     </div>
     <div class="highlightControls" aria-label="Highlights controls">
@@ -1002,33 +1310,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     </div>
   </div>
   <div class="highlightsTrack">
-    <article class="highlightCard">
+    <article class="highlightCard" data-active="true" data-reveal>
       <div class="highlightMedia">
-        <video id="market-highlight-video" src="https://raw.githubusercontent.com/kaiyn-capital/kaiyn-website/787cf854e0faeedf9e1b43bf096f6fcbc15d7eef/public/video/trading.mp4" muted playsinline preload="metadata"></video><button id="market-video-control" type="button" class="videoControl" aria-label="播放行情影片">▶</button>
+        <video id="market-highlight-video" src="https://raw.githubusercontent.com/kaiyn-capital/kaiyn-website/787cf854e0faeedf9e1b43bf096f6fcbc15d7eef/public/video/trading.mp4" muted playsinline preload="metadata"></video>
+        <button id="market-video-control" type="button" class="videoControl" aria-label="播放行情影片">▶</button>
       </div>
-      <div class="highlightMeta"><span>01</span><h3>行情分析</h3></div>
+      <div class="highlightMeta"><span>01 / MARKET</span><h3>行情分析</h3></div>
     </article>
-    <article class="highlightCard">
+    <article class="highlightCard" data-active="false" data-reveal>
       <div class="highlightMedia"><img src="./assets/classroom-11-gallery.webp" alt="82TRADE 公開課程現場"></div>
-      <div class="highlightMeta"><span>02</span><h3>公開課程</h3></div>
+      <div class="highlightMeta"><span>02 / ACADEMY</span><h3>公開課程</h3></div>
     </article>
-    <article class="highlightCard">
+    <article class="highlightCard" data-active="false" data-reveal>
       <div class="highlightMedia"><img src="./assets/classroom-01.jpg" alt="82TRADE 學員交流現場"></div>
-      <div class="highlightMeta"><span>03</span><h3>學員交流</h3></div>
+      <div class="highlightMeta"><span>03 / COMMUNITY</span><h3>學員交流</h3></div>
     </article>
-    <article class="highlightCard">
+    <article class="highlightCard" data-active="false" data-reveal>
       <div class="highlightMedia"><img src="./assets/classroom-02.jpg" alt="82TRADE 課堂與社群現場"></div>
-      <div class="highlightMeta"><span>04</span><h3>公開課程</h3></div>
+      <div class="highlightMeta"><span>04 / LIVE</span><h3>課堂現場</h3></div>
     </article>
   </div>
 </section>
 
 <section class="productChapter academyChapter">
-  <div class="chapterHead">
-    <div><h2>Academy</h2></div>
+  <div class="chapterHead" data-reveal>
+    <div><p class="kicker">PRODUCT 01</p><h2>Academy</h2></div>
     <a class="chapterAction" href="https://82trade-academy.pages.dev/courses">Enter Academy ↗</a>
   </div>
-  <div class="productObject academyObject">
+  <div class="productObject academyObject" data-reveal>
     <div class="academySurface">
       <div class="academySurfaceTop"><img class="academyWordmark" src="./assets/academy-wordmark.svg" alt="82TRADE Academy"><span>全部課程</span></div>
       <div class="academyCourseGrid">
@@ -1043,11 +1352,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 </section>
 
 <section class="productChapter dnaChapter">
-  <div class="chapterHead">
-    <div><h2>Trader DNA</h2></div>
+  <div class="chapterHead" data-reveal>
+    <div><p class="kicker">PRODUCT 02</p><h2>Trader DNA</h2></div>
     <a class="chapterAction" href="https://82trade-team.github.io/dna/">Open Trader DNA ↗</a>
   </div>
-  <div class="productObject dnaObject">
+  <div class="productObject dnaObject" data-reveal>
     <div class="dnaScreen">
       <div class="dnaTopbar">
         <div class="dnaBrand">82TRADE <span>// TRADER DNA</span></div>
@@ -1056,16 +1365,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
       <div class="dnaHero">
         <div class="dnaHeroMain">
           <h3>市場會暴露<br><em>你的另一面</em></h3>
-          <p class="dnaHeroCopy">18 個選擇，辨認你在判斷、出手與改變主意時，反覆出現的決策輪廓。</p>
+          <p class="dnaHeroCopy">54 個選擇，從六個連續維度辨認你在判斷、出手與改變主意時反覆出現的決策傾向。</p>
           <a class="dnaButton" href="https://82trade-team.github.io/dna/">開始 SCAN 01 <span>→</span></a>
-          <div class="dnaMeta"><span>18 QUESTIONS</span><span>≈ 3 MIN</span><span>NO RIGHT ANSWER</span></div>
+          <div class="dnaMeta"><span>54 QUESTIONS</span><span>6 DIMENSIONS</span><span>NO RIGHT ANSWER</span></div>
         </div>
         <div class="dnaHeroObject" aria-hidden="true">
           <div class="registerFrame">
             <span class="registerNo">01</span>
             <div class="registerCross"></div>
             <div class="registerCore"><b>DNA</b><small>DECISION PROFILE</small></div>
-            <div class="registerCoord">82° / 18 / V1</div>
+            <div class="registerCoord">82° / 54 / V1</div>
           </div>
           <p>IDENTITY IS NOT WHAT YOU SAY.<br>IT IS WHAT REPEATS UNDER PRESSURE.</p>
         </div>
@@ -1075,16 +1384,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 </section>
 
 <footer class="participation">
-  <div class="closingLead">
+  <div class="closingLead" data-reveal>
+    <p class="kicker">82TRADE / ENTER</p>
     <h2>交易這條路，<br>一起走。</h2>
   </div>
-
-  <div class="closingDestinations">
+  <div class="closingDestinations" data-reveal>
     <nav class="primaryDestinations" aria-label="82TRADE products">
       <a href="https://82trade-academy.pages.dev/courses"><span>01</span><strong>Academy</strong><b>↗</b></a>
       <a href="https://82trade-team.github.io/dna/"><span>02</span><strong>Trader DNA</strong><b>↗</b></a>
     </nav>
-
     <nav class="finalLinks" aria-label="82TRADE ecosystem">
       <a href="https://www.youtube.com/@82TRADE">YouTube ↗</a>
       <a href="https://discord.gg/n74xbzjwrN">Discord ↗</a>
@@ -1092,7 +1400,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
       <a href="https://line.me/R/ti/p/@827egjii">LINE ↗</a>
     </nav>
   </div>
-
   <div class="closingWordmark" aria-hidden="true">82TRADE</div>
 </footer>
 </main>
@@ -1103,102 +1410,106 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 gsap.registerPlugin(ScrollTrigger);
 
 const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const heroBg=document.querySelector("[data-hero-bg]");
-const heroMeta=document.querySelector("[data-hero-meta]");
-const heroTitle=document.querySelector("[data-hero-title]");
-const heroLine=document.querySelector("[data-hero-line]");
-const scrollCue=document.querySelector("[data-scroll-cue]");
+const accent=document.querySelector("[data-hero-accent]");
+const meta=document.querySelector("[data-hero-meta]");
+const title=document.querySelector("[data-hero-title]");
+const line=document.querySelector("[data-hero-line]");
+const actions=document.querySelector("[data-hero-actions]");
+const cue=document.querySelector("[data-scroll-cue]");
 
-if(!reduce&&heroBg&&heroMeta&&heroTitle&&heroLine&&scrollCue){
-  gsap.set(heroBg,{scale:1.08});
-  gsap.set([heroMeta,heroLine,scrollCue],{opacity:0,y:18});
-  gsap.set(heroTitle,{opacity:0,yPercent:105});
-  const intro=gsap.timeline({delay:.08,defaults:{ease:"power4.out"}});
-  intro
-    .to(heroBg,{scale:1,duration:2.4},0)
-    .to(heroMeta,{opacity:1,y:0,duration:.9},.35)
-    .to(heroTitle,{opacity:1,yPercent:0,duration:1.25},.55)
-    .to(heroLine,{opacity:1,y:0,duration:.9},.95)
-    .to(scrollCue,{opacity:1,y:0,duration:.9},1.15);
+if(!reduce&&accent&&meta&&title&&line&&actions&&cue){
+  const expressive="cubic-bezier(.33,0,0,1)";
+  const functional="cubic-bezier(0,0,.15,1)";
+  accent.animate([{transform:"scaleX(.82)"},{transform:"scaleX(1)"}],{duration:1000,easing:expressive,fill:"both"});
+  meta.animate([{opacity:0,transform:"translateY(24px)"},{opacity:1,transform:"translateY(0)"}],{duration:500,delay:160,easing:functional,fill:"both"});
+  title.animate([{opacity:0,transform:"translateY(105%)"},{opacity:1,transform:"translateY(0)"}],{duration:720,delay:240,easing:expressive,fill:"both"});
+  line.animate([{opacity:0,transform:"translateY(24px)"},{opacity:1,transform:"translateY(0)"}],{duration:500,delay:460,easing:functional,fill:"both"});
+  actions.animate([{opacity:0,transform:"translateY(24px)"},{opacity:1,transform:"translateY(0)"}],{duration:500,delay:540,easing:functional,fill:"both"});
+  cue.animate([{opacity:0,transform:"translateY(24px)"},{opacity:1,transform:"translateY(0)"}],{duration:400,delay:680,easing:functional,fill:"both"});
+}
+
+const revealNodes=Array.from(document.querySelectorAll("[data-reveal]"));
+if(reduce){
+  revealNodes.forEach((node)=>node.dataset.visible="true");
+}else{
+  const observer=new IntersectionObserver((entries)=>{
+    entries.forEach((entry)=>{
+      if(!entry.isIntersecting)return;
+      entry.target.dataset.visible="true";
+      observer.unobserve(entry.target);
+    });
+  },{rootMargin:"0px 0px -12% 0px",threshold:.08});
+  revealNodes.forEach((node)=>observer.observe(node));
 }
 
 const section=document.querySelector(".takeover");
 const frame=document.querySelector(".takeoverFrame");
+const takeoverMedia=document.querySelector("[data-takeover-media]");
 const mm=gsap.matchMedia();
 mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
-  const tl=gsap.timeline({scrollTrigger:{trigger:section,start:"center center",end:"+=800 center",scrub:0.5,pin:true,pinSpacing:true}});
-  tl.to(frame,{width:"100vw",height:"100vh",borderRadius:0,ease:"none"});
+  const tl=gsap.timeline({scrollTrigger:{trigger:section,start:"center center",end:"+=800 center",scrub:.5,pin:true,pinSpacing:true}});
+  tl
+    .fromTo(takeoverMedia,{scale:1.08},{scale:1.01,ease:"none",duration:1},0)
+    .to(frame,{width:"100vw",height:"100vh",borderRadius:0,ease:"none",duration:1},0);
   return()=>tl.kill();
 });
 
-const highlightTrack=document.querySelector(".highlightsTrack");
-const highlightButtons=Array.from(document.querySelectorAll("[data-highlight-dir]"));
-const getHighlightCards=()=>highlightTrack
-  ? Array.from(highlightTrack.children).filter((node)=>node instanceof HTMLElement)
-  : [];
-const getHighlightSnapPosition=(card)=>{
-  if(!highlightTrack)return 0;
-  const padding=parseFloat(getComputedStyle(highlightTrack).scrollPaddingInlineStart)||0;
+const track=document.querySelector(".highlightsTrack");
+const buttons=Array.from(document.querySelectorAll("[data-highlight-dir]"));
+const cards=()=>track?Array.from(track.children).filter((node)=>node instanceof HTMLElement):[];
+const snap=(card)=>{
+  if(!track)return 0;
+  const padding=parseFloat(getComputedStyle(track).scrollPaddingInlineStart)||0;
   return Math.max(0,card.offsetLeft-padding);
 };
-const getHighlightIndex=()=>{
-  const cards=getHighlightCards();
-  if(!highlightTrack||!cards.length)return 0;
-  return cards.reduce((nearest,card,index)=>{
-    const nearestDistance=Math.abs(getHighlightSnapPosition(cards[nearest])-highlightTrack.scrollLeft);
-    const cardDistance=Math.abs(getHighlightSnapPosition(card)-highlightTrack.scrollLeft);
-    return cardDistance<nearestDistance?index:nearest;
+const currentIndex=()=>{
+  const list=cards();
+  if(!track||!list.length)return 0;
+  return list.reduce((nearest,card,index)=>{
+    const a=Math.abs(snap(list[nearest])-track.scrollLeft);
+    const b=Math.abs(snap(card)-track.scrollLeft);
+    return b<a?index:nearest;
   },0);
 };
-const syncHighlightButtons=()=>{
-  const cards=getHighlightCards();
-  if(!cards.length)return;
-  const index=getHighlightIndex();
-  highlightButtons.forEach((button)=>{
-    const dir=Number(button.getAttribute("data-highlight-dir"))||1;
-    button.disabled=dir<0?index===0:index===cards.length-1;
+const syncHighlights=()=>{
+  const list=cards();
+  if(!list.length)return;
+  const index=currentIndex();
+  list.forEach((card,i)=>card.dataset.active=String(i===index));
+  buttons.forEach((button)=>{
+    const dir=Number(button.dataset.highlightDir)||1;
+    button.disabled=dir<0?index===0:index===list.length-1;
   });
 };
-highlightButtons.forEach((button)=>{
-  button.addEventListener("click",()=>{
-    const cards=getHighlightCards();
-    if(!highlightTrack||!cards.length)return;
-    const dir=Number(button.getAttribute("data-highlight-dir"))||1;
-    const target=Math.max(0,Math.min(cards.length-1,getHighlightIndex()+dir));
-    const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    highlightTrack.scrollTo({
-      left:getHighlightSnapPosition(cards[target]),
-      behavior:reduced?"auto":"smooth"
-    });
-  });
-});
-if(highlightTrack){
-  highlightTrack.addEventListener("scroll",syncHighlightButtons,{passive:true});
-  syncHighlightButtons();
+buttons.forEach((button)=>button.addEventListener("click",()=>{
+  const list=cards();
+  if(!track||!list.length)return;
+  const dir=Number(button.dataset.highlightDir)||1;
+  const target=Math.max(0,Math.min(list.length-1,currentIndex()+dir));
+  track.scrollTo({left:snap(list[target]),behavior:reduce?"auto":"smooth"});
+}));
+if(track){
+  track.addEventListener("scroll",syncHighlights,{passive:true});
+  syncHighlights();
 }
-
 
 const marketVideo=document.getElementById("market-highlight-video");
-const marketVideoControl=document.getElementById("market-video-control");
-if(marketVideo&&marketVideoControl){
-  const syncMarketControl=()=>{
+const videoControl=document.getElementById("market-video-control");
+if(marketVideo&&videoControl){
+  const sync=()=>{
     const playing=!marketVideo.paused&&!marketVideo.ended;
-    marketVideoControl.textContent=playing?"Ⅱ":"▶";
-    marketVideoControl.setAttribute("aria-label",playing?"暫停行情影片":"播放行情影片");
+    videoControl.textContent=playing?"Ⅱ":"▶";
+    videoControl.setAttribute("aria-label",playing?"暫停行情影片":"播放行情影片");
   };
-  marketVideoControl.addEventListener("click",async()=>{
-    if(marketVideo.paused){
-      try{await marketVideo.play();}catch(_err){}
-    }else{
-      marketVideo.pause();
-    }
-    syncMarketControl();
+  videoControl.addEventListener("click",async()=>{
+    if(marketVideo.paused){try{await marketVideo.play()}catch(_err){}}
+    else marketVideo.pause();
+    sync();
   });
-  marketVideo.addEventListener("play",syncMarketControl);
-  marketVideo.addEventListener("pause",syncMarketControl);
-  marketVideo.addEventListener("ended",syncMarketControl);
+  marketVideo.addEventListener("play",sync);
+  marketVideo.addEventListener("pause",sync);
+  marketVideo.addEventListener("ended",sync);
 }
-
 </script>
 </body>
 </html>
