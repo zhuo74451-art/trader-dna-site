@@ -664,9 +664,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 .academyCourseGrid{
   height:calc(100% - 72px);
-  padding-top:18px;
+  padding:24px 0;
   display:grid;
   grid-template-columns:minmax(0,1fr) clamp(210px,18vw,300px);
+  align-items:center;
   gap:12px;
 }
 .academyCourseGrid figure{
@@ -687,9 +688,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   transform:scale(1.018);
   filter:saturate(.72) contrast(1.06);
 }
-.academyCourseLead{min-height:0}
+.academyCourseLead{
+  min-height:0;
+  aspect-ratio:16/9;
+  align-self:center;
+}
 .academyCourseSide{
   min-width:0;
+  align-self:center;
   display:flex;
   flex-direction:column;
   justify-content:center;
