@@ -191,6 +191,30 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 .highlightMedia video{
   background:#050505;
 }
+.videoControl{
+  position:absolute;
+  right:18px;
+  bottom:18px;
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  border:0;
+  border-radius:999px;
+  background:rgba(245,245,247,.9);
+  color:#111;
+  font:700 15px/1 system-ui,sans-serif;
+  cursor:pointer;
+  backdrop-filter:blur(14px);
+  box-shadow:0 8px 28px rgba(0,0,0,.18);
+  transition:transform .18s ease,background-color .18s ease;
+}
+.videoControl:hover{background:#fff}
+.videoControl:active{transform:scale(.96)}
+.videoControl:focus-visible{
+  outline:2px solid #fff;
+  outline-offset:3px;
+}
 .highlightMeta{
   display:flex;
   align-items:baseline;
@@ -564,6 +588,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   .highlightMedia{
     border-radius:18px;
   }
+  .videoControl{
+    right:12px;
+    bottom:12px;
+    width:44px;
+    height:44px;
+  }
   .highlightMeta{
     margin-top:12px;
     padding-top:14px;
@@ -715,7 +745,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   <div class="highlightsTrack">
     <article class="highlightCard">
       <div class="highlightMedia">
-        <video src="https://raw.githubusercontent.com/kaiyn-capital/kaiyn-website/787cf854e0faeedf9e1b43bf096f6fcbc15d7eef/public/video/trading.mp4" muted playsinline controls preload="metadata"></video>
+        <video id="market-highlight-video" src="https://raw.githubusercontent.com/kaiyn-capital/kaiyn-website/787cf854e0faeedf9e1b43bf096f6fcbc15d7eef/public/video/trading.mp4" muted playsinline preload="metadata"></video><button id="market-video-control" type="button" class="videoControl" aria-label="播放行情影片">▶</button>
       </div>
       <div class="highlightMeta"><span>01</span><h3>行情分析</h3></div>
     </article>
@@ -840,6 +870,28 @@ document.querySelectorAll("[data-highlight-dir]").forEach((button)=>{
     track.scrollBy({left:dir*distance,behavior:reduced?"auto":"smooth"});
   });
 });
+
+
+const marketVideo=document.getElementById("market-highlight-video");
+const marketVideoControl=document.getElementById("market-video-control");
+if(marketVideo&&marketVideoControl){
+  const syncMarketControl=()=>{
+    const playing=!marketVideo.paused&&!marketVideo.ended;
+    marketVideoControl.textContent=playing?"Ⅱ":"▶";
+    marketVideoControl.setAttribute("aria-label",playing?"暫停行情影片":"播放行情影片");
+  };
+  marketVideoControl.addEventListener("click",async()=>{
+    if(marketVideo.paused){
+      try{await marketVideo.play();}catch(_err){}
+    }else{
+      marketVideo.pause();
+    }
+    syncMarketControl();
+  });
+  marketVideo.addEventListener("play",syncMarketControl);
+  marketVideo.addEventListener("pause",syncMarketControl);
+  marketVideo.addEventListener("ended",syncMarketControl);
+}
 
 </script>
 </body>
