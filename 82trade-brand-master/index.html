@@ -742,7 +742,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 <body>
 <main class="page" id="root">
 <header class="header">
-  <a href="#integration-top" class="brand">82TRADE</a>
+  <a href="#master-top" class="brand">82TRADE</a>
   <nav class="nav">
     <a href="https://82trade-academy.pages.dev/courses">Academy</a>
     <a href="https://www.youtube.com/@82TRADE">YouTube</a>
@@ -758,7 +758,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   </details>
 </header>
 
-<section id="integration-top" class="proposition">
+<section id="master-top" class="proposition">
   <h1><span>READ THE</span><span>MARKET.</span></h1>
   <p class="propositionCopy">看懂市場，建立自己的交易判斷。</p>
 </section>
@@ -908,15 +908,17 @@ document.querySelectorAll("[data-highlight-dir]").forEach((button)=>{
     if(!track)return;
     const cards=Array.from(track.children).filter((node)=>node instanceof HTMLElement);
     if(!cards.length)return;
+    const scrollPadding=parseFloat(getComputedStyle(track).scrollPaddingInlineStart)||0;
+    const snapPosition=(card)=>Math.max(0,card.offsetLeft-scrollPadding);
     const current=cards.reduce((nearest,card,index)=>{
-      const nearestDistance=Math.abs(cards[nearest].offsetLeft-track.scrollLeft);
-      const cardDistance=Math.abs(card.offsetLeft-track.scrollLeft);
+      const nearestDistance=Math.abs(snapPosition(cards[nearest])-track.scrollLeft);
+      const cardDistance=Math.abs(snapPosition(card)-track.scrollLeft);
       return cardDistance<nearestDistance?index:nearest;
     },0);
     const dir=Number(button.getAttribute("data-highlight-dir"))||1;
     const target=Math.max(0,Math.min(cards.length-1,current+dir));
     const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    track.scrollTo({left:cards[target].offsetLeft,behavior:reduced?"auto":"smooth"});
+    track.scrollTo({left:snapPosition(cards[target]),behavior:reduced?"auto":"smooth"});
   });
 });
 
