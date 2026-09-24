@@ -90,14 +90,39 @@ await desktop.evaluate(() => {
   }
 });
 await new Promise((r) => setTimeout(r, 200));
-await desktop.evaluate(() => {
+await sceneShot(desktop, "highlights-before-interaction", "#highlights");
+const highlightInteraction = await desktop.evaluate(() => {
+  const track = document.querySelector(".highlightsTrack");
+  const before = track instanceof HTMLElement ? track.scrollLeft : null;
   document.querySelector('[data-highlight-page="2"]')?.click();
+  return { before };
 });
 await new Promise((r) => setTimeout(r, 650));
+highlightInteraction.afterPage3 = await desktop.evaluate(() => {
+  const track = document.querySelector(".highlightsTrack");
+  return {
+    scrollLeft: track instanceof HTMLElement ? track.scrollLeft : null,
+    activeIndex: Array.from(document.querySelectorAll(".highlightCard")).findIndex(
+      (el) => el.getAttribute("data-active") === "true",
+    ),
+  };
+});
 await desktop.screenshot({
   path: path.join(outDir, "highlights-page3-desktop.png"),
   fullPage: false,
 });
+await desktop.click('[data-highlight-dir="1"]');
+await new Promise((r) => setTimeout(r, 650));
+highlightInteraction.afterNext = await desktop.evaluate(() => {
+  const track = document.querySelector(".highlightsTrack");
+  return {
+    scrollLeft: track instanceof HTMLElement ? track.scrollLeft : null,
+    activeIndex: Array.from(document.querySelectorAll(".highlightCard")).findIndex(
+      (el) => el.getAttribute("data-active") === "true",
+    ),
+  };
+});
+diagnostics.highlightInteraction = highlightInteraction;
 
 diagnostics.desktop = await desktop.evaluate(() => ({
   clientWidth: document.documentElement.clientWidth,
@@ -122,10 +147,12 @@ await desktop.close();
 const mobile = await openPage({ width: 390, height: 844, deviceScaleFactor: 1 }, true);
 for (const [name, selector] of [
   ["hero-mobile", "#master-top"],
+  ["real-world-mobile", "#real-world"],
   ["worldview-mobile", "#worldview"],
   ["highlights-mobile", "#highlights"],
   ["academy-mobile", "#academy"],
   ["trader-dna-mobile", "#trader-dna"],
+  ["enter-mobile", "#enter"],
 ]) {
   await sceneShot(mobile, name, selector);
 }
