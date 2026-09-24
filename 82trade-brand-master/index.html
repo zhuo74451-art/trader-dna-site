@@ -435,11 +435,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   padding-bottom:6px;
 }
 .highlightPagination{
+  width:max-content;
   min-height:52px;
-  margin-right:8px;
+  margin:24px auto 0;
+  padding:0 18px;
   display:flex;
   align-items:center;
+  justify-content:center;
   gap:4px;
+  border-radius:999px;
+  background:#24272d;
 }
 .highlightPagination button{
   width:4px;
@@ -533,7 +538,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   position:absolute;
   inset:0;
   pointer-events:none;
-  background:linear-gradient(to bottom,rgba(0,0,0,.08),rgba(0,0,0,0) 45%,rgba(0,0,0,.42));
+  background:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,0) 42%,rgba(0,0,0,.08));
 }
 .highlightMedia img{
   display:block;
@@ -547,12 +552,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   position:absolute;
   z-index:2;
   left:26px;
-  right:88px;
-  bottom:24px;
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap:24px;
+  top:24px;
+  right:auto;
+  bottom:auto;
+  display:grid;
+  gap:10px;
   color:#fff;
   pointer-events:none;
   text-shadow:0 2px 16px rgba(0,0,0,.5);
@@ -566,7 +570,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 .highlightMeta h3{
   margin:0;
-  text-align:right;
+  text-align:left;
   font-size:clamp(28px,3.5vw,56px);
   line-height:.95;
   letter-spacing:-.05em;
@@ -1110,7 +1114,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   }
   .highlightControls{justify-self:start}
   .highlightControls>button{width:46px;height:46px}
-  .highlightPagination{min-height:46px}
+  .highlightPagination{
+    min-height:46px;
+    margin-top:18px;
+    padding-inline:16px;
+  }
   .highlightsTrack{
     grid-auto-columns:86vw;
     gap:14px;
@@ -1120,8 +1128,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   .highlightMedia{border-radius:22px}
   .highlightMeta{
     left:16px;
-    right:64px;
-    bottom:14px;
+    top:14px;
+    right:auto;
+    bottom:auto;
+    gap:7px;
   }
   .highlightMeta span{font-size:7px}
   .highlightMeta h3{font-size:26px}
@@ -1329,12 +1339,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
       <h2 aria-label="行情分析、公開課程、學員交流。"><span>行情分析 / 公開課程</span><span>學員交流</span></h2>
     </div>
     <div class="highlightControls" aria-label="Highlights controls">
-      <div class="highlightPagination" aria-label="Highlights pages">
-        <button type="button" data-highlight-page="0" data-active="true" aria-current="true" aria-label="前往 highlight 1"></button>
-        <button type="button" data-highlight-page="1" data-active="false" aria-label="前往 highlight 2"></button>
-        <button type="button" data-highlight-page="2" data-active="false" aria-label="前往 highlight 3"></button>
-        <button type="button" data-highlight-page="3" data-active="false" aria-label="前往 highlight 4"></button>
-      </div>
       <button type="button" data-highlight-dir="-1" aria-label="上一個 highlight" disabled>←</button>
       <button type="button" data-highlight-dir="1" aria-label="下一個 highlight">→</button>
     </div>
@@ -1356,6 +1360,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
       <div class="highlightMedia"><img src="./assets/classroom-02.jpg" alt="82TRADE 課堂與社群現場"></div>
       <div class="highlightMeta"><span>04 / LIVE</span><h3>課堂現場</h3></div>
     </article>
+  </div>
+  <div class="highlightPagination" aria-label="Highlights pages">
+    <button type="button" data-highlight-page="0" data-active="true" aria-current="true" aria-label="前往 highlight 1"></button>
+    <button type="button" data-highlight-page="1" data-active="false" aria-label="前往 highlight 2"></button>
+    <button type="button" data-highlight-page="2" data-active="false" aria-label="前往 highlight 3"></button>
+    <button type="button" data-highlight-page="3" data-active="false" aria-label="前往 highlight 4"></button>
   </div>
 </section>
 
