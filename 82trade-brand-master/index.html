@@ -108,14 +108,82 @@ html,body{margin:0;padding:0}
   letter-spacing:-.075em;
   font-weight:840;
 }
-.worldviewCopy{
-  grid-column:2;
-  max-width:720px;
-  margin:32px 0 0;
-  color:rgba(245,242,233,.66);
-  font-size:clamp(18px,1.7vw,26px);
-  line-height:1.65;
+.highlights{
+  padding:12vh 0 14vh;
+  overflow:hidden;
+  background:#090909;
+  color:#f5f2e9;
+  border-top:1px solid rgba(255,255,255,.08);
 }
+.highlightsHead{
+  padding:0 clamp(20px,5vw,72px) 54px;
+}
+.highlightsHead h2{
+  max-width:1120px;
+  margin:0;
+  font-size:clamp(54px,7.4vw,118px);
+  line-height:.9;
+  letter-spacing:-.065em;
+  font-weight:820;
+}
+.highlightsTrack{
+  display:grid;
+  grid-auto-flow:column;
+  grid-auto-columns:min(78vw,1120px);
+  gap:18px;
+  overflow-x:auto;
+  overscroll-behavior-inline:contain;
+  scroll-snap-type:inline mandatory;
+  scroll-padding-inline:clamp(20px,5vw,72px);
+  padding:0 clamp(20px,5vw,72px) 18px;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.highlightsTrack::-webkit-scrollbar{display:none}
+.highlightCard{
+  scroll-snap-align:start;
+  min-width:0;
+}
+.highlightMedia{
+  position:relative;
+  aspect-ratio:16/9;
+  overflow:hidden;
+  border-radius:28px;
+  background:#111;
+}
+.highlightMedia img,
+.highlightMedia video{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.highlightMedia video{
+  background:#050505;
+}
+.highlightMeta{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:24px;
+  padding:18px 2px 0;
+  border-top:1px solid rgba(255,255,255,.12);
+  margin-top:16px;
+}
+.highlightMeta span{
+  color:rgba(245,242,233,.42);
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:9px;
+  letter-spacing:.16em;
+}
+.highlightMeta h3{
+  margin:0;
+  font-size:clamp(24px,2.8vw,42px);
+  line-height:1;
+  letter-spacing:-.045em;
+  font-weight:650;
+}
+
 .productChapter{
   min-height:110svh;
   padding:13vh clamp(20px,5vw,72px);
@@ -439,7 +507,32 @@ html,body{margin:0;padding:0}
     grid-template-columns:1fr;
   }
   .worldview h2{font-size:clamp(48px,14vw,68px)}
-  .worldviewCopy{grid-column:1}
+  .highlights{
+    padding:9vh 0 10vh;
+  }
+  .highlightsHead{
+    padding:0 20px 30px;
+  }
+  .highlightsHead h2{
+    font-size:clamp(44px,12.5vw,60px);
+  }
+  .highlightsTrack{
+    grid-auto-columns:86vw;
+    gap:12px;
+    scroll-padding-inline:20px;
+    padding:0 20px 14px;
+  }
+  .highlightMedia{
+    border-radius:18px;
+  }
+  .highlightMeta{
+    margin-top:12px;
+    padding-top:14px;
+  }
+  .highlightMeta h3{
+    font-size:24px;
+  }
+
   .productChapter{
     min-height:auto;
     padding-top:10vh;
@@ -567,7 +660,29 @@ html,body{margin:0;padding:0}
 <section class="worldview">
   <p class="kicker">82TRADE</p>
   <h2>從看懂，<br>到懂得做。</h2>
-  <p class="worldviewCopy">行情分析、公開課程、學員交流。</p>
+</section>
+
+<section class="highlights" aria-label="82TRADE highlights">
+  <div class="highlightsHead">
+    <p class="kicker">82TRADE</p>
+    <h2>行情分析、公開課程、學員交流。</h2>
+  </div>
+  <div class="highlightsTrack">
+    <article class="highlightCard">
+      <div class="highlightMedia">
+        <video src="https://raw.githubusercontent.com/kaiyn-capital/kaiyn-website/787cf854e0faeedf9e1b43bf096f6fcbc15d7eef/public/video/trading.mp4" muted playsinline controls preload="metadata"></video>
+      </div>
+      <div class="highlightMeta"><span>01</span><h3>行情分析</h3></div>
+    </article>
+    <article class="highlightCard">
+      <div class="highlightMedia"><img src="./assets/classroom-11-gallery.webp" alt="82TRADE 公開課程現場"></div>
+      <div class="highlightMeta"><span>02</span><h3>公開課程</h3></div>
+    </article>
+    <article class="highlightCard">
+      <div class="highlightMedia"><img src="./assets/classroom-02.jpg" alt="82TRADE 學員交流現場"></div>
+      <div class="highlightMeta"><span>03</span><h3>學員交流</h3></div>
+    </article>
+  </div>
 </section>
 
 <section class="productChapter academyChapter">
