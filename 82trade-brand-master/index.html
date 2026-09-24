@@ -117,6 +117,10 @@ html,body{margin:0;padding:0}
 }
 .highlightsHead{
   padding:0 clamp(20px,5vw,72px) 54px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:40px;
+  align-items:end;
 }
 .highlightsHead h2{
   max-width:1120px;
@@ -125,6 +129,30 @@ html,body{margin:0;padding:0}
   line-height:.9;
   letter-spacing:-.065em;
   font-weight:820;
+}
+.highlightControls{
+  display:flex;
+  gap:10px;
+  padding-bottom:4px;
+}
+.highlightControls button{
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  border:0;
+  border-radius:999px;
+  background:#2b2b2b;
+  color:#fff;
+  font:600 18px/1 system-ui,sans-serif;
+  cursor:pointer;
+  transition:background-color .18s ease,transform .18s ease;
+}
+.highlightControls button:hover{background:#3a3a3a}
+.highlightControls button:active{transform:scale(.96)}
+.highlightControls button:focus-visible{
+  outline:2px solid #fff;
+  outline-offset:3px;
 }
 .highlightsTrack{
   display:grid;
@@ -512,9 +540,18 @@ html,body{margin:0;padding:0}
   }
   .highlightsHead{
     padding:0 20px 30px;
+    grid-template-columns:1fr;
+    gap:24px;
   }
   .highlightsHead h2{
     font-size:clamp(44px,12.5vw,60px);
+  }
+  .highlightControls{
+    justify-self:start;
+  }
+  .highlightControls button{
+    width:44px;
+    height:44px;
   }
   .highlightsTrack{
     grid-auto-columns:86vw;
@@ -664,8 +701,14 @@ html,body{margin:0;padding:0}
 
 <section class="highlights" aria-label="82TRADE highlights">
   <div class="highlightsHead">
-    <p class="kicker">82TRADE</p>
-    <h2>行情分析、公開課程、學員交流。</h2>
+    <div>
+      <p class="kicker">82TRADE</p>
+      <h2>行情分析、公開課程、學員交流。</h2>
+    </div>
+    <div class="highlightControls" aria-label="Highlights controls">
+      <button type="button" data-highlight-dir="-1" aria-label="上一個 highlight">←</button>
+      <button type="button" data-highlight-dir="1" aria-label="下一個 highlight">→</button>
+    </div>
   </div>
   <div class="highlightsTrack">
     <article class="highlightCard">
@@ -784,6 +827,18 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
   tl.to(frame,{width:"100vw",height:"100vh",borderRadius:0,ease:"none"});
   return()=>tl.kill();
 });
+
+document.querySelectorAll("[data-highlight-dir]").forEach((button)=>{
+  button.addEventListener("click",()=>{
+    const track=document.querySelector(".highlightsTrack");
+    if(!track)return;
+    const dir=Number(button.getAttribute("data-highlight-dir"))||1;
+    const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const distance=Math.min(window.innerWidth*0.78,1120)+18;
+    track.scrollBy({left:dir*distance,behavior:reduced?"auto":"smooth"});
+  });
+});
+
 </script>
 </body>
 </html>
