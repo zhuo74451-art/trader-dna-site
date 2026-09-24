@@ -60,6 +60,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   background:rgba(255,255,255,.86);
   color:var(--cb-ink);
   backdrop-filter:blur(18px) saturate(1.15);
+  transition:
+    background-color 200ms var(--cb-global),
+    color 200ms var(--cb-global),
+    border-color 200ms var(--cb-global);
+}
+.header[data-theme="dark"]{
+  background:rgba(29,29,31,.88);
+  color:#f5f5f7;
+  border-bottom-color:rgba(255,255,255,.1);
+}
+.header[data-theme="brand"]{
+  background:rgba(0,82,255,.9);
+  color:#fff;
+  border-bottom-color:rgba(255,255,255,.14);
+}
+.header[data-theme="dark"] .nav,
+.header[data-theme="brand"] .nav{
+  color:rgba(245,245,247,.7);
+}
+.header[data-theme="dark"] .nav a:hover,
+.header[data-theme="dark"] .nav a:focus-visible,
+.header[data-theme="brand"] .nav a:hover,
+.header[data-theme="brand"] .nav a:focus-visible{
+  color:#fff;
+}
+.header[data-theme="dark"] .brand:focus-visible,
+.header[data-theme="dark"] .nav a:focus-visible,
+.header[data-theme="brand"] .brand:focus-visible,
+.header[data-theme="brand"] .nav a:focus-visible{
+  outline-color:#fff;
 }
 .brand{
   font-size:15px;
@@ -98,6 +128,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 .mobileMenu nav{
   position:absolute;
+  color:var(--cb-ink);
   top:calc(100% + 18px);
   right:0;
   width:min(78vw,300px);
@@ -1244,6 +1275,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 
 @media(prefers-reduced-motion:reduce){
+  .header{transition:none}
   .page [data-reveal]{
     opacity:1!important;
     transform:none!important;
@@ -1289,7 +1321,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 <body>
 
 <main class="page" id="root">
-<header class="header">
+<header class="header" data-theme="light">
   <a href="#master-top" class="brand">82TRADE</a>
   <nav class="nav" aria-label="主要導覽">
     <a href="https://82trade-academy.pages.dev/courses">Academy</a>
@@ -1328,7 +1360,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   </div>
 </section>
 
-<section id="real-world" class="takeover">
+<section id="real-world" class="takeover" data-header-theme="brand">
   <div class="takeoverLabel" aria-hidden="true"><span>REAL WORLD / 82TRADE</span><span>01</span></div>
   <div class="takeoverFrame">
     <img data-takeover-media src="./assets/classroom-14-gallery.webp" alt="82TRADE 真實課堂">
@@ -1349,7 +1381,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   </figure>
 </section>
 
-<section id="highlights" class="highlights" aria-label="82TRADE highlights">
+<section id="highlights" class="highlights" data-header-theme="dark" aria-label="82TRADE highlights">
   <div class="highlightsHead" data-reveal>
     <div>
       <p class="kicker">82TRADE / HIGHLIGHTS</p>
@@ -1442,7 +1474,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   </div>
 </section>
 
-<footer id="enter" class="participation">
+<footer id="enter" class="participation" data-header-theme="brand">
   <div class="closingLead" data-reveal>
     <p class="kicker">82TRADE / ENTER</p>
     <h2 aria-label="交易這條路，一起走。"><span>交易這條路</span><span>一起走</span></h2>
@@ -1469,6 +1501,30 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 gsap.registerPlugin(ScrollTrigger);
 
 const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const pageRoot=document.querySelector(".page");
+const fixedHeader=document.querySelector(".header");
+const themedSections=pageRoot
+  ? Array.from(pageRoot.querySelectorAll("[data-header-theme]"))
+  : [];
+let headerThemeFrame=0;
+const syncHeaderTheme=()=>{
+  if(!fixedHeader)return;
+  const sampleY=Math.max(1,Math.round(fixedHeader.getBoundingClientRect().height/2));
+  const active=themedSections.find((section)=>{
+    const rect=section.getBoundingClientRect();
+    return rect.top<=sampleY&&rect.bottom>sampleY;
+  });
+  fixedHeader.dataset.theme=active?.dataset.headerTheme||"light";
+  headerThemeFrame=0;
+};
+const requestHeaderThemeSync=()=>{
+  if(headerThemeFrame)return;
+  headerThemeFrame=requestAnimationFrame(syncHeaderTheme);
+};
+syncHeaderTheme();
+addEventListener("scroll",requestHeaderThemeSync,{passive:true});
+addEventListener("resize",requestHeaderThemeSync);
 const accent=document.querySelector("[data-hero-accent]");
 const meta=document.querySelector("[data-hero-meta]");
 const title=document.querySelector("[data-hero-title]");
