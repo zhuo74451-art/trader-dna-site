@@ -214,17 +214,23 @@ for (let i = 0; i < 8; i += 1) {
     }),
   );
 }
-const menuSummaryFocused = await keyboard.evaluate(() =>
-  document.activeElement?.matches("summary") ?? false,
+await keyboard.focus("details.mobileMenu > summary");
+await keyboard.keyboard.press("Enter");
+await new Promise((r) => setTimeout(r, 100));
+const mobileMenuOpen = await keyboard.evaluate(
+  () => document.querySelector("details.mobileMenu")?.hasAttribute("open") ?? false,
 );
-if (menuSummaryFocused) {
-  await keyboard.keyboard.press("Enter");
-}
+await keyboard.keyboard.press("Tab");
+const menuFirstLink = await keyboard.evaluate(() => {
+  const el = document.activeElement;
+  return el instanceof HTMLAnchorElement
+    ? { text: el.textContent?.trim(), href: el.href }
+    : null;
+});
 diagnostics.keyboard = {
   focusSequence,
-  mobileMenuOpen: await keyboard.evaluate(
-    () => document.querySelector("details.mobileMenu")?.hasAttribute("open") ?? false,
-  ),
+  mobileMenuOpen,
+  menuFirstLink,
 };
 await keyboard.close();
 
