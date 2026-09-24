@@ -421,10 +421,40 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 .highlightControls{
   display:flex;
+  align-items:center;
   gap:10px;
   padding-bottom:6px;
 }
-.highlightControls button{
+.highlightPagination{
+  min-height:52px;
+  margin-right:8px;
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+.highlightPagination button{
+  width:4px;
+  height:4px;
+  padding:0;
+  border:0;
+  border-radius:4px;
+  background:#5b616e;
+  cursor:pointer;
+  transition:
+    width 300ms var(--cb-global),
+    background-color 200ms var(--cb-global),
+    transform 100ms var(--cb-global);
+}
+.highlightPagination button[data-active="true"]{
+  width:24px;
+  background:var(--cb-blue);
+}
+.highlightPagination button:active{transform:scale(.98)}
+.highlightPagination button:focus-visible{
+  outline:2px solid #fff;
+  outline-offset:4px;
+}
+.highlightControls>button{
   display:grid;
   place-items:center;
   border:0;
@@ -442,14 +472,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   color:#fff;
   font:600 18px/1 system-ui,sans-serif;
 }
-.highlightControls button:hover{background:#343840}
-.highlightControls button:active{transform:scale(.98)}
-.highlightControls button:disabled{
+.highlightControls>button:hover{background:#343840}
+.highlightControls>button:active{transform:scale(.98)}
+.highlightControls>button:disabled{
   opacity:.28;
   cursor:default;
   transform:none;
 }
-.highlightControls button:focus-visible{
+.highlightControls>button:focus-visible{
   outline:2px solid #fff;
   outline-offset:3px;
 }
@@ -1067,7 +1097,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   }
   .highlightsHead h2{font-size:clamp(46px,13vw,64px)}
   .highlightControls{justify-self:start}
-  .highlightControls button{width:46px;height:46px}
+  .highlightControls>button{width:46px;height:46px}
+  .highlightPagination{min-height:46px}
   .highlightsTrack{
     grid-auto-columns:86vw;
     gap:14px;
@@ -1182,7 +1213,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   .heroPrimary,
   .heroSecondary,
   .highlightCard,
-  .highlightControls button,
+  .highlightPagination button,
+  .highlightControls>button,
   .chapterAction,
   .dnaButton,
   .primaryDestinations a,
@@ -1285,6 +1317,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
       <h2>行情分析、公開課程、學員交流。</h2>
     </div>
     <div class="highlightControls" aria-label="Highlights controls">
+      <div class="highlightPagination" aria-label="Highlights pages">
+        <button type="button" data-highlight-page="0" data-active="true" aria-current="true" aria-label="前往 highlight 1"></button>
+        <button type="button" data-highlight-page="1" data-active="false" aria-label="前往 highlight 2"></button>
+        <button type="button" data-highlight-page="2" data-active="false" aria-label="前往 highlight 3"></button>
+        <button type="button" data-highlight-page="3" data-active="false" aria-label="前往 highlight 4"></button>
+      </div>
       <button type="button" data-highlight-dir="-1" aria-label="上一個 highlight" disabled>←</button>
       <button type="button" data-highlight-dir="1" aria-label="下一個 highlight">→</button>
     </div>
@@ -1433,6 +1471,7 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
 
 const track=document.querySelector(".highlightsTrack");
 const buttons=Array.from(document.querySelectorAll("[data-highlight-dir]"));
+const pagination=Array.from(document.querySelectorAll("[data-highlight-page]"));
 const cards=()=>track?Array.from(track.children).filter((node)=>node instanceof HTMLElement):[];
 const snap=(card)=>{
   if(!track)return 0;
@@ -1453,11 +1492,23 @@ const syncHighlights=()=>{
   if(!list.length)return;
   const index=currentIndex();
   list.forEach((card,i)=>card.dataset.active=String(i===index));
+  pagination.forEach((button,i)=>{
+    const active=i===index;
+    button.dataset.active=String(active);
+    if(active)button.setAttribute("aria-current","true");
+    else button.removeAttribute("aria-current");
+  });
   buttons.forEach((button)=>{
     const dir=Number(button.dataset.highlightDir)||1;
     button.disabled=dir<0?index===0:index===list.length-1;
   });
 };
+pagination.forEach((button)=>button.addEventListener("click",()=>{
+  const list=cards();
+  if(!track||!list.length)return;
+  const target=Math.max(0,Math.min(list.length-1,Number(button.dataset.highlightPage)||0));
+  track.scrollTo({left:snap(list[target]),behavior:reduce?"auto":"smooth"});
+}));
 buttons.forEach((button)=>button.addEventListener("click",()=>{
   const list=cards();
   if(!track||!list.length)return;
