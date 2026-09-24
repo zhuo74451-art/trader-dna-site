@@ -406,107 +406,45 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 
 .highlights{
-  padding:13vh 0 14vh;
+  padding:12vh 0 13vh;
   overflow:hidden;
-  background:#0a0b0d;
-  color:#fff;
+  background:#1d1d1f;
+  color:#f5f5f7;
 }
-.highlights .kicker{color:#8e96a3}
+.highlights .kicker{color:#86868b}
 .highlightsHead{
-  padding:0 4vw 56px;
+  padding:0 6.25vw 48px;
   display:grid;
   grid-template-columns:minmax(0,1fr) auto;
   gap:40px;
   align-items:end;
 }
 .highlightsHead h2{
-  max-width:1180px;
+  max-width:760px;
   margin:0;
-  font-size:clamp(50px,6.9vw,104px);
-  line-height:.91;
-  letter-spacing:-.058em;
+  font-size:clamp(44px,4.25vw,64px);
+  line-height:.98;
+  letter-spacing:-.045em;
   font-weight:560;
 }
-.highlightsHead h2 span{display:block}
-.highlightControls{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding-bottom:6px;
-}
-.highlightPagination{
-  width:max-content;
-  min-height:52px;
-  margin:24px auto 0;
-  padding:0 18px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  border-radius:999px;
-  background:#24272d;
-}
-.highlightPagination button{
-  width:4px;
-  height:4px;
-  padding:0;
-  border:0;
-  border-radius:4px;
-  background:#5b616e;
-  cursor:pointer;
-  transition:
-    width 300ms var(--cb-global),
-    background-color 200ms var(--cb-global),
-    transform 100ms var(--cb-global);
-}
-.highlightPagination button[data-active="true"]{
-  width:24px;
-  background:var(--cb-blue);
-}
-.highlightPagination button:active{transform:scale(.98)}
-.highlightPagination button:focus-visible{
-  outline:2px solid #fff;
-  outline-offset:4px;
-}
-.highlightControls>button{
-  display:grid;
-  place-items:center;
-  border:0;
-  border-radius:999px;
-  cursor:pointer;
-  transition:
-    transform 100ms var(--cb-global),
-    background-color 200ms var(--cb-global),
-    opacity 200ms var(--cb-global);
-}
-.highlightControls>button{
-  width:52px;
-  height:52px;
-  background:#24272d;
-  color:#fff;
-  font:600 18px/1 system-ui,sans-serif;
-}
-.highlightControls>button:hover{background:#343840}
-.highlightControls>button:active{transform:scale(.98)}
-.highlightControls>button:disabled{
-  opacity:.28;
-  cursor:default;
-  transform:none;
-}
-.highlightControls>button:focus-visible{
-  outline:2px solid #fff;
-  outline-offset:3px;
+.highlightsSummary{
+  margin:0 0 5px;
+  color:#a1a1a6;
+  font-size:15px;
+  line-height:1.4;
+  font-weight:520;
+  letter-spacing:-.01em;
 }
 .highlightsTrack{
   display:grid;
   grid-auto-flow:column;
-  grid-auto-columns:min(74vw,1080px);
-  gap:24px;
+  grid-auto-columns:min(87vw,1260px);
+  gap:20px;
   overflow-x:auto;
   overscroll-behavior-inline:contain;
   scroll-snap-type:inline mandatory;
-  scroll-padding-inline:4vw;
-  padding:0 4vw 18px;
+  scroll-padding-inline:6.25vw;
+  padding:0 6.25vw 18px;
   scrollbar-width:none;
   -webkit-overflow-scrolling:touch;
 }
@@ -516,8 +454,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   scroll-snap-align:start;
   scroll-snap-stop:always;
   min-width:0;
-  opacity:.62;
-  transform:scale(.985);
+  opacity:.78;
+  transform:scale(.992);
+  transform-origin:center;
   transition:
     opacity 300ms var(--cb-global),
     transform 300ms var(--cb-enter-expressive);
@@ -528,17 +467,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 .highlightMedia{
   position:relative;
-  aspect-ratio:16/9;
+  aspect-ratio:1.84/1;
   overflow:hidden;
-  border-radius:32px;
-  background:#111;
+  border-radius:28px;
+  background:#000;
 }
 .highlightMedia:after{
   content:"";
   position:absolute;
   inset:0;
   pointer-events:none;
-  background:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,0) 42%,rgba(0,0,0,.08));
+  background:linear-gradient(to bottom,rgba(0,0,0,.62),rgba(0,0,0,.04) 38%,rgba(0,0,0,.12));
 }
 .highlightMedia img{
   display:block;
@@ -547,22 +486,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   object-fit:cover;
   transition:transform 500ms var(--cb-enter-expressive);
 }
-.highlightCard:hover .highlightMedia img{transform:scale(1.018)}
+.highlightCard:hover .highlightMedia img{transform:scale(1.012)}
 .highlightMeta{
   position:absolute;
   z-index:2;
-  left:26px;
-  top:24px;
+  left:48px;
+  top:42px;
   right:auto;
   bottom:auto;
   display:grid;
   gap:10px;
   color:#fff;
   pointer-events:none;
-  text-shadow:0 2px 16px rgba(0,0,0,.5);
+  text-shadow:0 2px 18px rgba(0,0,0,.44);
 }
 .highlightMeta span{
-  max-width:140px;
+  max-width:160px;
   font-size:10px;
   line-height:1.35;
   font-weight:700;
@@ -571,10 +510,81 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 .highlightMeta h3{
   margin:0;
   text-align:left;
-  font-size:clamp(28px,3.5vw,56px);
-  line-height:.95;
-  letter-spacing:-.05em;
-  font-weight:560;
+  font-size:clamp(28px,2.4vw,38px);
+  line-height:.98;
+  letter-spacing:-.04em;
+  font-weight:600;
+}
+.highlightsFooter{
+  margin:18px 6.25vw 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+}
+.highlightPagination{
+  min-height:52px;
+  padding:0 18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  border-radius:999px;
+  background:#323235;
+}
+.highlightPagination button{
+  width:4px;
+  height:4px;
+  padding:0;
+  border:0;
+  border-radius:4px;
+  background:#8e8e93;
+  cursor:pointer;
+  transition:
+    width 300ms var(--cb-global),
+    background-color 200ms var(--cb-global),
+    transform 100ms var(--cb-global);
+}
+.highlightPagination button[data-active="true"]{
+  width:24px;
+  background:#f5f5f7;
+}
+.highlightPagination button:active{transform:scale(.98)}
+.highlightPagination button:focus-visible{
+  outline:2px solid #fff;
+  outline-offset:4px;
+}
+.highlightControls{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.highlightControls>button{
+  width:52px;
+  height:52px;
+  display:grid;
+  place-items:center;
+  border:0;
+  border-radius:999px;
+  background:#323235;
+  color:#fff;
+  font:600 18px/1 system-ui,sans-serif;
+  cursor:pointer;
+  transition:
+    transform 100ms var(--cb-global),
+    background-color 200ms var(--cb-global),
+    opacity 200ms var(--cb-global);
+}
+.highlightControls>button:hover{background:#424245}
+.highlightControls>button:active{transform:scale(.98)}
+.highlightControls>button:disabled{
+  opacity:.28;
+  cursor:default;
+  transform:none;
+}
+.highlightControls>button:focus-visible{
+  outline:2px solid #fff;
+  outline-offset:3px;
 }
 
 .productChapter{
@@ -625,7 +635,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     transform 100ms var(--cb-global),
     background-color 200ms var(--cb-global);
 }
-.page .page .chapterAction{color:#fff}
 .chapterAction:hover{background:#0046da}
 .chapterAction:active{transform:scale(.98)}
 .chapterAction:focus-visible{
@@ -1100,24 +1109,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     font-size:7px;
   }
 
-  .highlights{padding:10vh 0 11vh}
+  .highlights{padding:9vh 0 10vh}
   .highlightsHead{
-    padding:0 20px 34px;
+    padding:0 20px 30px;
     grid-template-columns:1fr;
-    gap:24px;
+    gap:12px;
   }
   .highlightsHead h2{
     max-width:350px;
-    font-size:clamp(32px,8.4vw,38px);
-    line-height:.97;
-    letter-spacing:-.042em;
+    font-size:clamp(38px,10.5vw,48px);
+    line-height:.98;
+    letter-spacing:-.045em;
   }
-  .highlightControls{justify-self:start}
-  .highlightControls>button{width:46px;height:46px}
-  .highlightPagination{
-    min-height:46px;
-    margin-top:18px;
-    padding-inline:16px;
+  .highlightsSummary{
+    max-width:330px;
+    margin:0;
+    font-size:13px;
   }
   .highlightsTrack{
     grid-auto-columns:86vw;
@@ -1125,16 +1132,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     scroll-padding-inline:20px;
     padding:0 20px 14px;
   }
-  .highlightMedia{border-radius:22px}
+  .highlightMedia{
+    aspect-ratio:1.42/1;
+    border-radius:22px;
+  }
   .highlightMeta{
-    left:16px;
-    top:14px;
-    right:auto;
-    bottom:auto;
+    left:20px;
+    top:18px;
     gap:7px;
   }
   .highlightMeta span{font-size:7px}
   .highlightMeta h3{font-size:26px}
+  .highlightsFooter{
+    margin:12px 20px 0;
+    justify-content:flex-start;
+  }
+  .highlightPagination{
+    min-height:46px;
+    padding-inline:16px;
+  }
+  .highlightControls>button{width:46px;height:46px}
 
   .productChapter{
     min-height:auto;
@@ -1336,12 +1353,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   <div class="highlightsHead" data-reveal>
     <div>
       <p class="kicker">82TRADE / HIGHLIGHTS</p>
-      <h2 aria-label="行情分析、公開課程、學員交流。"><span>行情分析 / 公開課程</span><span>學員交流</span></h2>
+      <h2>看現場。</h2>
     </div>
-    <div class="highlightControls" aria-label="Highlights controls">
-      <button type="button" data-highlight-dir="-1" aria-label="上一個 highlight" disabled>←</button>
-      <button type="button" data-highlight-dir="1" aria-label="下一個 highlight">→</button>
-    </div>
+    <p class="highlightsSummary">行情分析 · 公開課程 · 學員交流</p>
   </div>
   <div class="highlightsTrack">
     <article class="highlightCard" data-active="true" data-reveal>
@@ -1361,11 +1375,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
       <div class="highlightMeta"><span>04 / LIVE</span><h3>課堂現場</h3></div>
     </article>
   </div>
-  <div class="highlightPagination" aria-label="Highlights pages">
-    <button type="button" data-highlight-page="0" data-active="true" aria-current="true" aria-label="前往 highlight 1"></button>
-    <button type="button" data-highlight-page="1" data-active="false" aria-label="前往 highlight 2"></button>
-    <button type="button" data-highlight-page="2" data-active="false" aria-label="前往 highlight 3"></button>
-    <button type="button" data-highlight-page="3" data-active="false" aria-label="前往 highlight 4"></button>
+  <div class="highlightsFooter">
+    <div class="highlightPagination" aria-label="Highlights pages">
+      <button type="button" data-highlight-page="0" data-active="true" aria-current="true" aria-label="前往 highlight 1"></button>
+      <button type="button" data-highlight-page="1" data-active="false" aria-label="前往 highlight 2"></button>
+      <button type="button" data-highlight-page="2" data-active="false" aria-label="前往 highlight 3"></button>
+      <button type="button" data-highlight-page="3" data-active="false" aria-label="前往 highlight 4"></button>
+    </div>
+    <div class="highlightControls" aria-label="Highlights controls">
+      <button type="button" data-highlight-dir="-1" aria-label="上一個 highlight" disabled>←</button>
+      <button type="button" data-highlight-dir="1" aria-label="下一個 highlight">→</button>
+    </div>
   </div>
 </section>
 
