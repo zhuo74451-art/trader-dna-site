@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <title>82TRADE — Coinbase × Apple Visual Master</title>
+<link rel="icon" href="data:,">
 <style>
 html,body{margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Arial,sans-serif}
@@ -222,10 +223,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   background:#fff;
   color:var(--cb-ink);
 }
+.page .heroPrimary{color:var(--cb-ink)}
 .heroSecondary{
   border:1px solid rgba(255,255,255,.42);
   color:#fff;
 }
+.page .heroSecondary{color:#fff}
 .heroPrimary:hover{background:#eef2ff}
 .heroSecondary:hover{background:rgba(255,255,255,.12)}
 .heroPrimary:active,
@@ -346,6 +349,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   letter-spacing:-.073em;
   font-weight:560;
 }
+.worldview h2 span,
+.highlightsHead h2 span,
+.participation h2 span{
+  display:block;
+}
 .worldviewBody{
   margin:42px 0 0;
   max-width:620px;
@@ -414,9 +422,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 .highlightsHead h2{
   max-width:1180px;
   margin:0;
-  font-size:clamp(54px,7.4vw,118px);
-  line-height:.9;
-  letter-spacing:-.065em;
+  font-size:clamp(50px,6.9vw,104px);
+  line-height:.91;
+  letter-spacing:-.058em;
   font-weight:560;
 }
 .highlightControls{
@@ -465,7 +473,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     background-color 200ms var(--cb-global),
     opacity 200ms var(--cb-global);
 }
-.highlightControls button{
+.highlightControls>button{
   width:52px;
   height:52px;
   background:#24272d;
@@ -612,6 +620,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     transform 100ms var(--cb-global),
     background-color 200ms var(--cb-global);
 }
+.page .page .chapterAction{color:#fff}
 .chapterAction:hover{background:#0046da}
 .chapterAction:active{transform:scale(.98)}
 .chapterAction:focus-visible{
@@ -770,6 +779,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     transform 100ms var(--cb-global),
     background-color 200ms var(--cb-global);
 }
+.page .dnaButton{color:#0a0a0a}
 .dnaButton span{font-size:16px;font-weight:500}
 .dnaButton:hover{background:#e7ecff}
 .dnaButton:active{transform:scale(.98)}
@@ -1095,7 +1105,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     grid-template-columns:1fr;
     gap:24px;
   }
-  .highlightsHead h2{font-size:clamp(46px,13vw,64px)}
+  .highlightsHead h2{
+    max-width:350px;
+    font-size:clamp(40px,11.2vw,50px);
+    line-height:.94;
+    letter-spacing:-.05em;
+  }
   .highlightControls{justify-self:start}
   .highlightControls>button{width:46px;height:46px}
   .highlightPagination{min-height:46px}
@@ -1300,7 +1315,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 <section id="worldview" class="worldview">
   <div class="worldviewCopy" data-reveal>
     <p class="kicker">82TRADE / WORLDVIEW</p>
-    <h2>從看懂，<br>到懂得做。</h2>
+    <h2 aria-label="從看懂，到懂得做。"><span>從看懂</span><span>到懂得做</span></h2>
     <p class="worldviewBody">行情分析、公開課程、學員交流。</p>
   </div>
   <figure class="worldviewMedia" data-reveal>
@@ -1314,7 +1329,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   <div class="highlightsHead" data-reveal>
     <div>
       <p class="kicker">82TRADE / HIGHLIGHTS</p>
-      <h2>行情分析、公開課程、學員交流。</h2>
+      <h2 aria-label="行情分析、公開課程、學員交流。"><span>行情分析 / 公開課程</span><span>學員交流</span></h2>
     </div>
     <div class="highlightControls" aria-label="Highlights controls">
       <div class="highlightPagination" aria-label="Highlights pages">
@@ -1401,7 +1416,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 <footer id="enter" class="participation">
   <div class="closingLead" data-reveal>
     <p class="kicker">82TRADE / ENTER</p>
-    <h2>交易這條路，<br>一起走。</h2>
+    <h2 aria-label="交易這條路，一起走。"><span>交易這條路</span><span>一起走</span></h2>
   </div>
   <div class="closingDestinations" data-reveal>
     <nav class="primaryDestinations" aria-label="82TRADE products">
