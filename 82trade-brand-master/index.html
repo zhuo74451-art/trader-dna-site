@@ -311,9 +311,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 .chapterAction{
   justify-self:center;
-  padding:0 0 8px;
-  border-bottom:1px solid currentColor;
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  color:rgba(17,17,17,.62);
   font-size:13px;
+}
+.chapterAction:hover{color:#111}
+.chapterAction:focus-visible{
+  outline:2px solid #111;
+  outline-offset:4px;
 }
 .productObject{
   position:relative;
@@ -577,6 +584,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 .closingLead{
   align-self:start;
+  width:min(100%,820px);
   padding-top:2vh;
 }
 .participation h2{
@@ -587,6 +595,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 .closingDestinations{
   align-self:end;
+  justify-self:end;
+  width:min(100%,720px);
   padding-bottom:7vh;
 }
 .primaryDestinations{
@@ -828,6 +838,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   }
 }
 @media(prefers-reduced-motion:reduce){
+  .highlightControls button,
+  .videoControl{
+    transition:none;
+  }
   .takeover{
     min-height:auto;
     padding:8vh clamp(20px,5vw,72px) 12vh;
