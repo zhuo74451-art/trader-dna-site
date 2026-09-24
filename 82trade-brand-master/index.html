@@ -423,8 +423,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   gap:10px;
   padding-bottom:6px;
 }
-.highlightControls button,
-.videoControl{
+.highlightControls button{
   display:grid;
   place-items:center;
   border:0;
@@ -443,15 +442,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   font:600 18px/1 system-ui,sans-serif;
 }
 .highlightControls button:hover{background:#343840}
-.highlightControls button:active,
-.videoControl:active{transform:scale(.98)}
+.highlightControls button:active{transform:scale(.98)}
 .highlightControls button:disabled{
   opacity:.28;
   cursor:default;
   transform:none;
 }
-.highlightControls button:focus-visible,
-.videoControl:focus-visible{
+.highlightControls button:focus-visible{
   outline:2px solid #fff;
   outline-offset:3px;
 }
@@ -498,31 +495,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   pointer-events:none;
   background:linear-gradient(to bottom,rgba(0,0,0,.08),rgba(0,0,0,0) 45%,rgba(0,0,0,.42));
 }
-.highlightMedia img,
-.highlightMedia video{
+.highlightMedia img{
   display:block;
   width:100%;
   height:100%;
   object-fit:cover;
   transition:transform 500ms var(--cb-enter-expressive);
 }
-.highlightCard:hover .highlightMedia img,
-.highlightCard:hover .highlightMedia video{transform:scale(1.018)}
-.highlightMedia video{background:#050505}
-.videoControl{
-  position:absolute;
-  z-index:3;
-  right:18px;
-  bottom:18px;
-  width:50px;
-  height:50px;
-  background:rgba(255,255,255,.92);
-  color:#111;
-  font:700 15px/1 system-ui,sans-serif;
-  backdrop-filter:blur(12px);
-  box-shadow:0 8px 28px rgba(0,0,0,.18);
-}
-.videoControl:hover{background:#fff}
+.highlightCard:hover .highlightMedia img{transform:scale(1.018)}
 .highlightMeta{
   position:absolute;
   z-index:2;
@@ -1090,12 +1070,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     padding:0 20px 14px;
   }
   .highlightMedia{border-radius:22px}
-  .videoControl{
-    right:12px;
-    bottom:12px;
-    width:44px;
-    height:44px;
-  }
   .highlightMeta{
     left:16px;
     right:64px;
@@ -1201,13 +1175,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   .heroSecondary,
   .highlightCard,
   .highlightControls button,
-  .videoControl,
   .chapterAction,
   .dnaButton,
   .primaryDestinations a,
   .worldviewMedia img,
   .highlightMedia img,
-  .highlightMedia video,
   .academyCourseGrid img,
   .registerFrame{
     transition:none!important;
@@ -1311,14 +1283,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   </div>
   <div class="highlightsTrack">
     <article class="highlightCard" data-active="true" data-reveal>
-      <div class="highlightMedia">
-        <video id="market-highlight-video" src="https://raw.githubusercontent.com/kaiyn-capital/kaiyn-website/787cf854e0faeedf9e1b43bf096f6fcbc15d7eef/public/video/trading.mp4" muted playsinline preload="metadata"></video>
-        <button id="market-video-control" type="button" class="videoControl" aria-label="播放行情影片">▶</button>
-      </div>
+      <div class="highlightMedia"><img src="./assets/classroom-11-gallery.webp" alt="82TRADE 市場判斷課堂"></div>
       <div class="highlightMeta"><span>01 / MARKET</span><h3>行情分析</h3></div>
     </article>
     <article class="highlightCard" data-active="false" data-reveal>
-      <div class="highlightMedia"><img src="./assets/classroom-11-gallery.webp" alt="82TRADE 公開課程現場"></div>
+      <div class="highlightMedia"><img src="./assets/classroom-08-gallery.webp" alt="82TRADE 公開課程現場"></div>
       <div class="highlightMeta"><span>02 / ACADEMY</span><h3>公開課程</h3></div>
     </article>
     <article class="highlightCard" data-active="false" data-reveal>
