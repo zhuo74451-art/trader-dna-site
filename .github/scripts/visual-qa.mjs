@@ -258,7 +258,7 @@ await captureReference("https://www.coinbase.com/onchain", "ref-coinbase", [
 ]);
 
 await captureReference("https://www.apple.com/macbook-pro/", "ref-apple", [
-  ["hero-copy", "Fast runs in the family."],
+  ["highlights", "Get the highlights."],
   ["performance", "Pick your quick."],
 ]);
 
