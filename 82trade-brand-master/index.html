@@ -1462,23 +1462,7 @@ if(track){
   syncHighlights();
 }
 
-const marketVideo=document.getElementById("market-highlight-video");
-const videoControl=document.getElementById("market-video-control");
-if(marketVideo&&videoControl){
-  const sync=()=>{
-    const playing=!marketVideo.paused&&!marketVideo.ended;
-    videoControl.textContent=playing?"Ⅱ":"▶";
-    videoControl.setAttribute("aria-label",playing?"暫停行情影片":"播放行情影片");
-  };
-  videoControl.addEventListener("click",async()=>{
-    if(marketVideo.paused){try{await marketVideo.play()}catch(_err){}}
-    else marketVideo.pause();
-    sync();
-  });
-  marketVideo.addEventListener("play",sync);
-  marketVideo.addEventListener("pause",sync);
-  marketVideo.addEventListener("ended",sync);
-}
+
 </script>
 </body>
 </html>
