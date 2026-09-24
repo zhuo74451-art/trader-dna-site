@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "82trade-brand-master/**"
+      - ".github/scripts/visual-qa.mjs"
       - ".github/workflows/visual-qa.yml"
 
 permissions:
@@ -12,9 +13,15 @@ permissions:
 jobs:
   snapshots:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install QA runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+          npm install --no-save puppeteer-core@24.24.0
 
       - name: Start local preview
         run: |
@@ -35,44 +42,18 @@ jobs:
           echo "path=$BROWSER" >> "$GITHUB_OUTPUT"
           "$BROWSER" --version
 
-      - name: Capture desktop and mobile scene states
-        shell: bash
+      - name: Capture static, motion, mobile, and interaction states
         env:
           BROWSER: ${{ steps.browser.outputs.path }}
-        run: |
-          set -euo pipefail
-          mkdir -p qa-snapshots
-          BASE="http://127.0.0.1:4173/82trade-brand-master/"
-          capture () {
-            local name="$1"
-            local url="$2"
-            local size="$3"
-            "$BROWSER"               --headless=new               --no-sandbox               --disable-gpu               --hide-scrollbars               --run-all-compositor-stages-before-draw               --virtual-time-budget=2200               --window-size="$size"               --screenshot="qa-snapshots/$name.png"               "$url"
-          }
+        run: node .github/scripts/visual-qa.mjs
 
-          capture hero-desktop "$BASE#master-top" "1440,900"
-          capture real-world-desktop "$BASE#real-world" "1440,900"
-          capture worldview-desktop "$BASE#worldview" "1440,900"
-          capture highlights-desktop "$BASE#highlights" "1440,900"
-          capture academy-desktop "$BASE#academy" "1440,900"
-          capture trader-dna-desktop "$BASE#trader-dna" "1440,900"
-          capture enter-desktop "$BASE#enter" "1440,900"
-
-          capture hero-mobile "$BASE#master-top" "390,844"
-          capture worldview-mobile "$BASE#worldview" "390,844"
-          capture highlights-mobile "$BASE#highlights" "390,844"
-          capture academy-mobile "$BASE#academy" "390,844"
-          capture trader-dna-mobile "$BASE#trader-dna" "390,844"
-
-          "$BROWSER"             --headless=new             --no-sandbox             --disable-gpu             --hide-scrollbars             --force-prefers-reduced-motion=reduce             --run-all-compositor-stages-before-draw             --virtual-time-budget=1200             --window-size="1440,900"             --screenshot="qa-snapshots/hero-reduced-motion.png"             "$BASE#master-top"
-
-          file qa-snapshots/*.png
-          ls -lh qa-snapshots
+      - name: Print diagnostics
+        run: cat qa-snapshots/diagnostics.json
 
       - name: Upload QA snapshots
         uses: actions/upload-artifact@v4
         with:
           name: 82trade-visual-qa
-          path: qa-snapshots/*.png
+          path: qa-snapshots/*
           if-no-files-found: error
           retention-days: 7
