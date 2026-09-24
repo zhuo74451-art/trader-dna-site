@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>82TRADE — Apple × Coinbase Master / Visual V2</title>
+<title>82TRADE — Apple × Coinbase Donor Master</title>
 <style>
 html,body{margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Arial,sans-serif}
 .page{
   min-height:100vh;
   overflow-x:clip;
-  background:#f3f1eb;
-  color:#0a0a0a;
+  background:#f5f5f7;
+  color:#090909;
   font-family:Geist,'Noto Sans TC',sans-serif;
 }
 .page *{box-sizing:border-box}
@@ -20,347 +20,254 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 .header{
   position:fixed;
   inset:0 0 auto;
-  z-index:120;
-  height:58px;
+  z-index:80;
+  height:72px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 clamp(20px,4vw,64px);
-  color:#fff;
-  background:transparent;
-  mix-blend-mode:difference;
-  pointer-events:none;
+  padding:0 4.5vw;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  background:rgba(5,5,5,.78);
+  color:#f0eee7;
+  backdrop-filter:blur(14px);
 }
-.header a,
-.header summary{pointer-events:auto}
 .brand{
   font-size:15px;
-  font-weight:880;
+  font-weight:850;
   letter-spacing:-.055em;
 }
 .nav{
   display:flex;
-  align-items:center;
   gap:28px;
-  font-size:11px;
-  font-weight:620;
-  letter-spacing:.01em;
+  font-size:12px;
+  color:rgba(240,238,231,.68);
 }
-.nav a{
-  position:relative;
-  padding:8px 0;
-}
-.nav a:after{
-  content:"";
-  position:absolute;
-  left:0;
-  right:100%;
-  bottom:2px;
-  height:1px;
-  background:currentColor;
-  transition:right .28s ease;
-}
-.nav a:hover:after,
-.nav a:focus-visible:after{right:0}
-.nav a:focus-visible,
-.brand:focus-visible{
+.nav a:hover,
+.nav a:focus-visible{color:#fff}
+.brand:focus-visible,
+.nav a:focus-visible{
   outline:2px solid currentColor;
-  outline-offset:5px;
+  outline-offset:4px;
 }
 .mobileMenu{
   display:none;
   position:relative;
-  pointer-events:auto;
 }
 .mobileMenu summary{
   list-style:none;
   cursor:pointer;
-  font-size:12px;
-  font-weight:700;
+  font-size:11px;
+  color:rgba(240,238,231,.82);
 }
 .mobileMenu summary::-webkit-details-marker{display:none}
 .mobileMenu summary:focus-visible{
-  outline:2px solid currentColor;
+  outline:2px solid #fff;
   outline-offset:4px;
 }
 .mobileMenu nav{
   position:absolute;
-  top:calc(100% + 14px);
+  top:calc(100% + 18px);
   right:0;
-  width:min(78vw,290px);
-  padding:10px 18px 14px;
+  width:min(76vw,280px);
+  padding:10px 18px 16px;
   display:grid;
   color:#111;
-  background:rgba(247,246,242,.97);
+  background:rgba(245,245,247,.97);
   border:1px solid rgba(0,0,0,.08);
-  box-shadow:0 20px 70px rgba(0,0,0,.18);
+  box-shadow:0 18px 54px rgba(0,0,0,.14);
   backdrop-filter:blur(16px);
-  mix-blend-mode:normal;
 }
 .mobileMenu nav a{
   padding:14px 0;
-  border-bottom:1px solid rgba(0,0,0,.1);
+  border-bottom:1px solid rgba(0,0,0,.09);
   font-size:14px;
 }
 .mobileMenu nav a:last-child{border-bottom:0}
-
-.heroSequence{
-  position:relative;
-  height:230svh;
-  background:#f3f1eb;
-}
-.heroStage{
-  position:sticky;
-  top:0;
-  height:100svh;
-  overflow:hidden;
-  isolation:isolate;
-  background:#f3f1eb;
-}
-.heroMicro{
-  position:absolute;
-  z-index:5;
-  left:clamp(20px,4vw,64px);
-  right:clamp(20px,4vw,64px);
-  top:86px;
-  display:flex;
-  justify-content:space-between;
-  gap:24px;
+.kicker{
+  margin:0 0 18px;
   font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:9px;
+  font-size:10px;
   font-weight:700;
-  letter-spacing:.16em;
+  letter-spacing:.18em;
 }
-.heroTitle{
-  position:absolute;
-  z-index:4;
-  inset:18vh clamp(20px,4vw,64px) auto;
-  margin:0;
-  pointer-events:none;
-}
-.heroTitle span{
-  display:block;
-  width:max-content;
-  max-width:100%;
-  font-size:clamp(88px,15.4vw,270px);
-  line-height:.76;
-  letter-spacing:-.09em;
-  font-weight:900;
-  will-change:transform,opacity;
-}
-.heroTitle span:last-child{
-  margin-left:auto;
-}
-.heroMedia{
-  position:absolute;
-  z-index:2;
-  left:50%;
-  top:50%;
-  width:34vw;
-  height:34vh;
+.hero{
+  position:relative;
+  min-height:100svh;
   overflow:hidden;
-  border-radius:28px;
-  transform:translate(-50%,-50%);
-  background:#111;
-  box-shadow:0 30px 120px rgba(0,0,0,.16);
-  will-change:width,height,border-radius;
+  background:#020202;
+  color:#fff;
 }
-.heroMedia img{
-  display:block;
+.heroBg{
+  position:absolute;
+  inset:0;
   width:100%;
   height:100%;
   object-fit:cover;
   object-position:center;
-  will-change:transform;
+  transform-origin:center;
 }
-.heroMediaShade{
+.heroShade{
   position:absolute;
   inset:0;
-  background:linear-gradient(180deg,transparent 52%,rgba(0,0,0,.48));
-  pointer-events:none;
+  background:rgba(0,0,0,.34);
 }
-.heroMediaLabel{
+.heroMeta{
   position:absolute;
-  left:18px;
-  right:18px;
-  bottom:16px;
+  top:116px;
+  left:4.5vw;
+  right:4.5vw;
   display:flex;
   justify-content:space-between;
-  gap:18px;
-  color:#fff;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:8px;
-  font-weight:700;
-  letter-spacing:.14em;
-}
-.heroCopy{
-  position:absolute;
-  z-index:5;
-  left:clamp(20px,4vw,64px);
-  bottom:8vh;
-  width:min(520px,42vw);
-  margin:0;
-  font-size:clamp(20px,2vw,30px);
-  line-height:1.45;
-  letter-spacing:-.025em;
-  will-change:transform,opacity;
-}
-.heroScroll{
-  position:absolute;
-  z-index:5;
-  right:clamp(20px,4vw,64px);
-  bottom:7vh;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:8px;
-  letter-spacing:.16em;
-}
-.heroScroll i{
-  display:block;
-  width:46px;
-  height:1px;
-  background:currentColor;
-}
-
-.manifesto{
-  position:relative;
-  z-index:3;
-  padding:12vh clamp(20px,5vw,76px) 14vh;
-  background:#090909;
-  color:#f4f0e7;
-}
-.manifestoIntro{
-  display:grid;
-  grid-template-columns:minmax(160px,.55fr) minmax(0,1.45fr);
-  gap:6vw;
-  padding-bottom:10vh;
-  border-bottom:1px solid rgba(255,255,255,.14);
-}
-.manifestoIntro p{
-  margin:0;
-  color:#7c7a75;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:9px;
-  font-weight:700;
-  letter-spacing:.16em;
-}
-.manifestoIntro span{
-  max-width:880px;
-  font-size:clamp(26px,3.3vw,54px);
-  line-height:1.15;
-  letter-spacing:-.04em;
-}
-.manifestoRows article{
-  display:grid;
-  grid-template-columns:64px minmax(0,1fr) minmax(260px,.62fr);
-  align-items:center;
-  gap:34px;
-  min-height:24vh;
-  border-bottom:1px solid rgba(255,255,255,.14);
-}
-.manifestoRows article>span{
-  color:#5a5956;
+  gap:24px;
+  color:rgba(255,255,255,.65);
   font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
   font-size:10px;
-  letter-spacing:.14em;
-}
-.manifestoRows h2{
-  margin:0;
-  font-size:clamp(64px,9vw,150px);
-  line-height:.82;
-  letter-spacing:-.08em;
-  font-weight:760;
-  transition:transform .35s ease,color .35s ease;
-}
-.manifestoRows p{
-  margin:0;
-  color:#9f9c94;
-  font-size:clamp(16px,1.4vw,21px);
-  line-height:1.7;
-}
-@media(hover:hover) and (pointer:fine){
-  .manifestoRows article:hover h2{
-    transform:translateX(18px);
-    color:#fff;
-  }
-  .manifestoRows article:hover>span{color:#52c4df}
-}
-
-.highlights{
-  padding:13vh 0 15vh;
-  overflow:hidden;
-  background:#0d0d0d;
-  color:#f4f0e7;
-}
-.highlightsHead{
-  padding:0 clamp(20px,5vw,76px) 56px;
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:44px;
-  align-items:end;
-}
-.highlightsHead p{
-  margin:0 0 22px;
-  color:#77746e;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:9px;
-  font-weight:700;
   letter-spacing:.16em;
 }
-.highlightsHead h2{
-  max-width:1160px;
+.heroTitleMask{
+  position:absolute;
+  left:4.5vw;
+  right:4.5vw;
+  bottom:15vh;
+  overflow:hidden;
+}
+.heroTitle{
   margin:0;
-  font-size:clamp(56px,7.8vw,124px);
-  line-height:.88;
-  letter-spacing:-.07em;
-  font-weight:800;
+  font-size:clamp(74px,14vw,260px);
+  line-height:.78;
+  letter-spacing:-.085em;
+  font-weight:900;
+  white-space:nowrap;
+}
+.heroLine{
+  position:absolute;
+  left:4.5vw;
+  bottom:6.5vh;
+  margin:0;
+  max-width:540px;
+  font-size:clamp(15px,1.25vw,20px);
+  line-height:1.5;
+  color:rgba(255,255,255,.76);
+}
+.scrollCue{
+  position:absolute;
+  right:4.5vw;
+  bottom:6vh;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:9px;
+  letter-spacing:.22em;
+  color:rgba(255,255,255,.55);
+}
+.scrollCue i{
+  display:block;
+  width:54px;
+  height:1px;
+  background:rgba(255,255,255,.38);
+}
+.takeover{
+  position:relative;
+  z-index:0;
+  min-height:100svh;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:#f5f5f7;
+}
+.takeoverFrame{
+  position:relative;
+  width:min(66vw,1120px);
+  height:min(64vh,720px);
+  overflow:hidden;
+  border-radius:22px;
+  background:#111;
+}
+.takeoverFrame img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.worldview{
+  min-height:92svh;
+  padding:12vh clamp(20px,5vw,72px);
+  display:grid;
+  grid-template-columns:.65fr 1.35fr;
+  align-content:center;
+  gap:28px 6vw;
+  background:#090909;
+  color:#f5f2e9;
+}
+.worldview .kicker{align-self:start}
+.worldview h2{
+  margin:0;
+  font-size:clamp(68px,10vw,170px);
+  line-height:.84;
+  letter-spacing:-.075em;
+  font-weight:840;
+}
+.highlights{
+  padding:12vh 0 14vh;
+  overflow:hidden;
+  background:#090909;
+  color:#f5f2e9;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.highlightsHead{
+  padding:0 clamp(20px,5vw,72px) 54px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:40px;
+  align-items:end;
+}
+.highlightsHead h2{
+  max-width:1120px;
+  margin:0;
+  font-size:clamp(54px,7.4vw,118px);
+  line-height:.9;
+  letter-spacing:-.065em;
+  font-weight:820;
 }
 .highlightControls{
   display:flex;
-  gap:9px;
-  padding-bottom:2px;
+  gap:10px;
+  padding-bottom:4px;
 }
 .highlightControls button{
-  width:50px;
-  height:50px;
+  width:48px;
+  height:48px;
   display:grid;
   place-items:center;
-  border:1px solid rgba(255,255,255,.18);
+  border:0;
   border-radius:999px;
-  background:transparent;
+  background:#2b2b2b;
   color:#fff;
   font:600 18px/1 system-ui,sans-serif;
   cursor:pointer;
-  transition:background-color .2s ease,color .2s ease,transform .18s ease;
+  transition:background-color .18s ease,transform .18s ease;
 }
-.highlightControls button:hover{
-  background:#f4f0e7;
-  color:#111;
-}
+.highlightControls button:hover{background:#3a3a3a}
 .highlightControls button:active{transform:scale(.96)}
 .highlightControls button:disabled{
-  opacity:.25;
+  opacity:.32;
   cursor:default;
-  background:transparent;
-  color:#fff;
   transform:none;
 }
 .highlightControls button:focus-visible{
   outline:2px solid #fff;
-  outline-offset:4px;
+  outline-offset:3px;
 }
 .highlightsTrack{
   display:grid;
   grid-auto-flow:column;
-  grid-auto-columns:min(72vw,1060px);
+  grid-auto-columns:min(78vw,1120px);
   gap:18px;
   overflow-x:auto;
   overscroll-behavior-inline:contain;
   scroll-snap-type:inline mandatory;
-  scroll-padding-inline:clamp(20px,5vw,76px);
-  padding:0 clamp(20px,5vw,76px) 16px;
+  scroll-padding-inline:clamp(20px,5vw,72px);
+  padding:0 clamp(20px,5vw,72px) 18px;
   scrollbar-width:none;
   -webkit-overflow-scrolling:touch;
 }
@@ -374,7 +281,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   position:relative;
   aspect-ratio:16/9;
   overflow:hidden;
-  background:#161616;
+  border-radius:28px;
+  background:#111;
 }
 .highlightMedia img,
 .highlightMedia video{
@@ -382,564 +290,474 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   width:100%;
   height:100%;
   object-fit:cover;
-  transition:transform .7s cubic-bezier(.2,.7,.2,1),filter .35s ease;
 }
-.highlightMedia img{
-  filter:saturate(.86) contrast(1.02);
-}
-@media(hover:hover) and (pointer:fine){
-  .highlightCard:hover .highlightMedia img{
-    transform:scale(1.025);
-    filter:saturate(1) contrast(1.04);
-  }
-}
-.highlightOverlay{
-  position:absolute;
-  inset:0;
-  padding:18px;
-  display:flex;
-  align-items:flex-start;
-  justify-content:flex-start;
-  pointer-events:none;
-  background:linear-gradient(180deg,rgba(0,0,0,.32),transparent 28%);
-}
-.highlightOverlay span{
-  color:#fff;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:8px;
-  font-weight:700;
-  letter-spacing:.15em;
+.highlightMedia video{
+  background:#050505;
 }
 .videoControl{
   position:absolute;
   right:18px;
   bottom:18px;
-  width:50px;
-  height:50px;
+  width:48px;
+  height:48px;
   display:grid;
   place-items:center;
   border:0;
   border-radius:999px;
-  background:rgba(247,246,242,.92);
+  background:rgba(245,245,247,.9);
   color:#111;
   font:700 15px/1 system-ui,sans-serif;
   cursor:pointer;
-  backdrop-filter:blur(12px);
-  box-shadow:0 8px 30px rgba(0,0,0,.2);
+  backdrop-filter:blur(14px);
+  box-shadow:0 8px 28px rgba(0,0,0,.18);
   transition:transform .18s ease,background-color .18s ease;
 }
 .videoControl:hover{background:#fff}
 .videoControl:active{transform:scale(.96)}
 .videoControl:focus-visible{
   outline:2px solid #fff;
-  outline-offset:4px;
+  outline-offset:3px;
 }
 .highlightMeta{
-  display:grid;
-  grid-template-columns:minmax(160px,.32fr) minmax(0,1fr);
-  gap:28px;
-  align-items:start;
-  padding-top:18px;
-  border-top:1px solid rgba(255,255,255,.14);
-  margin-top:14px;
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:24px;
+  padding:18px 2px 0;
+  border-top:1px solid rgba(255,255,255,.12);
+  margin-top:16px;
 }
 .highlightMeta span{
-  font-size:clamp(24px,2.5vw,38px);
-  line-height:1;
-  letter-spacing:-.045em;
-}
-.highlightMeta p{
-  width:min(100%,520px);
-  margin:1px 0 0;
-  color:#8e8b84;
-  font-size:14px;
-  line-height:1.7;
-}
-
-.academyScene{
-  position:relative;
-  min-height:126svh;
-  padding:14vh clamp(20px,5vw,76px);
-  display:grid;
-  grid-template-columns:minmax(300px,.72fr) minmax(0,1.28fr);
-  gap:7vw;
-  align-items:center;
-  overflow:hidden;
-  background:#f3f1eb;
-  color:#101010;
-}
-.academyIntro{
-  position:relative;
-  z-index:4;
-  align-self:center;
-}
-.sceneEyebrow{
-  margin:0 0 24px;
+  color:rgba(245,242,233,.42);
   font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
   font-size:9px;
-  font-weight:700;
   letter-spacing:.16em;
 }
-.academyIntro h2,
-.dnaIntro h2{
+.highlightMeta h3{
   margin:0;
-  font-size:clamp(68px,8vw,132px);
-  line-height:.86;
-  letter-spacing:-.075em;
-  font-weight:820;
+  font-size:clamp(24px,2.8vw,42px);
+  line-height:1;
+  letter-spacing:-.045em;
+  font-weight:650;
 }
-.sceneCopy{
-  width:min(100%,570px);
-  margin:36px 0 0;
-  font-size:clamp(18px,1.65vw,24px);
-  line-height:1.65;
-  letter-spacing:-.02em;
+
+.productChapter{
+  min-height:110svh;
+  padding:13vh clamp(20px,5vw,72px);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:42px;
 }
-.sceneLink{
-  margin-top:34px;
-  min-height:48px;
+.academyChapter{
+  background:#f5f5f7;
+  color:#111;
+}
+.dnaChapter{
+  background:#fff;
+  color:#111;
+}
+.chapterHead{
+  width:min(100%,1480px);
+  margin-inline:auto;
+  display:grid;
+  grid-template-columns:1fr;
+  justify-items:center;
+  text-align:center;
+  gap:22px;
+}
+.chapterHead h2{
+  margin:0;
+  font-size:clamp(72px,11vw,168px);
+  line-height:.82;
+  letter-spacing:-.08em;
+  font-weight:850;
+}
+.chapterAction{
+  justify-self:center;
   display:inline-flex;
   align-items:center;
-  gap:28px;
-  border-bottom:1px solid rgba(0,0,0,.32);
+  min-height:28px;
+  color:rgba(17,17,17,.62);
   font-size:13px;
-  font-weight:680;
 }
-.sceneLink span{font-size:17px}
-.sceneLink:hover{border-bottom-color:#000}
-.sceneLink:focus-visible{
+.chapterAction:hover{color:#111}
+.chapterAction:focus-visible{
   outline:2px solid #111;
-  outline-offset:5px;
+  outline-offset:4px;
 }
-.academyStack{
+.productObject{
   position:relative;
-  z-index:3;
-  min-height:780px;
-}
-.academyCard{
-  position:absolute;
+  width:min(100%,1480px);
+  margin-inline:auto;
+  min-height:680px;
   overflow:hidden;
-  margin:0;
-  background:#0c0c0c;
-  box-shadow:0 28px 90px rgba(0,0,0,.15);
-  will-change:transform;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:44px;
+  box-shadow:0 40px 120px rgba(0,0,0,.12);
 }
-.academyCard img{
+.academyObject{
+  height:min(64vw,760px);
+  background:#090909;
+}
+.academySurface{
+  height:100%;
+  padding:0 34px 34px;
+  background:#090909;
+}
+.academySurfaceTop{
+  height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  border-bottom:1px solid rgba(255,255,255,.12);
+  color:rgba(245,242,233,.64);
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:9px;
+  letter-spacing:.14em;
+}
+.academyWordmark{
+  display:block;
+  width:min(220px,32vw);
+  height:auto;
+}
+.academyCourseGrid{
+  height:calc(100% - 72px);
+  padding-top:18px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) clamp(210px,18vw,300px);
+  gap:12px;
+}
+.academyCourseGrid figure{
+  margin:0;
+  min-width:0;
+  overflow:hidden;
+  background:#111;
+}
+.academyCourseGrid img{
   display:block;
   width:100%;
   height:100%;
   object-fit:cover;
 }
-.academyCard figcaption{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  padding:54px 18px 16px;
-  display:grid;
-  gap:5px;
-  color:#fff;
-  background:linear-gradient(180deg,transparent,rgba(0,0,0,.8));
+.academyCourseLead{
+  min-height:0;
 }
-.academyCard figcaption span{
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:7px;
-  letter-spacing:.14em;
+.academyCourseSide{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:12px;
 }
-.academyCard figcaption strong{
-  font-size:16px;
-  font-weight:620;
+.academyCourseSide figure{
+  aspect-ratio:16/9;
 }
-.academyLead{
-  width:min(66%,620px);
-  aspect-ratio:4/5;
-  left:4%;
-  top:4%;
-  z-index:3;
+.dnaObject{
+  background:#0a0a0a;
+  color:#f0eee8;
 }
-.academySecond{
-  width:min(45%,430px);
-  aspect-ratio:16/10;
-  right:2%;
-  top:13%;
-  z-index:2;
+.dnaScreen{
+  min-height:680px;
+  width:100%;
+  padding:0 42px 54px;
+  background:#0a0a0a;
+  color:#f0eee8;
 }
-.academyThird{
-  width:min(49%,470px);
-  aspect-ratio:16/10;
-  right:8%;
-  bottom:8%;
-  z-index:4;
-}
-.academyGhost{
-  position:absolute;
-  left:-.05em;
-  bottom:-.18em;
-  z-index:1;
-  color:rgba(0,0,0,.045);
-  font-size:clamp(180px,27vw,520px);
-  line-height:.72;
-  letter-spacing:-.095em;
-  font-weight:900;
-  white-space:nowrap;
-  user-select:none;
-}
-
-.dnaScene{
-  position:relative;
-  min-height:116svh;
-  padding:14vh clamp(20px,5vw,76px) 12vh;
-  display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(340px,.78fr);
-  gap:8vw;
+.dnaTopbar{
+  height:72px;
+  display:flex;
   align-items:center;
-  overflow:hidden;
-  background:#090909;
-  color:#f2eee5;
+  justify-content:space-between;
+  gap:24px;
+  border-bottom:1px solid #2a2926;
 }
-.dnaIntro{
-  position:relative;
-  z-index:4;
-  max-width:820px;
+.dnaBrand{
+  font-size:12px;
+  font-weight:850;
+  letter-spacing:.18em;
+  white-space:nowrap;
 }
-.dnaIntro h2 em{
-  color:#87837a;
-  font-style:normal;
+.dnaBrand span{
+  color:#77736b;
   font-weight:520;
 }
-.dnaIntro .sceneCopy{
-  color:#aaa69d;
+.dnaStatus{
+  color:#706d67;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:9px;
+  letter-spacing:.18em;
+}
+.dnaHero{
+  min-height:608px;
+  display:grid;
+  grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);
+  gap:7vw;
+  align-items:center;
+  padding:72px 0 70px;
+}
+.dnaHeroMain{max-width:760px}
+.dnaHero h3{
+  margin:0 0 34px;
+  font-size:clamp(58px,7.4vw,112px);
+  line-height:.91;
+  letter-spacing:-.065em;
+  font-weight:650;
+}
+.dnaHero h3 em{
+  color:#88847c;
+  font-style:normal;
+  font-weight:500;
+}
+.dnaHeroCopy{
+  max-width:660px;
+  margin:0 0 36px;
+  color:#b9b5ad;
+  font-size:clamp(17px,1.65vw,24px);
+  line-height:1.65;
+  letter-spacing:-.015em;
 }
 .dnaButton{
   width:max-content;
-  min-width:252px;
-  min-height:54px;
-  margin-top:38px;
+  min-width:238px;
+  min-height:52px;
   padding:0 18px;
   display:inline-flex;
   align-items:center;
   justify-content:space-between;
-  gap:36px;
-  background:#efe9dd;
+  gap:34px;
+  background:#e9e4d9;
   color:#0a0a0a;
-  border:1px solid #efe9dd;
+  border:1px solid #e9e4d9;
   font-size:12px;
   font-weight:760;
 }
-.dnaButton span{font-size:17px;font-weight:500}
-.dnaButton:hover{
-  background:#fff;
-  border-color:#fff;
-}
+.dnaButton span{font-size:16px;font-weight:500}
+.dnaButton:hover{background:#fff;border-color:#fff}
 .dnaButton:focus-visible{
   outline:2px solid #fff;
-  outline-offset:5px;
+  outline-offset:4px;
 }
 .dnaMeta{
-  margin-top:28px;
+  margin-top:30px;
   display:flex;
   flex-wrap:wrap;
-  gap:14px 26px;
+  gap:18px 28px;
   color:#66635d;
   font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:8px;
+  font-size:9px;
   letter-spacing:.14em;
 }
-.dnaArtifact{
-  position:relative;
-  z-index:3;
+.dnaHeroObject{
   justify-self:end;
-  width:min(100%,560px);
+  width:min(100%,500px);
+}
+.registerFrame{
+  position:relative;
   aspect-ratio:1/1;
   display:grid;
   place-items:center;
   overflow:hidden;
-  border:1px solid #3c3a36;
-  background:
-    radial-gradient(circle at 50% 50%,rgba(255,255,255,.035),transparent 46%),
-    #0d0d0c;
-  transform-style:preserve-3d;
-  will-change:transform;
+  border:1px solid #4b4943;
+  background:#0d0d0c;
 }
-.artifactAxisX,
-.artifactAxisY{
+.registerFrame:before,
+.registerFrame:after{
+  content:"";
   position:absolute;
-  background:#2b2a27;
+  background:#2a2926;
 }
-.artifactAxisX{left:0;right:0;top:50%;height:1px}
-.artifactAxisY{top:0;bottom:0;left:50%;width:1px}
-.artifactOrbit{
+.registerFrame:before{left:0;right:0;top:50%;height:1px}
+.registerFrame:after{top:0;bottom:0;left:50%;width:1px}
+.registerNo{
   position:absolute;
-  border:1px solid #33322f;
-  border-radius:50%;
-}
-.artifactOrbitOuter{inset:14%}
-.artifactOrbitInner{inset:28%}
-.artifactNo{
-  position:absolute;
-  left:18px;
-  top:17px;
+  left:17px;
+  top:16px;
   color:#77736b;
   font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:9px;
-  letter-spacing:.14em;
+  font-size:10px;
+  letter-spacing:.12em;
 }
-.artifactCoord{
+.registerCross{
   position:absolute;
-  right:18px;
-  bottom:17px;
-  color:#5f5b55;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:8px;
-  letter-spacing:.14em;
+  width:46%;
+  height:46%;
+  border:1px solid #383631;
+  transform:rotate(45deg);
 }
-.artifactCore{
+.registerCross:after{
+  content:"";
+  position:absolute;
+  inset:18%;
+  border:1px solid #2d2c28;
+}
+.registerCore{
   position:relative;
-  z-index:2;
-  padding:26px 22px;
+  z-index:1;
+  padding:20px 16px;
   text-align:center;
   background:#0d0d0c;
-  border:1px solid #3b3935;
-  box-shadow:0 0 0 18px rgba(13,13,12,.86);
+  border-left:1px solid #383631;
+  border-right:1px solid #383631;
 }
-.artifactCore b{
+.registerCore b{
   display:block;
-  margin-left:.18em;
-  font-size:clamp(54px,6vw,86px);
-  line-height:.84;
-  letter-spacing:.18em;
-  font-weight:620;
+  margin-left:.16em;
+  font-size:48px;
+  line-height:.9;
+  letter-spacing:.16em;
+  font-weight:600;
 }
-.artifactCore small{
+.registerCore small{
   display:block;
-  margin-top:15px;
+  margin-top:12px;
   color:#77736b;
   font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
   font-size:8px;
   letter-spacing:.16em;
 }
-.dnaGhost{
+.registerCoord{
   position:absolute;
-  left:-.04em;
-  right:0;
-  bottom:-.11em;
-  z-index:1;
-  color:transparent;
-  -webkit-text-stroke:1px rgba(255,255,255,.11);
-  font-size:clamp(150px,22vw,420px);
-  line-height:.72;
-  letter-spacing:-.095em;
-  font-weight:900;
-  white-space:nowrap;
-  user-select:none;
-}
-
-.participation{
-  position:relative;
-  min-height:100svh;
-  padding:13vh clamp(20px,5vw,76px) 0;
-  overflow:hidden;
-  background:#f3f1eb;
-  color:#111;
-}
-.closingTop{
-  display:grid;
-  grid-template-columns:minmax(140px,.32fr) minmax(0,1fr);
-  gap:5vw;
-  align-items:start;
-  padding-bottom:10vh;
-}
-.closingTop>span{
-  padding-top:10px;
+  right:15px;
+  bottom:15px;
+  color:#5e5b55;
   font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:9px;
-  font-weight:700;
-  letter-spacing:.16em;
+  font-size:8px;
+  letter-spacing:.13em;
 }
-.closingTop h2{
-  width:min(100%,1180px);
+.dnaHeroObject>p{
+  margin:14px 0 0;
+  color:#5e5b55;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:8px;
+  line-height:1.7;
+  letter-spacing:.12em;
+  text-align:right;
+}
+.participation{
+  min-height:100svh;
+  padding:12vh clamp(20px,5vw,72px) 0;
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);
+  gap:8vw;
+  align-content:end;
+  background:#090909;
+  color:#f5f2e9;
+  overflow:hidden;
+}
+.closingLead{
+  align-self:start;
+  width:min(100%,820px);
+  padding-top:2vh;
+}
+.participation h2{
   margin:0;
-  font-size:clamp(70px,9.7vw,164px);
-  line-height:.84;
-  letter-spacing:-.08em;
+  font-size:clamp(70px,9vw,150px);
+  line-height:.88;
+  letter-spacing:-.075em;
+}
+.closingDestinations{
+  align-self:end;
+  justify-self:end;
+  width:min(100%,720px);
+  padding-bottom:7vh;
 }
 .primaryDestinations{
   display:grid;
-  border-top:1px solid rgba(0,0,0,.22);
+  border-top:1px solid rgba(255,255,255,.2);
 }
 .primaryDestinations a{
-  min-height:126px;
+  min-height:112px;
   display:grid;
-  grid-template-columns:52px minmax(0,1fr) 120px 34px;
+  grid-template-columns:44px minmax(0,1fr) auto;
   align-items:center;
-  gap:24px;
-  border-bottom:1px solid rgba(0,0,0,.22);
-  transition:background-color .28s ease,color .28s ease,padding .28s ease;
+  gap:20px;
+  border-bottom:1px solid rgba(255,255,255,.2);
 }
-.primaryDestinations a>span{
-  padding-left:8px;
-  color:#77746e;
+.primaryDestinations span{
+  color:rgba(245,242,233,.42);
   font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
   font-size:9px;
   letter-spacing:.14em;
 }
 .primaryDestinations strong{
-  font-size:clamp(42px,5vw,80px);
-  line-height:.92;
-  letter-spacing:-.06em;
-  font-weight:720;
-}
-.primaryDestinations em{
-  font-style:normal;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:8px;
-  letter-spacing:.14em;
+  font-size:clamp(32px,3.6vw,58px);
+  line-height:1;
+  letter-spacing:-.055em;
+  font-weight:680;
 }
 .primaryDestinations b{
   font-size:24px;
   font-weight:400;
 }
-@media(hover:hover) and (pointer:fine){
-  .primaryDestinations a:hover{
-    padding-inline:18px;
-    background:#111;
-    color:#f3f1eb;
-  }
-  .primaryDestinations a:hover>span{color:#aaa69d}
+.primaryDestinations a:hover strong{
+  opacity:.68;
 }
 .primaryDestinations a:focus-visible,
 .finalLinks a:focus-visible{
-  outline:2px solid #111;
+  outline:2px solid #fff;
   outline-offset:5px;
 }
 .finalLinks{
-  margin-top:36px;
+  margin-top:34px;
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:0 26px;
-  border-top:1px solid rgba(0,0,0,.13);
+  grid-template-columns:1fr 1fr;
+  gap:0 28px;
+  border-top:1px solid rgba(255,255,255,.12);
 }
 .finalLinks a{
-  padding:18px 0;
-  border-bottom:1px solid rgba(0,0,0,.13);
-  color:#66635d;
+  padding:16px 0;
+  border-bottom:1px solid rgba(255,255,255,.12);
+  color:rgba(245,242,233,.68);
   font-size:12px;
 }
-.finalLinks a:hover{color:#111}
 .closingWordmark{
-  margin:13vh -.02em -.12em;
-  color:rgba(0,0,0,.08);
-  font-size:clamp(160px,24.5vw,470px);
+  grid-column:1/-1;
+  justify-self:center;
+  margin:8vh 0 -.11em;
+  font-size:clamp(150px,23vw,420px);
   line-height:.68;
-  letter-spacing:-.1em;
+  letter-spacing:-.095em;
   font-weight:900;
+  color:rgba(245,242,233,.12);
   white-space:nowrap;
-  text-align:center;
   user-select:none;
 }
-
 @media(max-width:900px){
-  .header{
-    height:64px;
-    color:#111;
-    background:rgba(243,241,235,.88);
-    border-bottom:1px solid rgba(0,0,0,.08);
-    backdrop-filter:blur(14px);
-    mix-blend-mode:normal;
-  }
   .nav{display:none}
   .mobileMenu{display:block}
-
-  .heroSequence{
-    height:auto;
+  .heroMeta{top:92px;left:20px;right:20px;font-size:8px}
+  .heroMeta span:last-child{display:none}
+  .heroTitleMask{left:20px;right:20px;bottom:22vh}
+  .heroTitle{font-size:clamp(58px,15.5vw,92px);line-height:.84;white-space:normal}
+  .heroLine{left:20px;right:20px;bottom:12vh;font-size:14px}
+  .scrollCue{right:20px;bottom:5vh}
+  .takeover{
+    min-height:auto;
+    padding:8vh 20px 12vh;
   }
-  .heroStage{
-    position:relative;
-    height:auto;
-    min-height:100svh;
-    padding:96px 20px 46px;
-    display:flex;
-    flex-direction:column;
-  }
-  .heroMicro{
-    position:static;
-    order:1;
-    margin-bottom:42px;
-    font-size:8px;
-  }
-  .heroMicro span:last-child{display:none}
-  .heroTitle{
-    position:static;
-    order:2;
-  }
-  .heroTitle span{
-    font-size:clamp(64px,20vw,108px);
-    line-height:.8;
-  }
-  .heroTitle span:last-child{margin-top:2px}
-  .heroMedia{
-    position:relative;
-    order:3;
-    left:auto;
-    top:auto;
+  .takeoverFrame{
     width:100%;
     height:auto;
-    aspect-ratio:4/5;
-    margin-top:34px;
-    border-radius:14px;
-    transform:none;
+    aspect-ratio:4/3;
+    border-radius:12px;
   }
-  .heroMediaLabel{
-    left:12px;
-    right:12px;
-    bottom:12px;
-    font-size:7px;
-  }
-  .heroCopy{
-    position:static;
-    order:4;
-    width:100%;
-    margin-top:26px;
-    font-size:20px;
-  }
-  .heroScroll{display:none}
-
-  .manifesto{
-    padding:10vh 20px 11vh;
-  }
-  .manifestoIntro{
+  .worldview{
+    min-height:82svh;
     grid-template-columns:1fr;
-    gap:22px;
-    padding-bottom:8vh;
   }
-  .manifestoIntro span{
-    font-size:32px;
-    line-height:1.2;
-  }
-  .manifestoRows article{
-    min-height:0;
-    grid-template-columns:32px minmax(0,1fr);
-    gap:18px;
-    padding:30px 0 34px;
-  }
-  .manifestoRows h2{
-    font-size:clamp(58px,20vw,86px);
-  }
-  .manifestoRows p{
-    grid-column:2;
-    font-size:15px;
-  }
-
+  .worldview h2{font-size:clamp(48px,14vw,68px)}
   .highlights{
-    padding:10vh 0 11vh;
+    padding:9vh 0 10vh;
   }
   .highlightsHead{
-    padding:0 20px 32px;
+    padding:0 20px 30px;
     grid-template-columns:1fr;
     gap:24px;
   }
   .highlightsHead h2{
-    font-size:clamp(46px,13vw,64px);
+    font-size:clamp(44px,12.5vw,60px);
   }
   .highlightControls{
     justify-self:start;
@@ -949,12 +767,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     height:44px;
   }
   .highlightsTrack{
-    grid-auto-columns:87vw;
+    grid-auto-columns:86vw;
     gap:12px;
     scroll-padding-inline:20px;
     padding:0 20px 14px;
   }
-  .highlightOverlay{padding:12px}
+  .highlightMedia{
+    border-radius:18px;
+  }
   .videoControl{
     right:12px;
     bottom:12px;
@@ -962,159 +782,150 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     height:44px;
   }
   .highlightMeta{
-    grid-template-columns:1fr;
-    gap:10px;
+    margin-top:12px;
     padding-top:14px;
   }
-  .highlightMeta span{font-size:28px}
-  .highlightMeta p{font-size:13px}
-
-  .academyScene{
-    min-height:auto;
-    padding:11vh 20px 10vh;
-    grid-template-columns:1fr;
-    gap:52px;
-  }
-  .academyIntro h2,
-  .dnaIntro h2{
-    font-size:clamp(58px,17vw,78px);
-  }
-  .sceneCopy{
-    margin-top:26px;
-    font-size:17px;
-  }
-  .sceneLink{margin-top:28px}
-  .academyStack{
-    min-height:620px;
-  }
-  .academyLead{
-    width:72%;
-    left:0;
-    top:0;
-  }
-  .academySecond{
-    width:48%;
-    right:0;
-    top:13%;
-  }
-  .academyThird{
-    width:54%;
-    right:4%;
-    bottom:2%;
-  }
-  .academyCard figcaption{
-    padding:40px 12px 12px;
-  }
-  .academyCard figcaption strong{font-size:13px}
-  .academyGhost{
-    font-size:48vw;
-    bottom:-.1em;
+  .highlightMeta h3{
+    font-size:24px;
   }
 
-  .dnaScene{
+  .productChapter{
     min-height:auto;
-    padding:11vh 20px 12vh;
+    padding-top:10vh;
+    padding-bottom:10vh;
+    gap:28px;
+  }
+  .chapterHead{
     grid-template-columns:1fr;
-    gap:56px;
+    justify-items:start;
+    text-align:left;
+    align-items:start;
+    gap:20px;
+  }
+  .chapterHead h2{font-size:clamp(50px,15vw,62px)}
+  .chapterAction{justify-self:start}
+  .productObject{
+    min-height:0;
+    border-radius:20px;
+  }
+  .academyObject{height:auto}
+  .academySurface{
+    height:auto;
+    padding:0 14px 14px;
+  }
+  .academySurfaceTop{
+    height:58px;
+    font-size:7px;
+  }
+  .academyWordmark{
+    width:min(170px,48vw);
+  }
+  .academyCourseGrid{
+    height:auto;
+    padding-top:12px;
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .academyCourseLead{
+    aspect-ratio:16/9;
+  }
+  .academyCourseSide{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  .academyCourseSide figure{
+    aspect-ratio:16/9;
+  }
+  .dnaScreen{
+    min-height:0;
+    padding:0 20px 34px;
+  }
+  .dnaTopbar{height:58px}
+  .dnaBrand{font-size:10px}
+  .dnaBrand span{display:none}
+  .dnaStatus{font-size:7px}
+  .dnaHero{
+    min-height:0;
+    grid-template-columns:1fr;
+    gap:38px;
+    padding:42px 0 34px;
+  }
+  .dnaHero h3{
+    margin:18px 0 24px;
+    font-size:clamp(44px,14vw,64px);
+  }
+  .dnaHeroCopy{
+    margin-bottom:28px;
+    font-size:16px;
+    line-height:1.6;
   }
   .dnaButton{
     width:100%;
     min-width:0;
   }
-  .dnaArtifact{
+  .dnaMeta{
+    gap:10px 18px;
+    font-size:7px;
+  }
+  .dnaHeroObject{
     justify-self:start;
-    width:min(100%,520px);
+    width:100%;
+    max-width:420px;
   }
-  .dnaGhost{
-    font-size:42vw;
-    bottom:-.05em;
-  }
-
   .participation{
     min-height:auto;
-    padding:11vh 20px 0;
-  }
-  .closingTop{
     grid-template-columns:1fr;
-    gap:24px;
-    padding-bottom:8vh;
+    gap:54px;
+    padding-top:11vh;
   }
-  .closingTop h2{
-    font-size:clamp(58px,17vw,80px);
+  .participation h2{font-size:clamp(48px,14vw,68px)}
+  .closingDestinations{
+    padding-bottom:2vh;
   }
   .primaryDestinations a{
-    min-height:94px;
-    grid-template-columns:30px minmax(0,1fr) 24px;
+    min-height:88px;
+    grid-template-columns:30px minmax(0,1fr) auto;
     gap:14px;
   }
   .primaryDestinations strong{
-    font-size:clamp(34px,10vw,46px);
+    font-size:clamp(30px,9vw,42px);
   }
-  .primaryDestinations em{display:none}
-  .primaryDestinations a>span{padding-left:0}
   .finalLinks{
-    grid-template-columns:1fr 1fr;
-    gap:0 18px;
+    grid-template-columns:1fr;
+    margin-top:26px;
   }
   .closingWordmark{
-    margin-top:9vh;
+    grid-column:1;
+    margin-top:3vh;
     font-size:31vw;
+    color:rgba(245,242,233,.11);
   }
 }
-
-@media(max-width:390px){
-  .heroTitle span{
-    font-size:18.5vw;
-  }
-  .academyStack{
-    min-height:540px;
-  }
-}
-
 @media(prefers-reduced-motion:reduce){
-  .heroSequence{
-    height:auto;
-  }
-  .heroStage{
-    position:relative;
-    height:auto;
-    min-height:100svh;
-  }
-  .heroMedia{
-    width:min(84vw,1100px)!important;
-    height:min(70vh,760px)!important;
-    border-radius:0!important;
-  }
-  .heroTitle span,
-  .heroCopy,
-  .academyCard,
-  .dnaArtifact{
-    transform:none!important;
-    opacity:1!important;
-  }
   .highlightControls button,
-  .videoControl,
-  .primaryDestinations a,
-  .highlightMedia img,
-  .manifestoRows h2{
+  .videoControl{
     transition:none;
   }
+  .takeover{
+    min-height:auto;
+    padding:8vh clamp(20px,5vw,72px) 12vh;
+  }
+  .takeoverFrame{
+    width:100%!important;
+    height:auto!important;
+    aspect-ratio:4/3;
+    border-radius:0!important;
+  }
 }
-
-@media(min-width:901px) and (max-height:740px){
-  .heroTitle{
-    top:17vh;
+@media(min-width:900px) and (prefers-reduced-motion:reduce){
+  .takeoverFrame{
+    height:76svh!important;
+    aspect-ratio:auto;
   }
-  .heroTitle span{
-    font-size:min(14vw,22vh);
-  }
-  .heroCopy{
-    bottom:6vh;
-  }
-  .academyScene,
-  .dnaScene{
-    min-height:128vh;
-  }
+}
+@media(min-width:900px) and (prefers-reduced-motion:no-preference){
+  .takeover{z-index:90}
 }
 
 /* GitHub Pages preview only: production loads Geist/Noto from brand-site. */
@@ -1144,198 +955,130 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   </details>
 </header>
 
-<section id="master-top" class="heroSequence">
-  <div class="heroStage">
-    <div class="heroMicro">
-      <span>82TRADE</span>
-      <span>TRADING · LEARNING · COMMUNITY</span>
-    </div>
-
-    <h1 class="heroTitle">
-      <span data-hero-read>READ THE</span>
-      <span data-hero-market>MARKET.</span>
-    </h1>
-
-    <div class="heroMedia" data-hero-media>
-      <img src="./assets/classroom-14-gallery.webp" alt="82TRADE 真實課堂與交易學習現場" fetchpriority="high">
-      <div class="heroMediaShade"></div>
-      <div class="heroMediaLabel">
-        <span>REAL PEOPLE / REAL PRACTICE</span>
-        <span>82° / 01</span>
-      </div>
-    </div>
-
-    <p class="heroCopy" data-hero-copy>看懂市場，建立自己的交易判斷。</p>
-
-    <div class="heroScroll" aria-hidden="true">
-      <span>SCROLL</span>
-      <i></i>
-    </div>
+<section id="master-top" class="hero">
+  <img class="heroBg" data-hero-bg src="https://raw.githubusercontent.com/82trade-team/82trade-web/f71ab46f2b8acfbec12a9d2e6061d635a21dceee/apps/brand-site/public/img/hero-background.png" alt="" aria-hidden="true">
+  <div class="heroShade" aria-hidden="true"></div>
+  <div class="heroMeta" data-hero-meta>
+    <span>82TRADE</span>
+    <span>TRADING · LEARNING · COMMUNITY</span>
+  </div>
+  <div class="heroTitleMask">
+    <h1 class="heroTitle" data-hero-title>READ THE MARKET.</h1>
+  </div>
+  <p class="heroLine" data-hero-line>看懂市場，建立自己的交易判斷。</p>
+  <div class="scrollCue" data-scroll-cue>
+    <span>SCROLL</span><i aria-hidden="true"></i>
   </div>
 </section>
 
-<section class="manifesto">
-  <div class="manifestoIntro">
-    <p>82TRADE / METHOD</p>
-    <span>不是把答案交給你，而是把判斷留下來。</span>
-  </div>
-
-  <div class="manifestoRows">
-    <article>
-      <span>01</span>
-      <h2>看懂</h2>
-      <p>從趨勢、區間與關鍵價位開始，先讀懂盤面。</p>
-    </article>
-    <article>
-      <span>02</span>
-      <h2>判斷</h2>
-      <p>把風險、部位與執行條件一起整理，再做決定。</p>
-    </article>
-    <article>
-      <span>03</span>
-      <h2>驗證</h2>
-      <p>交易後持續檢視，把經驗變成自己的方法。</p>
-    </article>
+<section class="takeover">
+  <div class="takeoverFrame">
+    <img src="./assets/classroom-14-gallery.webp" alt="82TRADE 真實課堂">
   </div>
 </section>
 
-<section class="highlights" aria-label="82TRADE Highlights">
+<section class="worldview">
+  <p class="kicker">82TRADE</p>
+  <h2>從看懂，<br>到懂得做。</h2>
+</section>
+
+<section class="highlights" aria-label="82TRADE highlights">
   <div class="highlightsHead">
     <div>
-      <p>INSIDE 82TRADE</p>
       <h2>行情分析、公開課程、學員交流。</h2>
     </div>
-
     <div class="highlightControls" aria-label="Highlights controls">
       <button type="button" data-highlight-dir="-1" aria-label="上一個 highlight" disabled>←</button>
       <button type="button" data-highlight-dir="1" aria-label="下一個 highlight">→</button>
     </div>
   </div>
-
   <div class="highlightsTrack">
     <article class="highlightCard">
       <div class="highlightMedia">
-        <video id="market-highlight-video" src="https://raw.githubusercontent.com/kaiyn-capital/kaiyn-website/787cf854e0faeedf9e1b43bf096f6fcbc15d7eef/public/video/trading.mp4" muted playsinline preload="metadata"></video>
-        <div class="highlightOverlay"><span>01 / MARKET</span></div>
-        <button id="market-video-control" type="button" class="videoControl" aria-label="播放行情影片">▶</button>
+        <video id="market-highlight-video" src="https://raw.githubusercontent.com/kaiyn-capital/kaiyn-website/787cf854e0faeedf9e1b43bf096f6fcbc15d7eef/public/video/trading.mp4" muted playsinline preload="metadata"></video><button id="market-video-control" type="button" class="videoControl" aria-label="播放行情影片">▶</button>
       </div>
-      <div class="highlightMeta">
-        <span>行情分析</span>
-        <p>把盤面拆成可以說清楚、可以回看的判斷。</p>
-      </div>
+      <div class="highlightMeta"><span>01</span><h3>行情分析</h3></div>
     </article>
-
     <article class="highlightCard">
-      <div class="highlightMedia">
-        <img src="./assets/classroom-11-gallery.webp" alt="82TRADE 公開課程現場" loading="lazy">
-        <div class="highlightOverlay"><span>02 / CLASS</span></div>
-      </div>
-      <div class="highlightMeta">
-        <span>公開課程</span>
-        <p>用真實課堂，把方法放回可以反覆練習的場景。</p>
-      </div>
+      <div class="highlightMedia"><img src="./assets/classroom-11-gallery.webp" alt="82TRADE 公開課程現場"></div>
+      <div class="highlightMeta"><span>02</span><h3>公開課程</h3></div>
     </article>
-
     <article class="highlightCard">
-      <div class="highlightMedia">
-        <img src="./assets/classroom-02.jpg" alt="82TRADE 學員交流現場" loading="lazy">
-        <div class="highlightOverlay"><span>03 / COMMUNITY</span></div>
-      </div>
-      <div class="highlightMeta">
-        <span>學員交流</span>
-        <p>讓討論、複盤與經驗交換，成為學習的一部分。</p>
-      </div>
+      <div class="highlightMedia"><img src="./assets/classroom-02.jpg" alt="82TRADE 學員交流現場"></div>
+      <div class="highlightMeta"><span>03</span><h3>學員交流</h3></div>
     </article>
   </div>
 </section>
 
-<section class="academyScene" aria-label="82TRADE Academy">
-  <div class="academyIntro">
-    <p class="sceneEyebrow">82TRADE / ACADEMY</p>
-    <h2>把學習，<br>做成一條路。</h2>
-    <p class="sceneCopy">Academy 將課程、教材與學習進度整理在同一個地方。</p>
-    <a class="sceneLink" href="https://82trade-academy.pages.dev/courses">Enter Academy <span>↗</span></a>
+<section class="productChapter academyChapter">
+  <div class="chapterHead">
+    <div><h2>Academy</h2></div>
+    <a class="chapterAction" href="https://82trade-academy.pages.dev/courses">Enter Academy ↗</a>
   </div>
-
-  <div class="academyStack" aria-label="Academy 課程">
-    <figure data-academy-card class="academyCard academyLead">
-      <img src="./assets/continuation-pattern-card.webp" alt="中繼型態課程" loading="lazy">
-      <figcaption>
-        <span>01 / PRICE ACTION</span>
-        <strong>中繼型態課程</strong>
-      </figcaption>
-    </figure>
-
-    <figure data-academy-card class="academyCard academySecond">
-      <img src="./assets/reversal-pattern-card.webp" alt="反轉型態課程" loading="lazy">
-      <figcaption>
-        <span>02 / MARKET STRUCTURE</span>
-        <strong>反轉型態課程</strong>
-      </figcaption>
-    </figure>
-
-    <figure data-academy-card class="academyCard academyThird">
-      <img src="./assets/advanced-volume-price-card.webp" alt="進階量價分析課程" loading="lazy">
-      <figcaption>
-        <span>03 / VOLUME & PRICE</span>
-        <strong>進階量價分析</strong>
-      </figcaption>
-    </figure>
+  <div class="productObject academyObject">
+    <div class="academySurface">
+      <div class="academySurfaceTop"><img class="academyWordmark" src="./assets/academy-wordmark.svg" alt="82TRADE Academy"><span>全部課程</span></div>
+      <div class="academyCourseGrid">
+        <figure class="academyCourseLead"><img src="./assets/continuation-pattern-card.webp" alt="中繼型態課程"></figure>
+        <div class="academyCourseSide">
+          <figure><img src="./assets/reversal-pattern-card.webp" alt="反轉型態課程"></figure>
+          <figure><img src="./assets/advanced-volume-price-card.webp" alt="進階量價分析課程"></figure>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="academyGhost" aria-hidden="true">ACADEMY</div>
 </section>
 
-<section class="dnaScene" aria-label="Trader DNA">
-  <div class="dnaIntro">
-    <p class="sceneEyebrow">82TRADE / TRADER DNA</p>
-    <h2>市場會暴露<br><em>你的另一面</em></h2>
-    <p class="sceneCopy">18 個選擇，辨認你在判斷、出手與改變主意時，反覆出現的決策輪廓。</p>
-    <a class="dnaButton" href="https://82trade-team.github.io/dna/">開始 SCAN 01 <span>→</span></a>
-    <div class="dnaMeta">
-      <span>18 QUESTIONS</span>
-      <span>≈ 3 MIN</span>
-      <span>NO RIGHT ANSWER</span>
+<section class="productChapter dnaChapter">
+  <div class="chapterHead">
+    <div><h2>Trader DNA</h2></div>
+    <a class="chapterAction" href="https://82trade-team.github.io/dna/">Open Trader DNA ↗</a>
+  </div>
+  <div class="productObject dnaObject">
+    <div class="dnaScreen">
+      <div class="dnaTopbar">
+        <div class="dnaBrand">82TRADE <span>// TRADER DNA</span></div>
+        <div class="dnaStatus">SCAN 01 · READY</div>
+      </div>
+      <div class="dnaHero">
+        <div class="dnaHeroMain">
+          <h3>市場會暴露<br><em>你的另一面</em></h3>
+          <p class="dnaHeroCopy">18 個選擇，辨認你在判斷、出手與改變主意時，反覆出現的決策輪廓。</p>
+          <a class="dnaButton" href="https://82trade-team.github.io/dna/">開始 SCAN 01 <span>→</span></a>
+          <div class="dnaMeta"><span>18 QUESTIONS</span><span>≈ 3 MIN</span><span>NO RIGHT ANSWER</span></div>
+        </div>
+        <div class="dnaHeroObject" aria-hidden="true">
+          <div class="registerFrame">
+            <span class="registerNo">01</span>
+            <div class="registerCross"></div>
+            <div class="registerCore"><b>DNA</b><small>DECISION PROFILE</small></div>
+            <div class="registerCoord">82° / 18 / V1</div>
+          </div>
+          <p>IDENTITY IS NOT WHAT YOU SAY.<br>IT IS WHAT REPEATS UNDER PRESSURE.</p>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div class="dnaArtifact" aria-hidden="true">
-    <div class="artifactAxisX"></div>
-    <div class="artifactAxisY"></div>
-    <div class="artifactOrbit artifactOrbitOuter"></div>
-    <div class="artifactOrbit artifactOrbitInner"></div>
-    <span class="artifactNo">01</span>
-    <span class="artifactCoord">82° / 18 / V1</span>
-    <div class="artifactCore">
-      <b>DNA</b>
-      <small>DECISION PROFILE</small>
-    </div>
-  </div>
-
-  <div class="dnaGhost" aria-hidden="true">TRADER DNA</div>
 </section>
 
 <footer class="participation">
-  <div class="closingTop">
-    <span>82TRADE / NEXT</span>
+  <div class="closingLead">
     <h2>交易這條路，<br>一起走。</h2>
   </div>
 
-  <nav class="primaryDestinations" aria-label="82TRADE products">
-    <a href="https://82trade-academy.pages.dev/courses">
-      <span>01</span><strong>Academy</strong><em>LEARN</em><b>↗</b>
-    </a>
-    <a href="https://82trade-team.github.io/dna/">
-      <span>02</span><strong>Trader DNA</strong><em>DISCOVER</em><b>↗</b>
-    </a>
-  </nav>
+  <div class="closingDestinations">
+    <nav class="primaryDestinations" aria-label="82TRADE products">
+      <a href="https://82trade-academy.pages.dev/courses"><span>01</span><strong>Academy</strong><b>↗</b></a>
+      <a href="https://82trade-team.github.io/dna/"><span>02</span><strong>Trader DNA</strong><b>↗</b></a>
+    </nav>
 
-  <nav class="finalLinks" aria-label="82TRADE ecosystem">
-    <a href="https://www.youtube.com/@82TRADE">YouTube ↗</a>
-    <a href="https://discord.gg/n74xbzjwrN">Discord ↗</a>
-    <a href="https://luma.com/82TRADE">Events ↗</a>
-    <a href="https://line.me/R/ti/p/@827egjii">LINE ↗</a>
-  </nav>
+    <nav class="finalLinks" aria-label="82TRADE ecosystem">
+      <a href="https://www.youtube.com/@82TRADE">YouTube ↗</a>
+      <a href="https://discord.gg/n74xbzjwrN">Discord ↗</a>
+      <a href="https://luma.com/82TRADE">Events ↗</a>
+      <a href="https://line.me/R/ti/p/@827egjii">LINE ↗</a>
+    </nav>
+  </div>
 
   <div class="closingWordmark" aria-hidden="true">82TRADE</div>
 </footer>
@@ -1345,91 +1088,41 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 <script src="./vendor/ScrollTrigger.min.js"></script>
 <script>
 gsap.registerPlugin(ScrollTrigger);
+
+const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const heroBg=document.querySelector("[data-hero-bg]");
+const heroMeta=document.querySelector("[data-hero-meta]");
+const heroTitle=document.querySelector("[data-hero-title]");
+const heroLine=document.querySelector("[data-hero-line]");
+const scrollCue=document.querySelector("[data-scroll-cue]");
+
+if(!reduce&&heroBg&&heroMeta&&heroTitle&&heroLine&&scrollCue){
+  gsap.set(heroBg,{scale:1.08});
+  gsap.set([heroMeta,heroLine,scrollCue],{opacity:0,y:18});
+  gsap.set(heroTitle,{opacity:0,yPercent:105});
+  const intro=gsap.timeline({delay:.08,defaults:{ease:"power4.out"}});
+  intro
+    .to(heroBg,{scale:1,duration:2.4},0)
+    .to(heroMeta,{opacity:1,y:0,duration:.9},.35)
+    .to(heroTitle,{opacity:1,yPercent:0,duration:1.25},.55)
+    .to(heroLine,{opacity:1,y:0,duration:.9},.95)
+    .to(scrollCue,{opacity:1,y:0,duration:.9},1.15);
+}
+
+const section=document.querySelector(".takeover");
+const frame=document.querySelector(".takeoverFrame");
 const mm=gsap.matchMedia();
-
-mm.add("(min-width: 901px) and (prefers-reduced-motion: no-preference)",()=>{
-  const sequence=document.querySelector(".heroSequence");
-  const media=document.querySelector("[data-hero-media]");
-  const read=document.querySelector("[data-hero-read]");
-  const market=document.querySelector("[data-hero-market]");
-  const copy=document.querySelector("[data-hero-copy]");
-
-  if(sequence&&media&&read&&market&&copy){
-    const image=media.querySelector("img");
-    const heroTimeline=gsap.timeline({
-      scrollTrigger:{trigger:sequence,start:"top top",end:"bottom bottom",scrub:.75}
-    });
-
-    heroTimeline
-      .fromTo(media,{width:"34vw",height:"34vh",borderRadius:"28px"},{width:"100vw",height:"100vh",borderRadius:"0px",ease:"none"},0)
-      .to(read,{xPercent:-18,yPercent:-18,opacity:.08,ease:"none"},0)
-      .to(market,{xPercent:18,yPercent:18,opacity:.08,ease:"none"},0)
-      .to(copy,{y:-28,opacity:0,ease:"none"},0);
-
-    if(image){
-      heroTimeline.fromTo(image,{scale:1},{scale:1.08,ease:"none"},0);
-    }
-  }
-
-  const academy=document.querySelector(".academyScene");
-  if(academy){
-    const cards=Array.from(academy.querySelectorAll("[data-academy-card]"));
-    cards.forEach((card,index)=>{
-      gsap.fromTo(card,{y:28+index*20},{
-        y:-20-index*12,
-        ease:"none",
-        scrollTrigger:{trigger:academy,start:"top bottom",end:"bottom top",scrub:1}
-      });
-    });
-  }
-});
-
-mm.add("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",()=>{
-  const artifact=document.querySelector(".dnaArtifact");
-  if(!artifact)return;
-
-  const handlePointerMove=(event)=>{
-    const rect=artifact.getBoundingClientRect();
-    const x=(event.clientX-rect.left)/rect.width-.5;
-    const y=(event.clientY-rect.top)/rect.height-.5;
-    gsap.to(artifact,{
-      rotateX:y*-5,
-      rotateY:x*7,
-      x:x*8,
-      y:y*8,
-      transformPerspective:900,
-      duration:.45,
-      ease:"power2.out",
-      overwrite:true
-    });
-  };
-
-  const resetArtifact=()=>{
-    gsap.to(artifact,{
-      rotateX:0,
-      rotateY:0,
-      x:0,
-      y:0,
-      duration:.55,
-      ease:"power3.out",
-      overwrite:true
-    });
-  };
-
-  artifact.addEventListener("pointermove",handlePointerMove);
-  artifact.addEventListener("pointerleave",resetArtifact);
-
-  return()=>{
-    artifact.removeEventListener("pointermove",handlePointerMove);
-    artifact.removeEventListener("pointerleave",resetArtifact);
-  };
+mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
+  const tl=gsap.timeline({scrollTrigger:{trigger:section,start:"center center",end:"+=800 center",scrub:0.5,pin:true,pinSpacing:true}});
+  tl.to(frame,{width:"100vw",height:"100vh",borderRadius:0,ease:"none"});
+  return()=>tl.kill();
 });
 
 const highlightTrack=document.querySelector(".highlightsTrack");
 const highlightButtons=Array.from(document.querySelectorAll("[data-highlight-dir]"));
 const getHighlightCards=()=>highlightTrack
-  ?Array.from(highlightTrack.children).filter((node)=>node instanceof HTMLElement)
-  :[];
+  ? Array.from(highlightTrack.children).filter((node)=>node instanceof HTMLElement)
+  : [];
 const getHighlightSnapPosition=(card)=>{
   if(!highlightTrack)return 0;
   const padding=parseFloat(getComputedStyle(highlightTrack).scrollPaddingInlineStart)||0;
@@ -1471,6 +1164,7 @@ if(highlightTrack){
   syncHighlightButtons();
 }
 
+
 const marketVideo=document.getElementById("market-highlight-video");
 const marketVideoControl=document.getElementById("market-video-control");
 if(marketVideo&&marketVideoControl){
@@ -1479,7 +1173,6 @@ if(marketVideo&&marketVideoControl){
     marketVideoControl.textContent=playing?"Ⅱ":"▶";
     marketVideoControl.setAttribute("aria-label",playing?"暫停行情影片":"播放行情影片");
   };
-
   marketVideoControl.addEventListener("click",async()=>{
     if(marketVideo.paused){
       try{await marketVideo.play();}catch(_err){}
@@ -1488,11 +1181,11 @@ if(marketVideo&&marketVideoControl){
     }
     syncMarketControl();
   });
-
   marketVideo.addEventListener("play",syncMarketControl);
   marketVideo.addEventListener("pause",syncMarketControl);
   marketVideo.addEventListener("ended",syncMarketControl);
 }
+
 </script>
 </body>
 </html>
