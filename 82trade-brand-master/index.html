@@ -346,18 +346,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   font-size:9px;
   letter-spacing:.14em;
 }
+.academyWordmark{
+  display:block;
+  width:min(220px,32vw);
+  height:auto;
+}
 .academyCourseGrid{
   height:calc(100% - 72px);
-  padding-top:24px;
+  padding-top:18px;
   display:grid;
-  grid-template-columns:minmax(0,1.42fr) minmax(260px,.58fr);
-  gap:16px;
+  grid-template-columns:minmax(0,1fr) clamp(210px,18vw,300px);
+  gap:12px;
 }
 .academyCourseGrid figure{
   margin:0;
   min-width:0;
   overflow:hidden;
-  border:1px solid rgba(255,255,255,.1);
   background:#111;
 }
 .academyCourseGrid img{
@@ -371,9 +375,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 .academyCourseSide{
   min-width:0;
-  display:grid;
-  grid-template-rows:1fr 1fr;
-  gap:16px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:12px;
+}
+.academyCourseSide figure{
+  aspect-ratio:16/9;
 }
 .dnaObject{
   background:#0a0a0a;
@@ -419,14 +427,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   padding:72px 0 70px;
 }
 .dnaHeroMain{max-width:760px}
-.dnaKicker{
-  color:#7d7971;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:10px;
-  letter-spacing:.18em;
-}
 .dnaHero h3{
-  margin:24px 0 34px;
+  margin:0 0 34px;
   font-size:clamp(58px,7.4vw,112px);
   line-height:.91;
   letter-spacing:-.065em;
@@ -478,7 +480,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 .dnaHeroObject{
   justify-self:end;
-  width:min(100%,430px);
+  width:min(100%,500px);
 }
 .registerFrame{
   position:relative;
@@ -563,14 +565,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   text-align:right;
 }
 .participation{
-  min-height:84svh;
-  padding:12vh clamp(20px,5vw,72px);
+  min-height:100svh;
+  padding:12vh clamp(20px,5vw,72px) 0;
   display:grid;
-  grid-template-columns:1.35fr .65fr;
+  grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);
   gap:8vw;
-  align-items:end;
+  align-content:end;
   background:#090909;
   color:#f5f2e9;
+  overflow:hidden;
+}
+.closingLead{
+  align-self:start;
 }
 .participation h2{
   margin:0;
@@ -578,14 +584,69 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   line-height:.88;
   letter-spacing:-.075em;
 }
-.finalLinks{
+.closingDestinations{
+  align-self:end;
+  padding-bottom:7vh;
+}
+.primaryDestinations{
   display:grid;
-  border-top:1px solid rgba(255,255,255,.16);
+  border-top:1px solid rgba(255,255,255,.2);
+}
+.primaryDestinations a{
+  min-height:112px;
+  display:grid;
+  grid-template-columns:44px minmax(0,1fr) auto;
+  align-items:center;
+  gap:20px;
+  border-bottom:1px solid rgba(255,255,255,.2);
+}
+.primaryDestinations span{
+  color:rgba(245,242,233,.42);
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:9px;
+  letter-spacing:.14em;
+}
+.primaryDestinations strong{
+  font-size:clamp(32px,3.6vw,58px);
+  line-height:1;
+  letter-spacing:-.055em;
+  font-weight:680;
+}
+.primaryDestinations b{
+  font-size:24px;
+  font-weight:400;
+}
+.primaryDestinations a:hover strong{
+  opacity:.68;
+}
+.primaryDestinations a:focus-visible,
+.finalLinks a:focus-visible{
+  outline:2px solid #fff;
+  outline-offset:5px;
+}
+.finalLinks{
+  margin-top:34px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0 28px;
+  border-top:1px solid rgba(255,255,255,.12);
 }
 .finalLinks a{
-  padding:18px 0;
-  border-bottom:1px solid rgba(255,255,255,.16);
-  font-size:13px;
+  padding:16px 0;
+  border-bottom:1px solid rgba(255,255,255,.12);
+  color:rgba(245,242,233,.68);
+  font-size:12px;
+}
+.closingWordmark{
+  grid-column:1/-1;
+  margin:10vh 0 -.09em;
+  font-size:clamp(120px,20vw,360px);
+  line-height:.72;
+  letter-spacing:-.09em;
+  font-weight:900;
+  color:rgba(245,242,233,.08);
+  white-space:nowrap;
+  user-select:none;
 }
 @media(max-width:900px){
   .nav{display:none}
@@ -679,20 +740,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     height:58px;
     font-size:7px;
   }
+  .academyWordmark{
+    width:min(170px,48vw);
+  }
   .academyCourseGrid{
     height:auto;
-    padding-top:14px;
+    padding-top:12px;
     grid-template-columns:1fr;
     gap:12px;
   }
-  .academyCourseLead,
-  .academyCourseSide figure{
+  .academyCourseLead{
     aspect-ratio:16/9;
   }
   .academyCourseSide{
-    grid-template-columns:1fr;
-    grid-template-rows:none;
-    gap:12px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  .academyCourseSide figure{
+    aspect-ratio:16/9;
   }
   .dnaScreen{
     min-height:0;
@@ -731,10 +797,32 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     max-width:420px;
   }
   .participation{
+    min-height:auto;
     grid-template-columns:1fr;
-    gap:64px;
+    gap:54px;
+    padding-top:11vh;
   }
   .participation h2{font-size:clamp(48px,14vw,68px)}
+  .closingDestinations{
+    padding-bottom:2vh;
+  }
+  .primaryDestinations a{
+    min-height:88px;
+    grid-template-columns:30px minmax(0,1fr) auto;
+    gap:14px;
+  }
+  .primaryDestinations strong{
+    font-size:clamp(30px,9vw,42px);
+  }
+  .finalLinks{
+    grid-template-columns:1fr;
+    margin-top:26px;
+  }
+  .closingWordmark{
+    grid-column:1;
+    margin-top:3vh;
+    font-size:29vw;
+  }
 }
 @media(prefers-reduced-motion:reduce){
   .takeover{
@@ -834,7 +922,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   </div>
   <div class="productObject academyObject">
     <div class="academySurface">
-      <div class="academySurfaceTop"><span>82Trade Academy</span><span>全部課程 · 5 堂</span></div>
+      <div class="academySurfaceTop"><img class="academyWordmark" src="./assets/academy-wordmark.svg" alt="82TRADE Academy"><span>全部課程 · 5 堂</span></div>
       <div class="academyCourseGrid">
         <figure class="academyCourseLead"><img src="./assets/continuation-pattern-card.webp" alt="中繼型態課程"></figure>
         <div class="academyCourseSide">
@@ -859,7 +947,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
       </div>
       <div class="dnaHero">
         <div class="dnaHeroMain">
-          <div class="dnaKicker">82TRADE / TRADER DNA / SCAN 01</div>
           <h3>市場會暴露<br><em>你的另一面</em></h3>
           <p class="dnaHeroCopy">18 個選擇，辨認你在判斷、出手與改變主意時，反覆出現的決策輪廓。</p>
           <a class="dnaButton" href="https://zhuo74451-art.github.io/trader-dna-site/editorial-preview.html">開始 SCAN 01 <span>→</span></a>
@@ -879,17 +966,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   </div>
 </section>
 
-<section class="participation">
-  <div><p class="kicker">82TRADE</p><h2>交易這條路，<br>一起走。</h2></div>
-  <nav class="finalLinks">
-    <a href="https://82trade-academy.pages.dev/courses">Academy ↗</a>
-    <a href="https://zhuo74451-art.github.io/trader-dna-site/editorial-preview.html">Trader DNA ↗</a>
-    <a href="https://www.youtube.com/@82TRADE">YouTube ↗</a>
-    <a href="https://discord.gg/n74xbzjwrN">Discord ↗</a>
-    <a href="https://luma.com/82TRADE">Events ↗</a>
-    <a href="https://line.me/R/ti/p/@827egjii">LINE ↗</a>
-  </nav>
-</section>
+<footer class="participation">
+  <div class="closingLead">
+    <p class="kicker">82TRADE</p>
+    <h2>交易這條路，<br>一起走。</h2>
+  </div>
+
+  <div class="closingDestinations">
+    <nav class="primaryDestinations" aria-label="82TRADE products">
+      <a href="https://82trade-academy.pages.dev/courses"><span>01</span><strong>Academy</strong><b>↗</b></a>
+      <a href="https://zhuo74451-art.github.io/trader-dna-site/editorial-preview.html"><span>02</span><strong>Trader DNA</strong><b>↗</b></a>
+    </nav>
+
+    <nav class="finalLinks" aria-label="82TRADE ecosystem">
+      <a href="https://www.youtube.com/@82TRADE">YouTube ↗</a>
+      <a href="https://discord.gg/n74xbzjwrN">Discord ↗</a>
+      <a href="https://luma.com/82TRADE">Events ↗</a>
+      <a href="https://line.me/R/ti/p/@827egjii">LINE ↗</a>
+    </nav>
+  </div>
+
+  <div class="closingWordmark" aria-hidden="true">82TRADE</div>
+</footer>
 </main>
 
 <script src="./vendor/gsap.min.js"></script>
