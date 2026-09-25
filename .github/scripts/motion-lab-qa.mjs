@@ -109,6 +109,31 @@ async function state(page) {
       const s = getComputedStyle(el);
       return { color: s.color, opacity: s.opacity, transform: s.transform };
     })(),
+    takeoverFrame: (() => {
+      const el = document.querySelector(".takeoverFrame");
+      if (!(el instanceof HTMLElement)) return null;
+      const s = getComputedStyle(el);
+      const rect = el.getBoundingClientRect();
+      return {
+        opacity: s.opacity,
+        transform: s.transform,
+        borderRadius: s.borderRadius,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+      };
+    })(),
+    worldviewSheet: (() => {
+      const el = document.querySelector(".worldview");
+      if (!(el instanceof HTMLElement)) return null;
+      const s = getComputedStyle(el);
+      const rect = el.getBoundingClientRect();
+      return {
+        top: rect.top,
+        borderRadius: s.borderRadius,
+        boxShadow: s.boxShadow,
+      };
+    })(),
     worldviewTitle: Array.from(document.querySelectorAll(".worldview h2 span")).map((el) => {
       const s = getComputedStyle(el);
       return { color: s.color, opacity: s.opacity, transform: s.transform };
@@ -157,6 +182,9 @@ await scrollTo(desktop, realTop + 760, 700);
 await shot(desktop, "desktop-04-real-world-mid");
 
 const worldviewTop = await sectionTop(desktop, "#worldview");
+await scrollTo(desktop, worldviewTop - 300, 700);
+await shot(desktop, "desktop-04b-real-to-worldview");
+report.realToWorldview = await state(desktop);
 await scrollTo(desktop, worldviewTop + 100, 700);
 await shot(desktop, "desktop-05-worldview-start");
 await scrollTo(desktop, worldviewTop + 420, 700);
