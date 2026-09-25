@@ -907,7 +907,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 .readingBookZone{position:relative;z-index:1;min-width:0;display:grid;place-items:center;perspective:1200px;overflow:hidden}
 .readingBookGlow{position:absolute;width:72%;aspect-ratio:1/1;border-radius:50%;background:radial-gradient(circle,rgba(0,82,255,.2),rgba(0,82,255,.04) 44%,transparent 72%);filter:blur(10px);transform:translateY(-1%)}
 .readingBook{position:relative;z-index:2;display:grid;place-items:center;transform-style:preserve-3d;will-change:transform,opacity}
-.readingBook img{display:block;width:auto;max-width:min(72%,430px);max-height:540px;object-fit:contain;box-shadow:-24px 28px 54px rgba(0,0,0,.34),0 46px 100px rgba(0,0,0,.42)}
+.readingBook img{display:block;width:min(76%,460px);height:auto;max-height:560px;object-fit:contain;box-shadow:-24px 28px 54px rgba(0,0,0,.34),0 46px 100px rgba(0,0,0,.42)}
 .readingBook:after{content:"";position:absolute;inset:4% -6% -5% 4%;z-index:-1;border:1px solid rgba(110,160,255,.2);transform:translateZ(-28px)}
 .readingFloor{position:absolute;left:10%;right:5%;bottom:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18) 20%,rgba(110,160,255,.2) 58%,transparent)}
 .readingCopy{position:relative;z-index:2;min-width:0;padding:68px 72px 54px;display:flex;flex-direction:column;border-left:1px solid rgba(255,255,255,.08)}
@@ -1464,7 +1464,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   .readingCategories button{min-height:44px;padding:0 10px;justify-content:center;gap:6px;font-size:10px}
   .readingStage{min-height:0;grid-template-columns:1fr;border-radius:24px}
   .readingBookZone{min-height:410px;border-bottom:1px solid rgba(255,255,255,.08)}
-  .readingBook img{max-width:68%;max-height:320px}
+  .readingBook img{width:min(72%,280px);max-width:none;max-height:340px}
   .readingBook:after{inset:4% -5% -4% 4%}
   .readingFloor{left:12%;right:8%;bottom:11%}
   .readingCopy{padding:28px 24px 24px;border-left:0}
@@ -1899,6 +1899,11 @@ const readingSets=[
     books:["先別急著吃棉花糖","灰階思考","原子習慣","納瓦爾寶典"],
   },
 ];
+readingSets.forEach(({cover})=>{
+  const image=new Image();
+  image.decoding="async";
+  image.src=cover;
+});
 let readingIndex=0;
 const readingTabs=Array.from(document.querySelectorAll("[data-reading-tab]"));
 const readingPages=Array.from(document.querySelectorAll("[data-reading-page]"));
