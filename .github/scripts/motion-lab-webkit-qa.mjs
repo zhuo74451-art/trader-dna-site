@@ -95,6 +95,7 @@ async function run(name, viewport, reduced=false) {
     await page.screenshot({path:path.join(out,`${name}-worldview-to-highlights.png`),fullPage:false});
 
     await scrollAndShot("#academy",`${name}-academy.png`,-200);
+    await scrollAndShot("#reading-list",`${name}-reading.png`,-180);
     await scrollAndShot("#trader-dna",`${name}-dna.png`,-220);
   } else {
     for (const [selector,label] of [
@@ -102,6 +103,7 @@ async function run(name, viewport, reduced=false) {
       ["#worldview","worldview"],
       ["#highlights","highlights"],
       ["#academy","academy"],
+      ["#reading-list","reading"],
       ["#trader-dna","dna"],
       ["#enter","closing"],
     ]) {
@@ -134,6 +136,18 @@ async function run(name, viewport, reduced=false) {
   const activeNext = await waitForHighlight(3, reduced ? 900 : 2500);
   const afterNext = await page.locator(".highlightsTrack").evaluate(el=>el.scrollLeft);
 
+  await page.locator("#reading-list").scrollIntoViewIfNeeded();
+  await page.waitForTimeout(reduced ? 120 : 350);
+  await page.locator('[data-reading-tab="1"]').click();
+  await page.waitForTimeout(reduced ? 80 : 520);
+  const readingAdvanced = await page.locator("[data-reading-title]").textContent();
+  await page.locator('[data-reading-dir="1"]').click();
+  await page.waitForTimeout(reduced ? 80 : 520);
+  const readingGrowth = await page.locator("[data-reading-title]").textContent();
+  const readingActive = await page.locator("[data-reading-tab]").evaluateAll(
+    els => els.findIndex(el => el.getAttribute("data-active") === "true"),
+  );
+
   let mobileMenuOpen = null;
   if (viewport.width <= 500) {
     await page.locator("details.mobileMenu > summary").focus();
@@ -156,6 +170,7 @@ async function run(name, viewport, reduced=false) {
     ...baseState,
     finalState,
     highlights:{before,afterPage3,activePage3,afterNext,activeNext},
+    reading:{advanced:readingAdvanced?.trim() ?? null,growth:readingGrowth?.trim() ?? null,active:readingActive},
     mobileMenuOpen,
   };
 
@@ -179,8 +194,7 @@ for (const [name,r] of Object.entries(report)) {
   }
   if (r.highlightCount !== 4) throw new Error(`${name}: highlight count ${r.highlightCount}`);
   if (r.highlights.activePage3 !== 2) throw new Error(`${name}: page3 active index ${r.highlights.activePage3}`);
-  if (r.highlights.activeNext !== 3) throw new Error(`${name}: next active index ${r.highlights.activeNext}`);
-}
+  if (r.highlights.activeNext !== 3) throw new Error(`${name}: next active index ${r.highlights.activeNext}`);\n  if (r.reading.advanced !== "新威科夫操盤法" || r.reading.growth !== "納瓦爾寶典" || r.reading.active !== 2) {\n    throw new Error(`${name}: reading interaction ${JSON.stringify(r.reading)}`);\n  }\n}
 if (!report["mobile-390"].mobileMenuOpen) throw new Error("mobile WebKit menu did not open by keyboard");
 
 await new Promise(resolve=>server.close(resolve));
