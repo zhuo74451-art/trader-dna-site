@@ -1733,9 +1733,19 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
     .fromTo(worldviewBlue,{x:44,y:44,scale:.91},{x:0,y:0,scale:1.04,ease:"none",duration:1},0);
 
   const academy=document.querySelector(".academyChapter");
+  const academyHead=document.querySelector(".academyChapter .chapterHead");
   const academyObject=document.querySelector(".academyObject");
   const academyLead=document.querySelector(".academyCourseLead");
   const academySide=document.querySelector(".academyCourseSide");
+  const highlightsSection=document.querySelector(".highlights");
+  const highlightsHead=document.querySelector(".highlightsHead");
+  const highlightsTrack=document.querySelector(".highlightsTrack");
+  const highlightsFooter=document.querySelector(".highlightsFooter");
+  const highlightsToAcademy=gsap.timeline({scrollTrigger:{trigger:academy,start:"top bottom",end:"top 48%",scrub:.5}});
+  highlightsToAcademy
+    .to(highlightsHead,{y:-42,opacity:.18,ease:"none",duration:1},0)
+    .to(highlightsTrack,{y:-54,scale:.972,opacity:.5,ease:"none",duration:1},0)
+    .to(highlightsFooter,{y:18,opacity:0,ease:"none",duration:.78},.08);
   const academyTl=gsap.timeline({scrollTrigger:{trigger:academy,start:"top 78%",end:"center 34%",scrub:.6}});
   academyTl
     .fromTo(academyObject,{y:150,scale:.875,rotateX:8,transformPerspective:1300,transformOrigin:"50% 100%"},{y:0,scale:1,rotateX:0,ease:"none",duration:1},0)
@@ -1749,7 +1759,9 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
   const registerFrame=document.querySelector(".registerFrame");
   const registerCross=document.querySelector(".registerCross");
   const registerCore=document.querySelector(".registerCore");
-  const academyExit=gsap.to(academyObject,{y:-72,scale:.94,opacity:.26,borderRadius:72,ease:"none",scrollTrigger:{trigger:dna,start:"top bottom",end:"top 18%",scrub:.55}});
+  const academyExit=gsap.timeline({scrollTrigger:{trigger:dna,start:"top bottom",end:"top 18%",scrub:.55}})
+    .to(academyHead,{y:-38,opacity:.18,ease:"none",duration:1},0)
+    .to(academyObject,{y:-72,scale:.94,opacity:.26,borderRadius:72,ease:"none",duration:1},0);
   const dnaTl=gsap.timeline({scrollTrigger:{trigger:dna,start:"top 78%",end:"center 30%",scrub:.6}});
   dnaTl
     .fromTo(dnaObject,{clipPath:"inset(8% 6% round 72px)",scale:.94,y:72},{clipPath:"inset(0% 0% round 48px)",scale:1,y:0,ease:"none",duration:1},0)
@@ -1764,7 +1776,7 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
   const closingWordmark=document.querySelector(".closingWordmark");
   const closingTween=gsap.fromTo(closingWordmark,{yPercent:28,scale:.92,opacity:.05},{yPercent:0,scale:1,opacity:1,ease:"none",scrollTrigger:{trigger:closing,start:"top bottom",end:"bottom bottom",scrub:.65}});
 
-  return()=>{tl.kill();heroExit.kill();worldviewTl.kill();academyTl.kill();academyExit.kill();dnaTl.kill();closingTween.kill();};
+  return()=>{tl.kill();heroExit.kill();worldviewTl.kill();highlightsToAcademy.kill();academyTl.kill();academyExit.kill();dnaTl.kill();closingTween.kill();};
 });
 
 const track=document.querySelector(".highlightsTrack");
