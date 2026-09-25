@@ -5,6 +5,7 @@ on:
     paths:
       - "82trade-motion-lab/**"
       - ".github/scripts/motion-lab-qa.mjs"
+      - ".github/scripts/motion-lab-perf.mjs"
       - ".github/workflows/motion-lab-qa.yml"
 
 permissions:
@@ -47,11 +48,19 @@ jobs:
           BROWSER: ${{ steps.browser.outputs.path }}
         run: node .github/scripts/motion-lab-qa.mjs
 
+      - name: Run Motion Lab scroll performance diagnostic
+        env:
+          BROWSER: ${{ steps.browser.outputs.path }}
+        run: node .github/scripts/motion-lab-perf.mjs
+
       - name: Print diagnostics
         if: always()
         run: |
           if [ -f motion-lab-qa/diagnostics.json ]; then
             cat motion-lab-qa/diagnostics.json
+          fi
+          if [ -f motion-lab-qa/performance.json ]; then
+            cat motion-lab-qa/performance.json
           fi
 
       - name: Upload Motion Lab receipts
