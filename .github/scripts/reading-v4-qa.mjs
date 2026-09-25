@@ -27,7 +27,8 @@ async function open(name, viewport) {
   page.on("requestfailed", (req) => {
     failures.push({ name, url: req.url(), error: req.failure()?.errorText ?? null });
   });
-  const response = await page.goto("http://127.0.0.1:4174/82trade-motion-lab/reading-v4.html", {
+  await page.setCacheEnabled(false);
+  const response = await page.goto("http://127.0.0.1:4174/82trade-motion-lab/reading-v5.html", {
     waitUntil: "networkidle0",
     timeout: 30000,
   });
@@ -56,14 +57,16 @@ async function open(name, viewport) {
     };
   });
   await page.close();
-  if (response?.status() !== 200) throw new Error(`${name}: status ${response?.status()}`);
+  if (![200, 304].includes(response?.status() ?? 0)) {
+    throw new Error(`${name}: status ${response?.status()}`);
+  }
   return state;
 }
 
 const report = {
-  desktop1512: await open("reading-v4-desktop-1512", { width: 1512, height: 982, deviceScaleFactor: 1 }),
-  desktop1440: await open("reading-v4-desktop-1440", { width: 1440, height: 900, deviceScaleFactor: 1 }),
-  mobile390: await open("reading-v4-mobile-390", { width: 390, height: 844, deviceScaleFactor: 1 }),
+  desktop1512: await open("reading-v5-desktop-1512", { width: 1512, height: 982, deviceScaleFactor: 1 }),
+  desktop1440: await open("reading-v5-desktop-1440", { width: 1440, height: 900, deviceScaleFactor: 1 }),
+  mobile390: await open("reading-v5-mobile-390", { width: 390, height: 844, deviceScaleFactor: 1 }),
 };
 
 report.errors = errors;
