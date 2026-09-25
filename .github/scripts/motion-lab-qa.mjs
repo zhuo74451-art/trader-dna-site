@@ -407,6 +407,18 @@ report.mobileDnaEntry = await mobile.evaluate(() => {
   };
 });
 await scrollTo(mobile, mobileDnaTop + 260, 420);
+report.mobileDnaScanActive = await mobile.evaluate(() => {
+  const object = document.querySelector(".dnaHeroObject");
+  const scan = document.querySelector(".registerScan");
+  if (!(object instanceof HTMLElement) || !(scan instanceof HTMLElement)) return null;
+  const scanStyle = getComputedStyle(scan);
+  return {
+    objectVisibleState: object.dataset.visible ?? null,
+    scanAnimationName: scanStyle.animationName,
+    scanOpacity: scanStyle.opacity,
+    scanTransform: scanStyle.transform,
+  };
+});
 await shot(mobile, "mobile-05b-dna-object");
 
 await mobile.focus("details.mobileMenu > summary");
