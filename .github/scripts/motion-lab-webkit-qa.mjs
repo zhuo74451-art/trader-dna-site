@@ -111,16 +111,28 @@ async function run(name, viewport, reduced=false) {
 
   await page.locator("#highlights").scrollIntoViewIfNeeded();
   await page.waitForTimeout(250);
+
+  const waitForHighlight = async (expected, timeout = 2500) => {
+    const started = Date.now();
+    let active = -1;
+    while (Date.now() - started < timeout) {
+      active = await page.locator(".highlightCard").evaluateAll(
+        els => els.findIndex(el => el.getAttribute("data-active") === "true"),
+      );
+      if (active === expected) return active;
+      await page.waitForTimeout(100);
+    }
+    return active;
+  };
+
   const before = await page.locator(".highlightsTrack").evaluate(el=>el.scrollLeft);
   await page.locator('[data-highlight-page="2"]').click();
-  await page.waitForTimeout(reduced ? 100 : 700);
+  const activePage3 = await waitForHighlight(2, reduced ? 900 : 2500);
   const afterPage3 = await page.locator(".highlightsTrack").evaluate(el=>el.scrollLeft);
-  const activePage3 = await page.locator(".highlightCard").evaluateAll(els=>els.findIndex(el=>el.getAttribute("data-active")==="true"));
 
   await page.locator('[data-highlight-dir="1"]').click();
-  await page.waitForTimeout(reduced ? 100 : 700);
+  const activeNext = await waitForHighlight(3, reduced ? 900 : 2500);
   const afterNext = await page.locator(".highlightsTrack").evaluate(el=>el.scrollLeft);
-  const activeNext = await page.locator(".highlightCard").evaluateAll(els=>els.findIndex(el=>el.getAttribute("data-active")==="true"));
 
   let mobileMenuOpen = null;
   if (viewport.width <= 500) {
