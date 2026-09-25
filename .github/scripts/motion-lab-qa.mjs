@@ -358,6 +358,7 @@ await scrollTo(mobile, 0, 1100);
 await shot(mobile, "mobile-01-hero");
 
 for (const [name, selector] of [
+  ["mobile-01b-real-world", "#real-world"],
   ["mobile-02-worldview", "#worldview"],
   ["mobile-03-highlights", "#highlights"],
   ["mobile-04-academy", "#academy"],
@@ -434,8 +435,27 @@ report.mobile = {
 await mobile.close();
 
 const narrowOpen = await openPage({ width: 360, height: 800, deviceScaleFactor: 1 }, false);
-report.narrow360 = await state(narrowOpen.page);
-await narrowOpen.page.close();
+const narrow = narrowOpen.page;
+await scrollTo(narrow, 0, 650);
+await shot(narrow, "narrow-01-hero");
+const narrowDnaTop = await sectionTop(narrow, "#trader-dna");
+await scrollTo(narrow, narrowDnaTop - 100, 450);
+await shot(narrow, "narrow-02-dna");
+report.narrow360 = await state(narrow);
+await narrow.close();
+
+const wideOpen = await openPage({ width: 1728, height: 1000, deviceScaleFactor: 1 }, false);
+const wide = wideOpen.page;
+await scrollTo(wide, 0, 850);
+await shot(wide, "wide-01-hero");
+const wideHighlightsTop = await sectionTop(wide, "#highlights");
+await scrollTo(wide, wideHighlightsTop + 80, 500);
+await shot(wide, "wide-02-highlights");
+const wideDnaTop = await sectionTop(wide, "#trader-dna");
+await scrollTo(wide, wideDnaTop + 220, 500);
+await shot(wide, "wide-03-dna");
+report.wide1728 = await state(wide);
+await wide.close();
 
 const reducedOpen = await openPage({ width: 1440, height: 900, deviceScaleFactor: 1 }, true);
 const reduced = reducedOpen.page;
@@ -451,6 +471,8 @@ await reduced.close();
 report.status = {
   desktop: desktopOpen.status,
   mobile: mobileOpen.status,
+  narrow360: narrowOpen.status,
+  wide1728: wideOpen.status,
   reduced: reducedOpen.status,
 };
 report.errors = errors;
@@ -465,6 +487,7 @@ await browser.close();
 
 const widths = [
   ["desktop", report.desktopFinal],
+  ["wide1728", report.wide1728],
   ["mobile", report.mobile],
   ["narrow360", report.narrow360],
 ];
