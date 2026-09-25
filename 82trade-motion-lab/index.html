@@ -1415,6 +1415,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   to{opacity:1;transform:translate3d(0,0,0) scale(1)}
 }
 
+@keyframes mobileDnaScan{
+  0%{opacity:0;transform:translate3d(0,-24px,0)}
+  14%{opacity:.88}
+  76%{opacity:.88}
+  100%{opacity:.08;transform:translate3d(0,var(--dna-mobile-scan-travel),0)}
+}
+
 @media(max-width:900px) and (prefers-reduced-motion:no-preference){
   .page [data-mobile-reveal]{
     opacity:0;
@@ -1424,6 +1431,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   .page [data-mobile-reveal][data-visible="true"]{
     opacity:1;
     transform:translate3d(0,0,0) scale(1);
+  }
+  .dnaHeroObject{
+    --dna-mobile-scan-travel:min(68vw,286px);
+  }
+  .dnaHeroObject .registerScan{
+    opacity:0;
+  }
+  .dnaHeroObject[data-visible="true"] .registerScan{
+    animation:mobileDnaScan 1050ms var(--cb-enter-expressive) 180ms both;
   }
   .mobileMenu[open] nav{
     transform-origin:top right;
@@ -1639,7 +1655,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
           <a class="dnaButton" href="https://82trade-team.github.io/dna/">開始 SCAN 01 <span>→</span></a>
           <div class="dnaMeta"><span>54 QUESTIONS</span><span>6 DIMENSIONS</span><span>NO RIGHT ANSWER</span></div>
         </div>
-        <div class="dnaHeroObject" aria-hidden="true">
+        <div class="dnaHeroObject" data-mobile-reveal aria-hidden="true">
           <div class="registerFrame">
             <i class="registerScan"></i>
             <span class="registerNo">01</span>
