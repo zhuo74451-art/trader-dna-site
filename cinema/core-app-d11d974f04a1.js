@@ -11,7 +11,7 @@ const DIMENSIONS={
 const PREFIX_TO_KEY=Object.fromEntries(Object.entries(DIMENSIONS).map(([k,v])=>[v.prefix,k]));
 const SCAN_NAMES={1:'第一層輪廓',2:'開始出現噪音',3:'答案開始不再明顯'};
 const view=document.querySelector('#view'), statusEl=document.querySelector('#status'), toast=document.querySelector('#toast');
-const ASSESSMENT_VERSION='standard-v1-2026-09';
+const ASSESSMENT_VERSION='quick18-v1.2-2026-09-25';
 const STORAGE_KEY=`82trade-trader-dna:${ASSESSMENT_VERSION}`;
 const DATA_CACHE_KEY=`82trade-trader-dna:canonical-data:${ASSESSMENT_VERSION}`;
 const REDUCED_MOTION=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -22,7 +22,7 @@ function setStatus(t){statusEl.textContent=t}
 function sigil(code){return `<div class="sigil" aria-hidden="true"><span class="sigil-rule h"></span><span class="sigil-rule v"></span><b class="notranslate" translate="no">${code.slice(0,2)}</b><small class="notranslate" translate="no">${code.slice(2)}</small></div>`}
 function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch{}}
 function clearState(){try{localStorage.removeItem(STORAGE_KEY)}catch{}}
-function loadState(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');if(!x||!['quick','full'].includes(x.mode)||!x.answers||typeof x.answers!=='object')return null;return x}catch{return null}}
+function loadState(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');if(!x||x.mode!=='quick'||!x.answers||typeof x.answers!=='object')return null;return x}catch{return null}}
 function newSessionId(){try{return crypto.randomUUID()}catch{return `tdna-${Date.now()}-${Math.random().toString(36).slice(2)}`}}
 function reset(){clearState();state={mode:null,index:0,answers:{},startedAt:null,sessionId:null,completed:false,completedRecord:null};renderLanding();scrollTo({top:0,behavior:'smooth'})}
 
@@ -49,14 +49,14 @@ function renderLanding(){
  document.querySelector('#start').onclick=()=>start('quick');
 }
 function start(mode){state={mode,index:0,answers:{},startedAt:new Date().toISOString(),sessionId:newSessionId(),completed:false,completedRecord:null};saveState();renderQuestion()}
-function activeQuestions(){return state.mode==='quick'?QUESTIONS.slice(0,18):QUESTIONS}
+function activeQuestions(){return QUESTIONS.slice(0,18)}
 function renderQuestion(){
  const qs=activeQuestions(), q=qs[state.index], total=qs.length;
- setStatus(`${state.mode==='quick'?'SCAN 01':'STANDARD 54'} · ${String(state.index+1).padStart(2,'0')}/${String(total).padStart(2,'0')}`);
+ setStatus(`SCAN 01 · ${String(state.index+1).padStart(2,'0')}/${String(total).padStart(2,'0')}`);
  const pct=(state.index/total)*100;
  view.innerHTML=`<section class="quiz-wrap">
    <div class="meta">
-     <div><div class="scan">${state.mode==='quick'?'SCAN 01':'STANDARD FORM'}</div><div class="scan-title">${state.mode==='quick'?'識別你的第一層決策輪廓':SCAN_NAMES[q.scan]}</div></div>
+     <div><div class="scan">SCAN 01</div><div class="scan-title">識別你的決策輪廓</div></div>
      <div class="count">${String(state.index+1).padStart(2,'0')} / ${String(total).padStart(2,'0')}</div>
    </div>
    <div class="bar"><i style="width:${pct}%"></i></div>
@@ -79,8 +79,7 @@ function choose(q,choice){
  document.querySelector('#captured').textContent='RESPONSE REGISTERED';
  setTimeout(()=>{
    const completed=state.index+1;
-   if(state.mode==='full'&&(completed===18||completed===36)){state.index++;saveState();renderTransition(completed/18)}
-   else if(completed>=activeQuestions().length){renderReveal()}
+   if(completed>=activeQuestions().length){renderReveal()}
    else{state.index++;saveState();renderQuestion()}
  },REDUCED_MOTION?80:210)
 }
@@ -113,7 +112,7 @@ function renderReveal(){
  const traces=answerList.map((choice,i)=>`<i class="trace ${choice==='A'?'trace-a':'trace-b'}" style="--i:${i}"></i>`).join('');
  setStatus('IDENTITY · RESOLVING');
  view.innerHTML=`<section class="reveal" style="--tc:${t.color}">
-   <div class="reveal-meta"><span>${state.mode==='quick'?'SCAN 01':'STANDARD 54'}</span><span>${answerList.length} RESPONSES REGISTERED</span></div>
+   <div class="reveal-meta"><span>SCAN 01</span><span>${answerList.length} RESPONSES REGISTERED</span></div>
    <div class="trace-field">${traces}</div>
    <div class="reveal-lock">
      <div class="reveal-label">DECISION PROFILE RESOLVED</div>
@@ -128,8 +127,8 @@ function renderResult(){
  const record=state.completedRecord||buildAssessmentRecord(dimScore,code);
  state.completed=true;state.completedRecord=record;saveState();
  if(!wasCompleted)document.dispatchEvent(new CustomEvent('traderdna:completed',{detail:record}));
- setStatus(state.mode==='quick'?'SCAN 01 · RESULT':'STANDARD 54 · RESULT');
- const modeLabel=state.mode==='quick'?'SCAN 01 / PRELIMINARY PROFILE':'STANDARD FORM V1 / 54 QUESTIONS';
+ setStatus('SCAN 01 · RESULT');
+ const modeLabel='QUICK SCAN V1.2 / 18 QUESTIONS';
  view.innerHTML=`<section class="result" style="--tc:${t.color}">
    <article class="result-hero">
      <div class="dossier-head"><span>82TRADE / TRADER DNA</span><span>${modeLabel}</span></div>
@@ -149,12 +148,11 @@ function renderResult(){
    <section class="section dims-section"><h3>02 / 六維連續輪廓</h3><div class="dims">${Object.keys(DIMENSIONS).map(k=>dimRow(k,dimScore[k],t.color)).join('')}</div></section>
    <section class="section"><h3>03 / 同型人物 · 風格映射</h3><div class="people">${t.people.map(p=>`<div class="person">${esc(p)}</div>`).join('')}</div></section>
    <section class="section reminder"><h3>PRIVATE / 只留給你的提醒</h3><p>${esc(t.reminder)}</p></section>
-   <div class="actions"><button class="btn" id="copy">複製分享文案 <span>→</span></button>${state.mode==='quick'?'<button class="btn alt" id="full">繼續完整 54 題</button>':''}<button class="btn alt" id="again">重新測</button></div>
+   <div class="actions"><button class="btn" id="copy">複製分享文案 <span>→</span></button><button class="btn alt" id="again">重新測</button></div>
    <div class="legal">Trader DNA 用於交易者自我認知、品牌表達與分享傳播。它不等於風險承受能力測評，不直接給買賣、部位、槓桿或策略建議。同型人物是依其公開決策風格做的映射，不代表本人背書。</div>
  </section>`;
  document.querySelector('#again').onclick=reset;
  document.querySelector('#copy').onclick=()=>copyShare(code,t);
- const full=document.querySelector('#full');if(full)full.onclick=continueFull;
  scrollTo({top:0,behavior:REDUCED_MOTION?'auto':'smooth'});
 }
 function continueFull(){state.mode='full';state.index=18;state.completed=false;state.completedRecord=null;saveState();renderTransition(1)}
