@@ -30,7 +30,7 @@ jobs:
 
       - name: Run WebKit desktop mobile interaction QA
         run: |
-          cat > /tmp/webkit-qa.mjs <<'NODE'
+          cat > webkit-qa.mjs <<'NODE'
           import { webkit } from "playwright";
           import fs from "node:fs";
 
@@ -137,7 +137,7 @@ jobs:
           console.log(JSON.stringify(receipt, null, 2));
           if (hardFailures.length) process.exit(1);
           NODE
-          node /tmp/webkit-qa.mjs
+          node webkit-qa.mjs
 
       - name: Upload WebKit QA receipt
         uses: actions/upload-artifact@v4
