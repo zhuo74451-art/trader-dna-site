@@ -1756,12 +1756,14 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
   const heroGrid=document.querySelector(".heroGrid");
   const heroAccent=document.querySelector(".heroAccent");
   const heroTitle=document.querySelector(".heroTitle");
+  const heroCue=document.querySelector(".scrollCue");
   const heroExit=gsap.timeline({scrollTrigger:{trigger:hero,start:"top top",end:"bottom top",scrub:.55}});
   heroExit
-    .to(heroAccent,{width:"100vw",ease:"none",duration:1},0)
-    .to(heroGrid,{yPercent:-7,scale:.958,opacity:.18,ease:"none",duration:1},0)
-    .to(heroTitle,{letterSpacing:"-.086em",ease:"none",duration:1},0)
-    .to(heroTitle.querySelectorAll("span"),{color:"#fff",ease:"none",duration:.52},.42);
+    .to(heroAccent,{width:"100vw",ease:"none",duration:.44},0)
+    .to(heroTitle.querySelectorAll("span"),{color:"#fff",ease:"none",duration:.28},.08)
+    .to(heroCue,{opacity:0,x:-18,ease:"none",duration:.24},.12)
+    .to(heroGrid,{yPercent:-7,scale:.958,opacity:.08,ease:"none",duration:.7},.2)
+    .to(heroTitle,{letterSpacing:"-.086em",ease:"none",duration:.72},.12);
 
   const worldview=document.querySelector(".worldview");
   const worldviewCopy=document.querySelector(".worldviewCopy");
