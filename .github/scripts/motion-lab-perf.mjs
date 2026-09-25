@@ -5,6 +5,12 @@ import puppeteer from "puppeteer-core";
 const browserPath = process.env.BROWSER;
 if (!browserPath) throw new Error("BROWSER env is required");
 
+const profile = process.env.MOTION_PERF_PROFILE ?? "desktop";
+if (!["desktop", "mobile"].includes(profile)) {
+  throw new Error(`Unsupported MOTION_PERF_PROFILE: ${profile}`);
+}
+const isMobile = profile === "mobile";
+
 const outDir = path.resolve("motion-lab-qa");
 fs.mkdirSync(outDir, { recursive: true });
 
@@ -15,7 +21,17 @@ const browser = await puppeteer.launch({
 });
 
 const page = await browser.newPage();
-await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
+await page.setViewport(
+  isMobile
+    ? {
+        width: 390,
+        height: 844,
+        deviceScaleFactor: 1,
+        isMobile: true,
+        hasTouch: true,
+      }
+    : { width: 1440, height: 900, deviceScaleFactor: 1 },
+);
 
 const consoleErrors = [];
 page.on("console", (msg) => {
@@ -110,7 +126,7 @@ const sample = await page.evaluate(async () => {
   await new Promise((resolve) => setTimeout(resolve, 250));
 
   const maxScroll = Math.max(0, document.documentElement.scrollHeight - innerHeight);
-  const targetDuration = 8000;
+  const targetDuration = isMobile ? 7000 : 8000;
   const frameIntervals = [];
   const samples = [];
   let previous = performance.now();
@@ -170,6 +186,7 @@ const sample = await page.evaluate(async () => {
     .reduce((sum, item) => sum + (item.value || 0), 0);
 
   return {
+    profile,
     viewport: { width: innerWidth, height: innerHeight },
     scrollHeight: document.documentElement.scrollHeight,
     maxScroll,
@@ -210,8 +227,9 @@ const sample = await page.evaluate(async () => {
 const metrics = await page.metrics();
 const report = {
   timestamp: new Date().toISOString(),
+  profile,
   note:
-    "GitHub-hosted headless Chromium diagnostic. Use for regression/catastrophic-jank detection, not as a claim of end-user device FPS. Raw CLS is reported; the hard gate uses unexpectedCls and excludes only explicitly named Real World ScrollTrigger pin-state sources.",
+    `GitHub-hosted headless Chromium ${profile} diagnostic. Use for regression/catastrophic-jank detection only, not as a claim of end-user device FPS. Raw CLS is reported; the hard gate uses unexpectedCls and excludes only explicitly named Real World ScrollTrigger pin-state sources.`,
   status: response?.status() ?? null,
   consoleErrors,
   ...sample,
@@ -228,7 +246,7 @@ const report = {
 };
 
 fs.writeFileSync(
-  path.join(outDir, "performance.json"),
+  path.join(outDir, isMobile ? "performance-mobile.json" : "performance.json"),
   JSON.stringify(report, null, 2),
 );
 console.log(JSON.stringify(report, null, 2));
