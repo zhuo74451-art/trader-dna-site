@@ -1568,7 +1568,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 </section>
 
 <section id="academy" class="productChapter academyChapter">
-  <div class="chapterHead" data-reveal>
+  <div class="chapterHead">
     <div><p class="kicker">PRODUCT 01</p><h2>Academy</h2></div>
     <a class="chapterAction" href="https://82trade-academy.pages.dev/courses">Enter Academy ↗</a>
   </div>
@@ -1587,7 +1587,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 </section>
 
 <section id="trader-dna" class="productChapter dnaChapter">
-  <div class="chapterHead" data-reveal>
+  <div class="chapterHead">
     <div><p class="kicker">PRODUCT 02</p><h2>Trader DNA</h2></div>
     <a class="chapterAction" href="https://82trade-team.github.io/dna/">Open Trader DNA ↗</a>
   </div>
@@ -1792,11 +1792,14 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
     .to(highlightsFooter,{y:18,opacity:0,ease:"none",duration:.78},.08);
   const academyTl=gsap.timeline({scrollTrigger:{trigger:academy,start:"top 78%",end:"center 34%",scrub:.6}});
   academyTl
-    .fromTo(academyObject,{y:150,scale:.875,rotateX:8,transformPerspective:1300,transformOrigin:"50% 100%"},{y:0,scale:1,rotateX:0,ease:"none",duration:1},0)
-    .fromTo(academyLead,{y:92,scale:.9,opacity:.62},{y:0,scale:1,opacity:1,ease:"none",duration:.82},.06)
-    .fromTo(Array.from(academySide.children),{x:92,y:28,scale:.91,opacity:.28},{x:0,y:0,scale:1,opacity:1,stagger:.11,ease:"none",duration:.72},.13);
+    .fromTo(academyHead.querySelector("h2"),{yPercent:24,opacity:.16,letterSpacing:"-.09em"},{yPercent:0,opacity:1,letterSpacing:"-.075em",ease:"none",duration:.56},0)
+    .fromTo(academyHead.querySelectorAll("p, a"),{y:20,opacity:.24},{y:0,opacity:1,stagger:.08,ease:"none",duration:.44},.04)
+    .fromTo(academyObject,{y:150,scale:.875,rotateX:8,transformPerspective:1300,transformOrigin:"50% 100%"},{y:0,scale:1,rotateX:0,ease:"none",duration:1},.08)
+    .fromTo(academyLead,{y:92,scale:.9,opacity:.62},{y:0,scale:1,opacity:1,ease:"none",duration:.82},.14)
+    .fromTo(Array.from(academySide.children),{x:92,y:28,scale:.91,opacity:.28},{x:0,y:0,scale:1,opacity:1,stagger:.11,ease:"none",duration:.72},.2);
 
   const dna=document.querySelector(".dnaChapter");
+  const dnaHead=document.querySelector(".dnaChapter .chapterHead");
   const dnaObject=document.querySelector(".dnaObject");
   const dnaHeroObject=document.querySelector(".dnaHeroObject");
   const registerScan=document.querySelector(".registerScan");
@@ -1808,7 +1811,9 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
     .to(academyObject,{y:-72,scale:.94,opacity:.26,borderRadius:72,ease:"none",duration:1},0);
   const dnaTl=gsap.timeline({scrollTrigger:{trigger:dna,start:"top 78%",end:"center 30%",scrub:.6}});
   dnaTl
-    .fromTo(dnaObject,{clipPath:"inset(8% 6% round 72px)",scale:.94,y:72},{clipPath:"inset(0% 0% round 48px)",scale:1,y:0,ease:"none",duration:1},0)
+    .fromTo(dnaHead.querySelector("h2"),{yPercent:22,opacity:.16,letterSpacing:"-.09em"},{yPercent:0,opacity:1,letterSpacing:"-.075em",ease:"none",duration:.54},0)
+    .fromTo(dnaHead.querySelectorAll("p, a"),{y:18,opacity:.24},{y:0,opacity:1,stagger:.08,ease:"none",duration:.42},.04)
+    .fromTo(dnaObject,{clipPath:"inset(8% 6% round 72px)",scale:.94,y:72},{clipPath:"inset(0% 0% round 48px)",scale:1,y:0,ease:"none",duration:1},.08)
     .fromTo(dnaHeroObject,{scale:.72,rotate:-8,opacity:.34},{scale:1,rotate:0,opacity:1,transformOrigin:"50% 50%",ease:"none",duration:.82},.03)
     .fromTo(registerCross,{rotate:18,scale:.68,opacity:.18},{rotate:45,scale:1,opacity:1,ease:"none",duration:.62},.06)
     .fromTo(registerCore,{y:18,scale:.9,opacity:.22},{y:0,scale:1,opacity:1,ease:"none",duration:.56},.12)
