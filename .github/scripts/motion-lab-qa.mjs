@@ -391,13 +391,19 @@ const mobileDnaTop = await sectionTop(mobile, "#trader-dna");
 await scrollTo(mobile, mobileDnaTop - 120, 420);
 report.mobileDnaEntry = await mobile.evaluate(() => {
   const object = document.querySelector(".dnaHeroObject");
+  const scan = document.querySelector(".registerScan");
   if (!(object instanceof HTMLElement)) return null;
   const rect = object.getBoundingClientRect();
+  const scanStyle = scan instanceof HTMLElement ? getComputedStyle(scan) : null;
   return {
     viewportHeight: window.innerHeight,
     objectTop: rect.top,
     objectBottom: rect.bottom,
     visiblePx: Math.max(0, Math.min(window.innerHeight, rect.bottom) - Math.max(0, rect.top)),
+    objectVisibleState: object.dataset.visible ?? null,
+    scanAnimationName: scanStyle?.animationName ?? null,
+    scanOpacity: scanStyle?.opacity ?? null,
+    scanTransform: scanStyle?.transform ?? null,
   };
 });
 await scrollTo(mobile, mobileDnaTop + 260, 420);
