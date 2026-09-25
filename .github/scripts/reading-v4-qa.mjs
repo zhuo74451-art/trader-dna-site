@@ -51,9 +51,12 @@ async function open(name, viewport) {
       bookRect: bookRect ? { x: bookRect.x, y: bookRect.y, width: bookRect.width, height: bookRect.height } : null,
       titleRect: titleRect ? { x: titleRect.x, y: titleRect.y, width: titleRect.width, height: titleRect.height } : null,
       selectedText: selected?.textContent?.trim() ?? null,
-      imageComplete: document.querySelector(".front img") instanceof HTMLImageElement
-        ? document.querySelector(".front img").complete
+      imageComplete: document.querySelector(".bookObject img") instanceof HTMLImageElement
+        ? document.querySelector(".bookObject img").complete
         : false,
+      imageNaturalWidth: document.querySelector(".bookObject img") instanceof HTMLImageElement
+        ? document.querySelector(".bookObject img").naturalWidth
+        : 0,
     };
   });
   await page.close();
