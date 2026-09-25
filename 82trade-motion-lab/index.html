@@ -379,6 +379,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   border-radius:32px;
   background:#0a0a0a;
   box-shadow:0 30px 90px rgba(0,0,0,.26);
+  transform-origin:50% 50%;
+  will-change:transform,opacity,border-radius;
 }
 .takeoverFrame:after{
   content:"";
@@ -1817,13 +1819,22 @@ const frame=document.querySelector(".takeoverFrame");
 const takeoverMedia=document.querySelector("[data-takeover-media]");
 const mm=gsap.matchMedia();
 mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
+  const takeoverCaption=document.querySelector(".takeoverCaption");
   const takeoverCaptionLabel=document.querySelector(".takeoverCaption span");
   const takeoverCaptionStrong=document.querySelector(".takeoverCaption strong");
   const takeoverSceneLabel=document.querySelector(".takeoverLabel");
+  const frameStyle=getComputedStyle(frame);
+  const frameLayoutWidth=Math.max(1,parseFloat(frameStyle.width));
+  const frameLayoutHeight=Math.max(1,parseFloat(frameStyle.height));
+  const takeoverScale=Math.max(innerWidth/frameLayoutWidth,innerHeight/frameLayoutHeight);
+  const takeoverCaptionScale=1/takeoverScale;
+  const takeoverBridgeScale=takeoverScale*.965;
+  const takeoverBridgeRadius=44/takeoverBridgeScale;
   const tl=gsap.timeline({scrollTrigger:{trigger:section,start:"center center",end:"+=800 center",scrub:.5,pin:true,pinSpacing:true}});
   tl
     .fromTo(takeoverMedia,{scale:1.08},{scale:1.01,ease:"none",duration:1},0)
-    .to(frame,{width:"100vw",height:"100vh",borderRadius:0,ease:"none",duration:1},0);
+    .to(frame,{scale:takeoverScale,transformOrigin:"50% 50%",borderRadius:0,ease:"none",duration:1},0);
+  if(takeoverCaption) tl.to(takeoverCaption,{scale:takeoverCaptionScale,transformOrigin:"50% 100%",ease:"none",duration:1},0);
   if(takeoverCaptionLabel) tl.fromTo(takeoverCaptionLabel,{x:-28,opacity:.18},{x:0,opacity:1,ease:"none",duration:.5},.08);
   if(takeoverCaptionStrong) tl.fromTo(takeoverCaptionStrong,{y:34,opacity:.16},{y:0,opacity:1,ease:"none",duration:.58},.16);
   if(takeoverSceneLabel) tl.fromTo(takeoverSceneLabel,{opacity:.18},{opacity:1,ease:"none",duration:.44},.06);
@@ -1847,7 +1858,7 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
   const worldviewMedia=document.querySelector(".worldviewMedia");
   const worldviewBlue=document.querySelector(".worldviewBlue");
   const takeoverToWorldview=gsap.timeline({scrollTrigger:{trigger:worldview,start:"top bottom",end:"top 72%",scrub:.5}});
-  takeoverToWorldview.to(frame,{y:-42,scale:.965,opacity:.56,borderRadius:44,ease:"none",duration:1},0);
+  takeoverToWorldview.to(frame,{y:-42,scale:takeoverBridgeScale,opacity:.56,borderRadius:takeoverBridgeRadius,ease:"none",duration:1},0);
   const worldviewTl=gsap.timeline({scrollTrigger:{trigger:worldview,start:"top top",end:"+=720",scrub:.55,pin:true,pinSpacing:true}});
   worldviewTl
     .fromTo(worldviewCopy.querySelectorAll("p"),{y:24,opacity:.16},{y:0,opacity:1,stagger:.08,ease:"none",duration:.42},0)
