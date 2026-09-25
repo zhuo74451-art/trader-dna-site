@@ -28,7 +28,7 @@ async function settle(page, ms = 450) {
   });
 }
 
-async function openPage(viewport, reducedMotion = false) {
+async function openPage(viewport, reducedMotion = false, url = base) {
   const page = await browser.newPage();
   await page.setViewport(viewport);
   await page.emulateMediaFeatures([
@@ -44,7 +44,7 @@ async function openPage(viewport, reducedMotion = false) {
   page.on("requestfailed", (req) => {
     failures.push({ viewport, url: req.url(), error: req.failure()?.errorText ?? null });
   });
-  const response = await page.goto(base, {
+  const response = await page.goto(url, {
     waitUntil: "networkidle0",
     timeout: 30000,
   });
@@ -389,6 +389,31 @@ report.headerUp = await state(desktop);
 report.desktopFinal = await state(desktop);
 await desktop.close();
 
+const readingHashOpen = await openPage(
+  { width: 1440, height: 900, deviceScaleFactor: 1 },
+  false,
+  `${base}?qa=reading-hash#reading-list`,
+);
+const readingHashPage = readingHashOpen.page;
+await settle(readingHashPage, 1400);
+await shot(readingHashPage, "desktop-10f-reading-direct-hash");
+report.readingHashLanding = await readingHashPage.evaluate(() => {
+  const target = document.getElementById("reading-list");
+  const header = document.querySelector(".header");
+  if (!(target instanceof HTMLElement)) return null;
+  const targetRect = target.getBoundingClientRect();
+  const headerRect = header instanceof HTMLElement ? header.getBoundingClientRect() : null;
+  return {
+    hash: window.location.hash,
+    scrollY: window.scrollY,
+    targetTop: targetRect.top,
+    targetBottom: targetRect.bottom,
+    headerBottom: headerRect?.bottom ?? null,
+    title: target.querySelector("h2")?.textContent?.trim() ?? null,
+  };
+});
+await readingHashPage.close();
+
 const mobileOpen = await openPage({ width: 390, height: 844, deviceScaleFactor: 1 }, false);
 const mobile = mobileOpen.page;
 await scrollTo(mobile, 0, 1100);
@@ -518,6 +543,7 @@ report.status = {
   narrow360: narrowOpen.status,
   wide1728: wideOpen.status,
   reduced: reducedOpen.status,
+  readingHash: readingHashOpen.status,
 };
 report.errors = errors;
 report.failures = failures;
@@ -543,6 +569,16 @@ for (const [name, value] of widths) {
 }
 if (!report.reading || report.reading.title !== "納瓦爾寶典" || report.reading.category !== "思維成長" || report.reading.activeTab !== 2) {
   throw new Error(`reading interaction failed: ${JSON.stringify(report.reading)}`);
+}
+if (
+  !report.readingHashLanding ||
+  report.readingHashLanding.hash !== "#reading-list" ||
+  report.readingHashLanding.scrollY < 1000 ||
+  report.readingHashLanding.targetTop < -20 ||
+  report.readingHashLanding.targetTop > 180 ||
+  report.readingHashLanding.title !== "Reading list."
+) {
+  throw new Error(`reading hash landing failed: ${JSON.stringify(report.readingHashLanding)}`);
 }
 if (!report.mobile.menuOpen) throw new Error("mobile menu did not open by keyboard");
 if (errors.length) throw new Error(`console/page errors: ${JSON.stringify(errors.slice(0, 8))}`);
