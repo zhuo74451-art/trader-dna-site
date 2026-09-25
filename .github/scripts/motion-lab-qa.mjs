@@ -315,6 +315,7 @@ const pageMetricsBefore = await desktop.metrics();
 const pagePacing = await sampleFramePacing(desktop, "page");
 const pageMetricsAfter = await desktop.metrics();
 
+await scrollTo(desktop, highlightsTop + 80, 250);
 await desktop.evaluate(() => {
   const track = document.querySelector(".highlightsTrack");
   if (track instanceof HTMLElement) track.scrollLeft = 0;
