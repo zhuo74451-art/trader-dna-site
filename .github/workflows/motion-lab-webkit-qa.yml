@@ -1,0 +1,35 @@
+name: Motion Lab WebKit QA
+
+on:
+  push:
+    paths:
+      - "82trade-motion-lab/**"
+      - ".github/scripts/motion-lab-webkit-qa.mjs"
+      - ".github/workflows/motion-lab-webkit-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  webkit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Playwright WebKit
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps webkit
+
+      - name: Run Motion Lab WebKit QA
+        run: node .github/scripts/motion-lab-webkit-qa.mjs
+
+      - name: Upload WebKit receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: 82trade-motion-lab-webkit
+          path: motion-lab-webkit/**
+          if-no-files-found: error
+          retention-days: 7
