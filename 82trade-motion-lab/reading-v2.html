@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>82TRADE — Reading V2 Donor Study</title>
+<style>
+/*
+  Book object mechanics derived from scastiel/book-cover-3d (MIT)
+  Copyright (c) 2020 Sebastien Castiel
+  https://github.com/scastiel/book-cover-3d
+*/
+:root{
+  --bg:#131112;
+  --ink:#f5f3ef;
+  --muted:#918b89;
+  --line:rgba(255,255,255,.12);
+  --blue:#0052ff;
+  --blue-soft:#7ca6ff;
+  --serif:Georgia,"Times New Roman",serif;
+  --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--sans)}
+body{overflow-x:hidden}
+button,a{font:inherit}
+button{color:inherit}
+.shell{min-height:100svh;display:grid;grid-template-rows:72px 1fr}
+.header{
+  position:relative;z-index:10;height:72px;padding:0 4vw;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(255,255,255,.08)
+}
+.brand{font-size:15px;font-weight:800;letter-spacing:-.04em}
+.headerMeta{display:flex;gap:24px;align-items:center;color:#7f7a78;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.headerMeta a{color:inherit;text-decoration:none}
+.main{position:relative;min-height:calc(100svh - 72px);padding:0 4vw 26px;display:grid;grid-template-rows:1fr auto}
+.stage{
+  position:relative;width:100%;display:grid;grid-template-columns:minmax(420px,.95fr) minmax(0,1.05fr);
+  align-items:stretch;min-height:720px
+}
+.stage:before{
+  content:"";position:absolute;left:0;right:0;bottom:22%;height:1px;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.13) 20%,rgba(255,255,255,.07) 66%,transparent 100%)
+}
+.stage:after{
+  content:"";position:absolute;left:-4vw;right:-4vw;bottom:0;height:24%;
+  background:linear-gradient(180deg,rgba(255,255,255,.018),rgba(255,255,255,.045));
+  transform:perspective(700px) rotateX(68deg);transform-origin:bottom center;pointer-events:none
+}
+.objectPane{
+  position:relative;display:grid;place-items:center;min-width:0;overflow:hidden
+}
+.objectPane:before{
+  content:"";position:absolute;width:62%;aspect-ratio:1;left:9%;top:19%;
+  background:radial-gradient(circle,rgba(255,255,255,.075),rgba(255,255,255,.022) 42%,transparent 70%);
+  filter:blur(4px)
+}
+.objectIndex{
+  position:absolute;left:0;top:11%;color:#6f6967;font-size:9px;font-weight:700;letter-spacing:.16em;writing-mode:vertical-rl
+}
+.bookStage{
+  position:relative;z-index:2;width:410px;height:580px;display:grid;place-items:center;perspective:900px
+}
+.book{
+  width:310px;height:470px;position:relative;transform-style:preserve-3d;
+  transform:rotateY(-28deg) rotateX(1.5deg);
+  transition:transform .72s cubic-bezier(.2,.7,.2,1),filter .72s ease,opacity .35s ease;
+  filter:drop-shadow(-18px 30px 36px rgba(0,0,0,.35))
+}
+.book:hover{transform:rotateY(-9deg) rotateX(.5deg) translateY(-4px)}
+.bookFace{
+  position:absolute;inset:0;transform:translateZ(27px);overflow:hidden;
+  border-radius:0 4px 4px 0;background:#10131b;
+  box-shadow:5px 7px 28px rgba(0,0,0,.42)
+}
+.bookFace img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.92}
+.bookFace:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.2),transparent 16%,transparent 84%,rgba(255,255,255,.06))}
+.bookLabel{
+  position:absolute;z-index:2;inset:10% 10% 10% 12%;display:flex;flex-direction:column;justify-content:flex-end;
+  text-shadow:0 2px 16px rgba(0,0,0,.48)
+}
+.bookLabel small{margin-bottom:auto;color:#9fbcff;font-size:8px;font-weight:750;letter-spacing:.15em}
+.bookLabel strong{max-width:10ch;font-family:var(--serif);font-size:40px;line-height:.96;font-weight:500;letter-spacing:-.035em}
+.bookLabel span{margin-top:12px;color:rgba(255,255,255,.58);font-size:9px;letter-spacing:.12em}
+.book:before{
+  position:absolute;content:"";left:0;top:4px;width:52px;height:462px;
+  transform:translateX(281px) rotateY(90deg);
+  background:repeating-linear-gradient(90deg,#f6f3e9 0,#f6f3e9 3px,#d9d5c9 4px,#f6f3e9 6px);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)
+}
+.book:after{
+  position:absolute;content:"";inset:0;transform:translateZ(-27px);background:#090b11;
+  border-radius:0 4px 4px 0;box-shadow:-18px 0 54px rgba(0,0,0,.46)
+}
+.bookShadow{
+  position:absolute;z-index:1;width:410px;height:74px;bottom:6%;
+  background:radial-gradient(ellipse,rgba(0,0,0,.55),rgba(0,0,0,.12) 50%,transparent 72%);
+  filter:blur(10px);transform:rotate(-4deg)
+}
+.infoPane{
+  position:relative;z-index:3;display:flex;flex-direction:column;justify-content:center;padding:8vh 6vw 15vh 4vw
+}
+.eyebrow{display:flex;gap:16px;align-items:center;color:var(--blue-soft);font-size:9px;font-weight:760;letter-spacing:.16em;text-transform:uppercase}
+.eyebrow:before{content:"";width:28px;height:1px;background:var(--blue-soft)}
+.title{
+  margin:36px 0 24px;max-width:850px;font-family:var(--serif);font-size:clamp(62px,6.6vw,112px);
+  line-height:.91;font-weight:400;letter-spacing:-.05em
+}
+.desc{max-width:720px;margin:0;color:#aaa3a0;font-family:var(--serif);font-size:18px;line-height:1.72}
+.note{max-width:650px;margin:28px 0 0;color:#696361;font-size:11px;line-height:1.7;letter-spacing:.02em}
+.list{margin-top:54px;max-width:720px;border-top:1px solid var(--line)}
+.listRow{min-height:54px;display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;border-bottom:1px solid var(--line);color:#736d6b}
+.listRow b{font-size:15px;font-weight:500}
+.listRow small{font-size:8px;letter-spacing:.12em}
+.listRow[data-featured="true"]{color:#f5f3ef}
+.listRow[data-featured="true"] em{color:var(--blue-soft);font-style:normal;font-size:8px;letter-spacing:.11em}
+.nav{
+  position:relative;z-index:5;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:30px;
+  min-height:78px;border-top:1px solid var(--line)
+}
+.navHint{color:#6e6866;font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.navHint:last-child{text-align:right}
+.navPages{display:flex;align-items:center;gap:6px}
+.navPages button{
+  min-width:46px;height:46px;border:0;background:transparent;color:#6d6765;cursor:pointer;
+  font-size:11px;transition:color .22s ease,transform .22s ease
+}
+.navPages button:hover{color:#fff;transform:translateY(-2px)}
+.navPages button[data-active="true"]{color:#fff}
+.navPages button[data-active="true"]:after{content:"";display:block;width:22px;height:1px;margin:8px auto 0;background:var(--blue-soft)}
+.navArrow{
+  display:inline-flex;align-items:center;gap:8px;background:transparent;border:0;color:#6d6765;cursor:pointer
+}
+.navArrow:hover{color:#fff}
+.credit{
+  position:fixed;left:10px;bottom:8px;z-index:30;color:#4b4644;font-size:8px;letter-spacing:.07em;pointer-events:none
+}
+@keyframes objectIn{
+  0%{opacity:0;transform:rotateY(-58deg) translate3d(-50px,20px,-80px) scale(.92)}
+  100%{opacity:1;transform:rotateY(-28deg) rotateX(1.5deg) translate3d(0,0,0) scale(1)}
+}
+@keyframes copyIn{
+  0%{opacity:0;transform:translateY(24px)}
+  100%{opacity:1;transform:none}
+}
+.book[data-animate="true"]{animation:objectIn .78s cubic-bezier(.2,.7,.2,1) both}
+.infoPane[data-animate="true"] .eyebrow,
+.infoPane[data-animate="true"] .title,
+.infoPane[data-animate="true"] .desc,
+.infoPane[data-animate="true"] .note,
+.infoPane[data-animate="true"] .list{animation:copyIn .56s ease both}
+.infoPane[data-animate="true"] .title{animation-delay:.04s}
+.infoPane[data-animate="true"] .desc{animation-delay:.08s}
+.infoPane[data-animate="true"] .note{animation-delay:.1s}
+.infoPane[data-animate="true"] .list{animation-delay:.13s}
+
+@media(max-width:900px){
+  .shell{grid-template-rows:64px 1fr}
+  .header{height:64px;padding:0 20px}
+  .headerMeta span{display:none}
+  .main{min-height:calc(100svh - 64px);padding:0 20px 22px}
+  .stage{grid-template-columns:1fr;min-height:0}
+  .stage:before{bottom:54%}
+  .stage:after{height:14%;bottom:50%}
+  .objectPane{min-height:450px}
+  .objectIndex{top:7%;left:2px}
+  .bookStage{width:300px;height:410px;transform:scale(.83)}
+  .bookShadow{width:300px;bottom:7%}
+  .infoPane{padding:10px 0 40px;justify-content:flex-start}
+  .eyebrow{font-size:8px}
+  .title{margin:24px 0 18px;font-size:clamp(50px,14vw,72px)}
+  .desc{font-size:16px;line-height:1.62}
+  .note{margin-top:18px}
+  .list{margin-top:34px}
+  .nav{grid-template-columns:1fr;gap:8px;padding:18px 0}
+  .navHint{display:none}
+  .navPages{justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){
+  .book,.book:hover{transition:none;animation:none!important;transform:rotateY(-18deg)}
+  .infoPane *{animation:none!important}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="header">
+    <div class="brand">82TRADE</div>
+    <div class="headerMeta"><span>Reading V2 / Donor Study</span><a href="./reading.html">Previous draft ↗</a></div>
+  </header>
+  <main class="main">
+    <section class="stage">
+      <div class="objectPane">
+        <span class="objectIndex">CURATED READING / 82TRADE</span>
+        <div class="bookStage">
+          <div class="bookShadow"></div>
+          <div class="book" data-book data-animate="true">
+            <div class="bookFace">
+              <img data-cover src="./assets/books/reminiscences.webp" alt="">
+              <div class="bookLabel">
+                <small>82TRADE / SELECTED</small>
+                <strong data-cover-title>股票作手回憶錄</strong>
+                <span data-cover-category>交易必備</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <article class="infoPane" data-copy data-animate="true">
+        <div class="eyebrow"><span data-code>01 / 交易必備</span></div>
+        <h1 class="title" data-title>股票作手回憶錄</h1>
+        <p class="desc" data-desc>不是一本教你背招式的書。它更像一面鏡子：讓你看到交易者怎麼在貪婪、恐懼、等待與加碼之間反覆犯錯。</p>
+        <p class="note" data-note>李奧森 2015、真如 1997 / 2016 再版，皆為推薦翻譯版本。</p>
+        <div class="list" data-list>
+          <div class="listRow"><small>01</small><b>亞當理論</b><em></em></div>
+          <div class="listRow" data-featured="true"><small>02</small><b>股票作手回憶錄</b><em>SELECTED</em></div>
+          <div class="listRow"><small>03</small><b>交易聖經</b><em></em></div>
+          <div class="listRow"><small>04</small><b>量價分析</b><em></em></div>
+        </div>
+      </article>
+    </section>
+    <nav class="nav" aria-label="Reading categories">
+      <div class="navHint"><button class="navArrow" type="button" data-dir="-1">← PREVIOUS</button></div>
+      <div class="navPages">
+        <button type="button" data-page="0" data-active="true">01</button>
+        <button type="button" data-page="1" data-active="false">02</button>
+        <button type="button" data-page="2" data-active="false">03</button>
+      </div>
+      <div class="navHint"><button class="navArrow" type="button" data-dir="1">NEXT →</button></div>
+    </nav>
+  </main>
+</div>
+<div class="credit">Book object mechanics: book-cover-3d / MIT / Sebastien Castiel</div>
+<script>
+const sets=[
+  {
+    category:"交易必備", title:"股票作手回憶錄", cover:"./assets/books/reminiscences.webp",
+    desc:"不是一本教你背招式的書。它更像一面鏡子：讓你看到交易者怎麼在貪婪、恐懼、等待與加碼之間反覆犯錯。",
+    note:"李奧森 2015、真如 1997 / 2016 再版，皆為推薦翻譯版本。",
+    books:["亞當理論","股票作手回憶錄","交易聖經","量價分析"]
+  },
+  {
+    category:"交易進階", title:"新威科夫操盤法", cover:"./assets/books/wyckoff.webp",
+    desc:"把市場看成供需與參與者行為，而不是一堆孤立指標。適合已經會看圖，但想把判斷變成結構的人。",
+    note:"82TRADE READING LIST / 進階結構閱讀。",
+    books:["新威科夫操盤法","技術分析聖經","道氏理論"]
+  },
+  {
+    category:"思維成長", title:"納瓦爾寶典", cover:"./assets/books/naval.webp",
+    desc:"把注意力從單次輸贏拉回長期複利：判斷、選擇、專注與自由。它不是交易書，但很適合交易者。",
+    note:"82TRADE READING LIST / 思維延伸閱讀。",
+    books:["先別急著吃棉花糖","灰階思考","原子習慣","納瓦爾寶典"]
+  }
+];
+sets.forEach(({cover})=>{const img=new Image();img.src=cover;});
+let index=0;
+const q=s=>document.querySelector(s);
+const qa=s=>Array.from(document.querySelectorAll(s));
+const render=(next)=>{
+  index=(next+sets.length)%sets.length;
+  const item=sets[index];
+  q("[data-cover]").src=item.cover;
+  q("[data-cover-title]").textContent=item.title;
+  q("[data-cover-category]").textContent=item.category;
+  q("[data-code]").textContent="0"+(index+1)+" / "+item.category;
+  q("[data-title]").textContent=item.title;
+  q("[data-desc]").textContent=item.desc;
+  q("[data-note]").textContent=item.note;
+  const list=q("[data-list]");
+  list.replaceChildren(...item.books.map((name,i)=>{
+    const row=document.createElement("div");
+    row.className="listRow";
+    if(name===item.title)row.dataset.featured="true";
+    row.innerHTML="<small>0"+(i+1)+"</small><b></b><em></em>";
+    row.querySelector("b").textContent=name;
+    if(name===item.title)row.querySelector("em").textContent="SELECTED";
+    return row;
+  }));
+  qa("[data-page]").forEach((b,i)=>b.dataset.active=String(i===index));
+  if(!matchMedia("(prefers-reduced-motion: reduce)").matches){
+    const book=q("[data-book]"),copy=q("[data-copy]");
+    book.removeAttribute("data-animate");copy.removeAttribute("data-animate");
+    void book.offsetWidth;
+    book.dataset.animate="true";copy.dataset.animate="true";
+  }
+};
+qa("[data-page]").forEach(b=>b.addEventListener("click",()=>render(Number(b.dataset.page)||0)));
+qa("[data-dir]").forEach(b=>b.addEventListener("click",()=>render(index+(Number(b.dataset.dir)||1))));
+</script>
+</body>
+</html>
