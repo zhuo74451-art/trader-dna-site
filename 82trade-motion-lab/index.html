@@ -416,8 +416,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 
 .worldview{
+  position:relative;
+  z-index:4;
   min-height:110svh;
+  margin-top:-72px;
   padding:14vh 4vw;
+  border-radius:64px 64px 0 0;
+  box-shadow:0 -28px 90px rgba(10,11,13,.13);
   display:grid;
   grid-template-columns:minmax(0,1fr) minmax(360px,.72fr);
   gap:8vw;
@@ -1228,7 +1233,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 
   .worldview{
     min-height:auto;
+    margin-top:0;
     padding:11vh 20px;
+    border-radius:0;
+    box-shadow:none;
     grid-template-columns:1fr;
     gap:56px;
   }
@@ -1769,6 +1777,8 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
   const worldviewCopy=document.querySelector(".worldviewCopy");
   const worldviewMedia=document.querySelector(".worldviewMedia");
   const worldviewBlue=document.querySelector(".worldviewBlue");
+  const takeoverToWorldview=gsap.timeline({scrollTrigger:{trigger:worldview,start:"top bottom",end:"top 72%",scrub:.5}});
+  takeoverToWorldview.to(frame,{y:-42,scale:.965,opacity:.56,borderRadius:44,ease:"none",duration:1},0);
   const worldviewTl=gsap.timeline({scrollTrigger:{trigger:worldview,start:"top top",end:"+=720",scrub:.55,pin:true,pinSpacing:true}});
   worldviewTl
     .fromTo(worldviewCopy.querySelectorAll("p"),{y:24,opacity:.16},{y:0,opacity:1,stagger:.08,ease:"none",duration:.42},0)
@@ -1825,7 +1835,7 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
   const closingWordmark=document.querySelector(".closingWordmark");
   const closingTween=gsap.fromTo(closingWordmark,{yPercent:28,scale:.92,opacity:.05},{yPercent:0,scale:1,opacity:1,ease:"none",scrollTrigger:{trigger:closing,start:"top bottom",end:"bottom bottom",scrub:.65}});
 
-  return()=>{tl.kill();heroExit.kill();worldviewTl.kill();highlightsToAcademy.kill();academyTl.kill();academyExit.kill();dnaTl.kill();closingTween.kill();};
+  return()=>{tl.kill();heroExit.kill();takeoverToWorldview.kill();worldviewTl.kill();highlightsToAcademy.kill();academyTl.kill();academyExit.kill();dnaTl.kill();closingTween.kill();};
 });
 
 const track=document.querySelector(".highlightsTrack");
