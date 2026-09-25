@@ -290,9 +290,30 @@ await shot(desktop, "desktop-09-highlights-to-academy");
 await scrollTo(desktop, academyTop + 260, 700);
 await shot(desktop, "desktop-10-academy-stage");
 
+const readingTop = await sectionTop(desktop, "#reading-list");
+await scrollTo(desktop, readingTop - 320, 700);
+await shot(desktop, "desktop-10b-academy-to-reading");
+await scrollTo(desktop, readingTop + 220, 700);
+await shot(desktop, "desktop-10c-reading-stage");
+
+await desktop.click('[data-reading-tab="1"]');
+await settle(desktop, 760);
+await shot(desktop, "desktop-10d-reading-advanced");
+await desktop.click('[data-reading-dir="1"]');
+await settle(desktop, 760);
+await shot(desktop, "desktop-10e-reading-growth");
+report.reading = await desktop.evaluate(() => ({
+  title: document.querySelector("[data-reading-title]")?.textContent?.trim() ?? null,
+  category: document.querySelector("[data-reading-category]")?.textContent?.trim() ?? null,
+  activeTab: Array.from(document.querySelectorAll("[data-reading-tab]")).findIndex(
+    (el) => el.getAttribute("data-active") === "true",
+  ),
+  image: document.querySelector("[data-reading-image]")?.getAttribute("src") ?? null,
+}));
+
 const dnaTop = await sectionTop(desktop, "#trader-dna");
 await scrollTo(desktop, dnaTop - 320, 700);
-await shot(desktop, "desktop-11-academy-to-dna");
+await shot(desktop, "desktop-11-reading-to-dna");
 await scrollTo(desktop, dnaTop + 260, 700);
 await shot(desktop, "desktop-12-dna-reveal");
 
@@ -362,6 +383,7 @@ for (const [name, selector] of [
   ["mobile-02-worldview", "#worldview"],
   ["mobile-03-highlights", "#highlights"],
   ["mobile-04-academy", "#academy"],
+  ["mobile-04b-reading", "#reading-list"],
   ["mobile-05-dna", "#trader-dna"],
   ["mobile-06-closing", "#enter"],
 ]) {
@@ -438,9 +460,12 @@ const narrowOpen = await openPage({ width: 360, height: 800, deviceScaleFactor: 
 const narrow = narrowOpen.page;
 await scrollTo(narrow, 0, 650);
 await shot(narrow, "narrow-01-hero");
+const narrowReadingTop = await sectionTop(narrow, "#reading-list");
+await scrollTo(narrow, narrowReadingTop - 100, 450);
+await shot(narrow, "narrow-02-reading");
 const narrowDnaTop = await sectionTop(narrow, "#trader-dna");
 await scrollTo(narrow, narrowDnaTop - 100, 450);
-await shot(narrow, "narrow-02-dna");
+await shot(narrow, "narrow-03-dna");
 report.narrow360 = await state(narrow);
 await narrow.close();
 
@@ -451,9 +476,12 @@ await shot(wide, "wide-01-hero");
 const wideHighlightsTop = await sectionTop(wide, "#highlights");
 await scrollTo(wide, wideHighlightsTop + 80, 500);
 await shot(wide, "wide-02-highlights");
+const wideReadingTop = await sectionTop(wide, "#reading-list");
+await scrollTo(wide, wideReadingTop + 180, 500);
+await shot(wide, "wide-03-reading");
 const wideDnaTop = await sectionTop(wide, "#trader-dna");
 await scrollTo(wide, wideDnaTop + 220, 500);
-await shot(wide, "wide-03-dna");
+await shot(wide, "wide-04-dna");
 report.wide1728 = await state(wide);
 await wide.close();
 
@@ -496,6 +524,9 @@ for (const [name, value] of widths) {
   if (value.scrollWidth !== value.clientWidth) {
     throw new Error(`${name}: horizontal overflow ${value.scrollWidth}/${value.clientWidth}`);
   }
+}
+if (!report.reading || report.reading.title !== "納瓦爾寶典" || report.reading.category !== "思維成長" || report.reading.activeTab !== 2) {
+  throw new Error(`reading interaction failed: ${JSON.stringify(report.reading)}`);
 }
 if (!report.mobile.menuOpen) throw new Error("mobile menu did not open by keyboard");
 if (errors.length) throw new Error(`console/page errors: ${JSON.stringify(errors.slice(0, 8))}`);
