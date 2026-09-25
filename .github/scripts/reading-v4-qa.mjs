@@ -39,11 +39,16 @@ async function open(name, viewport) {
       await img.decode().catch(() => undefined);
     }
   });
-  await new Promise((resolve) => setTimeout(resolve, 320));
+  await page.addStyleTag({
+    content: `
+      .bookObject,.copy{animation:none!important;opacity:1!important;transform:none!important}
+    `,
+  });
+  await new Promise((resolve) => setTimeout(resolve, 220));
   await page.screenshot({ path: path.join(outDir, `${name}.png`), fullPage: false });
 
   const state = await page.evaluate(() => {
-    const book = document.querySelector(".book");
+    const book = document.querySelector(".bookObject");
     const title = document.querySelector("h1");
     const selected = document.querySelector('[data-selected="true"]');
     const bookRect = book instanceof HTMLElement ? book.getBoundingClientRect() : null;
