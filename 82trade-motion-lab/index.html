@@ -908,6 +908,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 .readingBookGlow{position:absolute;width:72%;aspect-ratio:1/1;border-radius:50%;background:radial-gradient(circle,rgba(0,82,255,.2),rgba(0,82,255,.04) 44%,transparent 72%);filter:blur(10px);transform:translateY(-1%)}
 .readingBook{position:relative;z-index:2;display:grid;place-items:center;transform-style:preserve-3d;will-change:transform,opacity}
 .readingBook img{display:block;width:min(76%,460px);height:auto;max-height:560px;object-fit:contain;box-shadow:-24px 28px 54px rgba(0,0,0,.34),0 46px 100px rgba(0,0,0,.42)}
+.readingBookLabel{position:absolute;inset:16% 19% 14% 20%;z-index:3;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;pointer-events:none;color:#f5f5f7;text-align:left;text-shadow:0 2px 18px rgba(0,0,0,.48)}
+.readingBookLabel small{margin-bottom:auto;color:#8fb3ff;font-size:8px;font-weight:760;letter-spacing:.14em}
+.readingBookLabel strong{max-width:12ch;font-size:clamp(24px,2.3vw,38px);line-height:.98;letter-spacing:-.045em;font-weight:620}
+.readingBookLabel span{margin-top:10px;color:rgba(245,245,247,.54);font-size:9px;font-weight:650;letter-spacing:.1em}
 .readingBook:after{content:"";position:absolute;inset:4% -6% -5% 4%;z-index:-1;border:1px solid rgba(110,160,255,.2);transform:translateZ(-28px)}
 .readingFloor{position:absolute;left:10%;right:5%;bottom:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18) 20%,rgba(110,160,255,.2) 58%,transparent)}
 .readingCopy{position:relative;z-index:2;min-width:0;padding:68px 72px 54px;display:flex;flex-direction:column;border-left:1px solid rgba(255,255,255,.08)}
@@ -1465,6 +1469,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   .readingStage{min-height:0;grid-template-columns:1fr;border-radius:24px}
   .readingBookZone{min-height:410px;border-bottom:1px solid rgba(255,255,255,.08)}
   .readingBook img{width:min(72%,280px);max-width:none;max-height:340px}
+  .readingBookLabel{inset:15% 20% 13% 20%}
+  .readingBookLabel strong{font-size:clamp(22px,7vw,30px)}
   .readingBook:after{inset:4% -5% -4% 4%}
   .readingFloor{left:12%;right:8%;bottom:11%}
   .readingCopy{padding:28px 24px 24px;border-left:0}
@@ -1782,6 +1788,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
       <div class="readingBookGlow" aria-hidden="true"></div>
       <div class="readingBook" data-reading-cover>
         <img data-reading-image src="./assets/books/reminiscences.webp" alt="股票作手回憶錄 封面">
+        <div class="readingBookLabel">
+          <small>82TRADE / SELECTED</small>
+          <strong data-reading-book-title>股票作手回憶錄</strong>
+          <span data-reading-book-category>交易必備</span>
+        </div>
       </div>
       <div class="readingFloor" aria-hidden="true"></div>
     </div>
@@ -1915,6 +1926,8 @@ const readingTitle=document.querySelector("[data-reading-title]");
 const readingNote=document.querySelector("[data-reading-note]");
 const readingList=document.querySelector("[data-reading-list]");
 const readingBook=document.querySelector("[data-reading-cover]");
+const readingBookTitle=document.querySelector("[data-reading-book-title]");
+const readingBookCategory=document.querySelector("[data-reading-book-category]");
 const readingCopy=document.querySelector(".readingCopy");
 
 const renderReading=(index,animate=true)=>{
@@ -1927,6 +1940,8 @@ const renderReading=(index,animate=true)=>{
   if(readingNumber)readingNumber.textContent=`0${readingIndex+1} / 03`;
   if(readingCategory)readingCategory.textContent=item.category;
   if(readingTitle)readingTitle.textContent=item.featured;
+  if(readingBookTitle)readingBookTitle.textContent=item.featured;
+  if(readingBookCategory)readingBookCategory.textContent=item.category;
   if(readingNote)readingNote.textContent=item.note;
   if(readingList){
     readingList.replaceChildren(...item.books.map((book,index)=>{
