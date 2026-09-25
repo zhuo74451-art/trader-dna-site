@@ -28,7 +28,7 @@ async function open(name, viewport) {
     failures.push({ name, url: req.url(), error: req.failure()?.errorText ?? null });
   });
   await page.setCacheEnabled(false);
-  const response = await page.goto("http://127.0.0.1:4174/82trade-motion-lab/reading-v5.html", {
+  const response = await page.goto("http://127.0.0.1:4174/82trade-motion-lab/reading-v6.html", {
     waitUntil: "load",
     timeout: 12000,
   });
@@ -71,9 +71,9 @@ async function open(name, viewport) {
 }
 
 const report = {
-  desktop1512: await open("reading-v5-desktop-1512", { width: 1512, height: 982, deviceScaleFactor: 1 }),
-  desktop1440: await open("reading-v5-desktop-1440", { width: 1440, height: 900, deviceScaleFactor: 1 }),
-  mobile390: await open("reading-v5-mobile-390", { width: 390, height: 844, deviceScaleFactor: 1 }),
+  desktop1512: await open("reading-v6-desktop-1512", { width: 1512, height: 982, deviceScaleFactor: 1 }),
+  desktop1440: await open("reading-v6-desktop-1440", { width: 1440, height: 900, deviceScaleFactor: 1 }),
+  mobile390: await open("reading-v6-mobile-390", { width: 390, height: 844, deviceScaleFactor: 1 }),
 };
 
 report.errors = errors;
@@ -86,6 +86,9 @@ for (const [name, state] of Object.entries(report)) {
     throw new Error(`${name}: horizontal overflow ${state.scrollWidth}/${state.clientWidth}`);
   }
   if (!state.imageComplete) throw new Error(`${name}: book image not complete`);
+  if ((state.imageNaturalWidth ?? 0) < 200) {
+    throw new Error(`${name}: book image too small ${state.imageNaturalWidth}`);
+  }
 }
 if (errors.length) throw new Error(`console/page errors: ${JSON.stringify(errors)}`);
 if (failures.length) throw new Error(`request failures: ${JSON.stringify(failures)}`);
