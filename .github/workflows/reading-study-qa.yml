@@ -17,7 +17,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install QA runtime
-        run: npm install --no-save puppeteer-core@24.16.0
+        run: |
+          npm install --no-save puppeteer-core@24.16.0
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
       - name: Start local preview
         run: |
           python3 -m http.server 4174 --bind 127.0.0.1 >/tmp/reading-study-http.log 2>&1 &
