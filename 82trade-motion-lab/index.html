@@ -98,6 +98,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 .header[data-compact="true"] .nav{gap:24px}
 .header[data-theme="light"]{z-index:110}
 .header[data-theme="dark"]{
+  z-index:110;
   background:rgba(29,29,31,.88);
   color:#f5f5f7;
   border-bottom-color:rgba(255,255,255,.1);
@@ -492,8 +493,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 
 .highlights{
+  position:relative;
+  z-index:96;
+  margin-top:-56px;
   padding:12vh 0 13vh;
   overflow:hidden;
+  border-radius:56px 56px 0 0;
+  box-shadow:0 -24px 84px rgba(0,0,0,.18);
   background:#1d1d1f;
   color:#f5f5f7;
 }
@@ -693,7 +699,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 .academyChapter{
   position:relative;
-  z-index:2;
+  z-index:97;
   margin-top:-54px;
   border-radius:56px 56px 0 0;
   background:var(--cb-blue-wash);
@@ -702,7 +708,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 .dnaChapter{
   position:relative;
-  z-index:3;
+  z-index:98;
   margin-top:-42px;
   border-radius:48px 48px 0 0;
   background:#fff;
@@ -1125,6 +1131,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 
 @media(max-width:900px){
+  .highlights{
+    margin-top:0;
+    border-radius:0;
+    box-shadow:none;
+  }
   .academyChapter,
   .dnaChapter{
     margin-top:0;
@@ -1412,7 +1423,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
 }
 
 @media(prefers-reduced-motion:reduce){
-  .worldview{
+  .worldview,
+  .highlights{
     margin-top:0;
     border-radius:0;
     box-shadow:none;
@@ -1792,12 +1804,17 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
     .fromTo(worldviewMedia,{y:88,scale:.84,rotate:2.4},{y:0,scale:1,rotate:0,ease:"none",duration:1},0)
     .fromTo(worldviewBlue,{x:44,y:44,scale:.91},{x:0,y:0,scale:1.04,ease:"none",duration:1},0);
 
+  const highlightsSection=document.querySelector(".highlights");
+  const worldviewToHighlights=gsap.timeline({scrollTrigger:{trigger:highlightsSection,start:"top bottom",end:"top 58%",scrub:.5}});
+  worldviewToHighlights
+    .to(worldviewCopy,{y:-46,opacity:.24,ease:"none",duration:1},0)
+    .to(worldviewMedia,{y:-32,scale:.96,opacity:.42,ease:"none",duration:1},0);
+
   const academy=document.querySelector(".academyChapter");
   const academyHead=document.querySelector(".academyChapter .chapterHead");
   const academyObject=document.querySelector(".academyObject");
   const academyLead=document.querySelector(".academyCourseLead");
   const academySide=document.querySelector(".academyCourseSide");
-  const highlightsSection=document.querySelector(".highlights");
   const highlightsHead=document.querySelector(".highlightsHead");
   const highlightsTrack=document.querySelector(".highlightsTrack");
   const highlightsFooter=document.querySelector(".highlightsFooter");
@@ -1841,7 +1858,7 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
   const closingWordmark=document.querySelector(".closingWordmark");
   const closingTween=gsap.fromTo(closingWordmark,{yPercent:28,scale:.92,opacity:.05},{yPercent:0,scale:1,opacity:1,ease:"none",scrollTrigger:{trigger:closing,start:"top bottom",end:"bottom bottom",scrub:.65}});
 
-  return()=>{tl.kill();heroExit.kill();takeoverToWorldview.kill();worldviewTl.kill();highlightsToAcademy.kill();academyTl.kill();academyExit.kill();dnaTl.kill();closingTween.kill();};
+  return()=>{tl.kill();heroExit.kill();takeoverToWorldview.kill();worldviewTl.kill();worldviewToHighlights.kill();highlightsToAcademy.kill();academyTl.kill();academyExit.kill();dnaTl.kill();closingTween.kill();};
 });
 
 const track=document.querySelector(".highlightsTrack");
