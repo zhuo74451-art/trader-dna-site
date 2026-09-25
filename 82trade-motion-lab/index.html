@@ -1381,6 +1381,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   }
 }
 
+@keyframes mobileMenuIn{
+  from{opacity:0;transform:translate3d(0,-10px,0) scale(.985)}
+  to{opacity:1;transform:translate3d(0,0,0) scale(1)}
+}
+
+@media(max-width:900px) and (prefers-reduced-motion:no-preference){
+  .page [data-mobile-reveal]{
+    opacity:0;
+    transform:translate3d(0,30px,0) scale(.975);
+    transition:opacity 460ms var(--cb-enter-functional),transform 620ms var(--cb-enter-expressive);
+  }
+  .page [data-mobile-reveal][data-visible="true"]{
+    opacity:1;
+    transform:translate3d(0,0,0) scale(1);
+  }
+  .mobileMenu[open] nav{
+    transform-origin:top right;
+    animation:mobileMenuIn 280ms var(--cb-enter-expressive) both;
+  }
+}
+
 @media(prefers-reduced-motion:reduce){
   .header,
   .header:after,
@@ -1497,7 +1518,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     <h2 aria-label="從看懂，到懂得做。"><span>從看懂</span><span>到懂得做</span></h2>
     <p class="worldviewBody">行情分析、公開課程、學員交流。</p>
   </div>
-  <figure class="worldviewMedia">
+  <figure class="worldviewMedia" data-mobile-reveal>
     <div class="worldviewBlue" aria-hidden="true"></div>
     <img src="../82trade-brand-master/assets/classroom-08-gallery.webp" alt="82TRADE 課堂與學員現場">
     <figcaption><span>LEARN THE SIGNAL</span><span>BUILD THE JUDGEMENT</span></figcaption>
@@ -1551,7 +1572,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     <div><p class="kicker">PRODUCT 01</p><h2>Academy</h2></div>
     <a class="chapterAction" href="https://82trade-academy.pages.dev/courses">Enter Academy ↗</a>
   </div>
-  <div class="productObject academyObject">
+  <div class="productObject academyObject" data-mobile-reveal>
     <div class="academySurface">
       <div class="academySurfaceTop"><img class="academyWordmark" src="../82trade-brand-master/assets/academy-wordmark.svg" alt="82TRADE Academy"><span>全部課程</span></div>
       <div class="academyCourseGrid">
@@ -1570,7 +1591,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     <div><p class="kicker">PRODUCT 02</p><h2>Trader DNA</h2></div>
     <a class="chapterAction" href="https://82trade-team.github.io/dna/">Open Trader DNA ↗</a>
   </div>
-  <div class="productObject dnaObject">
+  <div class="productObject dnaObject" data-mobile-reveal>
     <div class="dnaScreen">
       <div class="dnaTopbar">
         <div class="dnaBrand">82TRADE <span>// TRADER DNA</span></div>
@@ -1707,7 +1728,7 @@ if(!reduce&&accent&&meta&&title&&line&&actions&&cue){
   cue.animate([{opacity:0,transform:"translateY(24px)"},{opacity:1,transform:"translateY(0)"}],{duration:400,delay:680,easing:functional,fill:"both"});
 }
 
-const revealNodes=Array.from(document.querySelectorAll("[data-reveal]"));
+const revealNodes=Array.from(document.querySelectorAll("[data-reveal], [data-mobile-reveal]"));
 if(reduce){
   revealNodes.forEach((node)=>node.dataset.visible="true");
 }else{
