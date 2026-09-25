@@ -79,8 +79,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   inset:0;
   border-radius:inherit;
   pointer-events:none;
-  background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,.04) 38%,transparent 72%);
-  opacity:.62;
+  background:
+    radial-gradient(260px circle at var(--glass-x,50%) var(--glass-y,-96px),rgba(255,255,255,.62),rgba(255,255,255,.17) 28%,transparent 66%),
+    linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.035) 38%,transparent 72%);
+  opacity:.46;
   mix-blend-mode:screen;
 }
 .header[data-compact="true"]{
@@ -133,6 +135,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   font-weight:500;
   color:rgba(10,11,13,.62);
 }
+.page [data-glass-surface]{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+}
+.page [data-glass-surface]::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  border-radius:inherit;
+  background:radial-gradient(132px circle at var(--glass-x,50%) var(--glass-y,50%),rgba(255,255,255,.34),rgba(255,255,255,.08) 36%,transparent 72%);
+  opacity:0;
+  transition:opacity 180ms var(--cb-global);
+}
+.page [data-glass-surface][data-glass-active="true"]::before{opacity:1}
+
 .nav a,
 .brand,
 .mobileMenu summary{
@@ -1047,9 +1067,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   line-height:1;
   letter-spacing:-.05em;
   font-weight:560;
+  transition:transform 320ms var(--cb-enter-expressive);
 }
-.primaryDestinations b{font-size:24px;font-weight:400}
-.primaryDestinations a:hover{opacity:.7}
+.primaryDestinations b{
+  font-size:24px;
+  font-weight:400;
+  transition:transform 320ms var(--cb-enter-expressive);
+}
+.primaryDestinations a:hover{opacity:.82}
+.primaryDestinations a:hover strong{transform:translateX(8px)}
+.primaryDestinations a:hover b{transform:translate(4px,-4px)}
 .primaryDestinations a:active{transform:scale(.98)}
 .primaryDestinations a:focus-visible,
 .finalLinks a:focus-visible{
@@ -1358,6 +1385,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   .header,
   .header:after,
   .nav{transition:none}
+  .page [data-glass-surface]::before{display:none!important}
   .page [data-reveal]{
     opacity:1!important;
     transform:none!important;
