@@ -32,7 +32,7 @@ jobs:
           BROWSER="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
           test -n "$BROWSER"
           echo "path=$BROWSER" >> "$GITHUB_OUTPUT"
-      - name: Capture Reading V4
+      - name: Capture Reading V5
         env:
           BROWSER: ${{ steps.browser.outputs.path }}
         run: node .github/scripts/reading-v4-qa.mjs
