@@ -74,6 +74,68 @@ async function shot(page, name) {
   });
 }
 
+function percentile(values, ratio) {
+  if (!values.length) return 0;
+  const sorted = [...values].sort((a, b) => a - b);
+  const index = Math.min(sorted.length - 1, Math.max(0, Math.ceil(sorted.length * ratio) - 1));
+  return Number(sorted[index].toFixed(2));
+}
+
+function metricDelta(before, after) {
+  const keys = [
+    "LayoutCount",
+    "RecalcStyleCount",
+    "LayoutDuration",
+    "RecalcStyleDuration",
+    "ScriptDuration",
+    "TaskDuration",
+    "JSHeapUsedSize",
+  ];
+  return Object.fromEntries(
+    keys.map((key) => [key, Number(((after[key] ?? 0) - (before[key] ?? 0)).toFixed(4))]),
+  );
+}
+
+async function sampleFramePacing(page, mode, frames = 90) {
+  return page.evaluate(async ({ mode, frames }) => {
+    const deltas = [];
+    let last = performance.now();
+    const track = document.querySelector(".highlightsTrack");
+    const maxPage = Math.max(0, document.documentElement.scrollHeight - innerHeight);
+    const maxTrack =
+      track instanceof HTMLElement ? Math.max(0, track.scrollWidth - track.clientWidth) : 0;
+
+    for (let i = 0; i < frames; i += 1) {
+      await new Promise((resolve) => {
+        requestAnimationFrame((now) => {
+          if (i > 1) deltas.push(now - last);
+          last = now;
+          const progress = frames <= 1 ? 1 : i / (frames - 1);
+
+          if (mode === "page") {
+            window.scrollTo({ top: maxPage * progress, behavior: "instant" });
+          } else if (track instanceof HTMLElement) {
+            track.scrollLeft = maxTrack * progress;
+          }
+
+          resolve();
+        });
+      });
+    }
+
+    return {
+      mode,
+      frames: deltas.length,
+      p50: 0,
+      p95: 0,
+      max: deltas.length ? Math.max(...deltas) : 0,
+      over20ms: deltas.filter((value) => value > 20).length,
+      over33ms: deltas.filter((value) => value > 33).length,
+      raw: deltas,
+    };
+  }, { mode, frames });
+}
+
 async function state(page) {
   return page.evaluate(() => ({
     clientWidth: document.documentElement.clientWidth,
@@ -248,6 +310,38 @@ if (dnaBox) {
 const closingTop = await sectionTop(desktop, "#enter");
 await scrollTo(desktop, closingTop + 200, 700);
 await shot(desktop, "desktop-14-closing");
+
+const pageMetricsBefore = await desktop.metrics();
+const pagePacing = await sampleFramePacing(desktop, "page");
+const pageMetricsAfter = await desktop.metrics();
+
+await desktop.evaluate(() => {
+  const track = document.querySelector(".highlightsTrack");
+  if (track instanceof HTMLElement) track.scrollLeft = 0;
+});
+await settle(desktop, 180);
+
+const highlightsMetricsBefore = await desktop.metrics();
+const highlightsPacing = await sampleFramePacing(desktop, "highlights");
+const highlightsMetricsAfter = await desktop.metrics();
+
+for (const pacing of [pagePacing, highlightsPacing]) {
+  pacing.p50 = percentile(pacing.raw, 0.5);
+  pacing.p95 = percentile(pacing.raw, 0.95);
+  pacing.max = Number(pacing.max.toFixed(2));
+  delete pacing.raw;
+}
+
+report.motionPerf = {
+  page: {
+    pacing: pagePacing,
+    metrics: metricDelta(pageMetricsBefore, pageMetricsAfter),
+  },
+  highlights: {
+    pacing: highlightsPacing,
+    metrics: metricDelta(highlightsMetricsBefore, highlightsMetricsAfter),
+  },
+};
 
 await scrollTo(desktop, 1500, 250);
 await scrollTo(desktop, 2600, 250);
