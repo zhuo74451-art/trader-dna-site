@@ -369,6 +369,40 @@ for (const [name, selector] of [
   await shot(mobile, name);
 }
 
+const mobileHighlightsTop = await sectionTop(mobile, "#highlights");
+await scrollTo(mobile, mobileHighlightsTop - 120, 420);
+report.mobileHighlightsEntry = await mobile.evaluate(() => {
+  const sheet = document.querySelector(".highlights");
+  const backing = document.querySelector(".worldviewBlue");
+  if (!(sheet instanceof HTMLElement) || !(backing instanceof HTMLElement)) return null;
+  const sheetStyle = getComputedStyle(sheet);
+  const sheetRect = sheet.getBoundingClientRect();
+  const backingRect = backing.getBoundingClientRect();
+  return {
+    viewportHeight: window.innerHeight,
+    sheetTop: sheetRect.top,
+    sheetRadius: sheetStyle.borderRadius,
+    backingBottom: backingRect.bottom,
+    overlapPx: Math.max(0, backingRect.bottom - sheetRect.top),
+  };
+});
+
+const mobileDnaTop = await sectionTop(mobile, "#trader-dna");
+await scrollTo(mobile, mobileDnaTop - 120, 420);
+report.mobileDnaEntry = await mobile.evaluate(() => {
+  const object = document.querySelector(".dnaHeroObject");
+  if (!(object instanceof HTMLElement)) return null;
+  const rect = object.getBoundingClientRect();
+  return {
+    viewportHeight: window.innerHeight,
+    objectTop: rect.top,
+    objectBottom: rect.bottom,
+    visiblePx: Math.max(0, Math.min(window.innerHeight, rect.bottom) - Math.max(0, rect.top)),
+  };
+});
+await scrollTo(mobile, mobileDnaTop + 260, 420);
+await shot(mobile, "mobile-05b-dna-object");
+
 await mobile.focus("details.mobileMenu > summary");
 await mobile.keyboard.press("Enter");
 await settle(mobile, 180);
