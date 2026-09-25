@@ -138,6 +138,17 @@ async function state(page) {
       const s = getComputedStyle(el);
       return { color: s.color, opacity: s.opacity, transform: s.transform };
     }),
+    highlightsSheet: (() => {
+      const el = document.querySelector(".highlights");
+      if (!(el instanceof HTMLElement)) return null;
+      const s = getComputedStyle(el);
+      const rect = el.getBoundingClientRect();
+      return {
+        top: rect.top,
+        borderRadius: s.borderRadius,
+        boxShadow: s.boxShadow,
+      };
+    })(),
     highlights: Array.from(document.querySelectorAll(".highlightCard")).map((el) => {
       const s = getComputedStyle(el);
       return {
@@ -192,6 +203,9 @@ await shot(desktop, "desktop-06-worldview-mid");
 report.worldviewMid = await state(desktop);
 
 const highlightsTop = await sectionTop(desktop, "#highlights");
+await scrollTo(desktop, highlightsTop - 300, 650);
+await shot(desktop, "desktop-06b-worldview-to-highlights");
+report.worldviewToHighlights = await state(desktop);
 await scrollTo(desktop, highlightsTop + 80, 650);
 await shot(desktop, "desktop-07-highlights");
 await desktop.evaluate(() => {
