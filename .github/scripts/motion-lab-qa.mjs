@@ -296,11 +296,27 @@ await shot(desktop, "desktop-10b-academy-to-reading");
 await scrollTo(desktop, readingTop + 220, 700);
 await shot(desktop, "desktop-10c-reading-stage");
 
+await desktop.evaluate(() => {
+  document.querySelector('[data-reading-tab="1"]')?.scrollIntoView({
+    block: "center",
+    inline: "nearest",
+  });
+});
+await settle(desktop, 220);
 await desktop.click('[data-reading-tab="1"]');
-await settle(desktop, 760);
+await desktop.waitForFunction(
+  () => document.querySelector("[data-reading-title]")?.textContent?.trim() === "新威科夫操盤法",
+  { timeout: 2500 },
+);
+await scrollTo(desktop, readingTop + 220, 420);
 await shot(desktop, "desktop-10d-reading-advanced");
+
 await desktop.click('[data-reading-dir="1"]');
-await settle(desktop, 760);
+await desktop.waitForFunction(
+  () => document.querySelector("[data-reading-title]")?.textContent?.trim() === "納瓦爾寶典",
+  { timeout: 2500 },
+);
+await settle(desktop, 420);
 await shot(desktop, "desktop-10e-reading-growth");
 report.reading = await desktop.evaluate(() => ({
   title: document.querySelector("[data-reading-title]")?.textContent?.trim() ?? null,
