@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>82TRADE — Reading List Preview</title>
+<style>
+:root{
+  --blue:#0052ff;
+  --blue-soft:#6ea0ff;
+  --bg:#0b0c0f;
+  --surface:#121318;
+  --text:#f5f5f7;
+  --muted:rgba(245,245,247,.56);
+  --line:rgba(255,255,255,.1);
+  --ease:cubic-bezier(.33,0,0,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,a{font:inherit}
+button{color:inherit}
+body{overflow-x:hidden}
+.header{
+  height:72px;padding:0 4vw;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;z-index:20;
+  background:rgba(11,12,15,.86);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)
+}
+.brand{font-weight:800;letter-spacing:-.03em}
+.headerRight{display:flex;align-items:center;gap:14px;color:rgba(245,245,247,.56);font-size:12px}
+.headerRight a{color:inherit;text-decoration:none}
+.page{min-height:100svh;padding:9vh 4vw 7vh}
+.head{width:min(100%,1480px);margin:0 auto 44px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:56px}
+.kicker{margin:0 0 16px;color:var(--blue-soft);font-size:11px;font-weight:760;letter-spacing:.14em}
+h1{margin:0;font-size:clamp(72px,9.6vw,154px);line-height:.84;letter-spacing:-.068em;font-weight:560}
+.categories{display:flex;gap:8px;align-items:center;padding-bottom:8px}
+.categories button{
+  min-height:48px;padding:0 18px;display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.12);
+  border-radius:999px;background:rgba(255,255,255,.045);color:rgba(245,245,247,.56);font-size:12px;font-weight:600;
+  cursor:pointer;transition:all 200ms ease
+}
+.categories button span{color:var(--blue-soft);font-size:9px;letter-spacing:.08em}
+.categories button[data-active="true"]{border-color:rgba(110,160,255,.52);background:rgba(0,82,255,.16);color:#fff}
+.stage{
+  position:relative;width:min(100%,1480px);min-height:720px;margin:0 auto;display:grid;
+  grid-template-columns:minmax(360px,.88fr) minmax(0,1.12fr);overflow:hidden;border:1px solid var(--line);
+  border-radius:40px;background:radial-gradient(circle at 21% 42%,rgba(0,82,255,.18),transparent 31%),linear-gradient(135deg,#121318 0%,#0b0c0f 52%,#0d0e11 100%);
+  box-shadow:inset 0 1px rgba(255,255,255,.05),0 44px 130px rgba(0,0,0,.32)
+}
+.stage:after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:72px 72px;mask-image:linear-gradient(90deg,#000,transparent 70%);opacity:.34
+}
+.bookZone{position:relative;z-index:1;min-width:0;display:grid;place-items:center;perspective:1200px;overflow:hidden}
+.bookGlow{position:absolute;width:72%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(0,82,255,.2),rgba(0,82,255,.04) 44%,transparent 72%);filter:blur(10px)}
+.book{position:relative;z-index:2;display:grid;place-items:center;transform-style:preserve-3d;animation:bookIn .72s var(--ease) both}
+.book img{display:block;width:min(76%,460px);height:auto;max-height:560px;object-fit:contain;box-shadow:-24px 28px 54px rgba(0,0,0,.34),0 46px 100px rgba(0,0,0,.42)}
+.bookLabel{position:absolute;inset:16% 19% 14% 20%;z-index:3;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;pointer-events:none;color:#f5f5f7;text-align:left;text-shadow:0 2px 18px rgba(0,0,0,.48)}
+.bookLabel small{margin-bottom:auto;color:#8fb3ff;font-size:8px;font-weight:760;letter-spacing:.14em}
+.bookLabel strong{max-width:12ch;font-size:clamp(24px,2.3vw,38px);line-height:.98;letter-spacing:-.045em;font-weight:620}
+.bookLabel span{margin-top:10px;color:rgba(245,245,247,.54);font-size:9px;font-weight:650;letter-spacing:.1em}
+.book:after{content:"";position:absolute;inset:4% -6% -5% 4%;z-index:-1;border:1px solid rgba(110,160,255,.2);transform:translateZ(-28px)}
+.floor{position:absolute;left:10%;right:5%;bottom:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18) 20%,rgba(110,160,255,.2) 58%,transparent)}
+.copy{position:relative;z-index:2;min-width:0;padding:68px 72px 54px;display:flex;flex-direction:column;border-left:1px solid rgba(255,255,255,.08);animation:copyIn .54s ease both}
+.meta{display:flex;align-items:center;gap:22px;color:var(--blue-soft);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.meta span+span{color:rgba(245,245,247,.48)}
+.copy h2{max-width:780px;margin:36px 0 24px;font-size:clamp(58px,6.3vw,102px);line-height:.92;letter-spacing:-.065em;font-weight:520}
+.note{min-height:56px;max-width:650px;margin:0;color:var(--muted);font-size:16px;line-height:1.6}
+.index{margin-top:auto;padding-top:44px;border-top:1px solid var(--line)}
+.index>span{display:block;margin-bottom:12px;color:rgba(245,245,247,.34);font-size:9px;font-weight:700;letter-spacing:.12em}
+.index ol{margin:0;padding:0;list-style:none}
+.index li{min-height:46px;display:grid;grid-template-columns:36px minmax(0,1fr);align-items:center;gap:12px;border-top:1px solid rgba(255,255,255,.075);color:rgba(245,245,247,.38)}
+.index li:last-child{border-bottom:1px solid rgba(255,255,255,.075)}
+.index li[data-featured="true"]{color:#fff}
+.index small{color:#5e626b;font-size:8px;letter-spacing:.1em}
+.index b{font-size:15px;font-weight:520}
+.controls{margin-top:28px;display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.controls>button{width:48px;height:48px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.055);color:#fff;font-size:17px;cursor:pointer}
+.pages{min-height:48px;padding:0 16px;display:flex;align-items:center;justify-content:center;gap:5px;border:1px solid rgba(255,255,255,.1);border-radius:999px;background:rgba(255,255,255,.035)}
+.pages button{width:5px;height:5px;padding:0;border:0;border-radius:5px;background:#5c5f66;cursor:pointer;transition:width 260ms var(--ease),background-color 200ms ease}
+.pages button[data-active="true"]{width:24px;background:var(--blue-soft)}
+.previewNote{width:min(100%,1480px);margin:18px auto 0;color:rgba(245,245,247,.34);font-size:11px;line-height:1.6}
+@keyframes bookIn{from{opacity:.22;transform:translateY(42px) rotateY(-11deg) rotateX(3deg) scale(.94)}to{opacity:1;transform:translateY(0) rotateY(-4deg) rotateX(1deg) scale(1)}}
+@keyframes copyIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@media(max-width:900px){
+  .header{height:64px;padding:0 20px}
+  .headerRight span{display:none}
+  .page{padding:7vh 20px 6vh}
+  .head{grid-template-columns:1fr;gap:24px;margin-bottom:30px}
+  h1{font-size:clamp(58px,16vw,76px);line-height:.88}
+  .categories{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:0}
+  .categories button{min-height:44px;padding:0 10px;justify-content:center;gap:6px;font-size:10px}
+  .stage{min-height:0;grid-template-columns:1fr;border-radius:24px}
+  .bookZone{min-height:410px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .book img{width:min(72%,280px);max-width:none;max-height:340px}
+  .bookLabel{inset:15% 20% 13% 20%}
+  .bookLabel strong{font-size:clamp(22px,7vw,30px)}
+  .copy{padding:28px 24px 24px;border-left:0}
+  .copy h2{margin:22px 0 16px;font-size:clamp(44px,13vw,58px)}
+  .note{min-height:0;font-size:14px;line-height:1.55}
+  .index{margin-top:32px;padding-top:22px}
+  .controls{margin-top:22px;justify-content:space-between}
+  .controls>button{width:46px;height:46px}
+  .pages{min-height:46px;flex:1}
+}
+@media(prefers-reduced-motion:reduce){.book,.copy{animation:none}}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="brand">82TRADE</div>
+  <div class="headerRight"><span>READING LIST PREVIEW</span><a href="./">Back to full site ↗</a></div>
+</header>
+<main class="page">
+  <section class="head">
+    <div><p class="kicker">82TRADE / READING LIST</p><h1>Reading list.</h1></div>
+    <div class="categories" aria-label="書籍推薦分類">
+      <button type="button" data-tab="0" data-active="true"><span>01</span>交易必備</button>
+      <button type="button" data-tab="1" data-active="false"><span>02</span>交易進階</button>
+      <button type="button" data-tab="2" data-active="false"><span>03</span>思維成長</button>
+    </div>
+  </section>
+  <section class="stage" aria-live="polite">
+    <div class="bookZone">
+      <div class="bookGlow"></div>
+      <div class="book" data-book>
+        <img data-image src="./assets/books/reminiscences.webp" alt="股票作手回憶錄 封面">
+        <div class="bookLabel">
+          <small>82TRADE / SELECTED</small>
+          <strong data-book-title>股票作手回憶錄</strong>
+          <span data-book-category>交易必備</span>
+        </div>
+      </div>
+      <div class="floor"></div>
+    </div>
+    <div class="copy" data-copy>
+      <div class="meta"><span data-number>01 / 03</span><span data-category>交易必備</span></div>
+      <h2 data-title>股票作手回憶錄</h2>
+      <p class="note" data-note>李奧森 2015、真如 1997 / 2016 再版，皆為推薦翻譯版本。</p>
+      <div class="index">
+        <span>本類書單</span>
+        <ol data-list>
+          <li><small>01</small><b>亞當理論</b></li>
+          <li data-featured="true"><small>02</small><b>股票作手回憶錄</b></li>
+          <li><small>03</small><b>交易聖經</b></li>
+          <li><small>04</small><b>量價分析</b></li>
+        </ol>
+      </div>
+      <div class="controls">
+        <button type="button" data-dir="-1" aria-label="上一類書籍">←</button>
+        <div class="pages">
+          <button type="button" data-page="0" data-active="true" aria-label="交易必備"></button>
+          <button type="button" data-page="1" data-active="false" aria-label="交易進階"></button>
+          <button type="button" data-page="2" data-active="false" aria-label="思維成長"></button>
+        </div>
+        <button type="button" data-dir="1" aria-label="下一類書籍">→</button>
+      </div>
+    </div>
+  </section>
+  <p class="previewNote">獨立驗收頁。首頁內正式 Reading List 模組仍保留在 Academy 與 Trader DNA 之間；此頁只用來讓你直接看這一幕。</p>
+</main>
+<script>
+const sets=[
+  {category:"交易必備",featured:"股票作手回憶錄",cover:"./assets/books/reminiscences.webp",note:"李奧森 2015、真如 1997 / 2016 再版，皆為推薦翻譯版本。",books:["亞當理論","股票作手回憶錄","交易聖經","量價分析"]},
+  {category:"交易進階",featured:"新威科夫操盤法",cover:"./assets/books/wyckoff.webp",note:"82TRADE READING LIST",books:["新威科夫操盤法","技術分析聖經","道氏理論"]},
+  {category:"思維成長",featured:"納瓦爾寶典",cover:"./assets/books/naval.webp",note:"82TRADE READING LIST",books:["先別急著吃棉花糖","灰階思考","原子習慣","納瓦爾寶典"]}
+];
+sets.forEach(({cover})=>{const image=new Image();image.src=cover;});
+let index=0;
+const $=s=>document.querySelector(s);
+const $$=s=>Array.from(document.querySelectorAll(s));
+const render=(next,animate=true)=>{
+  index=(next+sets.length)%sets.length;
+  const item=sets[index];
+  $("[data-image]").src=item.cover;
+  $("[data-image]").alt=item.featured+" 封面";
+  $("[data-number]").textContent="0"+(index+1)+" / 03";
+  $("[data-category]").textContent=item.category;
+  $("[data-title]").textContent=item.featured;
+  $("[data-book-title]").textContent=item.featured;
+  $("[data-book-category]").textContent=item.category;
+  $("[data-note]").textContent=item.note;
+  const list=$("[data-list]");
+  list.replaceChildren(...item.books.map((name,i)=>{const li=document.createElement("li");if(name===item.featured)li.dataset.featured="true";li.innerHTML="<small>0"+(i+1)+"</small><b></b>";li.querySelector("b").textContent=name;return li;}));
+  $$("[data-tab]").forEach((b,i)=>b.dataset.active=String(i===index));
+  $$("[data-page]").forEach((b,i)=>b.dataset.active=String(i===index));
+  if(animate&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
+    const book=$("[data-book]"),copy=$("[data-copy]");
+    book.style.animation="none";copy.style.animation="none";
+    void book.offsetWidth;void copy.offsetWidth;
+    book.style.animation="bookIn .72s var(--ease) both";
+    copy.style.animation="copyIn .54s ease both";
+  }
+};
+$$("[data-tab]").forEach(b=>b.addEventListener("click",()=>render(Number(b.dataset.tab)||0)));
+$$("[data-page]").forEach(b=>b.addEventListener("click",()=>render(Number(b.dataset.page)||0)));
+$$("[data-dir]").forEach(b=>b.addEventListener("click",()=>render(index+(Number(b.dataset.dir)||1))));
+</script>
+</body>
+</html>
