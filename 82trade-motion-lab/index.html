@@ -1668,6 +1668,26 @@ if(matchMedia("(pointer: fine)").matches&&fixedHeader){
   });
 }
 
+const dnaTiltFrame=document.querySelector(".registerFrame");
+if(!reduce&&matchMedia("(pointer: fine)").matches&&dnaTiltFrame){
+  let dnaTiltFrameId=0;
+  dnaTiltFrame.addEventListener("pointermove",(event)=>{
+    if(dnaTiltFrameId)cancelAnimationFrame(dnaTiltFrameId);
+    dnaTiltFrameId=requestAnimationFrame(()=>{
+      const rect=dnaTiltFrame.getBoundingClientRect();
+      const nx=((event.clientX-rect.left)/Math.max(rect.width,1)-.5)*2;
+      const ny=((event.clientY-rect.top)/Math.max(rect.height,1)-.5)*2;
+      dnaTiltFrame.style.setProperty("--dna-rx",`${(-ny*3.6).toFixed(2)}deg`);
+      dnaTiltFrame.style.setProperty("--dna-ry",`${(nx*4.6).toFixed(2)}deg`);
+    });
+  });
+  dnaTiltFrame.addEventListener("pointerleave",()=>{
+    if(dnaTiltFrameId)cancelAnimationFrame(dnaTiltFrameId);
+    dnaTiltFrame.style.setProperty("--dna-rx","0deg");
+    dnaTiltFrame.style.setProperty("--dna-ry","0deg");
+  });
+}
+
 const accent=document.querySelector("[data-hero-accent]");
 const meta=document.querySelector("[data-hero-meta]");
 const title=document.querySelector("[data-hero-title]");
@@ -1728,7 +1748,7 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
   const worldviewTl=gsap.timeline({scrollTrigger:{trigger:worldview,start:"top top",end:"+=720",scrub:.55,pin:true,pinSpacing:true}});
   worldviewTl
     .fromTo(worldviewCopy.querySelectorAll("p"),{y:24,opacity:.16},{y:0,opacity:1,stagger:.08,ease:"none",duration:.42},0)
-    .fromTo(worldviewCopy.querySelectorAll("h2 span"),{yPercent:32,opacity:.36},{yPercent:0,opacity:1,stagger:.08,ease:"none",duration:.72},0)
+    .fromTo(worldviewCopy.querySelectorAll("h2 span"),{yPercent:32,opacity:.36,color:"#a1a1a6"},{yPercent:0,opacity:1,color:"#0a0b0d",stagger:.1,ease:"none",duration:.72},0)
     .fromTo(worldviewMedia,{y:88,scale:.84,rotate:2.4},{y:0,scale:1,rotate:0,ease:"none",duration:1},0)
     .fromTo(worldviewBlue,{x:44,y:44,scale:.91},{x:0,y:0,scale:1.04,ease:"none",duration:1},0);
 
