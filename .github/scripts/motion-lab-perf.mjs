@@ -186,7 +186,6 @@ const sample = await page.evaluate(async () => {
     .reduce((sum, item) => sum + (item.value || 0), 0);
 
   return {
-    profile,
     viewport: { width: innerWidth, height: innerHeight },
     scrollHeight: document.documentElement.scrollHeight,
     maxScroll,
