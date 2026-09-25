@@ -1761,7 +1761,7 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
   heroExit
     .to(heroAccent,{width:"100vw",ease:"none",duration:.44},0)
     .to(heroTitle.querySelectorAll("span"),{color:"#fff",ease:"none",duration:.28},.08)
-    .to(heroCue,{opacity:0,x:-18,ease:"none",duration:.24},.12)
+    .to(heroCue,{autoAlpha:0,x:-18,ease:"none",duration:.24},.12)
     .to(heroGrid,{yPercent:-7,scale:.958,opacity:.08,ease:"none",duration:.7},.2)
     .to(heroTitle,{letterSpacing:"-.086em",ease:"none",duration:.72},.12);
 
