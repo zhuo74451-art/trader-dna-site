@@ -1773,10 +1773,16 @@ const frame=document.querySelector(".takeoverFrame");
 const takeoverMedia=document.querySelector("[data-takeover-media]");
 const mm=gsap.matchMedia();
 mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
+  const takeoverCaptionLabel=document.querySelector(".takeoverCaption span");
+  const takeoverCaptionStrong=document.querySelector(".takeoverCaption strong");
+  const takeoverSceneLabel=document.querySelector(".takeoverLabel");
   const tl=gsap.timeline({scrollTrigger:{trigger:section,start:"center center",end:"+=800 center",scrub:.5,pin:true,pinSpacing:true}});
   tl
     .fromTo(takeoverMedia,{scale:1.08},{scale:1.01,ease:"none",duration:1},0)
     .to(frame,{width:"100vw",height:"100vh",borderRadius:0,ease:"none",duration:1},0);
+  if(takeoverCaptionLabel) tl.fromTo(takeoverCaptionLabel,{x:-28,opacity:.18},{x:0,opacity:1,ease:"none",duration:.5},.08);
+  if(takeoverCaptionStrong) tl.fromTo(takeoverCaptionStrong,{y:34,opacity:.16},{y:0,opacity:1,ease:"none",duration:.58},.16);
+  if(takeoverSceneLabel) tl.fromTo(takeoverSceneLabel,{opacity:.18},{opacity:1,ease:"none",duration:.44},.06);
 
   const hero=document.querySelector(".hero");
   const heroGrid=document.querySelector(".heroGrid");
