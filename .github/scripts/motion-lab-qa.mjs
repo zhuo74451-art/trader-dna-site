@@ -91,6 +91,18 @@ async function state(page) {
         borderRadius: s.borderRadius,
       };
     })(),
+    heroAccent: (() => {
+      const el = document.querySelector(".heroAccent");
+      if (!(el instanceof HTMLElement)) return null;
+      const s = getComputedStyle(el);
+      return { width: s.width, left: s.left, right: s.right };
+    })(),
+    heroGrid: (() => {
+      const el = document.querySelector(".heroGrid");
+      if (!(el instanceof HTMLElement)) return null;
+      const s = getComputedStyle(el);
+      return { opacity: s.opacity, transform: s.transform };
+    })(),
     heroTitle: (() => {
       const el = document.querySelector(".heroTitle span");
       if (!(el instanceof HTMLElement)) return null;
