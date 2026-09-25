@@ -1,0 +1,151 @@
+name: WebKit QA
+
+on:
+  push:
+    paths:
+      - "82trade-brand-master/**"
+      - ".github/workflows/webkit-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  webkit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start local preview
+        run: |
+          python3 -m http.server 4173 > /tmp/82trade-webkit-http.log 2>&1 &
+          echo $! > /tmp/82trade-webkit-http.pid
+          sleep 2
+          curl -f http://127.0.0.1:4173/82trade-brand-master/ > /dev/null
+
+      - name: Install Playwright WebKit
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps webkit
+
+      - name: Run WebKit desktop mobile interaction QA
+        run: |
+          cat > /tmp/webkit-qa.mjs <<'NODE'
+          import { webkit } from "playwright";
+          import fs from "node:fs";
+
+          const base = "http://127.0.0.1:4173/82trade-brand-master/";
+          const browser = await webkit.launch({ headless: true });
+          const receipt = {};
+
+          async function open(viewport, reducedMotion = "reduce") {
+            const context = await browser.newContext({ viewport, reducedMotion });
+            const page = await context.newPage();
+            const errors = [];
+            const failed = [];
+            page.on("console", (msg) => {
+              if (msg.type() === "error") errors.push(msg.text());
+            });
+            page.on("requestfailed", (req) => failed.push({
+              url: req.url(),
+              error: req.failure()?.errorText || "unknown",
+            }));
+            await page.goto(base, { waitUntil: "networkidle" });
+            return { context, page, errors, failed };
+          }
+
+          {
+            const { context, page, errors, failed } = await open({ width: 1440, height: 900 });
+            receipt.desktop = await page.evaluate(() => ({
+              clientWidth: document.documentElement.clientWidth,
+              scrollWidth: document.documentElement.scrollWidth,
+              scrollHeight: document.documentElement.scrollHeight,
+              headerTheme: document.querySelector(".header")?.getAttribute("data-theme"),
+              imageFailures: Array.from(document.images)
+                .filter((img) => img.complete && img.naturalWidth === 0)
+                .map((img) => img.getAttribute("src")),
+            }));
+            await page.locator("#highlights").scrollIntoViewIfNeeded();
+            await page.locator('[data-highlight-page="2"]').click();
+            await page.waitForTimeout(900);
+            receipt.afterPage3 = await page.evaluate(() => ({
+              scrollLeft: document.querySelector(".highlightsTrack")?.scrollLeft ?? null,
+              activeIndex: Array.from(document.querySelectorAll(".highlightCard")).findIndex(
+                (el) => el.getAttribute("data-active") === "true",
+              ),
+            }));
+            await page.locator('[data-highlight-dir="1"]').click();
+            await page.waitForTimeout(900);
+            receipt.afterNext = await page.evaluate(() => ({
+              scrollLeft: document.querySelector(".highlightsTrack")?.scrollLeft ?? null,
+              activeIndex: Array.from(document.querySelectorAll(".highlightCard")).findIndex(
+                (el) => el.getAttribute("data-active") === "true",
+              ),
+              nextDisabled: document.querySelector('[data-highlight-dir="1"]')?.hasAttribute("disabled") ?? false,
+            }));
+            await page.screenshot({ path: "webkit-desktop-highlights.png", fullPage: false });
+            receipt.desktop.consoleErrors = errors;
+            receipt.desktop.requestFailures = failed;
+            await context.close();
+          }
+
+          {
+            const { context, page, errors, failed } = await open({ width: 390, height: 844 });
+            receipt.mobile = await page.evaluate(() => ({
+              clientWidth: document.documentElement.clientWidth,
+              scrollWidth: document.documentElement.scrollWidth,
+              imageFailures: Array.from(document.images)
+                .filter((img) => img.complete && img.naturalWidth === 0)
+                .map((img) => img.getAttribute("src")),
+            }));
+            await page.locator("details.mobileMenu > summary").focus();
+            await page.keyboard.press("Enter");
+            await page.waitForTimeout(100);
+            receipt.mobile.menuOpen = await page.evaluate(
+              () => document.querySelector("details.mobileMenu")?.hasAttribute("open") ?? false,
+            );
+            await page.keyboard.press("Tab");
+            receipt.mobile.firstMenuLink = await page.evaluate(() => {
+              const el = document.activeElement;
+              return el instanceof HTMLAnchorElement
+                ? { text: el.textContent?.trim(), href: el.href }
+                : null;
+            });
+            await page.locator("#trader-dna").scrollIntoViewIfNeeded();
+            await page.screenshot({ path: "webkit-mobile-dna.png", fullPage: false });
+            receipt.mobile.consoleErrors = errors;
+            receipt.mobile.requestFailures = failed;
+            await context.close();
+          }
+
+          await browser.close();
+
+          const hardFailures = [];
+          if (receipt.desktop.clientWidth !== receipt.desktop.scrollWidth) hardFailures.push("desktop_overflow");
+          if (receipt.mobile.clientWidth !== receipt.mobile.scrollWidth) hardFailures.push("mobile_overflow");
+          if (receipt.desktop.imageFailures.length) hardFailures.push("desktop_image_failure");
+          if (receipt.mobile.imageFailures.length) hardFailures.push("mobile_image_failure");
+          if (receipt.desktop.consoleErrors.length) hardFailures.push("desktop_console_error");
+          if (receipt.mobile.consoleErrors.length) hardFailures.push("mobile_console_error");
+          if (!receipt.mobile.menuOpen) hardFailures.push("mobile_menu_keyboard");
+          if (receipt.afterPage3.activeIndex !== 2) hardFailures.push("highlight_page3");
+          if (receipt.afterNext.activeIndex !== 3 || !receipt.afterNext.nextDisabled) hardFailures.push("highlight_next_end");
+
+          receipt.result = hardFailures.length ? "FAIL" : "PASS";
+          receipt.hardFailures = hardFailures;
+          fs.writeFileSync("webkit-receipt.json", JSON.stringify(receipt, null, 2) + "\n");
+          console.log(JSON.stringify(receipt, null, 2));
+          if (hardFailures.length) process.exit(1);
+          NODE
+          node /tmp/webkit-qa.mjs
+
+      - name: Upload WebKit QA receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: 82trade-webkit-qa
+          path: |
+            webkit-receipt.json
+            webkit-desktop-highlights.png
+            webkit-mobile-dna.png
+          if-no-files-found: error
+          retention-days: 7
