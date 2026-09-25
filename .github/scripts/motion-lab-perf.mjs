@@ -41,9 +41,40 @@ await page.evaluateOnNewDocument(() => {
     const shiftObserver = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
         if (!entry.hadRecentInput) {
+          const sources = Array.from(entry.sources || []).slice(0, 6).map((source) => {
+            const node = source.node;
+            let label = null;
+            if (node instanceof Element) {
+              label = node.tagName.toLowerCase();
+              if (node.id) label += `#${node.id}`;
+              const classes = Array.from(node.classList || []).slice(0, 3);
+              if (classes.length) label += "." + classes.join(".");
+            }
+            return {
+              node: label,
+              previousRect: source.previousRect
+                ? {
+                    x: source.previousRect.x,
+                    y: source.previousRect.y,
+                    width: source.previousRect.width,
+                    height: source.previousRect.height,
+                  }
+                : null,
+              currentRect: source.currentRect
+                ? {
+                    x: source.currentRect.x,
+                    y: source.currentRect.y,
+                    width: source.currentRect.width,
+                    height: source.currentRect.height,
+                  }
+                : null,
+            };
+          });
           window.__motionPerf.layoutShifts.push({
             value: entry.value,
             startTime: entry.startTime,
+            scrollY: window.scrollY,
+            sources,
           });
         }
       }
@@ -148,6 +179,10 @@ const sample = await page.evaluate(async () => {
     longTaskTotalMs: (perf.longTasks || []).reduce((sum, item) => sum + item.duration, 0),
     maxLongTaskMs: Math.max(0, ...(perf.longTasks || []).map((item) => item.duration)),
     cls,
+    layoutShiftCount: (perf.layoutShifts || []).length,
+    topLayoutShifts: [...(perf.layoutShifts || [])]
+      .sort((a, b) => (b.value || 0) - (a.value || 0))
+      .slice(0, 16),
     samples,
   };
 });
