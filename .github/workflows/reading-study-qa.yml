@@ -1,0 +1,43 @@
+name: Reading Study QA
+
+on:
+  push:
+    paths:
+      - "82trade-motion-lab/reading-v4.html"
+      - ".github/scripts/reading-v4-qa.mjs"
+      - ".github/workflows/reading-study-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install QA runtime
+        run: npm install --no-save puppeteer-core@24.16.0
+      - name: Start local preview
+        run: |
+          python3 -m http.server 4174 --bind 127.0.0.1 >/tmp/reading-study-http.log 2>&1 &
+          sleep 2
+          curl --fail http://127.0.0.1:4174/82trade-motion-lab/reading-v4.html >/dev/null
+      - name: Locate browser
+        id: browser
+        run: |
+          BROWSER="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -n "$BROWSER"
+          echo "path=$BROWSER" >> "$GITHUB_OUTPUT"
+      - name: Capture Reading V4
+        env:
+          BROWSER: ${{ steps.browser.outputs.path }}
+        run: node .github/scripts/reading-v4-qa.mjs
+      - name: Upload receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: 82trade-reading-study-v4
+          path: reading-study-qa/**
+          if-no-files-found: error
+          retention-days: 7
