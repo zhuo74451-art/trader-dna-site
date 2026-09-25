@@ -930,6 +930,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   border:1px solid #4b4943;
   background:#0d0d0c;
   box-shadow:0 0 0 1px rgba(0,82,255,.08),0 30px 90px rgba(0,0,0,.35);
+  transform:perspective(900px) rotateX(var(--dna-rx,0deg)) rotateY(var(--dna-ry,0deg));
+  transform-style:preserve-3d;
+  will-change:transform;
+  transition:transform 220ms var(--cb-enter-expressive);
 }
 .registerFrame:before,
 .registerFrame:after{
@@ -1406,6 +1410,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
     transition:none!important;
   }
   .registerScan{display:none!important}
+  .registerFrame{transform:none!important}
   .highlightCard{
     opacity:1!important;
     transform:none!important;
