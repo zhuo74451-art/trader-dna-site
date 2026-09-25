@@ -149,7 +149,25 @@ const sample = await page.evaluate(async () => {
   };
 
   const perf = window.__motionPerf || { longTasks: [], layoutShifts: [] };
-  const cls = (perf.layoutShifts || []).reduce((sum, item) => sum + (item.value || 0), 0);
+  const layoutShifts = perf.layoutShifts || [];
+  const cls = layoutShifts.reduce((sum, item) => sum + (item.value || 0), 0);
+  const isIntentionalScrollOwnedShift = (shift) => {
+    const sources = shift.sources || [];
+    if (!sources.length) return false;
+    return sources.every((source) => {
+      const node = source.node || "";
+      return (
+        node.includes("section#real-world.takeover") ||
+        node.includes("div.takeoverFrame")
+      );
+    });
+  };
+  const intentionalScrollOwnedCls = layoutShifts
+    .filter(isIntentionalScrollOwnedShift)
+    .reduce((sum, item) => sum + (item.value || 0), 0);
+  const unexpectedCls = layoutShifts
+    .filter((item) => !isIntentionalScrollOwnedShift(item))
+    .reduce((sum, item) => sum + (item.value || 0), 0);
 
   return {
     viewport: { width: innerWidth, height: innerHeight },
@@ -179,8 +197,10 @@ const sample = await page.evaluate(async () => {
     longTaskTotalMs: (perf.longTasks || []).reduce((sum, item) => sum + item.duration, 0),
     maxLongTaskMs: Math.max(0, ...(perf.longTasks || []).map((item) => item.duration)),
     cls,
-    layoutShiftCount: (perf.layoutShifts || []).length,
-    topLayoutShifts: [...(perf.layoutShifts || [])]
+    intentionalScrollOwnedCls,
+    unexpectedCls,
+    layoutShiftCount: layoutShifts.length,
+    topLayoutShifts: [...layoutShifts]
       .sort((a, b) => (b.value || 0) - (a.value || 0))
       .slice(0, 16),
     samples,
@@ -191,7 +211,7 @@ const metrics = await page.metrics();
 const report = {
   timestamp: new Date().toISOString(),
   note:
-    "GitHub-hosted headless Chromium diagnostic. Use for regression/catastrophic-jank detection, not as a claim of end-user device FPS.",
+    "GitHub-hosted headless Chromium diagnostic. Use for regression/catastrophic-jank detection, not as a claim of end-user device FPS. Raw CLS is reported; the hard gate uses unexpectedCls and excludes only explicitly named Real World ScrollTrigger pin-state sources.",
   status: response?.status() ?? null,
   consoleErrors,
   ...sample,
@@ -230,6 +250,8 @@ if (sample.slowFrameRatio50 > 0.3) {
 if (sample.maxLongTaskMs > 350) {
   throw new Error(`catastrophic long task: ${sample.maxLongTaskMs}ms`);
 }
-if (sample.cls > 0.25) {
-  throw new Error(`excessive CLS: ${sample.cls}`);
+if (sample.unexpectedCls > 0.1) {
+  throw new Error(
+    `excessive unexpected CLS: ${sample.unexpectedCls} (raw=${sample.cls}, intentionalScrollOwned=${sample.intentionalScrollOwnedCls})`,
+  );
 }
