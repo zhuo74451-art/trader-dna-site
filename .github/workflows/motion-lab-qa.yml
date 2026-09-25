@@ -1,0 +1,64 @@
+name: Motion Lab QA
+
+on:
+  push:
+    paths:
+      - "82trade-motion-lab/**"
+      - ".github/scripts/motion-lab-qa.mjs"
+      - ".github/workflows/motion-lab-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  motion-lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install QA runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk
+          npm install --no-save puppeteer-core@24.24.0
+
+      - name: Start local preview
+        run: |
+          python3 -m http.server 4174 > /tmp/82trade-motion-http.log 2>&1 &
+          echo $! > /tmp/82trade-motion-http.pid
+          sleep 2
+          curl -f http://127.0.0.1:4174/82trade-motion-lab/ > /dev/null
+
+      - name: Locate browser
+        id: browser
+        shell: bash
+        run: |
+          BROWSER="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -z "$BROWSER" ]; then
+            echo "No Chromium browser found on runner"
+            exit 1
+          fi
+          echo "path=$BROWSER" >> "$GITHUB_OUTPUT"
+          "$BROWSER" --version
+
+      - name: Run Motion Lab visual and interaction QA
+        env:
+          BROWSER: ${{ steps.browser.outputs.path }}
+        run: node .github/scripts/motion-lab-qa.mjs
+
+      - name: Print diagnostics
+        if: always()
+        run: |
+          if [ -f motion-lab-qa/diagnostics.json ]; then
+            cat motion-lab-qa/diagnostics.json
+          fi
+
+      - name: Upload Motion Lab receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: 82trade-motion-lab-qa
+          path: motion-lab-qa/**
+          if-no-files-found: error
+          retention-days: 7
