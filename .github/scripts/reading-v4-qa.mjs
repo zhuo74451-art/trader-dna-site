@@ -29,13 +29,17 @@ async function open(name, viewport) {
   });
   await page.setCacheEnabled(false);
   const response = await page.goto("http://127.0.0.1:4174/82trade-motion-lab/reading-v5.html", {
-    waitUntil: "networkidle0",
-    timeout: 30000,
+    waitUntil: "load",
+    timeout: 12000,
   });
   await page.evaluate(async () => {
     if (document.fonts?.ready) await document.fonts.ready;
+    const img = document.querySelector(".bookObject img");
+    if (img instanceof HTMLImageElement && !img.complete) {
+      await img.decode().catch(() => undefined);
+    }
   });
-  await new Promise((resolve) => setTimeout(resolve, 450));
+  await new Promise((resolve) => setTimeout(resolve, 320));
   await page.screenshot({ path: path.join(outDir, `${name}.png`), fullPage: false });
 
   const state = await page.evaluate(() => {
