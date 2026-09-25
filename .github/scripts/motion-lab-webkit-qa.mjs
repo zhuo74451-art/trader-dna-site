@@ -136,13 +136,24 @@ async function run(name, viewport, reduced=false) {
   const activeNext = await waitForHighlight(3, reduced ? 900 : 2500);
   const afterNext = await page.locator(".highlightsTrack").evaluate(el=>el.scrollLeft);
 
-  await page.locator("#reading-list").scrollIntoViewIfNeeded();
-  await page.waitForTimeout(reduced ? 120 : 350);
+  await page.locator('[data-reading-tab="1"]').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(reduced ? 80 : 180);
   await page.locator('[data-reading-tab="1"]').click();
-  await page.waitForTimeout(reduced ? 80 : 520);
+  await page.waitForFunction(
+    () => document.querySelector("[data-reading-title]")?.textContent?.trim() === "新威科夫操盤法",
+    null,
+    { timeout: reduced ? 1200 : 2500 },
+  );
   const readingAdvanced = await page.locator("[data-reading-title]").textContent();
+
+  await page.locator('[data-reading-dir="1"]').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(reduced ? 80 : 160);
   await page.locator('[data-reading-dir="1"]').click();
-  await page.waitForTimeout(reduced ? 80 : 520);
+  await page.waitForFunction(
+    () => document.querySelector("[data-reading-title]")?.textContent?.trim() === "納瓦爾寶典",
+    null,
+    { timeout: reduced ? 1200 : 2500 },
+  );
   const readingGrowth = await page.locator("[data-reading-title]").textContent();
   const readingActive = await page.locator("[data-reading-tab]").evaluateAll(
     els => els.findIndex(el => el.getAttribute("data-active") === "true"),
@@ -194,7 +205,11 @@ for (const [name,r] of Object.entries(report)) {
   }
   if (r.highlightCount !== 4) throw new Error(`${name}: highlight count ${r.highlightCount}`);
   if (r.highlights.activePage3 !== 2) throw new Error(`${name}: page3 active index ${r.highlights.activePage3}`);
-  if (r.highlights.activeNext !== 3) throw new Error(`${name}: next active index ${r.highlights.activeNext}`);\n  if (r.reading.advanced !== "新威科夫操盤法" || r.reading.growth !== "納瓦爾寶典" || r.reading.active !== 2) {\n    throw new Error(`${name}: reading interaction ${JSON.stringify(r.reading)}`);\n  }\n}
+  if (r.highlights.activeNext !== 3) throw new Error(`${name}: next active index ${r.highlights.activeNext}`);
+  if (r.reading.advanced !== "新威科夫操盤法" || r.reading.growth !== "納瓦爾寶典" || r.reading.active !== 2) {
+    throw new Error(`${name}: reading interaction ${JSON.stringify(r.reading)}`);
+  }
+}
 if (!report["mobile-390"].mobileMenuOpen) throw new Error("mobile WebKit menu did not open by keyboard");
 
 await new Promise(resolve=>server.close(resolve));
