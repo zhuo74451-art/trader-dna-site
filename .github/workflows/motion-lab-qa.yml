@@ -48,9 +48,16 @@ jobs:
           BROWSER: ${{ steps.browser.outputs.path }}
         run: node .github/scripts/motion-lab-qa.mjs
 
-      - name: Run Motion Lab scroll performance diagnostic
+      - name: Run Motion Lab desktop scroll performance diagnostic
         env:
           BROWSER: ${{ steps.browser.outputs.path }}
+          MOTION_PERF_PROFILE: desktop
+        run: node .github/scripts/motion-lab-perf.mjs
+
+      - name: Run Motion Lab mobile scroll performance diagnostic
+        env:
+          BROWSER: ${{ steps.browser.outputs.path }}
+          MOTION_PERF_PROFILE: mobile
         run: node .github/scripts/motion-lab-perf.mjs
 
       - name: Print diagnostics
@@ -61,6 +68,9 @@ jobs:
           fi
           if [ -f motion-lab-qa/performance.json ]; then
             cat motion-lab-qa/performance.json
+          fi
+          if [ -f motion-lab-qa/performance-mobile.json ]; then
+            cat motion-lab-qa/performance-mobile.json
           fi
 
       - name: Upload Motion Lab receipts
