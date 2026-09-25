@@ -1706,13 +1706,28 @@ addEventListener("resize",requestHeaderThemeSync);
 if(matchMedia("(pointer: fine)").matches&&fixedHeader){
   const glassSurfaces=[fixedHeader,...document.querySelectorAll("[data-glass-surface]")];
   glassSurfaces.forEach((surface)=>{
+    let glassFrame=0;
+    let glassClientX=0;
+    let glassClientY=0;
     surface.addEventListener("pointermove",(event)=>{
-      const rect=surface.getBoundingClientRect();
-      surface.style.setProperty("--glass-x",`${event.clientX-rect.left}px`);
-      surface.style.setProperty("--glass-y",`${event.clientY-rect.top}px`);
-      surface.dataset.glassActive="true";
+      glassClientX=event.clientX;
+      glassClientY=event.clientY;
+      if(glassFrame)return;
+      glassFrame=requestAnimationFrame(()=>{
+        glassFrame=0;
+        const rect=surface.getBoundingClientRect();
+        surface.style.setProperty("--glass-x",`${glassClientX-rect.left}px`);
+        surface.style.setProperty("--glass-y",`${glassClientY-rect.top}px`);
+        surface.dataset.glassActive="true";
+      });
     });
-    surface.addEventListener("pointerleave",()=>surface.dataset.glassActive="false");
+    surface.addEventListener("pointerleave",()=>{
+      if(glassFrame){
+        cancelAnimationFrame(glassFrame);
+        glassFrame=0;
+      }
+      surface.dataset.glassActive="false";
+    });
   });
 }
 
@@ -1925,9 +1940,18 @@ buttons.forEach((button)=>button.addEventListener("click",()=>{
   const target=Math.max(0,Math.min(list.length-1,currentIndex()+dir));
   track.scrollTo({left:snap(list[target]),behavior:reduce?"auto":"smooth"});
 }));
+let highlightSyncFrame=0;
+const requestHighlightSync=()=>{
+  if(highlightSyncFrame)return;
+  highlightSyncFrame=requestAnimationFrame(()=>{
+    highlightSyncFrame=0;
+    syncHighlights();
+  });
+};
 if(track){
-  track.addEventListener("scroll",syncHighlights,{passive:true});
-  syncHighlights();
+  track.addEventListener("scroll",requestHighlightSync,{passive:true});
+  addEventListener("resize",requestHighlightSync);
+  requestHighlightSync();
 }
 
 
