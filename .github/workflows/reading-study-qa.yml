@@ -3,7 +3,7 @@ name: Reading Study QA
 on:
   push:
     paths:
-      - "82trade-motion-lab/reading-v6.html"
+      - "82trade-motion-lab/reading-v7.html"
       - ".github/scripts/reading-v4-qa.mjs"
       - ".github/workflows/reading-study-qa.yml"
 
@@ -25,14 +25,14 @@ jobs:
         run: |
           python3 -m http.server 4174 --bind 127.0.0.1 >/tmp/reading-study-http.log 2>&1 &
           sleep 2
-          curl --fail http://127.0.0.1:4174/82trade-motion-lab/reading-v6.html >/dev/null
+          curl --fail http://127.0.0.1:4174/82trade-motion-lab/reading-v7.html >/dev/null
       - name: Locate browser
         id: browser
         run: |
           BROWSER="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
           test -n "$BROWSER"
           echo "path=$BROWSER" >> "$GITHUB_OUTPUT"
-      - name: Capture Reading V6
+      - name: Capture Reading V7
         env:
           BROWSER: ${{ steps.browser.outputs.path }}
         run: node .github/scripts/reading-v4-qa.mjs
@@ -40,7 +40,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: 82trade-reading-study-v6
+          name: 82trade-reading-study-v7
           path: reading-study-qa/**
           if-no-files-found: error
           retention-days: 7
