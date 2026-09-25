@@ -225,6 +225,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Micr
   width:37vw;
   background:var(--cb-blue);
   transform-origin:right center;
+  will-change:transform,clip-path;
 }
 .heroGrid{
   position:relative;
@@ -1789,7 +1790,7 @@ const cue=document.querySelector("[data-scroll-cue]");
 if(!reduce&&accent&&meta&&title&&line&&actions&&cue){
   const expressive="cubic-bezier(.33,0,0,1)";
   const functional="cubic-bezier(0,0,.15,1)";
-  accent.animate([{transform:"scaleX(.82)"},{transform:"scaleX(1)"}],{duration:1000,easing:expressive,fill:"both"});
+  accent.animate([{clipPath:"inset(0 0 0 18%)"},{clipPath:"inset(0 0 0 0)"}],{duration:1000,easing:expressive,fill:"both"});
   meta.animate([{opacity:0,transform:"translateY(24px)"},{opacity:1,transform:"translateY(0)"}],{duration:500,delay:160,easing:functional,fill:"both"});
   title.animate([{opacity:0,transform:"translateY(105%)"},{opacity:1,transform:"translateY(0)"}],{duration:720,delay:240,easing:expressive,fill:"both"});
   line.animate([{opacity:0,transform:"translateY(24px)"},{opacity:1,transform:"translateY(0)"}],{duration:500,delay:460,easing:functional,fill:"both"});
@@ -1832,9 +1833,10 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
   const heroAccent=document.querySelector(".heroAccent");
   const heroTitle=document.querySelector(".heroTitle");
   const heroCue=document.querySelector(".scrollCue");
+  const heroAccentScale=innerWidth/Math.max(1,parseFloat(getComputedStyle(heroAccent).width));
   const heroExit=gsap.timeline({scrollTrigger:{trigger:hero,start:"top top",end:"bottom top",scrub:.55}});
   heroExit
-    .to(heroAccent,{width:"100vw",ease:"none",duration:.44},0)
+    .to(heroAccent,{scaleX:heroAccentScale,transformOrigin:"right center",ease:"none",duration:.44},0)
     .to(heroTitle.querySelectorAll("span"),{color:"#fff",ease:"none",duration:.28},.08)
     .to(heroCue,{autoAlpha:0,x:-18,ease:"none",duration:.24},.12)
     .to(heroGrid,{yPercent:-7,scale:.958,opacity:.08,ease:"none",duration:.7},.2)
