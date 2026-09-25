@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>82TRADE — Reading V3 Donor Transplant</title>
+<style>
+/*
+  Book object mechanics derived from scastiel/book-cover-3d (MIT)
+  Copyright (c) 2020 Sebastien Castiel
+  https://github.com/scastiel/book-cover-3d
+*/
+:root{
+  --bg:#1d1715;
+  --ink:#f2eee8;
+  --muted:#a59a94;
+  --dim:#726a66;
+  --line:rgba(255,255,255,.11);
+  --blue:#6f9cff;
+  --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --serif:Iowan Old Style,Palatino Linotype,Book Antiqua,Palatino,Georgia,"Times New Roman",serif;
+  --ease:cubic-bezier(.2,.75,.22,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--sans)}
+body{overflow-x:hidden}
+button{font:inherit}
+.app{min-height:100svh;display:flex;flex-direction:column;padding:0 3.2vw 24px}
+.top{
+  height:66px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--line);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#7f7470
+}
+.logo{font-size:14px;font-weight:850;letter-spacing:-.04em;color:#f5f1eb;text-transform:none}
+.topRight{display:flex;gap:22px;align-items:center}
+.scene{
+  flex:1;min-height:680px;display:grid;grid-template-columns:minmax(430px,.96fr) minmax(0,1.04fr);
+  position:relative
+}
+.scene:after{
+  content:"";position:absolute;left:-3.2vw;right:-3.2vw;bottom:0;height:25%;
+  background:linear-gradient(180deg,rgba(255,255,255,.012),rgba(255,255,255,.036));
+  clip-path:polygon(5% 30%,95% 30%,100% 100%,0 100%);pointer-events:none
+}
+.object{
+  position:relative;display:flex;align-items:center;justify-content:center;min-width:0;overflow:visible
+}
+.object:before{
+  content:"";position:absolute;width:66%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.085),rgba(255,255,255,.018) 46%,transparent 70%);
+  filter:blur(14px);transform:translate(-5%,-2%)
+}
+.rail{
+  position:absolute;left:0;top:12%;bottom:12%;width:1px;background:linear-gradient(transparent,var(--line) 16%,var(--line) 84%,transparent)
+}
+.railDot{position:absolute;left:-3px;top:34%;width:7px;height:7px;border-radius:50%;background:var(--blue);box-shadow:0 0 18px rgba(111,156,255,.6)}
+.stage{position:relative;z-index:2;width:440px;height:590px;display:grid;place-items:center;perspective:920px}
+.bookWrap{position:relative;width:320px;height:480px;perspective:920px}
+.book{
+  width:320px;height:480px;position:relative;transform-style:preserve-3d;
+  transform:rotateY(-27deg);transition:transform .8s var(--ease),filter .7s ease,opacity .36s ease;
+  filter:drop-shadow(-18px 34px 36px rgba(0,0,0,.38))
+}
+.book:hover{transform:rotateY(-9deg) translateY(-5px)}
+.bookFront{
+  position:absolute;inset:0;transform:translateZ(28px);overflow:hidden;border-radius:0 4px 4px 0;
+  background:#111;box-shadow:6px 7px 25px rgba(0,0,0,.45)
+}
+.bookFront img{width:100%;height:100%;display:block;object-fit:cover}
+.bookFront:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.25),transparent 14%,transparent 82%,rgba(255,255,255,.07));pointer-events:none}
+.book:before{
+  position:absolute;content:"";left:0;top:4px;width:54px;height:472px;
+  transform:translateX(291px) rotateY(90deg);
+  background:repeating-linear-gradient(90deg,#fbf8ee 0,#fbf8ee 3px,#d8d2c4 4px,#f7f3e8 6px);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)
+}
+.book:after{
+  position:absolute;content:"";inset:0;transform:translateZ(-28px);background:#17100e;
+  border-radius:0 4px 4px 0;box-shadow:-20px 0 52px rgba(0,0,0,.5)
+}
+.shadow{position:absolute;z-index:1;width:400px;height:78px;bottom:4%;background:radial-gradient(ellipse,rgba(0,0,0,.62),rgba(0,0,0,.16) 50%,transparent 72%);filter:blur(9px);transform:rotate(-3deg)}
+.copy{
+  position:relative;z-index:3;display:flex;flex-direction:column;justify-content:center;padding:8vh 3vw 14vh 5vw;
+  min-width:0
+}
+.eyebrow{display:flex;align-items:center;gap:14px;color:var(--blue);font-size:9px;font-weight:760;letter-spacing:.17em;text-transform:uppercase}
+.eyebrow:before{content:"";width:32px;height:1px;background:var(--blue)}
+h1{margin:34px 0 22px;max-width:760px;font-family:var(--serif);font-size:clamp(64px,6vw,104px);line-height:.93;font-weight:400;letter-spacing:-.055em}
+.desc{max-width:650px;margin:0;color:var(--muted);font-family:var(--serif);font-size:18px;line-height:1.7}
+.reason{display:grid;grid-template-columns:100px minmax(0,1fr);gap:26px;max-width:650px;margin-top:38px;padding-top:22px;border-top:1px solid var(--line)}
+.reasonLabel{color:var(--dim);font-size:9px;letter-spacing:.13em;text-transform:uppercase}
+.reasonText{margin:0;color:#c2b9b4;font-size:13px;line-height:1.65}
+.meta{margin-top:38px;color:#756d69;font-size:10px;letter-spacing:.08em}
+.nav{
+  min-height:82px;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr auto;
+  align-items:center;gap:36px;position:relative;z-index:5
+}
+.tabs{display:flex;align-items:stretch;gap:0}
+.tab{
+  min-width:180px;height:82px;padding:0 24px 0 0;margin-right:28px;border:0;border-right:1px solid var(--line);
+  display:grid;grid-template-columns:30px 1fr;align-items:center;text-align:left;background:transparent;color:#706864;cursor:pointer
+}
+.tab small{font-size:8px;letter-spacing:.12em}
+.tab b{font-size:12px;font-weight:560}
+.tab[data-active="true"]{color:#f4f0eb}
+.tab[data-active="true"] small{color:var(--blue)}
+.arrows{display:flex;align-items:center;gap:8px}
+.arrow{width:46px;height:46px;border:1px solid var(--line);border-radius:50%;background:transparent;color:#766e69;cursor:pointer;transition:color .2s,border-color .2s,transform .2s}
+.arrow:hover{color:#fff;border-color:rgba(255,255,255,.3);transform:translateY(-2px)}
+.credit{position:fixed;left:8px;bottom:6px;color:#4c4542;font-size:8px;letter-spacing:.06em;z-index:20}
+.book.is-leaving{transform:rotateY(-58deg) translateX(-40px) scale(.96);opacity:0}
+.copy.is-leaving{opacity:0;transform:translateY(16px)}
+.copy{transition:opacity .3s ease,transform .38s ease}
+.book.is-entering{animation:bookEnter .75s var(--ease) both}
+.copy.is-entering{animation:copyEnter .52s ease both}
+@keyframes bookEnter{from{opacity:0;transform:rotateY(-55deg) translateX(-36px) scale(.96)}to{opacity:1;transform:rotateY(-27deg) translateX(0) scale(1)}}
+@keyframes copyEnter{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+@media(max-width:900px){
+  .app{padding:0 18px 20px}
+  .top{height:60px}
+  .topRight span:first-child{display:none}
+  .scene{grid-template-columns:1fr;min-height:0}
+  .object{min-height:440px}
+  .rail{display:none}
+  .stage{width:310px;height:420px;transform:scale(.82)}
+  .copy{padding:4px 0 38px;justify-content:flex-start}
+  h1{margin:24px 0 16px;font-size:clamp(50px,14vw,70px)}
+  .desc{font-size:16px}
+  .reason{grid-template-columns:82px 1fr;margin-top:28px;gap:18px}
+  .nav{grid-template-columns:1fr;gap:12px;padding:14px 0}
+  .tabs{overflow:auto}
+  .tab{min-width:142px;height:64px;margin-right:18px;padding-right:18px}
+  .arrows{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .book,.copy,.arrow{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="logo">82TRADE</div>
+    <div class="topRight"><span>CURATED READING</span><span>DONOR TRANSPLANT / V3</span></div>
+  </header>
+
+  <section class="scene">
+    <div class="object">
+      <div class="rail"><span class="railDot"></span></div>
+      <div class="stage">
+        <div class="shadow"></div>
+        <div class="bookWrap">
+          <div class="book" data-book>
+            <div class="bookFront">
+              <img data-cover src="https://books.google.com/books/content?id=iWtyzwEACAAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api" alt="股票作手回憶錄封面">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <article class="copy" data-copy>
+      <div class="eyebrow" data-eyebrow>01 / 交易必備</div>
+      <h1 data-title>股票作手回憶錄</h1>
+      <p class="desc" data-desc>真正值得反覆讀的不是技巧，而是它如何把一個交易者的等待、貪婪、恐懼與自我欺騙攤在你面前。</p>
+      <div class="reason">
+        <span class="reasonLabel">Why read</span>
+        <p class="reasonText" data-reason>先理解人，再理解市場。這本書不是給你答案，而是讓你看見自己會在哪裡犯錯。</p>
+      </div>
+      <div class="meta" data-meta>Edwin Lefèvre · 1923 / 推薦繁中版本待最終書單確認</div>
+    </article>
+  </section>
+
+  <nav class="nav" aria-label="Reading categories">
+    <div class="tabs">
+      <button class="tab" data-tab="0" data-active="true"><small>01</small><b>交易必備</b></button>
+      <button class="tab" data-tab="1" data-active="false"><small>02</small><b>市場結構</b></button>
+      <button class="tab" data-tab="2" data-active="false"><small>03</small><b>思維成長</b></button>
+    </div>
+    <div class="arrows">
+      <button class="arrow" data-dir="-1" aria-label="上一類">←</button>
+      <button class="arrow" data-dir="1" aria-label="下一類">→</button>
+    </div>
+  </nav>
+</div>
+<div class="credit">3D book mechanics: book-cover-3d / MIT · Interaction pattern: Codrops book detail showcase</div>
+<script>
+const books=[
+  {
+    category:"交易必備",title:"股票作手回憶錄",
+    cover:"https://books.google.com/books/content?id=iWtyzwEACAAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api",
+    desc:"真正值得反覆讀的不是技巧，而是它如何把一個交易者的等待、貪婪、恐懼與自我欺騙攤在你面前。",
+    reason:"先理解人，再理解市場。這本書不是給你答案，而是讓你看見自己會在哪裡犯錯。",
+    meta:"Edwin Lefèvre · 1923 / 推薦繁中版本待最終書單確認"
+  },
+  {
+    category:"市場結構",title:"量價分析",
+    cover:"https://books.google.com/books/content?id=sf7ZswEACAAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api",
+    desc:"把價格與成交量重新放回同一張圖裡，練習看見市場真正發生了什麼，而不是只盯著單一指標。",
+    reason:"適合從『看圖』走向『理解供需』的第二階段。重點不是記形態，而是建立結構感。",
+    meta:"Anna Coulling / 量價與威科夫閱讀線"
+  },
+  {
+    category:"思維成長",title:"納瓦爾寶典",
+    cover:"https://books.google.com/books/content?id=-LvrEAAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api",
+    desc:"把視角從單次輸贏拉回長期複利：判斷、選擇、專注與自由。它不是交易書，但很適合交易者。",
+    reason:"交易之外，你仍然需要一套關於時間、決策與長期主義的底層坐標。",
+    meta:"Naval Ravikant / Eric Jorgenson · 思維延伸閱讀"
+  }
+];
+books.forEach(({cover})=>{const i=new Image();i.src=cover;});
+let index=0,locked=false;
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const book=$("[data-book]"),copy=$("[data-copy]");
+function apply(i){
+  const x=books[i];
+  $("[data-cover]").src=x.cover;
+  $("[data-cover]").alt=x.title+"封面";
+  $("[data-eyebrow]").textContent="0"+(i+1)+" / "+x.category;
+  $("[data-title]").textContent=x.title;
+  $("[data-desc]").textContent=x.desc;
+  $("[data-reason]").textContent=x.reason;
+  $("[data-meta]").textContent=x.meta;
+  $$("[data-tab]").forEach((b,n)=>b.dataset.active=String(n===i));
+}
+function go(next){
+  if(locked)return;
+  locked=true;
+  next=(next+books.length)%books.length;
+  book.classList.remove("is-entering");copy.classList.remove("is-entering");
+  book.classList.add("is-leaving");copy.classList.add("is-leaving");
+  setTimeout(()=>{
+    index=next;apply(index);
+    book.classList.remove("is-leaving");copy.classList.remove("is-leaving");
+    void book.offsetWidth;
+    book.classList.add("is-entering");copy.classList.add("is-entering");
+    setTimeout(()=>{book.classList.remove("is-entering");copy.classList.remove("is-entering");locked=false},780);
+  },300);
+}
+$$("[data-tab]").forEach((b,i)=>b.addEventListener("click",()=>go(i)));
+$$("[data-dir]").forEach(b=>b.addEventListener("click",()=>go(index+(Number(b.dataset.dir)||1))));
+</script>
+</body>
+</html>
