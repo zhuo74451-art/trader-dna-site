@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>82TRADE — Apple Motion Lab V4.2</title>
+<title>82TRADE — Apple Motion Lab V4.3 · Reading List</title>
 <link rel="icon" href="data:,">
 <style>
 html,body{margin:0;padding:0}
@@ -1876,6 +1876,83 @@ gsap.registerPlugin(ScrollTrigger);
 
 const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+const readingSets=[
+  {
+    category:"交易必備",
+    featured:"股票作手回憶錄",
+    cover:"./assets/books/reminiscences.webp",
+    note:"李奧森 2015、真如 1997 / 2016 再版，皆為推薦翻譯版本。",
+    books:["亞當理論","股票作手回憶錄","交易聖經","量價分析"],
+  },
+  {
+    category:"交易進階",
+    featured:"新威科夫操盤法",
+    cover:"./assets/books/wyckoff.webp",
+    note:"82TRADE READING LIST",
+    books:["新威科夫操盤法","技術分析聖經","道氏理論"],
+  },
+  {
+    category:"思維成長",
+    featured:"納瓦爾寶典",
+    cover:"./assets/books/naval.webp",
+    note:"82TRADE READING LIST",
+    books:["先別急著吃棉花糖","灰階思考","原子習慣","納瓦爾寶典"],
+  },
+];
+let readingIndex=0;
+const readingTabs=Array.from(document.querySelectorAll("[data-reading-tab]"));
+const readingPages=Array.from(document.querySelectorAll("[data-reading-page]"));
+const readingDirections=Array.from(document.querySelectorAll("[data-reading-dir]"));
+const readingImage=document.querySelector("[data-reading-image]");
+const readingNumber=document.querySelector("[data-reading-number]");
+const readingCategory=document.querySelector("[data-reading-category]");
+const readingTitle=document.querySelector("[data-reading-title]");
+const readingNote=document.querySelector("[data-reading-note]");
+const readingList=document.querySelector("[data-reading-list]");
+const readingBook=document.querySelector("[data-reading-cover]");
+const readingCopy=document.querySelector(".readingCopy");
+
+const renderReading=(index,animate=true)=>{
+  readingIndex=(index+readingSets.length)%readingSets.length;
+  const item=readingSets[readingIndex];
+  if(readingImage){
+    readingImage.src=item.cover;
+    readingImage.alt=`${item.featured} 封面`;
+  }
+  if(readingNumber)readingNumber.textContent=`0${readingIndex+1} / 03`;
+  if(readingCategory)readingCategory.textContent=item.category;
+  if(readingTitle)readingTitle.textContent=item.featured;
+  if(readingNote)readingNote.textContent=item.note;
+  if(readingList){
+    readingList.replaceChildren(...item.books.map((book,index)=>{
+      const li=document.createElement("li");
+      if(book===item.featured)li.dataset.featured="true";
+      const small=document.createElement("small");
+      small.textContent=`0${index+1}`;
+      const strong=document.createElement("b");
+      strong.textContent=book;
+      li.append(small,strong);
+      return li;
+    }));
+  }
+  readingTabs.forEach((button,index)=>{
+    const active=index===readingIndex;
+    button.dataset.active=String(active);
+    button.setAttribute("aria-pressed",String(active));
+  });
+  readingPages.forEach((button,index)=>button.dataset.active=String(index===readingIndex));
+
+  if(animate&&!reduce&&readingBook&&readingCopy){
+    gsap.killTweensOf([readingBook,...readingCopy.querySelectorAll("[data-reading-copy]")]);
+    gsap.fromTo(readingBook,{y:42,rotateY:-11,rotateX:3,scale:.94,opacity:.22},{y:0,rotateY:-4,rotateX:1,scale:1,opacity:1,duration:.72,ease:"power3.out"});
+    gsap.fromTo(readingCopy.querySelectorAll("[data-reading-copy]"),{y:22,opacity:0},{y:0,opacity:1,stagger:.055,duration:.48,ease:"power2.out"});
+  }
+};
+readingTabs.forEach((button)=>button.addEventListener("click",()=>renderReading(Number(button.dataset.readingTab)||0)));
+readingPages.forEach((button)=>button.addEventListener("click",()=>renderReading(Number(button.dataset.readingPage)||0)));
+readingDirections.forEach((button)=>button.addEventListener("click",()=>renderReading(readingIndex+(Number(button.dataset.readingDir)||1))));
+renderReading(0,false);
+
 const pageRoot=document.querySelector(".page");
 const fixedHeader=document.querySelector(".header");
 const themedSections=pageRoot
@@ -2065,6 +2142,18 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
     .fromTo(academyLead,{y:92,scale:.9,opacity:.62},{y:0,scale:1,opacity:1,ease:"none",duration:.82},.14)
     .fromTo(Array.from(academySide.children),{x:92,y:28,scale:.91,opacity:.28},{x:0,y:0,scale:1,opacity:1,stagger:.11,ease:"none",duration:.72},.2);
 
+  const reading=document.querySelector(".readingChapter");
+  const readingHead=document.querySelector(".readingHead");
+  const readingStage=document.querySelector(".readingStage");
+  const academyExit=gsap.timeline({scrollTrigger:{trigger:reading,start:"top bottom",end:"top 22%",scrub:.55}})
+    .to(academyHead,{y:-36,opacity:.18,ease:"none",duration:1},0)
+    .to(academyObject,{y:-68,scale:.945,opacity:.24,borderRadius:72,ease:"none",duration:1},0);
+  const readingTl=gsap.timeline({scrollTrigger:{trigger:reading,start:"top 78%",end:"center 36%",scrub:.58}});
+  readingTl
+    .fromTo(readingHead.querySelector("h2"),{yPercent:22,opacity:.16,letterSpacing:"-.085em"},{yPercent:0,opacity:1,letterSpacing:"-.068em",ease:"none",duration:.54},0)
+    .fromTo(readingHead.querySelectorAll("p, button"),{y:18,opacity:.2},{y:0,opacity:1,stagger:.06,ease:"none",duration:.42},.04)
+    .fromTo(readingStage,{y:92,scale:.94,opacity:.38,borderRadius:72},{y:0,scale:1,opacity:1,borderRadius:40,ease:"none",duration:1},.08);
+
   const dna=document.querySelector(".dnaChapter");
   const dnaHead=document.querySelector(".dnaChapter .chapterHead");
   const dnaObject=document.querySelector(".dnaObject");
@@ -2073,9 +2162,9 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
   const registerFrame=document.querySelector(".registerFrame");
   const registerCross=document.querySelector(".registerCross");
   const registerCore=document.querySelector(".registerCore");
-  const academyExit=gsap.timeline({scrollTrigger:{trigger:dna,start:"top bottom",end:"top 18%",scrub:.55}})
-    .to(academyHead,{y:-38,opacity:.18,ease:"none",duration:1},0)
-    .to(academyObject,{y:-72,scale:.94,opacity:.26,borderRadius:72,ease:"none",duration:1},0);
+  const readingExit=gsap.timeline({scrollTrigger:{trigger:dna,start:"top bottom",end:"top 20%",scrub:.55}})
+    .to(readingHead,{y:-34,opacity:.14,ease:"none",duration:1},0)
+    .to(readingStage,{y:-64,scale:.95,opacity:.24,borderRadius:72,ease:"none",duration:1},0);
   const dnaTl=gsap.timeline({scrollTrigger:{trigger:dna,start:"top 78%",end:"center 30%",scrub:.6}});
   dnaTl
     .fromTo(dnaHead.querySelector("h2"),{yPercent:22,opacity:.16,letterSpacing:"-.09em"},{yPercent:0,opacity:1,letterSpacing:"-.075em",ease:"none",duration:.54},0)
@@ -2092,7 +2181,7 @@ mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)",()=>{
   const closingWordmark=document.querySelector(".closingWordmark");
   const closingTween=gsap.fromTo(closingWordmark,{yPercent:28,scale:.92,opacity:.05},{yPercent:0,scale:1,opacity:1,ease:"none",scrollTrigger:{trigger:closing,start:"top bottom",end:"bottom bottom",scrub:.65}});
 
-  return()=>{tl.kill();heroExit.kill();takeoverToWorldview.kill();worldviewTl.kill();worldviewToHighlights.kill();highlightsToAcademy.kill();academyTl.kill();academyExit.kill();dnaTl.kill();closingTween.kill();};
+  return()=>{tl.kill();heroExit.kill();takeoverToWorldview.kill();worldviewTl.kill();worldviewToHighlights.kill();highlightsToAcademy.kill();academyTl.kill();academyExit.kill();readingTl.kill();readingExit.kill();dnaTl.kill();closingTween.kill();};
 });
 
 const track=document.querySelector(".highlightsTrack");
