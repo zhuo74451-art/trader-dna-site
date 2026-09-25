@@ -414,6 +414,46 @@ report.readingHashLanding = await readingHashPage.evaluate(() => {
 });
 await readingHashPage.close();
 
+const readingV3Open = await openPage(
+  { width: 1512, height: 982, deviceScaleFactor: 1 },
+  false,
+  `${base}reading-v3.html?qa=visual-review`,
+);
+const readingV3 = readingV3Open.page;
+await settle(readingV3, 900);
+await shot(readingV3, "reading-v3-desktop-01");
+await readingV3.click('[data-tab="1"]');
+await settle(readingV3, 1200);
+await shot(readingV3, "reading-v3-desktop-02-market");
+await readingV3.click('[data-tab="2"]');
+await settle(readingV3, 1200);
+await shot(readingV3, "reading-v3-desktop-03-growth");
+report.readingV3 = await readingV3.evaluate(() => ({
+  title: document.querySelector("[data-title]")?.textContent?.trim() ?? null,
+  active: Array.from(document.querySelectorAll("[data-tab]")).findIndex(
+    (el) => el.getAttribute("data-active") === "true",
+  ),
+  cover: document.querySelector("[data-cover]")?.getAttribute("src") ?? null,
+  scrollWidth: document.documentElement.scrollWidth,
+  clientWidth: document.documentElement.clientWidth,
+}));
+await readingV3.close();
+
+const readingV3MobileOpen = await openPage(
+  { width: 390, height: 844, deviceScaleFactor: 1 },
+  false,
+  `${base}reading-v3.html?qa=mobile-review`,
+);
+const readingV3Mobile = readingV3MobileOpen.page;
+await settle(readingV3Mobile, 900);
+await shot(readingV3Mobile, "reading-v3-mobile-01");
+report.readingV3Mobile = await readingV3Mobile.evaluate(() => ({
+  scrollWidth: document.documentElement.scrollWidth,
+  clientWidth: document.documentElement.clientWidth,
+  title: document.querySelector("[data-title]")?.textContent?.trim() ?? null,
+}));
+await readingV3Mobile.close();
+
 const mobileOpen = await openPage({ width: 390, height: 844, deviceScaleFactor: 1 }, false);
 const mobile = mobileOpen.page;
 await scrollTo(mobile, 0, 1100);
@@ -544,6 +584,8 @@ report.status = {
   wide1728: wideOpen.status,
   reduced: reducedOpen.status,
   readingHash: readingHashOpen.status,
+  readingV3: readingV3Open.status,
+  readingV3Mobile: readingV3MobileOpen.status,
 };
 report.errors = errors;
 report.failures = failures;
@@ -579,6 +621,12 @@ if (
   report.readingHashLanding.title !== "Reading list."
 ) {
   throw new Error(`reading hash landing failed: ${JSON.stringify(report.readingHashLanding)}`);
+}
+if (report.readingV3?.scrollWidth !== report.readingV3?.clientWidth) {
+  throw new Error(`reading V3 desktop overflow: ${JSON.stringify(report.readingV3)}`);
+}
+if (report.readingV3Mobile?.scrollWidth !== report.readingV3Mobile?.clientWidth) {
+  throw new Error(`reading V3 mobile overflow: ${JSON.stringify(report.readingV3Mobile)}`);
 }
 if (!report.mobile.menuOpen) throw new Error("mobile menu did not open by keyboard");
 if (errors.length) throw new Error(`console/page errors: ${JSON.stringify(errors.slice(0, 8))}`);
