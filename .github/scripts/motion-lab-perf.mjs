@@ -126,7 +126,7 @@ const sample = await page.evaluate(async () => {
   await new Promise((resolve) => setTimeout(resolve, 250));
 
   const maxScroll = Math.max(0, document.documentElement.scrollHeight - innerHeight);
-  const targetDuration = isMobile ? 7000 : 8000;
+  const targetDuration = 8000;
   const frameIntervals = [];
   const samples = [];
   let previous = performance.now();
