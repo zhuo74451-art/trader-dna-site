@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:,">
+<title>82TRADE — Reading Study 10</title>
+<style>
+/*
+  Book object mechanics derive from scastiel/book-cover-3d (MIT):
+  front face + page block + back face in a perspective container.
+*/
+:root{
+  --bg:#201819;
+  --ink:#ffffff;
+  --soft:#d0d1d4;
+  --muted:#8f8b8c;
+  --dim:#504f4f;
+  --line:rgba(255,255,255,.10);
+  --blue:#78a2ff;
+  --sans:"Noto Sans CJK TC","PingFang TC","Microsoft JhengHei",Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --serif:"Noto Serif CJK TC","Songti TC","PMingLiU",Iowan Old Style,Georgia,"Times New Roman",serif;
+  --ease:cubic-bezier(.25,.1,.25,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--sans)}
+body{overflow-x:hidden}
+button{font:inherit;color:inherit}
+.page{
+  min-height:100svh;padding:0 4vw 18px;display:grid;grid-template-rows:64px minmax(710px,1fr) 66px;
+  overflow:hidden;background:
+    radial-gradient(circle at 25% 44%,rgba(255,255,255,.035),transparent 24%),
+    linear-gradient(180deg,#201819 0%,#1d1718 100%)
+}
+.header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.logo{font-size:14px;font-weight:850;letter-spacing:-.04em}
+.headerMeta{color:#747072;font-size:8px;font-weight:670;letter-spacing:.18em;text-transform:uppercase}
+.stage{
+  position:relative;display:grid;grid-template-columns:minmax(560px,1.06fr) minmax(0,.94fr);min-height:690px
+}
+.stage:before{
+  content:"";position:absolute;left:-4vw;right:-4vw;bottom:0;height:24%;
+  background:linear-gradient(180deg,rgba(255,255,255,.002),rgba(255,255,255,.025));
+  clip-path:polygon(4% 32%,96% 32%,100% 100%,0 100%);pointer-events:none
+}
+.visual{position:relative;display:grid;place-items:center;min-width:0}
+.visual:after{
+  content:"";position:absolute;z-index:0;width:66%;height:70px;bottom:10%;
+  background:radial-gradient(ellipse,rgba(0,0,0,.54),rgba(0,0,0,.12) 50%,transparent 72%);
+  filter:blur(10px)
+}
+.bookScene{
+  position:relative;z-index:2;width:min(37vw,540px);aspect-ratio:.68;display:grid;place-items:center;
+  perspective:1200px;transform:translateX(-.5vw)
+}
+.bookObject{
+  --depth:34px;
+  position:relative;width:84%;height:88%;transform-style:preserve-3d;
+  transform:rotateY(-18deg) rotateX(.7deg);transform-origin:50% 55%;
+  transition:transform .5s var(--ease),opacity .25s ease,filter .25s ease;
+  will-change:transform,opacity
+}
+.bookObject:hover{transform:rotateY(-8deg) rotateX(.2deg) translateY(-4px)}
+.bookFace,.bookBack,.bookPages{position:absolute;inset:0}
+.bookFace{
+  transform:translateZ(calc(var(--depth)/2));overflow:hidden;background:#111;
+  box-shadow:0 14px 32px rgba(0,0,0,.34)
+}
+.bookFace img{width:100%;height:100%;display:block;object-fit:cover}
+.bookFace:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.18),transparent 13%,transparent 87%,rgba(255,255,255,.045));pointer-events:none}
+.bookBack{transform:translateZ(calc(var(--depth)/-2));background:#120f10}
+.bookPages{
+  inset:2px auto 2px 100%;width:var(--depth);
+  transform-origin:left center;transform:translateZ(calc(var(--depth)/2)) rotateY(90deg);
+  background:repeating-linear-gradient(90deg,#efece4 0,#efece4 2px,#d7d2c8 3px,#f6f3ec 5px);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)
+}
+.bookObject.out{animation:bookOut .26s ease both}
+.bookObject.in{animation:bookIn .54s var(--ease) both}
+@keyframes bookOut{to{opacity:0;transform:translateX(-68px) rotateY(-34deg) scale(.96);filter:blur(2px)}}
+@keyframes bookIn{from{opacity:0;transform:translateX(68px) rotateY(-2deg) scale(.96);filter:blur(2px)}to{opacity:1;transform:rotateY(-18deg) rotateX(.7deg);filter:none}}
+
+.copy{
+  position:relative;z-index:3;display:flex;flex-direction:column;justify-content:center;padding:7vh 2vw 12vh 1vw;min-width:0;
+  transition:opacity .2s ease,transform .28s ease
+}
+.copy.out{opacity:0;transform:translateY(10px)}
+.copy.in{animation:copyIn .4s ease both}
+@keyframes copyIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+.kicker{display:flex;align-items:center;gap:13px;color:var(--blue);font-size:8px;font-weight:760;letter-spacing:.18em;text-transform:uppercase}
+.kicker:before{content:"";width:28px;height:1px;background:var(--blue)}
+.title{
+  margin:30px 0 18px;max-width:700px;font-family:var(--serif);font-size:clamp(60px,4.8vw,80px);
+  line-height:.95;font-weight:500;letter-spacing:-.04em
+}
+.lede{
+  max-width:560px;margin:0;color:var(--soft);font-family:var(--serif);font-size:16.5px;line-height:1.72
+}
+.nav{
+  position:relative;z-index:5;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr auto;align-items:stretch
+}
+.tabs{display:flex;align-items:stretch}
+.tab{
+  min-width:164px;height:66px;padding:0 22px 0 0;margin-right:34px;border:0;
+  background:transparent;display:grid;grid-template-columns:32px 1fr;align-items:center;text-align:left;color:#686465;cursor:pointer;
+  transition:color .15s ease
+}
+.tab small{font-size:8px;letter-spacing:.12em}.tab b{font-size:11px;font-weight:560}
+.tab[data-active="true"]{color:#fff}.tab[data-active="true"] small{color:var(--blue)}
+.controls{display:flex;align-items:center;gap:8px;padding-left:18px}
+.arrow{width:42px;height:42px;border:1px solid var(--line);border-radius:50%;background:transparent;color:#777275;cursor:pointer;transition:color .15s,border-color .15s,transform .15s}
+.arrow:hover{color:#fff;border-color:rgba(255,255,255,.3);transform:translateY(-2px)}
+
+@media(max-width:900px){
+  .page{padding:0 18px 14px;grid-template-rows:60px auto 66px;overflow:visible}
+  .stage{grid-template-columns:1fr;min-height:0}
+  .visual{min-height:430px;padding-top:10px}
+  .bookScene{width:min(83vw,340px);transform:none}
+  .bookObject{width:82%;height:88%;--depth:24px;transform:rotateY(-12deg)}
+  .bookObject:hover{transform:rotateY(-12deg)}
+  .copy{padding:2px 0 28px;justify-content:flex-start}
+  .title{margin:18px 0 13px;font-size:clamp(42px,11vw,54px);line-height:.98}
+  .lede{font-size:14.5px;line-height:1.58}
+  .note{margin-top:20px;grid-template-columns:66px 1fr;gap:12px}
+  .nav{grid-template-columns:1fr;overflow:hidden}
+  .tabs{overflow:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+  .tab{min-width:148px;height:66px;margin-right:16px;padding-right:16px;grid-template-columns:28px 1fr}
+  .controls{display:none}
+}
+@media(prefers-reduced-motion:reduce){.bookObject,.copy,.arrow{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="header">
+    <div class="logo">82TRADE</div>
+    <div class="headerMeta" data-header-meta>Reading List · 01 / 03</div>
+  </header>
+
+  <section class="stage">
+    <div class="visual">
+      <div class="bookScene">
+        <div class="bookObject" data-book>
+          <div class="bookBack"></div>
+          <div class="bookPages"></div>
+          <div class="bookFace"><img data-image src="./assets/books/reminiscences.webp" alt="股票作手回憶錄"></div>
+        </div>
+      </div>
+    </div>
+
+    <article class="copy" data-copy>
+      <div class="kicker" data-kicker>01 / 交易必備</div>
+      <h1 class="title" data-title>股票作手回憶錄</h1>
+      <p class="lede" data-lede>讓你看見交易者怎麼在等待、貪婪、恐懼與自我欺騙之間，一次次做錯同樣的事。</p>
+    </article>
+  </section>
+
+  <nav class="nav" aria-label="Reading categories">
+    <div class="tabs">
+      <button class="tab" type="button" data-tab="0" data-active="true"><small>01</small><b>交易必備</b></button>
+      <button class="tab" type="button" data-tab="1" data-active="false"><small>02</small><b>技術分析</b></button>
+      <button class="tab" type="button" data-tab="2" data-active="false"><small>03</small><b>思維成長</b></button>
+    </div>
+    <div class="controls">
+      <button class="arrow" type="button" data-dir="-1" aria-label="上一冊">←</button>
+      <button class="arrow" type="button" data-dir="1" aria-label="下一冊">→</button>
+    </div>
+  </nav>
+</div>
+<script>
+const books=[
+  {category:"交易必備",title:"股票作手回憶錄",image:"./assets/books/reminiscences.webp",lede:"讓你看見交易者怎麼在等待、貪婪、恐懼與自我欺騙之間，一次次做錯同樣的事。"},
+  {category:"技術分析",title:"技術分析聖經",image:"./assets/books/technical-analysis-real.webp",lede:"把圖表、趨勢與市場行為放回完整框架。不是背更多形態，而是讓判斷開始有共同語言。"},
+  {category:"思維成長",title:"納瓦爾寶典",image:"./assets/books/naval.webp",lede:"把視角從單次輸贏拉回長期複利：判斷、選擇、專注與自由。"}
+];
+books.forEach(({image})=>{const i=new Image();i.src=image});
+let index=0,locked=false;
+const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
+const book=$("[data-book]"),copy=$("[data-copy]");
+function render(i){
+  const x=books[i];
+  $("[data-image]").src=x.image;$("[data-image]").alt=x.title;
+  $("[data-kicker]").textContent="0"+(i+1)+" / "+x.category;$("[data-title]").textContent=x.title;
+  $("[data-lede]").textContent=x.lede;
+  $("[data-header-meta]").textContent="Reading List · 0"+(i+1)+" / 03";
+  $$("[data-tab]").forEach((b,n)=>b.dataset.active=String(n===i));
+}
+function go(next){
+  if(locked||next===index)return;locked=true;next=(next+books.length)%books.length;
+  book.classList.remove("in");copy.classList.remove("in");book.classList.add("out");copy.classList.add("out");
+  setTimeout(()=>{
+    index=next;render(index);book.classList.remove("out");copy.classList.remove("out");void book.offsetWidth;
+    book.classList.add("in");copy.classList.add("in");
+    setTimeout(()=>{book.classList.remove("in");copy.classList.remove("in");locked=false},560);
+  },260);
+}
+$$("[data-tab]").forEach((b,i)=>b.addEventListener("click",()=>go(i)));
+$$("[data-dir]").forEach(b=>b.addEventListener("click",()=>go(index+(Number(b.dataset.dir)||1))));
+</script>
+</body>
+</html>
