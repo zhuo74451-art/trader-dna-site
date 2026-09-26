@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 
-const VERSION='standard-v1-2026-09';
+const VERSION='quick18-v1.2-2026-09-25';
 const STORAGE_KEY=`82trade-trader-dna:${VERSION}`;
 const REDUCED=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches||false;
 const view=document.querySelector('#view');
