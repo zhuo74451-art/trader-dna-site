@@ -75,16 +75,42 @@ function mediaElement(src,poster){
   const img=document.createElement('img');img.alt='';img.decoding='async';img.src=src;return img;
 }
 
+function candidateSprite(){
+  const s=manifest?.candidateSprite;
+  if(!s?.media||!Number.isFinite(Number(s.columns))||!Number.isFinite(Number(s.rows)))return null;
+  return {media:s.media,columns:Number(s.columns),rows:Number(s.rows)};
+}
+function applySprite(el,index){
+  const s=candidateSprite();
+  if(!el||!s||!Number.isInteger(index)||index<0||index>=s.columns*s.rows)return false;
+  const col=index%s.columns,row=Math.floor(index/s.columns);
+  const x=s.columns<=1?0:(col/(s.columns-1))*100;
+  const y=s.rows<=1?0:(row/(s.rows-1))*100;
+  el.classList.add('ec-sprite-art');
+  el.style.backgroundImage='url("'+s.media+'")';
+  el.style.backgroundSize=(s.columns*100)+'% '+(s.rows*100)+'%';
+  el.style.backgroundPosition=x.toFixed(4)+'% '+y.toFixed(4)+'%';
+  el.dataset.ready='1';
+  el.dataset.spriteIndex=String(index);
+  return true;
+}
+
 function mountResult(){
   const result=view?.querySelector('.result');
   if(!result||result.dataset.ec==='1')return;
   result.dataset.ec='1';
   const code=result.querySelector('.result-hero .code')?.textContent?.trim();
   const entry=manifest?.classes?.[code];
-  if(entry?.resultMedia){
-    const stack=result.querySelector('.v47-identity-stack');
-    if(stack&&!stack.querySelector('.ec-class-media')){
-      const layer=document.createElement('div');layer.className='ec-class-media';layer.appendChild(mediaElement(entry.resultMedia,entry.poster));layer.dataset.ready='1';stack.appendChild(layer);
+  const stack=result.querySelector('.v47-identity-stack');
+  if(entry?.resultMedia&&stack&&!stack.querySelector('.ec-class-media')){
+    const layer=document.createElement('div');layer.className='ec-class-media';layer.appendChild(mediaElement(entry.resultMedia,entry.poster));layer.dataset.ready='1';stack.appendChild(layer);
+    result.dataset.ecClassVisual='approved-media';
+  }else if(stack&&Number.isInteger(entry?.spriteIndex)&&!stack.querySelector('.ec-result-class-art')){
+    const back=stack.querySelector('.v47-identity-back')||stack;
+    const art=document.createElement('div');art.className='ec-result-class-art';art.setAttribute('aria-hidden','true');
+    if(applySprite(art,entry.spriteIndex)){
+      back.appendChild(art);
+      result.dataset.ecClassVisual='candidate-sprite';
     }
   }
   mountArchive(result);
@@ -94,18 +120,27 @@ function mountArchive(result){
   if(result.querySelector('.ec-class-archive'))return;
   const classes=manifest?.classes||{};
   const entries=Object.entries(classes);
-  const allReady=entries.length===16&&entries.every(([,v])=>v.archiveThumb);
+  const approvedReady=entries.length===16&&entries.every(([,v])=>v.archiveThumb);
+  const candidateReady=Boolean(candidateSprite())&&entries.length===16&&entries.every(([,v])=>Number.isInteger(v.spriteIndex));
   const section=document.createElement('section');
   section.className='ec-class-archive';
-  if(!allReady)section.hidden=true;
-  section.innerHTML='<div class="ec-class-archive-head"><div><div class="eyebrow">THE ARCHIVE / INITIAL CLASS GALLERY</div><h2>16 初始職業</h2></div><p>同一個 Species，在第一次轉職後形成 16 種初始職業身份。</p></div><div class="ec-class-rail"></div>';
-  if(allReady){
+  section.dataset.visualAuthority=approvedReady?'approved':'candidate';
+  if(!approvedReady&&!candidateReady)section.hidden=true;
+  const note=approvedReady
+    ?'16 個初始職業已進入正式視覺檔案。'
+    :'同一個 Species 的 16 個初始職業視覺候選。這一層只用於校準網站構圖與動效，不代表最終角色定稿。';
+  section.innerHTML='<div class="ec-class-archive-head"><div><div class="eyebrow">THE ARCHIVE / INITIAL CLASS GALLERY</div><h2>16 初始職業</h2></div><p>'+note+'</p></div><div class="ec-class-rail"></div>';
+  if(approvedReady||candidateReady){
     const rail=section.querySelector('.ec-class-rail');
     entries.forEach(([code,v])=>{
-      const card=document.createElement('article');card.className='ec-class-card';
-      const img=document.createElement('img');img.src=v.archiveThumb;img.alt=v.name;img.loading='lazy';img.decoding='async';
+      const card=document.createElement('article');card.className='ec-class-card';card.dataset.code=code;
+      if(v.archiveThumb){
+        const img=document.createElement('img');img.src=v.archiveThumb;img.alt=v.name;img.loading='lazy';img.decoding='async';card.appendChild(img);
+      }else{
+        const art=document.createElement('div');art.className='ec-class-card-art';art.setAttribute('aria-hidden','true');applySprite(art,v.spriteIndex);card.appendChild(art);
+      }
       const meta=document.createElement('div');meta.className='ec-class-meta';meta.innerHTML='<b>'+v.name+'</b><span>'+code+' / '+v.en+'</span>';
-      card.append(img,meta);rail.appendChild(card);
+      card.appendChild(meta);rail.appendChild(card);
     });
   }
   result.appendChild(section);
