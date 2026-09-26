@@ -3,7 +3,7 @@ name: Reading Finalist QA
 on:
   push:
     paths:
-      - "82trade-motion-lab/reading-v15.html"
+      - "82trade-motion-lab/reading-v19.html"
       - "82trade-motion-lab/reading-v18.html"
       - "82trade-motion-lab/reading-v17.html"
       - ".github/scripts/reading-finalist-qa.mjs"
