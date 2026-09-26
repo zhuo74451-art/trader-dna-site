@@ -8,6 +8,7 @@ await fs.mkdir(out, { recursive: true });
 let browser;
 let stage = 'boot';
 const errors = [];
+const requestedUrls = [];
 const receipt = {
   result: 'FAIL',
   headless: true,
@@ -33,6 +34,7 @@ try {
   page.on('response', response => {
     if (response.status() === 404) errors.push('http404: ' + response.url());
   });
+  page.on('request', request => requestedUrls.push(request.url()));
 
   stage = 'landing';
   await page.goto(base, { waitUntil: 'networkidle', timeout: 30000 });
@@ -72,9 +74,17 @@ try {
   await page.locator('.v3-share-studio').waitFor({ state: 'visible', timeout: 15000 });
 
   const bodyText = await page.locator('body').innerText();
-  if (bodyText.includes('繼續完整 54 題') || bodyText.includes('继续完整 54 题')) {
-    throw new Error('54-question continuation CTA is still visible');
+  if (/54\s*(題|题|QUESTIONS?)/i.test(bodyText) || bodyText.includes('繼續完整 54 題') || bodyText.includes('继续完整 54 题')) {
+    throw new Error('54-question product copy is still visible');
   }
+  const legacyQuestionRequests = requestedUrls.filter(url => /questions-[23]\.json(?:$|\?)/.test(url));
+  if (legacyQuestionRequests.length) {
+    throw new Error('Active 18Q runtime requested dormant Q19-54 data: ' + JSON.stringify(legacyQuestionRequests));
+  }
+  receipt.activeQuestionData = {
+    question1Requested: requestedUrls.some(url => /questions-1\.json(?:$|\?)/.test(url)),
+    dormantQuestionRequests: legacyQuestionRequests
+  };
 
   stage = 'share-4x5';
   await page.waitForFunction(() => Boolean(window.CinemaEdition?.poster || window.TraderDNAShareCard?.render), null, { timeout: 10000 });
@@ -130,6 +140,21 @@ try {
   await page.screenshot({ path: out + '/desktop-result.png', fullPage: true });
 
   receipt.localStorageKeys = await page.evaluate(() => Object.keys(localStorage));
+
+  stage = 'root-redirect';
+  const rootContext = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    deviceScaleFactor: 1,
+    reducedMotion: 'reduce'
+  });
+  const rootPage = await rootContext.newPage();
+  const rootUrl = new URL('/index.html?qa=root#contract', base).href;
+  await rootPage.goto(rootUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await rootPage.waitForURL(url => url.pathname.endsWith('/scan01.html') && url.searchParams.get('qa') === 'root' && url.hash === '#contract', { timeout: 10000 });
+  const rootText = await rootPage.locator('body').innerText();
+  if (/54\s*(題|题|QUESTIONS?)/i.test(rootText)) throw new Error('Legacy root still exposes 54Q product copy');
+  receipt.rootRedirect = { url: rootPage.url(), preservedQueryAndHash: true };
+  await rootContext.close();
 
   stage = 'motion-lab';
   const lab = await context.newPage();
