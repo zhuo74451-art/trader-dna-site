@@ -159,19 +159,11 @@
     "Do not promote EC-01 to the stable QR runtime until result/share/mobile visual review passes."
   ],
   "candidateSprite": {
-    "media": "./cinema/assets/initial-class-sprite.webp",
+    "media": "./cinema/assets/initial-class-sprite-hq.webp",
     "columns": 4,
     "rows": 4,
-    "status": "approved-visual-bible-hq-packed",
+    "status": "approved-visual-bible-hq-binary",
     "use": "ec01-result-archive-share-candidate",
-    "hqParts": [
-      "./cinema/assets/hq-sprite-parts/part0.b64",
-      "./cinema/assets/hq-sprite-parts/part1.b64",
-      "./cinema/assets/hq-sprite-parts/part2.b64",
-      "./cinema/assets/hq-sprite-parts/part3.b64"
-    ],
-    "hqWidth": 600,
-    "hqHeight": 480,
     "fallback": "./cinema/assets/initial-class-sprite.webp"
   }
 }
