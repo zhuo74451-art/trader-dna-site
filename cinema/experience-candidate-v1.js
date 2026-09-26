@@ -15,10 +15,10 @@ async function loadManifest(){
 
 function statsHtml(){
   return '<div class="ec-hero-stats" aria-label="Trader DNA summary">'
-    +'<div class="ec-hero-stat"><b>16</b><span>INITIAL CLASSES / 初始职业</span></div>'
-    +'<div class="ec-hero-stat"><b>6</b><span>CORE DIMENSIONS / 核心维度</span></div>'
-    +'<div class="ec-hero-stat"><b>18</b><span>KEY CHOICES / 关键选择</span></div>'
-    +'<div class="ec-hero-stat"><b>≈3</b><span>MINUTES / 分钟</span></div>'
+    +'<div class="ec-hero-stat"><b>16</b><span>INITIAL CLASSES / 初始職業</span></div>'
+    +'<div class="ec-hero-stat"><b>6</b><span>CORE DIMENSIONS / 核心維度</span></div>'
+    +'<div class="ec-hero-stat"><b>18</b><span>KEY CHOICES / 關鍵選擇</span></div>'
+    +'<div class="ec-hero-stat"><b>≈3</b><span>MINUTES / 分鐘</span></div>'
     +'</div>';
 }
 
@@ -28,7 +28,7 @@ function mountLanding(){
   hero.dataset.ecMounted='1';
   const title=hero.querySelector('h1');
   if(title)title.innerHTML='在更大的世界中，<br><em>形成你的身份。</em>';
-  safeText(hero.querySelector('.hero-copy'),'18 个选择，约 3 分钟。没有正确答案，只有在判断、出手与改变主意时反复出现的你。');
+  safeText(hero.querySelector('.hero-copy'),'18 個選擇，約 3 分鐘。沒有正確答案，只有在判斷、出手與改變主意時反覆出現的你。');
   const kicker=hero.querySelector('.kicker');
   if(kicker)kicker.innerHTML='82TRADE / TRADER DNA<span class="ec-hero-subline">IDENTITY FORMS IN A LARGER WORLD.</span>';
   hero.querySelector('.hero-meta')?.insertAdjacentHTML('beforebegin',statsHtml());
@@ -98,7 +98,7 @@ function mountArchive(result){
   const section=document.createElement('section');
   section.className='ec-class-archive';
   if(!allReady)section.hidden=true;
-  section.innerHTML='<div class="ec-class-archive-head"><div><div class="eyebrow">THE ARCHIVE / INITIAL CLASS GALLERY</div><h2>16 初始职业</h2></div><p>同一个 Species，在第一次转职后形成 16 种初始职业身份。</p></div><div class="ec-class-rail"></div>';
+  section.innerHTML='<div class="ec-class-archive-head"><div><div class="eyebrow">THE ARCHIVE / INITIAL CLASS GALLERY</div><h2>16 初始職業</h2></div><p>同一個 Species，在第一次轉職後形成 16 種初始職業身份。</p></div><div class="ec-class-rail"></div>';
   if(allReady){
     const rail=section.querySelector('.ec-class-rail');
     entries.forEach(([code,v])=>{
