@@ -5,7 +5,8 @@ on:
   push:
     paths:
       - "scan01.html"
-      - "cinema-detail-04.html"\n      - "result-share-donor-lab.html"
+      - "cinema-detail-04.html"
+      - "result-share-donor-lab.html"
       - "cinema/**"
       - "data/questions-1.json"
       - "data/types.json"
