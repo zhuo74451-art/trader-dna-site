@@ -269,8 +269,16 @@ try {
   for (const token of ['在更大的世界中','16','6','18','≈3']) {
     if (!heroText.includes(token)) throw new Error('EC-01 hero missing token: ' + token);
   }
-  const placeholderMedia = await ec.locator('.ec-species-media[data-ready="1"]').count();
-  if (placeholderMedia) throw new Error('EC-01 rendered an unapproved Species placeholder');
+  const originMedia = ec.locator('.ec-species-media[data-ready="1"] img, .ec-species-media[data-ready="1"] video');
+  await originMedia.waitFor({ state: 'visible', timeout: 10000 });
+  const originMediaState = await originMedia.evaluate(el => ({
+    tag: el.tagName,
+    src: el.getAttribute('src') || '',
+    loaded: el.tagName === 'IMG' ? (el.complete && el.naturalWidth > 0) : el.readyState >= 2
+  }));
+  if (!originMediaState.loaded || !originMediaState.src.includes('base-species-front.webp')) {
+    throw new Error('EC-01 did not mount the approved base Species media: ' + JSON.stringify(originMediaState));
+  }
   await ec.screenshot({ path: out + '/ec01-landing.png', fullPage: false });
 
   await ec.locator('#start').click();
@@ -300,7 +308,7 @@ try {
   if (ecErrors.length) throw new Error('EC-01 browser errors: ' + JSON.stringify(ecErrors));
   receipt.experienceCandidate = {
     hero: true,
-    approvedPlaceholderPolicy: true,
+    approvedOriginSpecies: originMediaState,
     archiveGated: true,
     resultFlip: true,
     sharePublished: true,
