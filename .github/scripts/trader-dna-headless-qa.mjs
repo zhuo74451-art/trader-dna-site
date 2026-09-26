@@ -308,6 +308,48 @@ try {
   };
   await ecContext.close();
 
+  stage = 'experience-candidate-mobile';
+  const ecMobileContext = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    deviceScaleFactor: 1,
+    reducedMotion: 'reduce'
+  });
+  const ecMobile = await ecMobileContext.newPage();
+  const ecMobileErrors = [];
+  ecMobile.on('pageerror', err => ecMobileErrors.push('pageerror: ' + String(err)));
+  ecMobile.on('console', msg => { if (msg.type() === 'error') ecMobileErrors.push('console: ' + msg.text()); });
+  await ecMobile.goto(ecUrl, { waitUntil: 'networkidle', timeout: 30000 });
+  await ecMobile.locator('#start').waitFor({ state: 'visible', timeout: 15000 });
+  await ecMobile.evaluate(async () => { try { await document.fonts.ready; } catch {} });
+  const mobileMetrics = await ecMobile.evaluate(() => ({
+    scrollWidth: document.documentElement.scrollWidth,
+    innerWidth: window.innerWidth,
+    heroHeight: Math.round(document.querySelector('.hero')?.getBoundingClientRect().height || 0),
+    startWidth: Math.round(document.querySelector('#start')?.getBoundingClientRect().width || 0)
+  }));
+  if (mobileMetrics.scrollWidth > mobileMetrics.innerWidth + 2) throw new Error('EC-01 mobile has horizontal overflow: ' + JSON.stringify(mobileMetrics));
+  await ecMobile.screenshot({ path: out + '/ec01-landing-mobile.png', fullPage: true });
+
+  await ecMobile.locator('#start').click();
+  for (let i = 1; i <= 18; i++) {
+    const expected = 'Q' + String(i).padStart(2, '0');
+    await ecMobile.waitForFunction(q => document.querySelector('.question-index')?.textContent?.trim() === q, expected, { timeout: 15000 });
+    await ecMobile.locator('.option').first().click({ timeout: 15000 });
+  }
+  await ecMobile.locator('.result').waitFor({ state: 'visible', timeout: 20000 });
+  const mobileResultMetrics = await ecMobile.evaluate(() => ({
+    scrollWidth: document.documentElement.scrollWidth,
+    innerWidth: window.innerWidth,
+    resultWidth: Math.round(document.querySelector('.result')?.getBoundingClientRect().width || 0),
+    archiveHidden: Boolean(document.querySelector('.ec-class-archive')?.hidden)
+  }));
+  if (mobileResultMetrics.scrollWidth > mobileResultMetrics.innerWidth + 2) throw new Error('EC-01 mobile result has horizontal overflow: ' + JSON.stringify(mobileResultMetrics));
+  if (!mobileResultMetrics.archiveHidden) throw new Error('EC-01 mobile archive gate failed');
+  await ecMobile.screenshot({ path: out + '/ec01-result-mobile.png', fullPage: true });
+  if (ecMobileErrors.length) throw new Error('EC-01 mobile browser errors: ' + JSON.stringify(ecMobileErrors));
+  receipt.experienceCandidateMobile = { ...mobileMetrics, ...mobileResultMetrics, reducedMotion: true, errors: ecMobileErrors };
+  await ecMobileContext.close();
+
   stage = 'result-share-donor-lab';
   const donorContext = await browser.newContext({
     viewport: { width: 1440, height: 1000 },
