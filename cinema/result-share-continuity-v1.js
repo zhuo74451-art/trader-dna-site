@@ -143,15 +143,23 @@ function mountBridge(result){
 
 function mount(){
   queued=false;
-  const result=view?.querySelector('.result[data-v4-ready="1"],.result');
+  const result=view?.querySelector('.result[data-v4-ready="1"][data-cinema-ready="1"][data-d4-ready="1"]');
   if(!result)return;
-  if(!result.querySelector('.v47-identity-plate')||!result.querySelector('.v3-share-studio'))return;
+  const stack=result.querySelector('.v47-identity-stack');
+  const plate=stack?.querySelector('.v47-identity-plate');
+  const studio=result.querySelector('.v3-share-studio[data-cinema="1"]');
+  if(!stack||!plate||!studio)return;
   result.dataset.rsCandidate='1';
   mountFlip(result);
   mountBridge(result);
 }
 function queue(){if(queued)return;queued=true;requestAnimationFrame(mount)}
-new MutationObserver(queue).observe(view,{subtree:true,childList:true,attributes:true,attributeFilter:['data-v4-ready']});
+new MutationObserver(queue).observe(view,{
+  subtree:true,
+  childList:true,
+  attributes:true,
+  attributeFilter:['data-v4-ready','data-cinema-ready','data-d4-ready','data-cinema']
+});
 addEventListener('pageshow',queue);
 queue();
 })();
