@@ -89,3 +89,34 @@ The key behavior is not a new animation effect. It is:
 - Do not replace Material 02 static export.
 - Mobile: no pointer-only dependency.
 - Reduced motion: direct state change, no long travel.
+
+
+## Production candidate · RS-01
+
+Entry:
+- `/cinema-detail-05-candidate.html`
+
+What is copied into the candidate:
+- Existing Detail04 identity object remains the visual authority.
+- Existing Detail04 pointer material response remains the tilt authority; no new tilt dependency is installed.
+- Flip uses the React Bits front/back model only:
+  - stable identity stack owns flip state;
+  - public/front state is always restored before publishing.
+- Share travel uses Codrops/FLIP continuity only:
+  - clone the already-rendered identity mark;
+  - keep it visually continuous while the page scrolls to the existing share studio;
+  - finish by invoking the existing `TraderDNAPublish.start('4:5')` Material02 pipeline.
+
+What is explicitly **not** copied:
+- donor component styling;
+- donor card layout;
+- donor text;
+- donor color systems;
+- additional motion libraries.
+
+Promotion gate:
+- desktop + mobile flow passes;
+- flip remains user-controlled;
+- share publication reaches the existing `published` state;
+- reduced-motion path skips travel animation;
+- no final Species placeholder is invented.
