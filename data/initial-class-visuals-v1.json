@@ -162,7 +162,16 @@
     "media": "./cinema/assets/initial-class-sprite.webp",
     "columns": 4,
     "rows": 4,
-    "status": "approved-visual-bible-web-crop",
-    "use": "ec01-result-archive-share-candidate"
+    "status": "approved-visual-bible-hq-packed",
+    "use": "ec01-result-archive-share-candidate",
+    "hqParts": [
+      "./cinema/assets/hq-sprite-parts/part0.b64",
+      "./cinema/assets/hq-sprite-parts/part1.b64",
+      "./cinema/assets/hq-sprite-parts/part2.b64",
+      "./cinema/assets/hq-sprite-parts/part3.b64"
+    ],
+    "hqWidth": 600,
+    "hqHeight": 480,
+    "fallback": "./cinema/assets/initial-class-sprite.webp"
   }
 }
