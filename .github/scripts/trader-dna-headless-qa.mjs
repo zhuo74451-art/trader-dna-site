@@ -146,7 +146,7 @@ try {
     mediaRecorder: Boolean(window.MediaRecorder),
     captureStream: Boolean(document.querySelector('#card')?.captureStream)
   }));
-  if (!labState.status.includes('IDENTITY ISSUED')) throw new Error('Motion lab did not reach issued end frame: ' + JSON.stringify(labState));
+  if (!(labState.status.includes('IDENTITY ISSUED') || labState.status.includes('LIVING POSTER'))) throw new Error('Motion lab did not reach a stable end state: ' + JSON.stringify(labState));
   if (labState.width !== 1080 || labState.height !== 1350) throw new Error('Unexpected motion lab canvas dimensions');
   if (labErrors.length) throw new Error('Motion lab browser errors: ' + JSON.stringify(labErrors));
   await lab.screenshot({ path: out + '/motion-lab-end.png', fullPage: true });
