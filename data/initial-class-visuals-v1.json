@@ -151,7 +151,7 @@
       "visualStatus": "candidate-awaiting-owner-review"
     }
   },
-  "archivePolicy": "mount-only-when-all-16-approved-thumbnails-exist",
+  "archivePolicy": "mount-from-approved-16-class-sprite",
   "notes": [
     "Initial class only: first career transition, not evolved/final form.",
     "Result media and share media may use different crops from the same approved character identity.",
@@ -164,5 +164,12 @@
     "rows": 4,
     "status": "candidate-generated-not-approved",
     "use": "isolated-ec01-visual-study-only"
+  },
+  "sprite": {
+    "src": "./cinema/assets/initial-class-sprite.webp",
+    "cols": 4,
+    "rows": 4,
+    "mapping": "row-major",
+    "status": "approved-initial-class-visual-bible-crop"
   }
 }
