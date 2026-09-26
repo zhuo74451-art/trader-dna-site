@@ -1,0 +1,57 @@
+name: Trader DNA HQ Visual QA
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "cinema-detail-06-experience-candidate.html"
+      - "cinema/experience-candidate-v1.css"
+      - "cinema/experience-candidate-v1.js"
+      - "cinema/assets/hq-sprite-parts/**"
+      - "data/initial-class-visuals-v1.json"
+      - ".github/scripts/trader-dna-headless-qa.mjs"
+      - ".github/workflows/trader-dna-hq-visual-qa.yml"
+
+concurrency:
+  group: trader-dna-hq-visual-qa-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  hq-visual-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install browser runtime
+        run: |
+          npm install --no-save playwright-core@1.55.0
+          BROWSER="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -z "$BROWSER" ]; then
+            echo "No Chromium browser found on runner"
+            exit 1
+          fi
+          echo "BROWSER=$BROWSER" >> "$GITHUB_ENV"
+          "$BROWSER" --version
+
+      - name: Start local preview
+        run: |
+          python3 -m http.server 4173 > /tmp/trader-dna-hq-http.log 2>&1 &
+          echo $! > /tmp/trader-dna-hq-http.pid
+          sleep 2
+          curl -f http://127.0.0.1:4173/cinema-detail-06-experience-candidate.html > /dev/null
+
+      - name: Run hidden browser QA
+        run: node .github/scripts/trader-dna-headless-qa.mjs
+
+      - name: Upload receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trader-dna-hq-visual-qa
+          path: trader-dna-headless-qa/**
+          if-no-files-found: error
+          retention-days: 7
