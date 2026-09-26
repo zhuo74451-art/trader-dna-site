@@ -13,7 +13,7 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 0,
-      "visualStatus": "candidate-awaiting-owner-review"
+      "visualStatus": "approved-initial-class-direction-web-crop"
     },
     "IWGC": {
       "name": "狙擊手",
@@ -22,7 +22,7 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 1,
-      "visualStatus": "candidate-awaiting-owner-review"
+      "visualStatus": "approved-initial-class-direction-web-crop"
     },
     "IWHF": {
       "name": "偵探",
@@ -31,7 +31,7 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 2,
-      "visualStatus": "candidate-awaiting-owner-review"
+      "visualStatus": "approved-initial-class-direction-web-crop"
     },
     "IWHC": {
       "name": "刺客",
@@ -40,7 +40,7 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 3,
-      "visualStatus": "candidate-awaiting-owner-review"
+      "visualStatus": "approved-initial-class-direction-web-crop"
     },
     "IAGF": {
       "name": "王牌特工",
@@ -49,7 +49,7 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 4,
-      "visualStatus": "candidate-awaiting-owner-review"
+      "visualStatus": "approved-initial-class-direction-web-crop"
     },
     "IAGC": {
       "name": "快槍手",
@@ -58,7 +58,7 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 5,
-      "visualStatus": "candidate-awaiting-owner-review"
+      "visualStatus": "approved-initial-class-direction-web-crop"
     },
     "IAHF": {
       "name": "探路者",
@@ -67,7 +67,7 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 6,
-      "visualStatus": "candidate-awaiting-owner-review"
+      "visualStatus": "approved-initial-class-direction-web-crop"
     },
     "IAHC": {
       "name": "突擊手",
@@ -76,7 +76,7 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 7,
-      "visualStatus": "candidate-awaiting-owner-review"
+      "visualStatus": "approved-initial-class-direction-web-crop"
     },
     "SWGF": {
       "name": "拆彈專家",
@@ -85,7 +85,7 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 8,
-      "visualStatus": "candidate-awaiting-owner-review"
+      "visualStatus": "approved-initial-class-direction-web-crop"
     },
     "SWGC": {
       "name": "錦衣衛",
@@ -94,7 +94,7 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 9,
-      "visualStatus": "candidate-awaiting-owner-review"
+      "visualStatus": "approved-initial-class-direction-web-crop"
     },
     "SWHF": {
       "name": "情報官",
@@ -103,7 +103,7 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 10,
-      "visualStatus": "candidate-awaiting-owner-review"
+      "visualStatus": "approved-initial-class-direction-web-crop"
     },
     "SWHC": {
       "name": "軍師",
@@ -112,7 +112,7 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 11,
-      "visualStatus": "candidate-awaiting-owner-review"
+      "visualStatus": "approved-initial-class-direction-web-crop"
     },
     "SAGF": {
       "name": "海軍上校",
@@ -121,7 +121,7 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 12,
-      "visualStatus": "candidate-awaiting-owner-review"
+      "visualStatus": "approved-initial-class-direction-web-crop"
     },
     "SAGC": {
       "name": "將軍",
@@ -130,7 +130,7 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 13,
-      "visualStatus": "candidate-awaiting-owner-review"
+      "visualStatus": "approved-initial-class-direction-web-crop"
     },
     "SAHF": {
       "name": "獵手",
@@ -139,7 +139,7 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 14,
-      "visualStatus": "candidate-awaiting-owner-review"
+      "visualStatus": "approved-initial-class-direction-web-crop"
     },
     "SAHC": {
       "name": "指揮官",
@@ -148,28 +148,21 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 15,
-      "visualStatus": "candidate-awaiting-owner-review"
+      "visualStatus": "approved-initial-class-direction-web-crop"
     }
   },
   "archivePolicy": "mount-from-approved-16-class-sprite",
   "notes": [
     "Initial class only: first career transition, not evolved/final form.",
-    "Result media and share media may use different crops from the same approved character identity.",
-    "Candidate sprite is allowed only inside the isolated EC-01 visual study; it is not production visual authority.",
-    "Do not promote candidate sprite into the stable QR runtime without Owner visual approval."
+    "The 16-class sprite is approved as the Initial Class Visual Bible / web crop source; it is not a substitute for future higher-resolution isolated production renders.",
+    "Result and share may use different crops/compositions from the same approved initial-class identity.",
+    "Do not promote EC-01 to the stable QR runtime until result/share/mobile visual review passes."
   ],
   "candidateSprite": {
     "media": "./cinema/assets/initial-class-sprite.webp",
     "columns": 4,
     "rows": 4,
-    "status": "candidate-generated-not-approved",
-    "use": "isolated-ec01-visual-study-only"
-  },
-  "sprite": {
-    "src": "./cinema/assets/initial-class-sprite.webp",
-    "cols": 4,
-    "rows": 4,
-    "mapping": "row-major",
-    "status": "approved-initial-class-visual-bible-crop"
+    "status": "approved-visual-bible-web-crop",
+    "use": "ec01-result-archive-share-candidate"
   }
 }
