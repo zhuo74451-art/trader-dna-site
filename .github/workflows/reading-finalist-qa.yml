@@ -1,0 +1,37 @@
+name: Reading Finalist QA
+
+on:
+  push:
+    paths:
+      - "82trade-motion-lab/reading-v15.html"
+      - "82trade-motion-lab/reading-v16.html"
+      - "82trade-motion-lab/reading-v17.html"
+      - ".github/scripts/reading-finalist-qa.mjs"
+      - ".github/workflows/reading-finalist-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Capture Reading finalists
+        run: node .github/scripts/reading-finalist-qa.mjs
+
+      - name: Upload Reading finalist receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: 82trade-reading-finalists
+          path: reading-finalist-qa/**
+          if-no-files-found: error
+          retention-days: 7
