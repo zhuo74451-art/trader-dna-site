@@ -219,7 +219,8 @@ function mountArchive(result){
       }else{
         const art=document.createElement('div');art.className='ec-class-card-art';art.setAttribute('aria-hidden','true');applySprite(art,v.spriteIndex);card.appendChild(art);
       }
-      const meta=document.createElement('div');meta.className='ec-class-meta';meta.innerHTML='<b>'+v.name+'</b><span>'+code+' / '+v.en+'</span>';
+      const meta=document.createElement('div');meta.className='ec-class-meta';
+      meta.innerHTML='<b>'+v.name+'</b><span>'+code+' / '+v.en+'</span>'+(v.tagline?'<p>'+v.tagline+'</p>':'');
       card.appendChild(meta);rail.appendChild(card);
     });
     section.dataset.ready='1';
