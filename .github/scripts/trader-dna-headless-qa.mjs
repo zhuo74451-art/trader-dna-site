@@ -292,10 +292,11 @@ try {
   await classArt.waitFor({ state: 'visible', timeout: 10000 });
   const classArtState = await classArt.evaluate(el => ({
     spriteIndex: el.dataset.spriteIndex,
-    backgroundImage: getComputedStyle(el).backgroundImage
+    backgroundImage: getComputedStyle(el).backgroundImage,
+    quality: document.body.dataset.ecSpriteQuality || ''
   }));
-  if (classArtState.spriteIndex !== '1' || !classArtState.backgroundImage.includes('initial-class-sprite.webp')) {
-    throw new Error('EC-01 IWGC approved initial-class art did not mount correctly: ' + JSON.stringify(classArtState));
+  if (classArtState.spriteIndex !== '1' || classArtState.quality !== 'hq-packed' || !classArtState.backgroundImage.includes('blob:')) {
+    throw new Error('EC-01 IWGC HQ initial-class art did not mount correctly: ' + JSON.stringify(classArtState));
   }
   await ec.locator('.result-hero').screenshot({ path: out + '/ec01-result-hero.png' });
 
@@ -383,10 +384,11 @@ try {
     resultWidth: Math.round(document.querySelector('.result')?.getBoundingClientRect().width || 0),
     archiveHidden: Boolean(document.querySelector('.ec-class-archive')?.hidden),
     archiveCards: document.querySelectorAll('.ec-class-archive .ec-class-card').length,
-    classArtReady: Boolean(document.querySelector('.ec-class-sprite-media[data-ready="1"]'))
+    classArtReady: Boolean(document.querySelector('.ec-class-sprite-media[data-ready="1"]')),
+    spriteQuality: document.body.dataset.ecSpriteQuality || ''
   }));
   if (mobileResultMetrics.scrollWidth > mobileResultMetrics.innerWidth + 2) throw new Error('EC-01 mobile result has horizontal overflow: ' + JSON.stringify(mobileResultMetrics));
-  if (mobileResultMetrics.archiveHidden || mobileResultMetrics.archiveCards !== 16 || !mobileResultMetrics.classArtReady) {
+  if (mobileResultMetrics.archiveHidden || mobileResultMetrics.archiveCards !== 16 || !mobileResultMetrics.classArtReady || mobileResultMetrics.spriteQuality !== 'hq-packed') {
     throw new Error('EC-01 mobile initial-class visual failed: ' + JSON.stringify(mobileResultMetrics));
   }
   await ecMobile.screenshot({ path: out + '/ec01-result-mobile.png', fullPage: true });
