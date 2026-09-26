@@ -422,12 +422,33 @@ const readingV6Open = await openPage(
 const readingV6 = readingV6Open.page;
 await settle(readingV6, 900);
 await shot(readingV6, "reading-v6-desktop-01");
+
+await readingV6.click('[data-tab="1"]');
+await readingV6.waitForFunction(
+  () => document.querySelector("[data-title]")?.textContent?.trim() === "新威科夫操盤法",
+  { timeout: 2600 },
+);
+await settle(readingV6, 980);
+await shot(readingV6, "reading-v6-desktop-02-market");
+
+await readingV6.click('[data-tab="2"]');
+await readingV6.waitForFunction(
+  () => document.querySelector("[data-title]")?.textContent?.trim() === "納瓦爾寶典",
+  { timeout: 2600 },
+);
+await settle(readingV6, 980);
+await shot(readingV6, "reading-v6-desktop-03-growth");
+
 report.readingV6 = await readingV6.evaluate(() => ({
   title: document.querySelector("h1")?.textContent?.trim() ?? null,
+  active: Array.from(document.querySelectorAll("[data-tab]")).findIndex(
+    (el) => el.getAttribute("data-active") === "true",
+  ),
+  coverSrc: document.querySelector("[data-book-image]")?.getAttribute("src") ?? null,
   scrollWidth: document.documentElement.scrollWidth,
   clientWidth: document.documentElement.clientWidth,
-  bookWidth: document.querySelector(".book")?.getBoundingClientRect().width ?? null,
-  bookHeight: document.querySelector(".book")?.getBoundingClientRect().height ?? null,
+  bookWidth: document.querySelector("[data-book]")?.getBoundingClientRect().width ?? null,
+  bookHeight: document.querySelector("[data-book]")?.getBoundingClientRect().height ?? null,
 }));
 await readingV6.close();
 
@@ -618,6 +639,9 @@ if (
 }
 if (report.readingV6?.scrollWidth !== report.readingV6?.clientWidth) {
   throw new Error(`reading V6 desktop overflow: ${JSON.stringify(report.readingV6)}`);
+}
+if (report.readingV6?.title !== "納瓦爾寶典" || report.readingV6?.active !== 2) {
+  throw new Error(`reading V6 switching failed: ${JSON.stringify(report.readingV6)}`);
 }
 if (report.readingV6Mobile?.scrollWidth !== report.readingV6Mobile?.clientWidth) {
   throw new Error(`reading V6 mobile overflow: ${JSON.stringify(report.readingV6Mobile)}`);
