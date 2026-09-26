@@ -239,6 +239,7 @@ function openShare(){
 function closeShare(){
   const source=currentCard();
   if(!source){dialog.close();return}
+  source.dataset.flipped='0';
   const target=dock;
   dialog.close();
   requestAnimationFrame(()=>animateMorph(source,target));
@@ -249,7 +250,10 @@ dialog.addEventListener('click',e=>{if(e.target===dialog)closeShare()});
 
 function moveToDock(){
   const source=currentCard();
-  if(source&&source.parentElement!==dock)animateMorph(source,dock);
+  if(source){
+    source.dataset.flipped='0';
+    if(source.parentElement!==dock)animateMorph(source,dock);
+  }
   dock.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
 }
 returnBtn.addEventListener('click',()=>{
