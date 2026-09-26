@@ -95,6 +95,52 @@ function applySprite(el,index){
   return true;
 }
 
+let spriteImage=null;
+function warmCandidateSprite(){
+  const s=candidateSprite();
+  if(!s?.media||spriteImage)return;
+  const img=new Image();
+  img.decoding='async';
+  img.onload=()=>{spriteImage=img};
+  img.src=s.media;
+}
+function drawSpriteCellCover(ctx,img,index,dx,dy,dw,dh){
+  const s=candidateSprite();if(!s)return;
+  const sw=img.naturalWidth/s.columns,sh=img.naturalHeight/s.rows;
+  const sx=(index%s.columns)*sw,sy=Math.floor(index/s.columns)*sh;
+  const sa=sw/sh,ta=dw/dh;
+  let csx=sx,csy=sy,csw=sw,csh=sh;
+  if(sa>ta){csw=sh*ta;csx=sx+(sw-csw)/2}else{csh=sw/ta;csy=sy+(sh-csh)/2}
+  ctx.drawImage(img,csx,csy,csw,csh,dx,dy,dw,dh);
+}
+function augmentMaterial02({canvas,ctx,data,format,W,H}){
+  const entry=manifest?.classes?.[data?.code];
+  if(!spriteImage||!entry||!Number.isInteger(entry.spriteIndex))return;
+  const tall=H>1500;
+  const dx=tall?500:520,dy=tall?610:505,dw=tall?505:500,dh=tall?690:425;
+  ctx.save();
+  ctx.beginPath();ctx.rect(dx,dy,dw,dh);ctx.clip();
+  drawSpriteCellCover(ctx,spriteImage,entry.spriteIndex,dx,dy,dw,dh);
+  const left=ctx.createLinearGradient(dx,0,dx+155,0);
+  left.addColorStop(0,'rgba(236,231,220,.98)');
+  left.addColorStop(.62,'rgba(236,231,220,.26)');
+  left.addColorStop(1,'rgba(236,231,220,0)');
+  ctx.fillStyle=left;ctx.fillRect(dx,dy,170,dh);
+  const bottom=ctx.createLinearGradient(0,dy+dh-110,0,dy+dh);
+  bottom.addColorStop(0,'rgba(236,231,220,0)');
+  bottom.addColorStop(1,'rgba(236,231,220,.88)');
+  ctx.fillStyle=bottom;ctx.fillRect(dx,dy+dh-115,dw,115);
+  ctx.restore();
+  ctx.save();
+  ctx.strokeStyle='rgba(45,43,38,.16)';ctx.lineWidth=1;ctx.strokeRect(dx+.5,dy+.5,dw-1,dh-1);
+  ctx.font='11px ui-monospace, SFMono-Regular, Menlo, monospace';
+  ctx.fillStyle='rgba(72,68,60,.72)';ctx.textAlign='right';
+  ctx.fillText('INITIAL CLASS / '+data.code,dx+dw-12,dy+20);
+  ctx.restore();
+  canvas.dataset.ecClassMedia='1';
+  const studio=view?.querySelector('.v3-share-studio');if(studio)studio.dataset.ecClassShare='1';
+}
+
 function mountResult(){
   const result=view?.querySelector('.result');
   if(!result||result.dataset.ec==='1')return;
@@ -119,18 +165,16 @@ function mountResult(){
 function mountArchive(result){
   if(result.querySelector('.ec-class-archive'))return;
   const classes=manifest?.classes||{};
-  const entries=Object.entries(classes);
+  const order=['IWGF','IWGC','IWHF','IWHC','IAGF','IAGC','IAHF','IAHC','SWGF','SWGC','SWHF','SWHC','SAGF','SAGC','SAHF','SAHC'];
+  const entries=order.map(code=>[code,classes[code]]).filter(([,v])=>v);
   const approvedReady=entries.length===16&&entries.every(([,v])=>v.archiveThumb);
-  const candidateReady=Boolean(candidateSprite())&&entries.length===16&&entries.every(([,v])=>Number.isInteger(v.spriteIndex));
+  const spriteReady=Boolean(candidateSprite())&&entries.length===16&&entries.every(([,v])=>Number.isInteger(v.spriteIndex));
   const section=document.createElement('section');
   section.className='ec-class-archive';
-  section.dataset.visualAuthority=approvedReady?'approved':'candidate';
-  if(!approvedReady&&!candidateReady)section.hidden=true;
-  const note=approvedReady
-    ?'16 個初始職業已進入正式視覺檔案。'
-    :'同一個 Species 的 16 個初始職業視覺候選。這一層只用於校準網站構圖與動效，不代表最終角色定稿。';
-  section.innerHTML='<div class="ec-class-archive-head"><div><div class="eyebrow">THE ARCHIVE / INITIAL CLASS GALLERY</div><h2>16 初始職業</h2></div><p>'+note+'</p></div><div class="ec-class-rail"></div>';
-  if(approvedReady||candidateReady){
+  section.dataset.visualAuthority=approvedReady?'approved-isolated':'approved-visual-bible-web-crop';
+  if(!approvedReady&&!spriteReady)section.hidden=true;
+  section.innerHTML='<div class="ec-class-archive-head"><div><div class="eyebrow">THE ARCHIVE / INITIAL CLASS GALLERY</div><h2>16 初始職業</h2></div><p>同一個 Species，在第一次轉職後形成 16 種初始職業身份。</p></div><div class="ec-class-rail" aria-label="16 初始職業圖鑑"></div>';
+  if(approvedReady||spriteReady){
     const rail=section.querySelector('.ec-class-rail');
     entries.forEach(([code,v])=>{
       const card=document.createElement('article');card.className='ec-class-card';card.dataset.code=code;
@@ -142,6 +186,7 @@ function mountArchive(result){
       const meta=document.createElement('div');meta.className='ec-class-meta';meta.innerHTML='<b>'+v.name+'</b><span>'+code+' / '+v.en+'</span>';
       card.appendChild(meta);rail.appendChild(card);
     });
+    section.dataset.ready='1';
   }
   result.appendChild(section);
 }
@@ -157,6 +202,8 @@ function queue(){if(queued)return;queued=true;requestAnimationFrame(mount)}
 
 (async()=>{
   manifest=await loadManifest();
+  warmCandidateSprite();
+  window.TraderDNAPosterAugment=augmentMaterial02;
   new MutationObserver(queue).observe(view,{subtree:true,childList:true,attributes:true});
   addEventListener('pageshow',queue);
   queue();
