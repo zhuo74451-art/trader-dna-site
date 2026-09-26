@@ -11,118 +11,158 @@
       "en": "SENTINEL",
       "resultMedia": null,
       "shareMedia": null,
-      "archiveThumb": null
+      "archiveThumb": null,
+      "spriteIndex": 0,
+      "visualStatus": "candidate-awaiting-owner-review"
     },
     "IWGC": {
       "name": "狙擊手",
       "en": "SNIPER",
       "resultMedia": null,
       "shareMedia": null,
-      "archiveThumb": null
+      "archiveThumb": null,
+      "spriteIndex": 1,
+      "visualStatus": "candidate-awaiting-owner-review"
     },
     "IWHF": {
       "name": "偵探",
       "en": "DETECTIVE",
       "resultMedia": null,
       "shareMedia": null,
-      "archiveThumb": null
+      "archiveThumb": null,
+      "spriteIndex": 2,
+      "visualStatus": "candidate-awaiting-owner-review"
     },
     "IWHC": {
       "name": "刺客",
       "en": "ASSASSIN",
       "resultMedia": null,
       "shareMedia": null,
-      "archiveThumb": null
+      "archiveThumb": null,
+      "spriteIndex": 3,
+      "visualStatus": "candidate-awaiting-owner-review"
     },
     "IAGF": {
       "name": "王牌特工",
       "en": "OPERATIVE",
       "resultMedia": null,
       "shareMedia": null,
-      "archiveThumb": null
+      "archiveThumb": null,
+      "spriteIndex": 4,
+      "visualStatus": "candidate-awaiting-owner-review"
     },
     "IAGC": {
       "name": "快槍手",
       "en": "GUNSLINGER",
       "resultMedia": null,
       "shareMedia": null,
-      "archiveThumb": null
+      "archiveThumb": null,
+      "spriteIndex": 5,
+      "visualStatus": "candidate-awaiting-owner-review"
     },
     "IAHF": {
       "name": "探路者",
       "en": "PATHFINDER",
       "resultMedia": null,
       "shareMedia": null,
-      "archiveThumb": null
+      "archiveThumb": null,
+      "spriteIndex": 6,
+      "visualStatus": "candidate-awaiting-owner-review"
     },
     "IAHC": {
       "name": "突擊手",
       "en": "ASSAULTER",
       "resultMedia": null,
       "shareMedia": null,
-      "archiveThumb": null
+      "archiveThumb": null,
+      "spriteIndex": 7,
+      "visualStatus": "candidate-awaiting-owner-review"
     },
     "SWGF": {
       "name": "拆彈專家",
       "en": "BOMB TECH",
       "resultMedia": null,
       "shareMedia": null,
-      "archiveThumb": null
+      "archiveThumb": null,
+      "spriteIndex": 8,
+      "visualStatus": "candidate-awaiting-owner-review"
     },
     "SWGC": {
       "name": "錦衣衛",
       "en": "IMPERIAL GUARD",
       "resultMedia": null,
       "shareMedia": null,
-      "archiveThumb": null
+      "archiveThumb": null,
+      "spriteIndex": 9,
+      "visualStatus": "candidate-awaiting-owner-review"
     },
     "SWHF": {
       "name": "情報官",
       "en": "INTELLIGENCE",
       "resultMedia": null,
       "shareMedia": null,
-      "archiveThumb": null
+      "archiveThumb": null,
+      "spriteIndex": 10,
+      "visualStatus": "candidate-awaiting-owner-review"
     },
     "SWHC": {
       "name": "軍師",
       "en": "STRATEGIST",
       "resultMedia": null,
       "shareMedia": null,
-      "archiveThumb": null
+      "archiveThumb": null,
+      "spriteIndex": 11,
+      "visualStatus": "candidate-awaiting-owner-review"
     },
     "SAGF": {
       "name": "海軍上校",
       "en": "NAVAL CAPTAIN",
       "resultMedia": null,
       "shareMedia": null,
-      "archiveThumb": null
+      "archiveThumb": null,
+      "spriteIndex": 12,
+      "visualStatus": "candidate-awaiting-owner-review"
     },
     "SAGC": {
       "name": "將軍",
       "en": "GENERAL",
       "resultMedia": null,
       "shareMedia": null,
-      "archiveThumb": null
+      "archiveThumb": null,
+      "spriteIndex": 13,
+      "visualStatus": "candidate-awaiting-owner-review"
     },
     "SAHF": {
       "name": "獵手",
       "en": "HUNTER",
       "resultMedia": null,
       "shareMedia": null,
-      "archiveThumb": null
+      "archiveThumb": null,
+      "spriteIndex": 14,
+      "visualStatus": "candidate-awaiting-owner-review"
     },
     "SAHC": {
       "name": "指揮官",
       "en": "COMMANDER",
       "resultMedia": null,
       "shareMedia": null,
-      "archiveThumb": null
+      "archiveThumb": null,
+      "spriteIndex": 15,
+      "visualStatus": "candidate-awaiting-owner-review"
     }
   },
   "archivePolicy": "mount-only-when-all-16-approved-thumbnails-exist",
   "notes": [
     "Initial class only: first career transition, not evolved/final form.",
     "Result media and share media may use different crops from the same approved character identity.",
-    "No placeholder character should be rendered when an asset is missing."
-  ]
+    "Candidate sprite is allowed only inside the isolated EC-01 visual study; it is not production visual authority.",
+    "Do not promote candidate sprite into the stable QR runtime without Owner visual approval."
+  ],
+  "candidateSprite": {
+    "media": "./cinema/assets/initial-class-sprite.webp",
+    "columns": 4,
+    "rows": 4,
+    "status": "candidate-generated-not-approved",
+    "use": "isolated-ec01-visual-study-only"
+  }
 }
