@@ -1,4 +1,4 @@
-import { chromium } from 'playwright';
+import { chromium } from 'playwright-core';
 import fs from 'node:fs/promises';
 
 const base = process.env.TDNA_BASE_URL || 'http://127.0.0.1:4173/scan01.html';
@@ -18,7 +18,7 @@ const receipt = {
 };
 
 try {
-  browser = await chromium.launch({ headless: true });
+  browser = await chromium.launch({ headless: true, executablePath: process.env.BROWSER || undefined });
   const context = await browser.newContext({
     viewport: { width: 390, height: 844 },
     deviceScaleFactor: 1,
