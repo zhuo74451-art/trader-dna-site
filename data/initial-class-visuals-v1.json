@@ -13,7 +13,8 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 0,
-      "visualStatus": "approved-initial-class-direction-web-crop"
+      "visualStatus": "approved-initial-class-direction-web-crop",
+      "tagline": "更早發現，守住邊界。"
     },
     "IWGC": {
       "name": "狙擊手",
@@ -22,7 +23,8 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 1,
-      "visualStatus": "approved-initial-class-direction-web-crop"
+      "visualStatus": "approved-initial-class-direction-web-crop",
+      "tagline": "等待最好的一擊。"
     },
     "IWHF": {
       "name": "偵探",
@@ -31,7 +33,8 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 2,
-      "visualStatus": "approved-initial-class-direction-web-crop"
+      "visualStatus": "approved-initial-class-direction-web-crop",
+      "tagline": "看見別人忽略的細節。"
     },
     "IWHC": {
       "name": "刺客",
@@ -40,7 +43,8 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 3,
-      "visualStatus": "approved-initial-class-direction-web-crop"
+      "visualStatus": "approved-initial-class-direction-web-crop",
+      "tagline": "接近，切入，消失。"
     },
     "IAGF": {
       "name": "王牌特工",
@@ -49,7 +53,8 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 4,
-      "visualStatus": "approved-initial-class-direction-web-crop"
+      "visualStatus": "approved-initial-class-direction-web-crop",
+      "tagline": "在複雜環境中完成任務。"
     },
     "IAGC": {
       "name": "快槍手",
@@ -58,7 +63,8 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 5,
-      "visualStatus": "approved-initial-class-direction-web-crop"
+      "visualStatus": "approved-initial-class-direction-web-crop",
+      "tagline": "快速判斷，迅速出手。"
     },
     "IAHF": {
       "name": "探路者",
@@ -67,7 +73,8 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 6,
-      "visualStatus": "approved-initial-class-direction-web-crop"
+      "visualStatus": "approved-initial-class-direction-web-crop",
+      "tagline": "走在前面，找到新的路。"
     },
     "IAHC": {
       "name": "突擊手",
@@ -76,7 +83,8 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 7,
-      "visualStatus": "approved-initial-class-direction-web-crop"
+      "visualStatus": "approved-initial-class-direction-web-crop",
+      "tagline": "打破僵局，撕開突破口。"
     },
     "SWGF": {
       "name": "拆彈專家",
@@ -85,7 +93,8 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 8,
-      "visualStatus": "approved-initial-class-direction-web-crop"
+      "visualStatus": "approved-initial-class-direction-web-crop",
+      "tagline": "在風險中保持冷靜。"
     },
     "SWGC": {
       "name": "錦衣衛",
@@ -94,7 +103,8 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 9,
-      "visualStatus": "approved-initial-class-direction-web-crop"
+      "visualStatus": "approved-initial-class-direction-web-crop",
+      "tagline": "守住秩序，執行規則。"
     },
     "SWHF": {
       "name": "情報官",
@@ -103,7 +113,8 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 10,
-      "visualStatus": "approved-initial-class-direction-web-crop"
+      "visualStatus": "approved-initial-class-direction-web-crop",
+      "tagline": "收集資訊，拼出真相。"
     },
     "SWHC": {
       "name": "軍師",
@@ -112,7 +123,8 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 11,
-      "visualStatus": "approved-initial-class-direction-web-crop"
+      "visualStatus": "approved-initial-class-direction-web-crop",
+      "tagline": "看見全局，布置未來。"
     },
     "SAGF": {
       "name": "海軍上校",
@@ -121,7 +133,8 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 12,
-      "visualStatus": "approved-initial-class-direction-web-crop"
+      "visualStatus": "approved-initial-class-direction-web-crop",
+      "tagline": "建立秩序，帶領前行。"
     },
     "SAGC": {
       "name": "將軍",
@@ -130,7 +143,8 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 13,
-      "visualStatus": "approved-initial-class-direction-web-crop"
+      "visualStatus": "approved-initial-class-direction-web-crop",
+      "tagline": "統籌戰局，壓制全局。"
     },
     "SAHF": {
       "name": "獵手",
@@ -139,7 +153,8 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 14,
-      "visualStatus": "approved-initial-class-direction-web-crop"
+      "visualStatus": "approved-initial-class-direction-web-crop",
+      "tagline": "追蹤機會，鎖定獵物。"
     },
     "SAHC": {
       "name": "指揮官",
@@ -148,7 +163,8 @@
       "shareMedia": null,
       "archiveThumb": null,
       "spriteIndex": 15,
-      "visualStatus": "approved-initial-class-direction-web-crop"
+      "visualStatus": "approved-initial-class-direction-web-crop",
+      "tagline": "連接一切，讓系統運轉。"
     }
   },
   "archivePolicy": "mount-from-approved-16-class-sprite",
@@ -156,7 +172,8 @@
     "Initial class only: first career transition, not evolved/final form.",
     "The 16-class sprite is approved as the Initial Class Visual Bible / web crop source; it is not a substitute for future higher-resolution isolated production renders.",
     "Result and share may use different crops/compositions from the same approved initial-class identity.",
-    "Do not promote EC-01 to the stable QR runtime until result/share/mobile visual review passes."
+    "Do not promote EC-01 to the stable QR runtime until result/share/mobile visual review passes.",
+    "Archive taglines are sourced from the approved 16-initial-class visual bible; result long-form hooks remain the existing Trader DNA interpretation copy."
   ],
   "candidateSprite": {
     "media": "./cinema/assets/initial-class-sprite-hq.webp",
