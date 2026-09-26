@@ -288,14 +288,14 @@ try {
     await ec.locator('.option').first().click({ timeout: 15000 });
   }
   await ec.locator('.result').waitFor({ state: 'visible', timeout: 20000 });
-  const classArt = ec.locator('.ec-result-class-art[data-ready="1"]');
+  const classArt = ec.locator('.ec-class-sprite-media[data-ready="1"]');
   await classArt.waitFor({ state: 'visible', timeout: 10000 });
   const classArtState = await classArt.evaluate(el => ({
     spriteIndex: el.dataset.spriteIndex,
     backgroundImage: getComputedStyle(el).backgroundImage
   }));
   if (classArtState.spriteIndex !== '1' || !classArtState.backgroundImage.includes('initial-class-sprite.webp')) {
-    throw new Error('EC-01 IWGC class visual study did not mount correctly: ' + JSON.stringify(classArtState));
+    throw new Error('EC-01 IWGC approved initial-class art did not mount correctly: ' + JSON.stringify(classArtState));
   }
   await ec.locator('.result-hero').screenshot({ path: out + '/ec01-result-hero.png' });
 
@@ -308,8 +308,8 @@ try {
     spriteCards: el.querySelectorAll('.ec-class-card-art[data-ready="1"]').length,
     text: el.innerText
   }));
-  if (archiveState.hidden || archiveState.authority !== 'candidate' || archiveState.cards !== 16 || archiveState.spriteCards !== 16) {
-    throw new Error('EC-01 candidate archive did not mount all 16 classes: ' + JSON.stringify(archiveState));
+  if (archiveState.hidden || archiveState.authority !== 'approved-visual-bible-web-crop' || archiveState.cards !== 16 || archiveState.spriteCards !== 16) {
+    throw new Error('EC-01 approved initial-class archive did not mount all 16 classes: ' + JSON.stringify(archiveState));
   }
   for (const token of ['哨兵','狙擊手','錦衣衛','指揮官']) {
     if (!archiveState.text.includes(token)) throw new Error('EC-01 archive missing class label: ' + token);
@@ -328,16 +328,22 @@ try {
   await ec.waitForTimeout(720);
   await ec.locator('.rs-publish-bridge').click();
   await ec.waitForFunction(() => document.querySelector('.v3-share-studio')?.dataset?.v48Publish === 'published', null, { timeout: 10000 });
+  const ecShareState = await ec.locator('.v3-share-studio').evaluate(el => ({
+    published: el.dataset.v48Publish,
+    classMedia: el.dataset.ecClassShare || null,
+    format: el.dataset.format || null
+  }));
+  if (ecShareState.classMedia !== '1') throw new Error('EC-01 Material 02 did not receive initial-class media: ' + JSON.stringify(ecShareState));
   await ec.locator('.v3-share-studio').screenshot({ path: out + '/ec01-share.png' });
 
   if (ecErrors.length) throw new Error('EC-01 browser errors: ' + JSON.stringify(ecErrors));
   receipt.experienceCandidate = {
     hero: true,
     approvedOriginSpecies: originMediaState,
-    classVisualStudy: classArtState,
+    initialClassResult: classArtState,
     initialClassArchive: archiveState,
     resultFlip: true,
-    sharePublished: true,
+    sharePublished: ecShareState,
     errors: ecErrors
   };
   await ecContext.close();
@@ -377,11 +383,11 @@ try {
     resultWidth: Math.round(document.querySelector('.result')?.getBoundingClientRect().width || 0),
     archiveHidden: Boolean(document.querySelector('.ec-class-archive')?.hidden),
     archiveCards: document.querySelectorAll('.ec-class-archive .ec-class-card').length,
-    classArtReady: Boolean(document.querySelector('.ec-result-class-art[data-ready="1"]'))
+    classArtReady: Boolean(document.querySelector('.ec-class-sprite-media[data-ready="1"]'))
   }));
   if (mobileResultMetrics.scrollWidth > mobileResultMetrics.innerWidth + 2) throw new Error('EC-01 mobile result has horizontal overflow: ' + JSON.stringify(mobileResultMetrics));
   if (mobileResultMetrics.archiveHidden || mobileResultMetrics.archiveCards !== 16 || !mobileResultMetrics.classArtReady) {
-    throw new Error('EC-01 mobile class visual study failed: ' + JSON.stringify(mobileResultMetrics));
+    throw new Error('EC-01 mobile initial-class visual failed: ' + JSON.stringify(mobileResultMetrics));
   }
   await ecMobile.screenshot({ path: out + '/ec01-result-mobile.png', fullPage: true });
   if (ecMobileErrors.length) throw new Error('EC-01 mobile browser errors: ' + JSON.stringify(ecMobileErrors));
