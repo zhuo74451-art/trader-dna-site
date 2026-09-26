@@ -156,3 +156,25 @@ body[data-experience-candidate="1"] .ec-species-media[data-ready="1"] + .ec-orig
 .ec-class-card .ec-class-meta{transform:translateY(18px);transition:transform .42s cubic-bezier(.2,.8,.2,1)}
 .ec-class-card:hover .ec-class-meta,.ec-class-card:focus-within .ec-class-meta{transform:translateY(0)}
 @media(max-width:760px){.ec-class-card .ec-class-meta{transform:none}.ec-class-meta p{font-size:10px}}
+
+.ec-class-tagline{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  margin:14px 0 13px;
+  color:#cbd6c1;
+}
+.ec-class-tagline span{
+  flex:0 0 auto;
+  font:6px/1.4 var(--mono);
+  letter-spacing:.14em;
+  color:#75816f;
+}
+.ec-class-tagline b{
+  font:500 clamp(13px,1vw,16px)/1.55 var(--serif);
+  color:#cfd8c7;
+}
+@media(max-width:760px){
+  .ec-class-tagline{margin:10px 0 11px;gap:9px}
+  .ec-class-tagline b{font-size:12px}
+}
