@@ -206,7 +206,13 @@ function poster(format='4:5'){
  const sides=(d.snapshot?.pronounced||[]).slice(0,3).map(x=>x.side);text(sides.join('  /  '),pad,sigY+66,'22px "PingFang TC","Noto Sans CJK TC",sans-serif','#393830');
  if(tall){text('SAME MARKETS.',pad,H-86,'800 23px Arial');text('A DIFFERENT YOU.',pad,H-53,'800 23px Arial')}
  ctx.textAlign='right';text('82 / '+d.code,W-pad,H-49,'15px monospace','#555248');ctx.textAlign='left';
- ctx.fillStyle=accent;ctx.fillRect(0,0,7,H);c.dataset.artifact='material-02';
+ ctx.fillStyle=accent;ctx.fillRect(0,0,7,H);
+ try{
+   if(typeof window.TraderDNAPosterAugment==='function'){
+     window.TraderDNAPosterAugment({canvas:c,ctx,data:d,format,W,H});
+   }
+ }catch(err){console.warn('TraderDNAPosterAugment failed',err)}
+ c.dataset.artifact='material-02';
  return c;
 }
 
