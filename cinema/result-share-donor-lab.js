@@ -188,6 +188,15 @@ function cloneArtifact(source){
   clone.id='';
   clone.dataset.bound='0';
   clone.style.width=source.getBoundingClientRect().width+'px';
+  const sourceCanvases=source.querySelectorAll('canvas');
+  const cloneCanvases=clone.querySelectorAll('canvas');
+  sourceCanvases.forEach((src,i)=>{
+    const dst=cloneCanvases[i];
+    if(!dst)return;
+    dst.width=src.width;dst.height=src.height;
+    dst.dataset.format=src.dataset.format||'4:5';
+    dst.getContext('2d').drawImage(src,0,0);
+  });
   bindCard(clone);
   return clone;
 }
