@@ -5,7 +5,7 @@ on:
     paths:
       - "82trade-motion-lab/reading-v19.html"
       - "82trade-motion-lab/reading-v18.html"
-      - "82trade-motion-lab/reading-v17.html"
+      - "82trade-motion-lab/reading-v20.html"
       - ".github/scripts/reading-finalist-qa.mjs"
       - ".github/workflows/reading-finalist-qa.yml"
 
