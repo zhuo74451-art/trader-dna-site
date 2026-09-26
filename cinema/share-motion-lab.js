@@ -71,13 +71,13 @@ function drawAssembly(p){
     {x:735,y:900,r:-.07}
   ];
   const targets=finalLetterTargets();
-  const labels=['01 / INSTINCT','02 / WAIT','03 / GATE','04 / CROWD'];
-  const lineA=phase(p,.03,.24)*(1-phase(p,.36,.56));
-  ctx.save();ctx.globalAlpha=lineA;ctx.strokeStyle=rgba(data.color,.32);ctx.lineWidth=1;
+  const lineA=phase(p,.03,.24)*(1-phase(p,.30,.48));
+  ctx.save();ctx.globalAlpha=lineA;ctx.strokeStyle=rgba(data.color,.24);ctx.lineWidth=1;
   for(let i=0;i<4;i++){
     const s=starts[i],t=targets[i];
     ctx.beginPath();ctx.moveTo(s.x+55,s.y-80);ctx.lineTo(t.x+55,t.y-75);ctx.stroke();
-    text(labels[i],s.x,s.y+38,'10px ui-monospace','#77736b',.78);
+    ctx.fillStyle=rgba(data.color,.42);
+    ctx.fillRect(s.x+51,s.y-84,8,8);
   }
   ctx.restore();
 
@@ -106,15 +106,6 @@ function drawRole(p){
   ctx.fillStyle=data.color;ctx.fillRect(76,548,102,5);
   const hookFont='33px "PingFang TC","Noto Sans CJK TC",sans-serif';
   wrap(data.hook,480,hookFont).slice(0,3).forEach((line,i)=>text(line,76,620+i*47,hookFont,'#514e47',1));
-  ctx.restore();
-}
-function drawIdentityField(p){
-  const a=phase(p,.42,.64);
-  ctx.save();ctx.globalAlpha=a;
-  ctx.strokeStyle='rgba(20,19,17,.09)';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(640,496);ctx.lineTo(1004,496);ctx.lineTo(1004,1002);ctx.stroke();
-  text('IDENTITY FIELD',1004,476,'10px ui-monospace','#8a857d',a,'right');
-  text('CHARACTER LAYER',1004,1027,'10px ui-monospace','#8a857d',a,'right');
   ctx.restore();
 }
 function decisionValue(t){
@@ -168,7 +159,6 @@ function draw(p){
 
   drawAssembly(p);
   drawRole(p);
-  drawIdentityField(p);
   drawRelief(p);
   drawDecisionTape(p);
 
