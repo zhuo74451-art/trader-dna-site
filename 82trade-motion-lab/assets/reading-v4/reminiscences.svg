@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 1050">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#263f2a"/><stop offset="1" stop-color="#142319"/></linearGradient></defs>
+<rect width="700" height="1050" fill="url(#g)"/>
+<rect x="44" y="44" width="612" height="962" fill="none" stroke="#d6c99c" stroke-opacity=".42"/>
+<rect x="70" y="96" width="560" height="278" fill="#ece1bd"/>
+<rect x="96" y="126" width="222" height="218" fill="#b9b2a2"/>
+<path d="M108 326L306 148M126 148L302 326" stroke="#7d786f" stroke-width="18" opacity=".72"/>
+<rect x="350" y="126" width="250" height="218" fill="#d7d0c2"/>
+<circle cx="475" cy="220" r="70" fill="#77736e"/>
+<path d="M414 310q60-92 122 0" fill="#77736e"/>
+<text x="74" y="448" fill="#d8c99d" font-family="Arial,sans-serif" font-size="24" letter-spacing="6">EDWIN LEFÈVRE</text>
+<text x="74" y="532" fill="#f2ead4" font-family="Georgia,serif" font-size="58" font-weight="700">股票作手</text>
+<text x="74" y="600" fill="#f2ead4" font-family="Georgia,serif" font-size="58" font-weight="700">回憶錄</text>
+<line x1="74" y1="652" x2="626" y2="652" stroke="#d8c99d" stroke-opacity=".45"/>
+<text x="74" y="716" fill="#d8c99d" font-family="Arial,sans-serif" font-size="24" letter-spacing="4">REMINISCENCES</text>
+<text x="74" y="758" fill="#d8c99d" font-family="Arial,sans-serif" font-size="24" letter-spacing="4">OF A STOCK OPERATOR</text>
+<text x="74" y="930" fill="#94865d" font-family="Arial,sans-serif" font-size="18" letter-spacing="5">82TRADE / SELECTED READING</text>
+</svg>
