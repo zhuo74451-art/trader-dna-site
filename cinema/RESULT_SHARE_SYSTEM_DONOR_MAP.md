@@ -66,6 +66,10 @@ The exported PNG/MP4 artifact remains a separate output layer.
 - Artifact may tilt slightly on desktop.
 - Artifact may flip to a factual backside.
 - Final Species character is a separate media layer and is intentionally absent until approved.
+- Video and flip are **not competing modes**:
+  - video / image / image-sequence = media layer;
+  - tilt / flip / glare = container behavior.
+- When a final Species motion asset exists, prefer a simple native `<video muted loop playsinline poster>` or approved image sequence before inventing a new playback engine.
 - No HUD, random rings, or fake sci-fi furniture.
 
 ### Lower share workbench
