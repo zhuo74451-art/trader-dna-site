@@ -127,6 +127,43 @@ try {
   await page.screenshot({ path: out + '/desktop-result.png', fullPage: true });
 
   receipt.localStorageKeys = await page.evaluate(() => Object.keys(localStorage));
+
+  stage = 'motion-lab';
+  const lab = await context.newPage();
+  const labErrors = [];
+  lab.on('pageerror', err => labErrors.push('pageerror: ' + String(err)));
+  lab.on('console', msg => {
+    if (msg.type() === 'error') labErrors.push('console: ' + msg.text());
+  });
+  const labUrl = new URL('/share-motion-lab.html', base).href;
+  await lab.goto(labUrl, { waitUntil: 'networkidle', timeout: 30000 });
+  await lab.locator('#card').waitFor({ state: 'visible', timeout: 10000 });
+  await lab.waitForTimeout(5400);
+  const labState = await lab.evaluate(() => ({
+    status: document.querySelector('#status')?.textContent || '',
+    width: document.querySelector('#card')?.width || 0,
+    height: document.querySelector('#card')?.height || 0,
+    mediaRecorder: Boolean(window.MediaRecorder),
+    captureStream: Boolean(document.querySelector('#card')?.captureStream)
+  }));
+  if (!labState.status.includes('IDENTITY ISSUED')) throw new Error('Motion lab did not reach issued end frame: ' + JSON.stringify(labState));
+  if (labState.width !== 1080 || labState.height !== 1350) throw new Error('Unexpected motion lab canvas dimensions');
+  if (labErrors.length) throw new Error('Motion lab browser errors: ' + JSON.stringify(labErrors));
+  await lab.screenshot({ path: out + '/motion-lab-end.png', fullPage: true });
+
+  stage = 'motion-export';
+  const downloadPromise = lab.waitForEvent('download', { timeout: 20000 });
+  await lab.locator('#export').click();
+  const download = await downloadPromise;
+  const suggested = download.suggestedFilename();
+  const ext = suggested.toLowerCase().endsWith('.mp4') ? 'mp4' : 'webm';
+  const videoPath = out + '/motion-card.' + ext;
+  await download.saveAs(videoPath);
+  const videoStat = await fs.stat(videoPath);
+  if (videoStat.size < 10000) throw new Error('Motion export is unexpectedly small: ' + videoStat.size);
+  receipt.motionLab = { ...labState, errors: labErrors };
+  receipt.motionExport = { filename: suggested, bytes: videoStat.size, ext };
+
   receipt.result = 'PASS';
   receipt.stage = 'done';
 } catch (error) {
