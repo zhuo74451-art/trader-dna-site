@@ -117,28 +117,44 @@ function augmentMaterial02({canvas,ctx,data,format,W,H}){
   const entry=manifest?.classes?.[data?.code];
   if(!spriteImage||!entry||!Number.isInteger(entry.spriteIndex))return;
   const tall=H>1500;
-  const dx=tall?500:520,dy=tall?610:505,dw=tall?505:500,dh=tall?690:425;
+  const dx=tall?430:420,dy=tall?520:390,dw=tall?620:625,dh=tall?930:720;
+
+  const pane=document.createElement('canvas');
+  pane.width=Math.round(dw);pane.height=Math.round(dh);
+  const pctx=pane.getContext('2d');
+  pctx.imageSmoothingEnabled=true;
+  pctx.imageSmoothingQuality='high';
+  drawSpriteCellCover(pctx,spriteImage,entry.spriteIndex,0,0,dw,dh);
+
+  pctx.globalCompositeOperation='destination-in';
+  const maskX=pctx.createLinearGradient(0,0,dw,0);
+  maskX.addColorStop(0,'rgba(0,0,0,0)');
+  maskX.addColorStop(.16,'rgba(0,0,0,.72)');
+  maskX.addColorStop(.28,'rgba(0,0,0,1)');
+  maskX.addColorStop(1,'rgba(0,0,0,1)');
+  pctx.fillStyle=maskX;pctx.fillRect(0,0,dw,dh);
+
+  const maskY=pctx.createLinearGradient(0,0,0,dh);
+  maskY.addColorStop(0,'rgba(0,0,0,.9)');
+  maskY.addColorStop(.78,'rgba(0,0,0,1)');
+  maskY.addColorStop(1,'rgba(0,0,0,0)');
+  pctx.fillStyle=maskY;pctx.fillRect(0,0,dw,dh);
+
   ctx.save();
-  ctx.beginPath();ctx.rect(dx,dy,dw,dh);ctx.clip();
-  drawSpriteCellCover(ctx,spriteImage,entry.spriteIndex,dx,dy,dw,dh);
-  const left=ctx.createLinearGradient(dx,0,dx+155,0);
-  left.addColorStop(0,'rgba(236,231,220,.98)');
-  left.addColorStop(.62,'rgba(236,231,220,.26)');
-  left.addColorStop(1,'rgba(236,231,220,0)');
-  ctx.fillStyle=left;ctx.fillRect(dx,dy,170,dh);
-  const bottom=ctx.createLinearGradient(0,dy+dh-110,0,dy+dh);
-  bottom.addColorStop(0,'rgba(236,231,220,0)');
-  bottom.addColorStop(1,'rgba(236,231,220,.88)');
-  ctx.fillStyle=bottom;ctx.fillRect(dx,dy+dh-115,dw,115);
+  ctx.globalAlpha=.98;
+  ctx.drawImage(pane,dx,dy,dw,dh);
   ctx.restore();
+
   ctx.save();
-  ctx.strokeStyle='rgba(45,43,38,.16)';ctx.lineWidth=1;ctx.strokeRect(dx+.5,dy+.5,dw-1,dh-1);
   ctx.font='11px ui-monospace, SFMono-Regular, Menlo, monospace';
-  ctx.fillStyle='rgba(72,68,60,.72)';ctx.textAlign='right';
-  ctx.fillText('INITIAL CLASS / '+data.code,dx+dw-12,dy+20);
+  ctx.fillStyle='rgba(72,68,60,.68)';
+  ctx.textAlign='right';
+  ctx.fillText('INITIAL CLASS / '+data.code,W-76,dy+18);
   ctx.restore();
+
   canvas.dataset.ecClassMedia='1';
-  const studio=view?.querySelector('.v3-share-studio');if(studio)studio.dataset.ecClassShare='1';
+  const studio=view?.querySelector('.v3-share-studio');
+  if(studio)studio.dataset.ecClassShare='1';
 }
 
 function mountResult(){
