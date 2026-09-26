@@ -45,14 +45,26 @@ function mountFlip(result){
   control.className='rs-flip-control';
   control.textContent='IDENTITY BACK ↗';
   control.setAttribute('aria-pressed','false');
-  control.addEventListener('click',()=>{
-    const next=stack.dataset.rsFlipped!=='1';
-    stack.dataset.rsFlipped=next?'1':'0';
-    control.textContent=next?'RETURN FRONT ↙':'IDENTITY BACK ↗';
-    control.setAttribute('aria-pressed',String(next));
-  });
   result.querySelector('.v47-identity-stack')?.appendChild(control);
 }
+
+function handleFlipControl(control){
+  const stack=control.closest('.v47-identity-stack');
+  if(!stack)return;
+  const next=stack.dataset.rsFlipped!=='1';
+  stack.dataset.rsFlipped=next?'1':'0';
+  control.textContent=next?'RETURN FRONT ↙':'IDENTITY BACK ↗';
+  control.setAttribute('aria-pressed',String(next));
+  control.dataset.rsClickCount=String((Number(control.dataset.rsClickCount)||0)+1);
+}
+
+view?.addEventListener('click',event=>{
+  const control=event.target.closest?.('.rs-flip-control');
+  if(!control||!view.contains(control))return;
+  event.preventDefault();
+  event.stopPropagation();
+  handleFlipControl(control);
+});
 
 function resetFront(result){
   const stack=result.querySelector('.v47-identity-stack');
