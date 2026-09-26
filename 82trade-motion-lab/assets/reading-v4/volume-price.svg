@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 1050">
+<rect width="700" height="1050" fill="#ece9df"/>
+<rect x="0" y="0" width="700" height="84" fill="#0b0d10"/>
+<text x="54" y="55" fill="#f5f3eb" font-family="Arial,sans-serif" font-size="18" letter-spacing="4">ANNA COULLING / MARKET STRUCTURE</text>
+<g opacity=".95">
+<rect x="72" y="180" width="66" height="378" fill="#0052ff"/>
+<rect x="166" y="260" width="66" height="298" fill="#9ab8ff"/>
+<rect x="260" y="122" width="66" height="436" fill="#111317"/>
+<rect x="354" y="322" width="66" height="236" fill="#9ab8ff"/>
+<rect x="448" y="214" width="66" height="344" fill="#0052ff"/>
+<rect x="542" y="374" width="66" height="184" fill="#111317"/>
+</g>
+<path d="M72 446 C158 374 200 498 284 366 S432 320 492 258 S566 314 620 190" fill="none" stroke="#ff4b3e" stroke-width="12"/>
+<text x="72" y="666" fill="#0b0d10" font-family="Georgia,serif" font-size="62" font-weight="700">量價分析</text>
+<text x="72" y="732" fill="#0b0d10" font-family="Arial,sans-serif" font-size="25" font-weight="700" letter-spacing="3">VOLUME PRICE ANALYSIS</text>
+<text x="72" y="792" fill="#4e5158" font-family="Arial,sans-serif" font-size="22">Read the book. Then read the market.</text>
+<line x1="72" y1="858" x2="628" y2="858" stroke="#b5b2aa"/>
+<text x="72" y="922" fill="#0052ff" font-family="Arial,sans-serif" font-size="18" letter-spacing="5">82TRADE / SELECTED READING</text>
+</svg>
