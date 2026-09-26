@@ -181,10 +181,10 @@ function poster(format='4:5'){
  text('YOUR TRADER DNA',pad,tall?177:169,'14px monospace','#6b675c');
  let codeSize=263;ctx.font=`900 ${codeSize}px Arial`;while(ctx.measureText(d.code).width>contentW&&codeSize>170){codeSize--;ctx.font=`900 ${codeSize}px Arial`}
  const codeY=tall?442:416;text(d.code,pad-8,codeY,`900 ${codeSize}px Arial`);
- let nameSize=66;ctx.font=`700 ${nameSize}px "Songti TC","Noto Serif CJK TC",serif`;while(ctx.measureText(d.name).width>contentW&&nameSize>40){nameSize--;ctx.font=`700 ${nameSize}px "Songti TC","Noto Serif CJK TC",serif`}
- text(d.name,pad,codeY+96,`700 ${nameSize}px "Songti TC","Noto Serif CJK TC",serif`);
+ let nameSize=66;ctx.font=`700 ${nameSize}px "Noto Serif TC","Songti TC",serif`;while(ctx.measureText(d.name).width>contentW&&nameSize>40){nameSize--;ctx.font=`700 ${nameSize}px "Noto Serif TC","Songti TC",serif`}
+ text(d.name,pad,codeY+96,`700 ${nameSize}px "Noto Serif TC","Songti TC",serif`);
  ctx.fillStyle=accent;ctx.fillRect(pad,codeY+137,98,5);
- ctx.font='34px "PingFang TC","Noto Sans CJK TC",sans-serif';const hookLines=wrap(ctx,d.hook,contentW-24);const hookY=codeY+199;hookLines.forEach((s,i)=>text(s,pad,hookY+i*53,'34px "PingFang TC","Noto Sans CJK TC",sans-serif','#555249'));
+ ctx.font='34px "Noto Sans TC","PingFang TC",sans-serif';const hookLines=wrap(ctx,d.hook,contentW-24);const hookY=codeY+199;hookLines.forEach((s,i)=>text(s,pad,hookY+i*53,'34px "Noto Sans TC","PingFang TC",sans-serif','#555249'));
  // An engraved, non-financial relief derived from the actual 18 choices.
  const reliefTop=Math.max(hookY+hookLines.length*53+20,tall?840:735);
  const reliefBottom=H-(tall?340:212);const reliefH=reliefBottom-reliefTop;
@@ -203,7 +203,7 @@ function poster(format='4:5'){
  ctx.restore();
  // Tiny archive identifier belongs to the edge, not a dashboard strip.
  const sigY=H-(tall?235:137);text('01 / DECISION RELIEF',pad,sigY,'12px monospace','#666156');ctx.textAlign='right';text('18 CHOICES / YOUR PATTERN',W-pad,sigY,'12px monospace','#666156');ctx.textAlign='left';rule(pad,sigY+22,contentW);
- const sides=(d.snapshot?.pronounced||[]).slice(0,3).map(x=>x.side);text(sides.join('  /  '),pad,sigY+66,'22px "PingFang TC","Noto Sans CJK TC",sans-serif','#393830');
+ const sides=(d.snapshot?.pronounced||[]).slice(0,3).map(x=>x.side);text(sides.join('  /  '),pad,sigY+66,'22px "Noto Sans TC","PingFang TC",sans-serif','#393830');
  if(tall){text('SAME MARKETS.',pad,H-86,'800 23px Arial');text('A DIFFERENT YOU.',pad,H-53,'800 23px Arial')}
  ctx.textAlign='right';text('82 / '+d.code,W-pad,H-49,'15px monospace','#555248');ctx.textAlign='left';
  ctx.fillStyle=accent;ctx.fillRect(0,0,7,H);
