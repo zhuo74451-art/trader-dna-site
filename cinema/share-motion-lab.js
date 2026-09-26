@@ -128,10 +128,10 @@ function draw(p){
 
   text(data.code,66,420,'900 266px Arial','#11110f',.985);
 
-  text(data.name,76,520,'700 64px "Songti TC","Noto Serif CJK TC",serif','#11110f',1);
+  text(data.name,76,520,'700 64px "Noto Serif TC","Songti TC",serif','#11110f',1);
   ctx.fillStyle=data.color;ctx.fillRect(76,548,102,5);
 
-  const hookFont='33px "PingFang TC","Noto Sans CJK TC",sans-serif';
+  const hookFont='33px "Noto Sans TC","PingFang TC",sans-serif';
   wrap(data.hook,485,hookFont).slice(0,3).forEach((line,i)=>text(line,76,620+i*47,hookFont,'#514e47',1));
 
   text('SELECTIVE',76,784,'12px ui-monospace','#77736b',1);
@@ -145,7 +145,7 @@ function draw(p){
   text('01 / DECISION RELIEF',76,1208,'12px ui-monospace','#68645d',1);
   text('18 CHOICES / YOUR PATTERN',W-76,1208,'12px ui-monospace','#68645d',1,'right');
   ctx.fillStyle='rgba(20,19,17,.16)';ctx.fillRect(76,1236,W-152,1);
-  text('篩選 / 耐心 / 精準 / 高閾值',76,1281,'21px "PingFang TC","Noto Sans CJK TC",sans-serif','#35342f',1);
+  text('篩選 / 耐心 / 精準 / 高閾值',76,1281,'21px "Noto Sans TC","PingFang TC",sans-serif','#35342f',1);
   text('82 / '+data.code,W-76,1308,'15px ui-monospace','#555148',1,'right');
 
   drawFoil(p);
@@ -170,6 +170,7 @@ async function loadData(){
       document.documentElement.style.setProperty('--accent',data.color);
     }
   }catch(e){}
+  try{await document.fonts.ready}catch(e){}
   draw(0);play();
 }
 function pickMime(){
