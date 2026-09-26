@@ -143,22 +143,33 @@ function augmentMaterial02({canvas,ctx,data,format,W,H}){
 
 function mountResult(){
   const result=view?.querySelector('.result');
-  if(!result||result.dataset.ec==='1')return;
-  result.dataset.ec='1';
+  if(!result||result.dataset.ecMounted==='1')return;
+  if(result.dataset.v4Ready!=='1'||result.dataset.cinemaReady!=='1'||result.dataset.d4Ready!=='1')return;
   const code=result.querySelector('.result-hero .code')?.textContent?.trim();
   const entry=manifest?.classes?.[code];
+  const mark=result.querySelector('.v4-result-mark');
   const stack=result.querySelector('.v47-identity-stack');
+
   if(entry?.resultMedia&&stack&&!stack.querySelector('.ec-class-media')){
-    const layer=document.createElement('div');layer.className='ec-class-media';layer.appendChild(mediaElement(entry.resultMedia,entry.poster));layer.dataset.ready='1';stack.appendChild(layer);
+    const layer=document.createElement('div');
+    layer.className='ec-class-media';
+    layer.appendChild(mediaElement(entry.resultMedia,entry.poster));
+    layer.dataset.ready='1';
+    stack.appendChild(layer);
     result.dataset.ecClassVisual='approved-media';
-  }else if(stack&&Number.isInteger(entry?.spriteIndex)&&!stack.querySelector('.ec-result-class-art')){
-    const back=stack.querySelector('.v47-identity-back')||stack;
-    const art=document.createElement('div');art.className='ec-result-class-art';art.setAttribute('aria-hidden','true');
+  }else if(mark&&candidateSprite()&&Number.isInteger(entry?.spriteIndex)&&!mark.querySelector('.ec-class-sprite-media')){
+    const art=document.createElement('div');
+    art.className='ec-class-sprite-media';
+    art.setAttribute('aria-hidden','true');
     if(applySprite(art,entry.spriteIndex)){
-      back.appendChild(art);
-      result.dataset.ecClassVisual='candidate-sprite';
+      mark.appendChild(art);
+      result.dataset.ecClassVisual='approved-visual-bible-web-crop';
+      result.dataset.ecClassReady='1';
     }
   }
+
+  result.dataset.ec='1';
+  result.dataset.ecMounted='1';
   mountArchive(result);
 }
 
