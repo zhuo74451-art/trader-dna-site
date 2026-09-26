@@ -52,7 +52,7 @@ function materialSync(){
 /* Detail 04 presentation helpers. Read canonical state; never write answers or scores. */
 let d4SvgId=0,d4LastQuestion=0,d4Keyboard=false,d4Flight=null,d4SawReveal=false;
 const d4Reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
-function d4State(){try{return typeof state==='object'?state:JSON.parse(localStorage.getItem('82trade-trader-dna:standard-v1-2026-09'))}catch{return null}}
+function d4State(){try{return typeof state==='object'?state:JSON.parse(localStorage.getItem('82trade-trader-dna:quick18-v1.2-2026-09-25'))}catch{return null}}
 function d4Choices(block=0){const answers=d4State()?.answers||{};return Array.from({length:18},(_,i)=>answers[block*18+i+1]||null)}
 function d4Imprint(choices,extra=''){
  const id='d4-grain-'+(++d4SvgId),n=choices.filter(Boolean).length;let history=0;
