@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 1050">
+<rect width="700" height="1050" fill="#f2efe6"/>
+<rect x="0" y="0" width="700" height="1050" fill="none" stroke="#0b0d10" stroke-width="18"/>
+<circle cx="520" cy="214" r="112" fill="#0052ff"/>
+<rect x="64" y="100" width="210" height="210" fill="#111317"/>
+<circle cx="169" cy="205" r="64" fill="#f2efe6"/>
+<path d="M0 498L700 350V500L0 648Z" fill="#ef5a4c"/>
+<text x="64" y="604" fill="#0b0d10" font-family="Georgia,serif" font-size="56" font-weight="700">納瓦爾</text>
+<text x="64" y="670" fill="#0b0d10" font-family="Georgia,serif" font-size="56" font-weight="700">寶典</text>
+<text x="64" y="734" fill="#0b0d10" font-family="Arial,sans-serif" font-size="22" letter-spacing="3">THE ALMANACK OF NAVAL RAVIKANT</text>
+<text x="64" y="812" fill="#4c5058" font-family="Arial,sans-serif" font-size="20">Wealth · judgment · happiness · freedom</text>
+<line x1="64" y1="878" x2="636" y2="878" stroke="#b4b1a8"/>
+<text x="64" y="938" fill="#0052ff" font-family="Arial,sans-serif" font-size="18" letter-spacing="5">82TRADE / SELECTED READING</text>
+</svg>
