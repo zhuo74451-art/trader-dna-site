@@ -138,7 +138,7 @@ try {
   const labUrl = new URL('/share-motion-lab.html', base).href;
   await lab.goto(labUrl, { waitUntil: 'networkidle', timeout: 30000 });
   await lab.locator('#card').waitFor({ state: 'visible', timeout: 10000 });
-  await lab.waitForTimeout(5400);
+  await lab.waitForTimeout(6100);
   const labState = await lab.evaluate(() => ({
     status: document.querySelector('#status')?.textContent || '',
     width: document.querySelector('#card')?.width || 0,
