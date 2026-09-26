@@ -69,7 +69,7 @@ function reliefPath(b,p){
 function drawRelief(p){
   const breathe=.42+.58*wave(p);
   ctx.save();
-  ctx.beginPath();ctx.rect(0,785,900,310);ctx.clip();
+  ctx.beginPath();ctx.rect(0,735,W,380);ctx.clip();
   for(let b=-17;b<=17;b++){
     reliefPath(b,p);
     const major=b%5===0;
@@ -83,29 +83,7 @@ function drawRelief(p){
   glow.addColorStop(0,'rgba(255,255,255,0)');
   glow.addColorStop(.5,'rgba(255,255,255,.24)');
   glow.addColorStop(1,'rgba(255,255,255,0)');
-  ctx.globalCompositeOperation='screen';ctx.fillStyle=glow;ctx.fillRect(0,785,900,310);
-  ctx.restore();
-}
-function drawArtWindow(p){
-  const x=626,y=475,w=378,h=522;
-  ctx.save();
-  ctx.strokeStyle='rgba(20,19,17,.085)';
-  ctx.lineWidth=1;ctx.strokeRect(x,y,w,h);
-
-  const gx=x+w*.52+Math.sin(p*Math.PI*2)*7;
-  const gy=y+h*.48+Math.cos(p*Math.PI*2)*5;
-  const g=ctx.createRadialGradient(gx,gy,20,gx,gy,210);
-  g.addColorStop(0,rgba(data.color,.12));
-  g.addColorStop(.42,rgba(data.color,.04));
-  g.addColorStop(1,'rgba(255,255,255,0)');
-  ctx.fillStyle=g;ctx.fillRect(x,y,w,h);
-
-  ctx.strokeStyle=rgba(data.color,.16);
-  ctx.beginPath();ctx.arc(x+w*.54,y+h*.47,118,0,Math.PI*2);ctx.stroke();
-  ctx.beginPath();ctx.arc(x+w*.54,y+h*.47,78,0,Math.PI*2);ctx.stroke();
-
-  ctx.fillStyle='rgba(20,19,17,.025)';
-  ctx.fillRect(x+22,y+22,w-44,h-44);
+  ctx.globalCompositeOperation='screen';ctx.fillStyle=glow;ctx.fillRect(0,735,W,380);
   ctx.restore();
 }
 function drawChoiceTape(p){
@@ -161,7 +139,6 @@ function draw(p){
   text('PRECISE',76,838,'12px ui-monospace','#77736b',1);
   text('HIGH THRESHOLD',76,865,'12px ui-monospace','#77736b',1);
 
-  drawArtWindow(p);
   drawRelief(p);
   drawChoiceTape(p);
 
