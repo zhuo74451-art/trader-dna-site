@@ -45,18 +45,39 @@ button{font:inherit;color:inherit}
   background:radial-gradient(ellipse,rgba(0,0,0,.72),rgba(0,0,0,.18) 50%,transparent 74%);
   filter:blur(11px);transform:rotate(-2deg)
 }
-.bookFrame{position:relative;z-index:3;width:min(41vw,600px);height:640px;display:grid;place-items:center;perspective:1100px}
+.bookFrame{position:relative;z-index:3;width:min(40vw,590px);height:640px;display:grid;place-items:center;perspective:1200px}
 .bookObject{
-  position:relative;width:min(37vw,540px);max-height:620px;display:grid;place-items:center;
-  transform:translateX(3.5vw) rotateY(-4deg) translateY(8px);transform-style:preserve-3d;
+  position:relative;width:min(27vw,390px);aspect-ratio:2/3;transform-style:preserve-3d;
+  transform:translateX(2.5vw) rotateY(-18deg) rotateX(.8deg);
   transition:transform .78s var(--ease),opacity .28s ease,filter .55s ease;
-  filter:drop-shadow(-20px 34px 42px rgba(0,0,0,.46))
+  filter:drop-shadow(-22px 34px 42px rgba(0,0,0,.5))
 }
-.bookObject img{display:block;max-width:100%;max-height:620px;width:auto;height:auto;object-fit:contain}
-.bookObject:hover{transform:translateX(3.5vw) rotateY(1deg) translateY(1px)}
-.bookObject.is-leaving{opacity:0;transform:translateX(calc(3.5vw - 72px)) rotateY(-48deg) translateY(10px) scale(.94)}
+.bookFront{
+  position:absolute;inset:0;transform:translateZ(25px);overflow:hidden;border-radius:1px 4px 4px 1px;
+  background:#121418;box-shadow:6px 7px 28px rgba(0,0,0,.44)
+}
+.bookFront img{display:block;width:100%;height:100%;object-fit:cover}
+.bookFront:after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(0,0,0,.22),transparent 13%,transparent 84%,rgba(255,255,255,.07))
+}
+.bookObject:before{
+  content:"";position:absolute;z-index:-1;top:4px;bottom:4px;left:calc(100% - 25px);width:50px;
+  transform:rotateY(90deg);transform-origin:left center;
+  background:repeating-linear-gradient(90deg,#fbf7ed 0,#fbf7ed 3px,#d6d0c4 4px,#f8f4eb 6px);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.09)
+}
+.bookObject:after{
+  content:"";position:absolute;inset:0;z-index:-2;transform:translateZ(-25px);
+  background:#111318;border-radius:1px 4px 4px 1px;box-shadow:-18px 0 50px rgba(0,0,0,.48)
+}
+.bookObject:hover{transform:translateX(2.5vw) rotateY(-7deg) translateY(-4px)}
+.bookObject.is-leaving{opacity:0;transform:translateX(calc(2.5vw - 72px)) rotateY(-58deg) translateY(12px) scale(.94)}
 .bookObject.is-entering{animation:bookEnter .82s var(--ease) both}
-@keyframes bookEnter{from{opacity:0;transform:translateX(calc(3.5vw + 78px)) rotateY(38deg) scale(.94)}to{opacity:1;transform:translateX(3.5vw) rotateY(-4deg) translateY(8px) scale(1)}}
+@keyframes bookEnter{
+  from{opacity:0;transform:translateX(calc(2.5vw + 78px)) rotateY(32deg) translateY(14px) scale(.94)}
+  to{opacity:1;transform:translateX(2.5vw) rotateY(-18deg) rotateX(.8deg) translateY(0) scale(1)}
+}
 
 .copyPane{position:relative;z-index:3;display:flex;flex-direction:column;justify-content:center;padding:6vh 2vw 10vh 3vw;min-width:0;transition:opacity .28s ease,transform .34s ease}
 .copyPane.is-leaving{opacity:0;transform:translateY(17px)}
@@ -91,10 +112,12 @@ button{font:inherit;color:inherit}
   .stage{grid-template-columns:1fr;min-height:0}
   .objectPane{min-height:450px}
   .objectPane:before{width:82%;top:2%}
-  .bookFrame{width:340px;height:435px}
-  .bookObject{width:min(82vw,340px);max-height:420px;transform:rotateY(-3deg) translateY(2px)}
-  .bookObject img{max-height:420px}
-  .bookObject:hover{transform:rotateY(-3deg) translateY(2px)}
+  .bookFrame{width:340px;height:440px}
+  .bookObject{width:min(70vw,286px);aspect-ratio:2/3;transform:rotateY(-12deg) translateY(2px)}
+  .bookObject:hover{transform:rotateY(-12deg) translateY(2px)}
+  .bookObject:before{left:calc(100% - 20px);width:40px}
+  .bookFront{transform:translateZ(20px)}
+  .bookObject:after{transform:translateZ(-20px)}
   .copyPane{padding:0 0 26px;justify-content:flex-start}
   .title{margin:18px 0 13px;font-size:clamp(42px,11.4vw,56px);line-height:.98}
   .lede{font-size:14.5px;line-height:1.55}
@@ -118,7 +141,9 @@ button{font:inherit;color:inherit}
     <div class="objectPane">
       <div class="bookFrame">
         <div class="bookObject" data-book>
-          <img data-book-image src="./assets/books/reminiscences-object-hq.webp" alt="股票作手回憶錄實體書">
+          <div class="bookFront">
+            <img data-book-image src="./assets/books/reminiscences.webp" alt="股票作手回憶錄封面">
+          </div>
         </div>
       </div>
     </div>
@@ -144,7 +169,7 @@ button{font:inherit;color:inherit}
 </div>
 <script>
 const books=[
-  {category:"交易必備",title:"股票作手回憶錄",image:"./assets/books/reminiscences-object-hq.webp",lede:"不是教你背一套招式，而是讓你看見交易者如何在等待、貪婪、恐懼與自我欺騙之間，一次次做錯同樣的事。",why:"先理解人，再理解市場。讀完它，你不一定會立刻交易得更好，但會更早認出自己什麼時候正在犯錯。",meta:"Edwin Lefèvre · 1923 / 最終推薦版本待 Owner 書單確認"},
+  {category:"交易必備",title:"股票作手回憶錄",image:"./assets/books/reminiscences.webp",lede:"不是教你背一套招式，而是讓你看見交易者如何在等待、貪婪、恐懼與自我欺騙之間，一次次做錯同樣的事。",why:"先理解人，再理解市場。讀完它，你不一定會立刻交易得更好，但會更早認出自己什麼時候正在犯錯。",meta:"Edwin Lefèvre · 1923 / 最終推薦版本待 Owner 書單確認"},
   {category:"市場結構",title:"新威科夫操盤法",image:"./assets/books/wyckoff.webp",lede:"把市場重新還原成供需與參與者行為，而不是一堆互不相干的技術指標。",why:"當你已經會看圖，下一步不是再背一個形態，而是建立一套能解釋市場結構的語言。",meta:"Wyckoff reading line / 最終推薦版本待 Owner 書單確認"},
   {category:"思維成長",title:"納瓦爾寶典",image:"./assets/books/naval.webp",lede:"把視角從單次輸贏拉回長期複利：判斷、選擇、專注與自由。它不是交易書，但很適合交易者。",why:"交易之外，你仍然需要一套關於時間、決策與長期主義的底層坐標。",meta:"Eric Jorgenson / Naval Ravikant · 最終推薦版本待 Owner 書單確認"}
 ];
@@ -154,7 +179,7 @@ const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(
 const book=$("[data-book]"),copy=$("[data-copy]");
 function render(i){
   const x=books[i];
-  $("[data-book-image]").src=x.image;$("[data-book-image]").alt=x.title+"實體書";
+  $("[data-book-image]").src=x.image;$("[data-book-image]").alt=x.title+"封面";
   $("[data-kicker]").textContent="0"+(i+1)+" / "+x.category;$("[data-title]").textContent=x.title;
   $("[data-lede]").textContent=x.lede;$("[data-why]").textContent=x.why;$("[data-meta]").textContent=x.meta;
   $$("[data-tab]").forEach((b,n)=>b.dataset.active=String(n===i));
