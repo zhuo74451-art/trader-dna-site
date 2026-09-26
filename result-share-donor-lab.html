@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#10110f">
+  <link rel="icon" href="data:,">
+  <title>82TRADE / Trader DNA - Result + Share Donor Lab</title>
+  <meta name="description" content="Trader DNA result and share interaction donor lab.">
+  <link rel="stylesheet" href="./cinema/result-share-donor-lab.css">
+</head>
+<body>
+  <header class="lab-top">
+    <a href="./scan01.html">82TRADE</a>
+    <span>TRADER DNA / RESULT + SHARE DONOR LAB</span>
+    <small>ISOLATED · NOT PRODUCTION</small>
+  </header>
+
+  <main>
+    <section class="result-scene" id="result-scene">
+      <div class="result-copy">
+        <span class="eyebrow">RESULT / INITIAL IDENTITY</span>
+        <div class="dna-code">IWGC</div>
+        <h1>狙擊手</h1>
+        <p class="hook">機會一直都有。真正值得你出手的，沒有幾個。</p>
+        <div class="traits"><span>篩選</span><span>耐心</span><span>精準</span><span>高閾值</span></div>
+        <p class="lab-note">人物層暫時留空；只驗證現成互動機制。最終 Species 進來後替換同一個 media layer。</p>
+        <div class="actions">
+          <button type="button" id="flip-btn">翻面看身份背面</button>
+          <button type="button" id="open-btn" class="secondary">展開分享卡</button>
+        </div>
+      </div>
+
+      <div class="hero-artifact-wrap">
+        <article class="identity-artifact" id="hero-card" tabindex="0" aria-label="IWGC 狙擊手身份卡，可翻面">
+          <div class="artifact-shadow" aria-hidden="true"></div>
+          <div class="artifact-rotor">
+            <section class="artifact-face artifact-front">
+              <div class="card-head"><b>82TRADE</b><span>TRADER DNA / IDENTITY EDITION</span></div>
+              <div class="card-rule"></div>
+              <small>YOUR TRADER DNA</small>
+              <strong class="card-code">IWGC</strong>
+              <h2>狙擊手</h2>
+              <i class="accent"></i>
+              <p>機會一直都有。真正值得你出手的，沒有幾個。</p>
+              <div class="trait-stack"><span>SELECTIVE</span><span>PATIENT</span><span>PRECISE</span><span>HIGH THRESHOLD</span></div>
+              <svg class="relief" viewBox="0 0 520 190" role="img" aria-label="18 次選擇形成的 Decision Relief"></svg>
+              <div class="card-foot"><span>01 / DECISION RELIEF</span><span>18 CHOICES / YOUR PATTERN</span></div>
+              <div class="artifact-glare" aria-hidden="true"></div>
+            </section>
+            <section class="artifact-face artifact-back">
+              <div class="back-head"><b>IWGC</b><span>INITIAL FORM</span></div>
+              <div class="back-copy">
+                <small>18 DECISIONS / SEALED</small>
+                <h3>你的身份不是一張結論。<br>它是第一個可成長的形態。</h3>
+              </div>
+              <div class="choice-tape" aria-label="18 次選擇指紋"></div>
+              <footer><span>82TRADE / TRADER DNA</span><span>FORM / 01</span></footer>
+              <div class="artifact-glare" aria-hidden="true"></div>
+            </section>
+          </div>
+        </article>
+        <div class="gesture-note">POINTER TILT · CLICK / DRAG IDEA FROM MOTION PRIMITIVES + REACT BITS</div>
+      </div>
+    </section>
+
+    <section class="bridge">
+      <span>THE SAME OBJECT CONTINUES</span>
+      <p>不是重新渲染一張新卡。網頁首屏裡的身份物件，連續變成下面的分享物件。</p>
+    </section>
+
+    <section class="share-scene" id="share-scene">
+      <div class="share-copy">
+        <span class="eyebrow">SHARE ARTIFACT / PUBLIC</span>
+        <h2>分享卡工作台</h2>
+        <p>保留靜態卡本體，只增加網頁端的物理感。導出時仍然回到乾淨、可傳播的 4:5 / 9:16 成品。</p>
+        <div class="format-switch">
+          <button type="button" data-format="4:5" class="active">4:5</button>
+          <button type="button" data-format="9:16">9:16</button>
+        </div>
+        <button type="button" id="return-btn" class="secondary">回到首屏位置</button>
+      </div>
+      <div class="share-dock" id="share-dock" aria-label="分享卡停靠區"></div>
+    </section>
+  </main>
+
+  <dialog id="share-dialog">
+    <button class="dialog-close" id="close-dialog" type="button" aria-label="關閉">×</button>
+    <div class="dialog-stage" id="dialog-stage"></div>
+  </dialog>
+
+  <script src="./cinema/result-share-donor-lab.js" defer></script>
+</body>
+</html>
