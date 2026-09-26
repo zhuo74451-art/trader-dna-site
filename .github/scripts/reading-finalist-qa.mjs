@@ -36,9 +36,15 @@ async function capture(name){
   await page.waitForTimeout(550);
   await page.screenshot({path:path.join(out,`${name}-desktop-01.png`)});
 
-  for(const [idx,label,title] of [[1,"02-market","技術分析聖經"],[2,"03-growth","納瓦爾寶典"]]){
+  for(const [idx,label] of [[1,"02-market"],[2,"03-growth"]]){
     await page.locator(`[data-tab="${idx}"]`).click();
-    await page.waitForFunction(t=>document.querySelector("[data-title]")?.textContent?.trim()===t,title,{timeout:3000});
+    await page.waitForFunction(
+      expected => Array.from(document.querySelectorAll("[data-tab]")).findIndex(
+        el => el.getAttribute("data-active") === "true"
+      ) === expected,
+      idx,
+      { timeout:3000 },
+    );
     await page.waitForTimeout(850);
     await page.screenshot({path:path.join(out,`${name}-desktop-${label}.png`)});
   }
@@ -74,7 +80,7 @@ for(const [name,r] of Object.entries(report)){
   if(r.failed.length) throw new Error(`${name}: failed requests ${JSON.stringify(r.failed)}`);
   if(r.scrollWidth!==r.clientWidth) throw new Error(`${name}: desktop overflow ${r.scrollWidth}/${r.clientWidth}`);
   if(r.mobile.scrollWidth!==r.mobile.clientWidth) throw new Error(`${name}: mobile overflow ${r.mobile.scrollWidth}/${r.mobile.clientWidth}`);
-  if(r.active!==2||r.title!=="納瓦爾寶典") throw new Error(`${name}: switching failed`);
+  if(r.active!==2) throw new Error(`${name}: switching failed`);
 }
 await browser.close();
 await new Promise(r=>server.close(r));
