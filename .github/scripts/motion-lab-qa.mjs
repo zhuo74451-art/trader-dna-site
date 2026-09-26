@@ -861,6 +861,63 @@ report.readingV16Mobile = await readingV16Mobile.evaluate(() => ({
 }));
 await readingV16Mobile.close();
 
+const readingV17Open = await openPage(
+  { width: 1512, height: 982, deviceScaleFactor: 1 },
+  false,
+  `${base}reading-v17.html?qa=visual-review`,
+);
+const readingV17 = readingV17Open.page;
+await settle(readingV17, 900);
+await shot(readingV17, "reading-v17-desktop-01");
+
+await readingV17.click('[data-tab="1"]');
+await readingV17.waitForFunction(
+  () => document.querySelector("[data-title]")?.textContent?.trim() === "技術分析聖經",
+  { timeout: 2600 },
+);
+await settle(readingV17, 1050);
+await shot(readingV17, "reading-v17-desktop-02-market");
+
+await readingV17.click('[data-tab="2"]');
+await readingV17.waitForFunction(
+  () => document.querySelector("[data-title]")?.textContent?.trim() === "納瓦爾寶典",
+  { timeout: 2600 },
+);
+await settle(readingV17, 1050);
+await shot(readingV17, "reading-v17-desktop-03-growth");
+
+report.readingV17 = await readingV17.evaluate(() => ({
+  title: document.querySelector("[data-title]")?.textContent?.trim() ?? null,
+  active: Array.from(document.querySelectorAll("[data-tab]")).findIndex(
+    (el) => el.getAttribute("data-active") === "true",
+  ),
+  scrollWidth: document.documentElement.scrollWidth,
+  clientWidth: document.documentElement.clientWidth,
+  bookRect: (() => {
+    const el = document.querySelector("[data-book]");
+    if (!(el instanceof HTMLElement)) return null;
+    const r = el.getBoundingClientRect();
+    return { width:r.width, height:r.height, top:r.top, left:r.left };
+  })(),
+}));
+
+await readingV17.close();
+
+const readingV17MobileOpen = await openPage(
+  { width: 390, height: 844, deviceScaleFactor: 1 },
+  false,
+  `${base}reading-v17.html?qa=mobile-review`,
+);
+const readingV17Mobile = readingV17MobileOpen.page;
+await settle(readingV17Mobile, 900);
+await shot(readingV17Mobile, "reading-v17-mobile-01");
+report.readingV17Mobile = await readingV17Mobile.evaluate(() => ({
+  scrollWidth: document.documentElement.scrollWidth,
+  clientWidth: document.documentElement.clientWidth,
+  title: document.querySelector("[data-title]")?.textContent?.trim() ?? null,
+}));
+await readingV17Mobile.close();
+
 const mobileOpen = await openPage({ width: 390, height: 844, deviceScaleFactor: 1 }, false);
 const mobile = mobileOpen.page;
 await scrollTo(mobile, 0, 1100);
@@ -993,6 +1050,8 @@ report.status = {
   readingHash: readingHashOpen.status,
   readingV16: readingV16Open.status,
   readingV16Mobile: readingV16MobileOpen.status,
+  readingV17: readingV17Open.status,
+  readingV17Mobile: readingV17MobileOpen.status,
   readingV8: readingV8Open.status,
   readingV8Mobile: readingV8MobileOpen.status,
   readingV9: readingV9Open.status,
@@ -1114,6 +1173,12 @@ if (report.readingV16?.scrollWidth !== report.readingV16?.clientWidth) {
 }
 if (report.readingV16Mobile?.scrollWidth !== report.readingV16Mobile?.clientWidth) {
   throw new Error(`reading V16 mobile overflow: ${JSON.stringify(report.readingV16Mobile)}`);
+}
+if (report.readingV17?.scrollWidth !== report.readingV17?.clientWidth) {
+  throw new Error(`reading V17 desktop overflow: ${JSON.stringify(report.readingV17)}`);
+}
+if (report.readingV17Mobile?.scrollWidth !== report.readingV17Mobile?.clientWidth) {
+  throw new Error(`reading V17 mobile overflow: ${JSON.stringify(report.readingV17Mobile)}`);
 }
 if (!report.mobile.menuOpen) throw new Error("mobile menu did not open by keyboard");
 if (errors.length) throw new Error(`console/page errors: ${JSON.stringify(errors.slice(0, 8))}`);
