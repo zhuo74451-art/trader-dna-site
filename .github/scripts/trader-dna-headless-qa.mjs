@@ -41,6 +41,17 @@ try {
 
   const start = page.locator('#start');
   await start.waitFor({ state: 'visible', timeout: 15000 });
+
+  const aboutButton = page.locator('[data-about]');
+  if (await aboutButton.count()) {
+    await aboutButton.click();
+    const aboutDialog = page.locator('.cinema-dialog');
+    await aboutDialog.waitFor({ state: 'visible', timeout: 10000 });
+    const aboutText = await aboutDialog.innerText();
+    if (/54\s*(題|题|QUESTIONS?)/i.test(aboutText)) throw new Error('ABOUT still exposes legacy 54Q product copy');
+    await aboutDialog.locator('.dialog-close').click();
+  }
+
   await start.click();
 
   stage = 'questions';
@@ -217,8 +228,8 @@ try {
 
   await flipControl.click();
   await candidate.waitForTimeout(760);
-  const plate = candidate.locator('.v47-identity-plate');
-  if ((await plate.getAttribute('data-rs-flipped')) !== '1') throw new Error('Production candidate flip did not reach back face');
+  const identityStack = candidate.locator('.v47-identity-stack');
+  if ((await identityStack.getAttribute('data-rs-flipped')) !== '1') throw new Error('Production candidate flip did not reach back face');
   await candidate.screenshot({ path: out + '/candidate-result-back.png', fullPage: false });
 
   await flipControl.click();
