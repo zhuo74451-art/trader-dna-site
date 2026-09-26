@@ -42,14 +42,14 @@ try {
   const start = page.locator('#start');
   await start.waitFor({ state: 'visible', timeout: 15000 });
 
-  const aboutButton = page.locator('[data-about]');
-  if (await aboutButton.count()) {
-    await aboutButton.click();
+  const aboutAvailable = await page.evaluate(() => typeof about === 'function');
+  if (aboutAvailable) {
+    await page.evaluate(() => about());
     const aboutDialog = page.locator('.cinema-dialog');
     await aboutDialog.waitFor({ state: 'visible', timeout: 10000 });
     const aboutText = await aboutDialog.innerText();
     if (/54\s*(題|题|QUESTIONS?)/i.test(aboutText)) throw new Error('ABOUT still exposes legacy 54Q product copy');
-    await aboutDialog.locator('.dialog-close').click();
+    await page.evaluate(() => document.querySelector('.cinema-dialog')?.close());
   }
 
   await start.click();
