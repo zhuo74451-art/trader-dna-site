@@ -13,6 +13,17 @@ function resultData(result){
   };
 }
 
+function controlRow(result){
+  let row=result.querySelector('.rs-result-controls');
+  if(row)return row;
+  const hook=result.querySelector('.result-hero .hook');
+  if(!hook)return null;
+  row=document.createElement('div');
+  row.className='rs-result-controls';
+  hook.insertAdjacentElement('afterend',row);
+  return row;
+}
+
 function mountFlip(result){
   const stack=result.querySelector('.v47-identity-stack');
   const plate=stack?.querySelector('.v47-identity-plate');
@@ -45,11 +56,12 @@ function mountFlip(result){
   control.className='rs-flip-control';
   control.textContent='IDENTITY BACK ↗';
   control.setAttribute('aria-pressed','false');
-  result.querySelector('.v47-identity-stack')?.appendChild(control);
+  controlRow(result)?.appendChild(control);
 }
 
 function handleFlipControl(control){
-  const stack=control.closest('.v47-identity-stack');
+  const result=control.closest('.result');
+  const stack=result?.querySelector('.v47-identity-stack');
   if(!stack)return;
   const next=stack.dataset.rsFlipped!=='1';
   stack.dataset.rsFlipped=next?'1':'0';
@@ -143,14 +155,13 @@ async function travelToShare(result){
 
 function mountBridge(result){
   if(result.querySelector('.rs-publish-bridge'))return;
-  const hook=result.querySelector('.result-hero .hook');
-  if(!hook)return;
+  const row=controlRow(result);if(!row)return;
   const button=document.createElement('button');
   button.type='button';
   button.className='rs-publish-bridge';
   button.innerHTML='<span>GENERATE SHARE ARTIFACT</span><i>↘</i>';
   button.addEventListener('click',()=>travelToShare(result).catch(()=>{busy=false;delete document.body.dataset.rsTravelling}));
-  hook.insertAdjacentElement('afterend',button);
+  row.appendChild(button);
 }
 
 function mount(){
