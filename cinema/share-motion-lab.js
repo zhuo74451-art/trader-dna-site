@@ -229,7 +229,6 @@ async function exportMotion(){
 
     const blob=new Blob(chunks,{type:rec.mimeType||mime||'video/webm'});
     const ext=blob.type.includes('mp4')?'mp4':'webm';
-    const file=new File([blob],{toString:()=>''});
     const safeFile=new File([blob],'82TRADE-TraderDNA-IWGC-motion.'+ext,{type:blob.type});
     const url=URL.createObjectURL(blob);
 
