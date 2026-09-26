@@ -164,6 +164,57 @@ try {
   receipt.motionLab = { ...labState, errors: labErrors };
   receipt.motionExport = { filename: suggested, bytes: videoStat.size, ext };
 
+  stage = 'result-share-donor-lab';
+  const donorContext = await browser.newContext({
+    viewport: { width: 1440, height: 1000 },
+    deviceScaleFactor: 1,
+    reducedMotion: 'no-preference'
+  });
+  const donor = await donorContext.newPage();
+  const donorErrors = [];
+  donor.on('pageerror', err => donorErrors.push('pageerror: ' + String(err)));
+  donor.on('console', msg => { if (msg.type() === 'error') donorErrors.push('console: ' + msg.text()); });
+  const donorUrl = new URL('/result-share-donor-lab.html', base).href;
+  await donor.goto(donorUrl, { waitUntil: 'networkidle', timeout: 30000 });
+  const donorCard = donor.locator('#hero-card');
+  await donorCard.waitFor({ state: 'visible', timeout: 10000 });
+
+  const box = await donorCard.boundingBox();
+  if (!box) throw new Error('Donor lab hero card has no box');
+  await donor.mouse.move(box.x + box.width * .78, box.y + box.height * .28);
+  await donor.waitForTimeout(120);
+  const tiltState = await donorCard.evaluate(el => ({
+    rx: getComputedStyle(el).getPropertyValue('--rx').trim(),
+    ry: getComputedStyle(el).getPropertyValue('--ry').trim(),
+    sheen: getComputedStyle(el).getPropertyValue('--sheen').trim()
+  }));
+  if (tiltState.sheen !== '1') throw new Error('Donor tilt/glare did not activate: ' + JSON.stringify(tiltState));
+
+  await donor.locator('#flip-btn').click();
+  await donor.waitForTimeout(120);
+  if ((await donorCard.getAttribute('data-flipped')) !== '1') throw new Error('Donor flip state did not activate');
+
+  await donor.screenshot({ path: out + '/donor-lab-hero.png', fullPage: true });
+
+  await donor.locator('#open-btn').click();
+  await donor.waitForTimeout(900);
+  const dialogOpen = await donor.locator('#share-dialog').evaluate(el => el.open);
+  if (!dialogOpen) throw new Error('Donor morphing dialog did not open');
+  const parentInDialog = await donor.locator('.dialog-stage .identity-artifact').count();
+  if (!parentInDialog) throw new Error('Shared artifact did not morph into dialog stage');
+
+  await donor.locator('#close-dialog').click();
+  await donor.waitForTimeout(900);
+  await donor.locator('[data-format="9:16"]').click();
+  if ((await donor.locator('#share-dock').getAttribute('data-format')) !== '9:16') throw new Error('Share format state did not switch to 9:16');
+
+  await donor.locator('#share-scene').scrollIntoViewIfNeeded();
+  await donor.screenshot({ path: out + '/donor-lab-share.png', fullPage: true });
+
+  if (donorErrors.length) throw new Error('Donor lab browser errors: ' + JSON.stringify(donorErrors));
+  receipt.resultShareDonorLab = { tiltState, dialogOpen, format: '9:16', errors: donorErrors };
+  await donorContext.close();
+
   receipt.result = 'PASS';
   receipt.stage = 'done';
 } catch (error) {
