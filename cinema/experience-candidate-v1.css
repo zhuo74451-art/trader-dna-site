@@ -151,3 +151,8 @@ body[data-experience-candidate="1"] .ec-species-media[data-ready="1"] + .ec-orig
 .result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-id{font-size:clamp(18px,1.65vw,26px)}
 .ec-class-card-art{filter:saturate(.9) contrast(1.025) brightness(.94)}
 .ec-class-card:hover .ec-class-card-art{filter:saturate(.98) contrast(1.035) brightness(.98)}
+
+.ec-class-meta p{margin:9px 0 0;max-width:20em;font:11px/1.5 var(--serif);color:#e6e8dfb8}
+.ec-class-card .ec-class-meta{transform:translateY(18px);transition:transform .42s cubic-bezier(.2,.8,.2,1)}
+.ec-class-card:hover .ec-class-meta,.ec-class-card:focus-within .ec-class-meta{transform:translateY(0)}
+@media(max-width:760px){.ec-class-card .ec-class-meta{transform:none}.ec-class-meta p{font-size:10px}}
