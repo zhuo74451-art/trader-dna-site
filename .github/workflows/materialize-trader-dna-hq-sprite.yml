@@ -1,0 +1,47 @@
+name: Materialize Trader DNA HQ Sprite
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "cinema/assets/hq-sprite-parts/**"
+      - ".github/workflows/materialize-trader-dna-hq-sprite.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: materialize-trader-dna-hq-sprite
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Rebuild binary WebP
+        run: |
+          cat cinema/assets/hq-sprite-parts/part0.b64               cinema/assets/hq-sprite-parts/part1.b64               cinema/assets/hq-sprite-parts/part2.b64               cinema/assets/hq-sprite-parts/part3.b64             | tr -d '\n\r\t '             | base64 --decode             > cinema/assets/initial-class-sprite-hq.webp
+
+          test -s cinema/assets/initial-class-sprite-hq.webp
+          file cinema/assets/initial-class-sprite-hq.webp
+          BYTES="$(wc -c < cinema/assets/initial-class-sprite-hq.webp)"
+          echo "HQ_SPRITE_BYTES=$BYTES"
+          test "$BYTES" -gt 25000
+
+      - name: Commit binary asset
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cinema/assets/initial-class-sprite-hq.webp
+          if git diff --cached --quiet; then
+            echo "HQ sprite already materialized"
+            exit 0
+          fi
+          git commit -m "assets: materialize HQ initial-class sprite"
+          git pull --rebase origin main
+          git push origin HEAD:main
