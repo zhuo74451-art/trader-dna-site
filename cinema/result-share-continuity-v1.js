@@ -14,11 +14,12 @@ function resultData(result){
 }
 
 function mountFlip(result){
-  const plate=result.querySelector('.v47-identity-plate');
+  const stack=result.querySelector('.v47-identity-stack');
+  const plate=stack?.querySelector('.v47-identity-plate');
   const mark=plate?.querySelector(':scope > .v4-result-mark');
-  if(!plate||!mark||plate.dataset.rsMounted==='1')return;
-  plate.dataset.rsMounted='1';
-  plate.dataset.rsFlipped='0';
+  if(!stack||!plate||!mark||stack.dataset.rsMounted==='1')return;
+  stack.dataset.rsMounted='1';
+  stack.dataset.rsFlipped='0';
 
   const rotor=document.createElement('div');
   rotor.className='rs-card-rotor';
@@ -45,8 +46,8 @@ function mountFlip(result){
   control.textContent='IDENTITY BACK ↗';
   control.setAttribute('aria-pressed','false');
   control.addEventListener('click',()=>{
-    const next=plate.dataset.rsFlipped!=='1';
-    plate.dataset.rsFlipped=next?'1':'0';
+    const next=stack.dataset.rsFlipped!=='1';
+    stack.dataset.rsFlipped=next?'1':'0';
     control.textContent=next?'RETURN FRONT ↙':'IDENTITY BACK ↗';
     control.setAttribute('aria-pressed',String(next));
   });
@@ -54,9 +55,9 @@ function mountFlip(result){
 }
 
 function resetFront(result){
-  const plate=result.querySelector('.v47-identity-plate');
+  const stack=result.querySelector('.v47-identity-stack');
   const control=result.querySelector('.rs-flip-control');
-  if(plate)plate.dataset.rsFlipped='0';
+  if(stack)stack.dataset.rsFlipped='0';
   if(control){control.textContent='IDENTITY BACK ↗';control.setAttribute('aria-pressed','false')}
 }
 
