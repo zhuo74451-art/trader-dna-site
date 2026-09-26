@@ -28,7 +28,7 @@ button{font:inherit;color:inherit}
 .logo{font-size:14px;font-weight:850;letter-spacing:-.04em}
 .headerMeta{display:flex;gap:22px;color:#696b72;font-size:8px;letter-spacing:.16em;text-transform:uppercase}
 
-.stage{position:relative;min-height:680px;display:grid;grid-template-columns:minmax(520px,1.07fr) minmax(0,.93fr)}
+.stage{position:relative;min-height:680px;display:grid;grid-template-columns:minmax(470px,.92fr) minmax(0,1.08fr)}
 .stage:after{
   content:"";position:absolute;left:-3.4vw;right:-3.4vw;bottom:0;height:27%;
   background:linear-gradient(180deg,rgba(255,255,255,.006),rgba(255,255,255,.034));
@@ -36,37 +36,37 @@ button{font:inherit;color:inherit}
 }
 .objectPane{position:relative;z-index:2;display:grid;place-items:center;min-width:0}
 .objectPane:before{
-  content:"";position:absolute;width:min(720px,76%);aspect-ratio:1;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,255,255,.14) 0,rgba(255,255,255,.055) 27%,rgba(117,163,255,.035) 46%,transparent 72%);
-  filter:blur(13px);transform:translate(-3%,-3%)
+  content:"";position:absolute;width:min(620px,72%);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.13) 0,rgba(255,255,255,.05) 29%,rgba(117,163,255,.03) 47%,transparent 70%);
+  filter:blur(12px);transform:translate(4%,-2%)
 }
 .objectPane:after{
   content:"";position:absolute;left:9%;right:5%;bottom:10%;height:82px;
   background:radial-gradient(ellipse,rgba(0,0,0,.72),rgba(0,0,0,.18) 50%,transparent 74%);
   filter:blur(11px);transform:rotate(-2deg)
 }
-.bookFrame{position:relative;z-index:3;width:min(35vw,500px);height:610px;display:grid;place-items:center;perspective:1100px}
+.bookFrame{position:relative;z-index:3;width:min(41vw,600px);height:640px;display:grid;place-items:center;perspective:1100px}
 .bookObject{
-  position:relative;width:min(31vw,440px);max-height:580px;display:grid;place-items:center;
-  transform:rotateY(-5deg) translateY(4px);transform-style:preserve-3d;
+  position:relative;width:min(37vw,540px);max-height:620px;display:grid;place-items:center;
+  transform:translateX(3.5vw) rotateY(-4deg) translateY(8px);transform-style:preserve-3d;
   transition:transform .78s var(--ease),opacity .28s ease,filter .55s ease;
   filter:drop-shadow(-20px 34px 42px rgba(0,0,0,.46))
 }
-.bookObject img{display:block;max-width:100%;max-height:580px;width:auto;height:auto;object-fit:contain}
-.bookObject:hover{transform:rotateY(2deg) translateY(-3px)}
-.bookObject.is-leaving{opacity:0;transform:rotateY(-48deg) translateX(-72px) translateY(10px) scale(.94)}
+.bookObject img{display:block;max-width:100%;max-height:620px;width:auto;height:auto;object-fit:contain}
+.bookObject:hover{transform:translateX(3.5vw) rotateY(1deg) translateY(1px)}
+.bookObject.is-leaving{opacity:0;transform:translateX(calc(3.5vw - 72px)) rotateY(-48deg) translateY(10px) scale(.94)}
 .bookObject.is-entering{animation:bookEnter .82s var(--ease) both}
-@keyframes bookEnter{from{opacity:0;transform:rotateY(38deg) translateX(78px) scale(.94)}to{opacity:1;transform:rotateY(-5deg) translateX(0) translateY(4px) scale(1)}}
+@keyframes bookEnter{from{opacity:0;transform:translateX(calc(3.5vw + 78px)) rotateY(38deg) scale(.94)}to{opacity:1;transform:translateX(3.5vw) rotateY(-4deg) translateY(8px) scale(1)}}
 
-.copyPane{position:relative;z-index:3;display:flex;flex-direction:column;justify-content:center;padding:8vh 3vw 12vh 2vw;min-width:0;transition:opacity .28s ease,transform .34s ease}
+.copyPane{position:relative;z-index:3;display:flex;flex-direction:column;justify-content:center;padding:6vh 2vw 10vh 3vw;min-width:0;transition:opacity .28s ease,transform .34s ease}
 .copyPane.is-leaving{opacity:0;transform:translateY(17px)}
 .copyPane.is-entering{animation:copyEnter .52s ease both}
 @keyframes copyEnter{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 .kicker{display:flex;align-items:center;gap:14px;color:var(--blue);font-size:8px;font-weight:760;letter-spacing:.18em;text-transform:uppercase}
 .kicker:before{content:"";width:30px;height:1px;background:var(--blue)}
-.title{margin:34px 0 22px;max-width:760px;font-family:var(--serif);font-size:clamp(68px,6vw,104px);line-height:.91;font-weight:400;letter-spacing:-.055em}
-.lede{max-width:590px;margin:0;color:#aaa9ae;font-family:var(--serif);font-size:17px;line-height:1.68}
-.why{max-width:590px;margin-top:34px;padding-top:18px;border-top:1px solid var(--line);display:grid;grid-template-columns:84px 1fr;gap:22px}
+.title{margin:30px 0 20px;max-width:720px;font-family:var(--serif);font-size:clamp(56px,4.9vw,78px);line-height:.95;font-weight:400;letter-spacing:-.045em}
+.lede{max-width:610px;margin:0;color:#aaa9ae;font-family:var(--serif);font-size:16px;line-height:1.65}
+.why{max-width:610px;margin-top:27px;padding-top:16px;border-top:1px solid var(--line);display:grid;grid-template-columns:80px 1fr;gap:20px}
 .why span{color:#62646b;font-size:8px;letter-spacing:.14em;text-transform:uppercase}
 .why p{margin:0;color:#d0cfd2;font-size:12px;line-height:1.62}
 .meta{margin-top:27px;color:#65676e;font-size:8px;letter-spacing:.08em}
@@ -89,15 +89,16 @@ button{font:inherit;color:inherit}
   .page{padding:0 18px 18px;grid-template-rows:60px auto 70px;overflow:visible}
   .headerMeta span:first-child{display:none}
   .stage{grid-template-columns:1fr;min-height:0}
-  .objectPane{min-height:420px}
-  .objectPane:before{width:88%;top:1%}
-  .bookFrame{width:315px;height:410px}
-  .bookObject{width:min(75vw,310px);max-height:390px}
-  .bookObject img{max-height:390px}
-  .copyPane{padding:0 0 30px;justify-content:flex-start}
-  .title{margin:20px 0 14px;font-size:clamp(48px,13vw,64px)}
-  .lede{font-size:15px;line-height:1.58}
-  .why{margin-top:23px;grid-template-columns:70px 1fr;gap:14px}
+  .objectPane{min-height:450px}
+  .objectPane:before{width:82%;top:2%}
+  .bookFrame{width:340px;height:435px}
+  .bookObject{width:min(82vw,340px);max-height:420px;transform:rotateY(-3deg) translateY(2px)}
+  .bookObject img{max-height:420px}
+  .bookObject:hover{transform:rotateY(-3deg) translateY(2px)}
+  .copyPane{padding:0 0 26px;justify-content:flex-start}
+  .title{margin:18px 0 13px;font-size:clamp(42px,11.4vw,56px);line-height:.98}
+  .lede{font-size:14.5px;line-height:1.55}
+  .why{margin-top:18px;grid-template-columns:68px 1fr;gap:13px}
   .meta{margin-top:19px}
   .nav{grid-template-columns:1fr;overflow:hidden}
   .tabs{display:flex;overflow:auto;max-width:none}
@@ -117,7 +118,7 @@ button{font:inherit;color:inherit}
     <div class="objectPane">
       <div class="bookFrame">
         <div class="bookObject" data-book>
-          <img data-book-image src="./assets/books/reminiscences-object.webp" alt="股票作手回憶錄實體書">
+          <img data-book-image src="./assets/books/reminiscences-object-hq.webp" alt="股票作手回憶錄實體書">
         </div>
       </div>
     </div>
@@ -143,7 +144,7 @@ button{font:inherit;color:inherit}
 </div>
 <script>
 const books=[
-  {category:"交易必備",title:"股票作手回憶錄",image:"./assets/books/reminiscences-object.webp",lede:"不是教你背一套招式，而是讓你看見交易者如何在等待、貪婪、恐懼與自我欺騙之間，一次次做錯同樣的事。",why:"先理解人，再理解市場。讀完它，你不一定會立刻交易得更好，但會更早認出自己什麼時候正在犯錯。",meta:"Edwin Lefèvre · 1923 / 最終推薦版本待 Owner 書單確認"},
+  {category:"交易必備",title:"股票作手回憶錄",image:"./assets/books/reminiscences-object-hq.webp",lede:"不是教你背一套招式，而是讓你看見交易者如何在等待、貪婪、恐懼與自我欺騙之間，一次次做錯同樣的事。",why:"先理解人，再理解市場。讀完它，你不一定會立刻交易得更好，但會更早認出自己什麼時候正在犯錯。",meta:"Edwin Lefèvre · 1923 / 最終推薦版本待 Owner 書單確認"},
   {category:"市場結構",title:"新威科夫操盤法",image:"./assets/books/wyckoff.webp",lede:"把市場重新還原成供需與參與者行為，而不是一堆互不相干的技術指標。",why:"當你已經會看圖，下一步不是再背一個形態，而是建立一套能解釋市場結構的語言。",meta:"Wyckoff reading line / 最終推薦版本待 Owner 書單確認"},
   {category:"思維成長",title:"納瓦爾寶典",image:"./assets/books/naval.webp",lede:"把視角從單次輸贏拉回長期複利：判斷、選擇、專注與自由。它不是交易書，但很適合交易者。",why:"交易之外，你仍然需要一套關於時間、決策與長期主義的底層坐標。",meta:"Eric Jorgenson / Naval Ravikant · 最終推薦版本待 Owner 書單確認"}
 ];
