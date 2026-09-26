@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const view=document.querySelector('#view');
 document.body.dataset.experienceCandidate='1';
-let manifest=null,queued=false,hqSpriteURL='';
+let manifest=null,queued=false;
 
 function safeText(el,value){if(el)el.textContent=value}
 
@@ -77,30 +77,9 @@ function mediaElement(src,poster){
 
 function candidateSprite(){
   const s=manifest?.candidateSprite;
-  const media=hqSpriteURL||s?.media||s?.fallback;
+  const media=s?.media||s?.fallback;
   if(!media||!Number.isFinite(Number(s?.columns))||!Number.isFinite(Number(s?.rows)))return null;
-  return {media,columns:Number(s.columns),rows:Number(s.rows),quality:hqSpriteURL?'hq-packed':'fallback'};
-}
-async function hydrateHQSprite(){
-  const parts=manifest?.candidateSprite?.hqParts;
-  if(!Array.isArray(parts)||!parts.length)return false;
-  try{
-    const chunks=await Promise.all(parts.map(url=>fetch(url,{cache:'force-cache'}).then(r=>{
-      if(!r.ok)throw new Error('HQ sprite part '+r.status);
-      return r.text();
-    })));
-    const b64=chunks.join('').replace(/\\s+/g,'');
-    const raw=atob(b64);
-    const bytes=new Uint8Array(raw.length);
-    for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);
-    hqSpriteURL=URL.createObjectURL(new Blob([bytes],{type:'image/webp'}));
-    document.body.dataset.ecSpriteQuality='hq-packed';
-    return true;
-  }catch(err){
-    console.warn('HQ initial-class sprite fallback',err);
-    document.body.dataset.ecSpriteQuality='fallback';
-    return false;
-  }
+  return {media,columns:Number(s.columns),rows:Number(s.rows),quality:media.includes('initial-class-sprite-hq.webp')?'hq-binary':'fallback'};
 }
 function applySprite(el,index){
   const s=candidateSprite();
@@ -251,7 +230,7 @@ function queue(){if(queued)return;queued=true;requestAnimationFrame(mount)}
 
 (async()=>{
   manifest=await loadManifest();
-  await hydrateHQSprite();
+  document.body.dataset.ecSpriteQuality=candidateSprite()?.quality||'missing';
   warmCandidateSprite();
   window.TraderDNAPosterAugment=augmentMaterial02;
   new MutationObserver(queue).observe(view,{subtree:true,childList:true,attributes:true});
