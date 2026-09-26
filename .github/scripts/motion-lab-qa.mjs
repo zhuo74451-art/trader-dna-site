@@ -414,39 +414,39 @@ report.readingHashLanding = await readingHashPage.evaluate(() => {
 });
 await readingHashPage.close();
 
-const readingV5Open = await openPage(
+const readingV6Open = await openPage(
   { width: 1512, height: 982, deviceScaleFactor: 1 },
   false,
-  `${base}reading-v5.html?qa=visual-review`,
+  `${base}reading-v6.html?qa=visual-review`,
 );
-const readingV5 = readingV5Open.page;
-await settle(readingV5, 900);
-await shot(readingV5, "reading-v5-desktop-01");
-report.readingV5 = await readingV5.evaluate(() => ({
+const readingV6 = readingV6Open.page;
+await settle(readingV6, 900);
+await shot(readingV6, "reading-v6-desktop-01");
+report.readingV6 = await readingV6.evaluate(() => ({
   title: document.querySelector("h1")?.textContent?.trim() ?? null,
   scrollWidth: document.documentElement.scrollWidth,
   clientWidth: document.documentElement.clientWidth,
   bookWidth: document.querySelector(".book")?.getBoundingClientRect().width ?? null,
   bookHeight: document.querySelector(".book")?.getBoundingClientRect().height ?? null,
 }));
-await readingV5.close();
+await readingV6.close();
 
-const readingV5MobileOpen = await openPage(
+const readingV6MobileOpen = await openPage(
   { width: 390, height: 844, deviceScaleFactor: 1 },
   false,
-  `${base}reading-v5.html?qa=mobile-review`,
+  `${base}reading-v6.html?qa=mobile-review`,
 );
-const readingV5Mobile = readingV5MobileOpen.page;
-await settle(readingV5Mobile, 900);
-await shot(readingV5Mobile, "reading-v5-mobile-01");
-report.readingV5Mobile = await readingV5Mobile.evaluate(() => ({
+const readingV6Mobile = readingV6MobileOpen.page;
+await settle(readingV6Mobile, 900);
+await shot(readingV6Mobile, "reading-v6-mobile-01");
+report.readingV6Mobile = await readingV6Mobile.evaluate(() => ({
   scrollWidth: document.documentElement.scrollWidth,
   clientWidth: document.documentElement.clientWidth,
   title: document.querySelector("h1")?.textContent?.trim() ?? null,
   bookBottom: document.querySelector(".book")?.getBoundingClientRect().bottom ?? null,
   viewportHeight: window.innerHeight,
 }));
-await readingV5Mobile.close();
+await readingV6Mobile.close();
 
 const mobileOpen = await openPage({ width: 390, height: 844, deviceScaleFactor: 1 }, false);
 const mobile = mobileOpen.page;
@@ -578,8 +578,8 @@ report.status = {
   wide1728: wideOpen.status,
   reduced: reducedOpen.status,
   readingHash: readingHashOpen.status,
-  readingV5: readingV5Open.status,
-  readingV5Mobile: readingV5MobileOpen.status,
+  readingV6: readingV6Open.status,
+  readingV6Mobile: readingV6MobileOpen.status,
 };
 report.errors = errors;
 report.failures = failures;
@@ -616,11 +616,11 @@ if (
 ) {
   throw new Error(`reading hash landing failed: ${JSON.stringify(report.readingHashLanding)}`);
 }
-if (report.readingV5?.scrollWidth !== report.readingV5?.clientWidth) {
-  throw new Error(`reading V5 desktop overflow: ${JSON.stringify(report.readingV5)}`);
+if (report.readingV6?.scrollWidth !== report.readingV6?.clientWidth) {
+  throw new Error(`reading V6 desktop overflow: ${JSON.stringify(report.readingV6)}`);
 }
-if (report.readingV5Mobile?.scrollWidth !== report.readingV5Mobile?.clientWidth) {
-  throw new Error(`reading V5 mobile overflow: ${JSON.stringify(report.readingV5Mobile)}`);
+if (report.readingV6Mobile?.scrollWidth !== report.readingV6Mobile?.clientWidth) {
+  throw new Error(`reading V6 mobile overflow: ${JSON.stringify(report.readingV6Mobile)}`);
 }
 if (!report.mobile.menuOpen) throw new Error("mobile menu did not open by keyboard");
 if (errors.length) throw new Error(`console/page errors: ${JSON.stringify(errors.slice(0, 8))}`);
