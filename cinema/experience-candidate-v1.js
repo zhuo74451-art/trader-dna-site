@@ -172,6 +172,17 @@ function mountResult(){
   if(result.dataset.v4Ready!=='1'||result.dataset.cinemaReady!=='1'||result.dataset.d4Ready!=='1')return;
   const code=result.querySelector('.result-hero .code')?.textContent?.trim();
   const entry=manifest?.classes?.[code];
+
+  if(entry?.tagline&&!result.querySelector('.ec-class-tagline')){
+    const identity=result.querySelector('.result-hero .identity');
+    const hook=result.querySelector('.result-hero .hook');
+    const line=document.createElement('div');
+    line.className='ec-class-tagline';
+    line.innerHTML='<span>INITIAL CLASS</span><b>'+entry.tagline+'</b>';
+    if(identity)identity.insertAdjacentElement('afterend',line);
+    else if(hook)hook.insertAdjacentElement('beforebegin',line);
+  }
+
   const mark=result.querySelector('.v4-result-mark');
   const stack=result.querySelector('.v47-identity-stack');
 
