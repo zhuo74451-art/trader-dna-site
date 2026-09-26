@@ -70,7 +70,7 @@ async function capture(name){
   await mobileContext.close();
 }
 
-for(const name of ["reading-v24","reading-v25-real","reading-v25-vector"]) await capture(name);
+for(const name of ["reading-v25-real","reading-v26"]) await capture(name);
 fs.writeFileSync(path.join(out,"report.json"),JSON.stringify(report,null,2));
 console.log(JSON.stringify(report,null,2));
 
