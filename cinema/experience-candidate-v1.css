@@ -60,3 +60,27 @@ body[data-experience-candidate="1"] .ec-species-media[data-ready="1"] + .ec-orig
 @media(max-width:760px){
   .ec-species-media img,.ec-species-media video{max-width:58%;max-height:78%}
 }
+
+/* EC-01 initial-class visual study. One image layer, no second spectacle. */
+.ec-sprite-art{background-repeat:no-repeat;background-color:#11140f}
+.v47-identity-back>.ec-result-class-art{position:absolute;right:5%;bottom:7%;width:54%;aspect-ratio:22/15;z-index:0;border:1px solid #dbe7ca24;box-shadow:0 14px 32px #0007;opacity:.88;filter:saturate(.86) contrast(1.03);mask-image:linear-gradient(90deg,transparent 0,#000 13% 100%)}
+.v47-identity-back>span,.v47-identity-back>b,.v47-identity-back>em{position:relative;z-index:2}
+.result[data-ec-class-visual="candidate-sprite"] .v47-identity-back::after{content:"INITIAL CLASS / VISUAL STUDY";position:absolute;right:6%;bottom:4%;z-index:3;font:6px/1.3 var(--mono);letter-spacing:.11em;color:#c7d3b77d}
+.ec-class-archive[data-visual-authority="candidate"]::before{content:"VISUAL STUDY / NOT FINAL ART";display:block;margin-bottom:17px;font:7px/1.4 var(--mono);letter-spacing:.14em;color:#77846e}
+.ec-class-rail{grid-auto-columns:minmax(300px,28vw);gap:16px}
+.ec-class-card{aspect-ratio:22/15;border-color:#dbe7ca24;transition:transform .28s cubic-bezier(.2,.8,.2,1),border-color .28s}
+.ec-class-card:hover{transform:translateY(-4px);border-color:#dbe7ca52}
+.ec-class-card-art{position:absolute;inset:0;transition:transform .55s cubic-bezier(.2,.8,.2,1);filter:saturate(.9) contrast(1.03)}
+.ec-class-card:hover .ec-class-card-art{transform:scale(1.025)}
+.ec-class-card::after{background:linear-gradient(0deg,#050605f2 0%,#0506059e 22%,transparent 61%)}
+.ec-class-meta{bottom:15px}
+.ec-class-meta b{font-size:clamp(21px,1.8vw,29px)}
+.ec-class-meta span{font-size:7px}
+@media(max-width:760px){
+  .ec-class-rail{grid-auto-columns:minmax(270px,86vw)}
+  .v47-identity-back>.ec-result-class-art{width:58%;right:3%;bottom:9%}
+}
+@media(prefers-reduced-motion:reduce){
+  .ec-class-card,.ec-class-card-art{transition:none!important}
+  .ec-class-card:hover,.ec-class-card:hover .ec-class-card-art{transform:none!important}
+}
