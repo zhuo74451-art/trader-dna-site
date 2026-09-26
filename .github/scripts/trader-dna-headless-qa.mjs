@@ -263,6 +263,7 @@ try {
   const ecUrl = new URL('/cinema-detail-06-experience-candidate.html', base).href;
   await ec.goto(ecUrl, { waitUntil: 'networkidle', timeout: 30000 });
   await ec.locator('#start').waitFor({ state: 'visible', timeout: 15000 });
+  await ec.evaluate(async () => { try { await document.fonts.ready; } catch {} });
 
   const heroText = await ec.locator('.hero').innerText();
   for (const token of ['在更大的世界中','16','6','18','≈3']) {
@@ -281,7 +282,7 @@ try {
   await ec.locator('.result').waitFor({ state: 'visible', timeout: 20000 });
   const ecArchive = ec.locator('.ec-class-archive');
   await ecArchive.waitFor({ state: 'attached', timeout: 10000 });
-  if (!(await ecArchive.getAttribute('hidden'))) throw new Error('EC-01 archive must stay hidden until all 16 approved thumbnails exist');
+  if (!(await ecArchive.evaluate(el => el.hasAttribute('hidden') && el.hidden))) throw new Error('EC-01 archive must stay hidden until all 16 approved thumbnails exist');
 
   const ecFlip = ec.locator('.rs-flip-control');
   await ecFlip.waitFor({ state: 'visible', timeout: 10000 });
