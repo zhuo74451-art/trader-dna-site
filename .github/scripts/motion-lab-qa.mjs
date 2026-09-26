@@ -414,32 +414,32 @@ report.readingHashLanding = await readingHashPage.evaluate(() => {
 });
 await readingHashPage.close();
 
-const readingV6Open = await openPage(
+const readingV8Open = await openPage(
   { width: 1512, height: 982, deviceScaleFactor: 1 },
   false,
-  `${base}reading-v6.html?qa=visual-review`,
+  `${base}reading-v8.html?qa=visual-review`,
 );
-const readingV6 = readingV6Open.page;
-await settle(readingV6, 900);
-await shot(readingV6, "reading-v6-desktop-01");
+const readingV8 = readingV8Open.page;
+await settle(readingV8, 900);
+await shot(readingV8, "reading-v8-desktop-01");
 
-await readingV6.click('[data-tab="1"]');
-await readingV6.waitForFunction(
-  () => document.querySelector("[data-title]")?.textContent?.trim() === "新威科夫操盤法",
+await readingV8.click('[data-tab="1"]');
+await readingV8.waitForFunction(
+  () => document.querySelector("[data-title]")?.textContent?.trim() === "技術分析聖經",
   { timeout: 2600 },
 );
-await settle(readingV6, 980);
-await shot(readingV6, "reading-v6-desktop-02-market");
+await settle(readingV8, 980);
+await shot(readingV8, "reading-v8-desktop-02-market");
 
-await readingV6.click('[data-tab="2"]');
-await readingV6.waitForFunction(
+await readingV8.click('[data-tab="2"]');
+await readingV8.waitForFunction(
   () => document.querySelector("[data-title]")?.textContent?.trim() === "納瓦爾寶典",
   { timeout: 2600 },
 );
-await settle(readingV6, 980);
-await shot(readingV6, "reading-v6-desktop-03-growth");
+await settle(readingV8, 980);
+await shot(readingV8, "reading-v8-desktop-03-growth");
 
-report.readingV6 = await readingV6.evaluate(() => ({
+report.readingV8 = await readingV8.evaluate(() => ({
   title: document.querySelector("h1")?.textContent?.trim() ?? null,
   active: Array.from(document.querySelectorAll("[data-tab]")).findIndex(
     (el) => el.getAttribute("data-active") === "true",
@@ -450,24 +450,24 @@ report.readingV6 = await readingV6.evaluate(() => ({
   bookWidth: document.querySelector("[data-book]")?.getBoundingClientRect().width ?? null,
   bookHeight: document.querySelector("[data-book]")?.getBoundingClientRect().height ?? null,
 }));
-await readingV6.close();
+await readingV8.close();
 
-const readingV6MobileOpen = await openPage(
+const readingV8MobileOpen = await openPage(
   { width: 390, height: 844, deviceScaleFactor: 1 },
   false,
-  `${base}reading-v6.html?qa=mobile-review`,
+  `${base}reading-v8.html?qa=mobile-review`,
 );
-const readingV6Mobile = readingV6MobileOpen.page;
-await settle(readingV6Mobile, 900);
-await shot(readingV6Mobile, "reading-v6-mobile-01");
-report.readingV6Mobile = await readingV6Mobile.evaluate(() => ({
+const readingV8Mobile = readingV8MobileOpen.page;
+await settle(readingV8Mobile, 900);
+await shot(readingV8Mobile, "reading-v8-mobile-01");
+report.readingV8Mobile = await readingV8Mobile.evaluate(() => ({
   scrollWidth: document.documentElement.scrollWidth,
   clientWidth: document.documentElement.clientWidth,
   title: document.querySelector("h1")?.textContent?.trim() ?? null,
-  bookBottom: document.querySelector(".book")?.getBoundingClientRect().bottom ?? null,
+  bookBottom: document.querySelector("[data-book]")?.getBoundingClientRect().bottom ?? null,
   viewportHeight: window.innerHeight,
 }));
-await readingV6Mobile.close();
+await readingV8Mobile.close();
 
 const mobileOpen = await openPage({ width: 390, height: 844, deviceScaleFactor: 1 }, false);
 const mobile = mobileOpen.page;
@@ -599,8 +599,8 @@ report.status = {
   wide1728: wideOpen.status,
   reduced: reducedOpen.status,
   readingHash: readingHashOpen.status,
-  readingV6: readingV6Open.status,
-  readingV6Mobile: readingV6MobileOpen.status,
+  readingV8: readingV8Open.status,
+  readingV8Mobile: readingV8MobileOpen.status,
 };
 report.errors = errors;
 report.failures = failures;
@@ -637,14 +637,14 @@ if (
 ) {
   throw new Error(`reading hash landing failed: ${JSON.stringify(report.readingHashLanding)}`);
 }
-if (report.readingV6?.scrollWidth !== report.readingV6?.clientWidth) {
-  throw new Error(`reading V6 desktop overflow: ${JSON.stringify(report.readingV6)}`);
+if (report.readingV8?.scrollWidth !== report.readingV8?.clientWidth) {
+  throw new Error(`reading V6 desktop overflow: ${JSON.stringify(report.readingV8)}`);
 }
-if (report.readingV6?.title !== "納瓦爾寶典" || report.readingV6?.active !== 2) {
-  throw new Error(`reading V6 switching failed: ${JSON.stringify(report.readingV6)}`);
+if (report.readingV8?.title !== "納瓦爾寶典" || report.readingV8?.active !== 2) {
+  throw new Error(`reading V6 switching failed: ${JSON.stringify(report.readingV8)}`);
 }
-if (report.readingV6Mobile?.scrollWidth !== report.readingV6Mobile?.clientWidth) {
-  throw new Error(`reading V6 mobile overflow: ${JSON.stringify(report.readingV6Mobile)}`);
+if (report.readingV8Mobile?.scrollWidth !== report.readingV8Mobile?.clientWidth) {
+  throw new Error(`reading V6 mobile overflow: ${JSON.stringify(report.readingV8Mobile)}`);
 }
 if (!report.mobile.menuOpen) throw new Error("mobile menu did not open by keyboard");
 if (errors.length) throw new Error(`console/page errors: ${JSON.stringify(errors.slice(0, 8))}`);
