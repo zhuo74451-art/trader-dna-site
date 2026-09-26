@@ -133,3 +133,21 @@ body[data-experience-candidate="1"] .ec-species-media[data-ready="1"] + .ec-orig
   .ec-class-rail{grid-auto-columns:minmax(280px,84vw)}
   .ec-class-card{aspect-ratio:1.55/1}
 }
+
+
+/* Small-loop refinement: let the initial-class image lead without turning
+   the result into a game card. Existing V47 physicality remains underneath. */
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-dna{opacity:.34}
+.result[data-ec="1"] .ec-class-sprite-media{
+  transform:translateZ(1px) scale(1.055);
+  filter:saturate(.9) contrast(1.035) brightness(.95);
+}
+.result[data-ec="1"] .ec-class-sprite-media::after{
+  background:
+    linear-gradient(180deg,rgba(6,7,6,.03) 0%,rgba(6,7,6,0) 44%,rgba(6,7,6,.58) 100%),
+    linear-gradient(90deg,rgba(7,8,7,.12) 0%,transparent 50%,rgba(5,6,5,.04) 100%);
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-face{padding-bottom:7%}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-id{font-size:clamp(18px,1.65vw,26px)}
+.ec-class-card-art{filter:saturate(.9) contrast(1.025) brightness(.94)}
+.ec-class-card:hover .ec-class-card-art{filter:saturate(.98) contrast(1.035) brightness(.98)}
