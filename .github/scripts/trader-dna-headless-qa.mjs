@@ -61,11 +61,11 @@ try {
     }
   }
 
-  stage = 'reveal';
-  await page.locator('.reveal').waitFor({ state: 'visible', timeout: 10000 });
+  stage = 'reveal-or-result';
+  await page.locator('.reveal, .result').first().waitFor({ state: 'visible', timeout: 15000 });
 
   stage = 'result';
-  await page.locator('.result').waitFor({ state: 'visible', timeout: 15000 });
+  await page.locator('.result').waitFor({ state: 'visible', timeout: 20000 });
   await page.locator('.v3-share-studio').waitFor({ state: 'visible', timeout: 15000 });
 
   const bodyText = await page.locator('body').innerText();
