@@ -4,7 +4,7 @@
 
 .result[data-rs-candidate="1"] .v47-identity-stack{overflow:visible}
 .rs-card-rotor{position:absolute;inset:0;transform-style:preserve-3d;transition:transform 680ms cubic-bezier(.2,.8,.2,1)}
-.v47-identity-plate[data-rs-flipped="1"] .rs-card-rotor{transform:rotateY(180deg)}
+.v47-identity-stack[data-rs-flipped="1"] .rs-card-rotor{transform:rotateY(180deg)}
 .rs-card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform-style:preserve-3d}
 .rs-card-front{transform:rotateY(0)}
 .rs-card-back{transform:rotateY(180deg);overflow:hidden;color:#1c2116;background:linear-gradient(120deg,#fff9edb0,transparent 30%),repeating-linear-gradient(0deg,#51463106 0 1px,transparent 1px 4px),linear-gradient(135deg,#e3ddce,#f4eee1 50%,#d1cabc);border:1px solid #faf7eec7;border-radius:6px;box-shadow:3px 5px 0 #8c8778,8px 10px 0 #191d14;padding:8%}
