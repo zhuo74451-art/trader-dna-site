@@ -1,0 +1,128 @@
+{
+  "version": "initial-class-visuals-v1",
+  "baseSpecies": {
+    "heroMedia": null,
+    "poster": null,
+    "status": "awaiting-approved-asset"
+  },
+  "classes": {
+    "IWGF": {
+      "name": "哨兵",
+      "en": "SENTINEL",
+      "resultMedia": null,
+      "shareMedia": null,
+      "archiveThumb": null
+    },
+    "IWGC": {
+      "name": "狙击手",
+      "en": "SNIPER",
+      "resultMedia": null,
+      "shareMedia": null,
+      "archiveThumb": null
+    },
+    "IWHF": {
+      "name": "侦探",
+      "en": "DETECTIVE",
+      "resultMedia": null,
+      "shareMedia": null,
+      "archiveThumb": null
+    },
+    "IWHC": {
+      "name": "刺客",
+      "en": "ASSASSIN",
+      "resultMedia": null,
+      "shareMedia": null,
+      "archiveThumb": null
+    },
+    "IAGF": {
+      "name": "王牌特工",
+      "en": "OPERATIVE",
+      "resultMedia": null,
+      "shareMedia": null,
+      "archiveThumb": null
+    },
+    "IAGC": {
+      "name": "快枪手",
+      "en": "GUNSLINGER",
+      "resultMedia": null,
+      "shareMedia": null,
+      "archiveThumb": null
+    },
+    "IAHF": {
+      "name": "探路者",
+      "en": "PATHFINDER",
+      "resultMedia": null,
+      "shareMedia": null,
+      "archiveThumb": null
+    },
+    "IAHC": {
+      "name": "突击手",
+      "en": "ASSAULTER",
+      "resultMedia": null,
+      "shareMedia": null,
+      "archiveThumb": null
+    },
+    "SWGF": {
+      "name": "拆弹专家",
+      "en": "BOMB TECH",
+      "resultMedia": null,
+      "shareMedia": null,
+      "archiveThumb": null
+    },
+    "SWGC": {
+      "name": "锦衣卫",
+      "en": "IMPERIAL GUARD",
+      "resultMedia": null,
+      "shareMedia": null,
+      "archiveThumb": null
+    },
+    "SWHF": {
+      "name": "情报官",
+      "en": "INTELLIGENCE",
+      "resultMedia": null,
+      "shareMedia": null,
+      "archiveThumb": null
+    },
+    "SWHC": {
+      "name": "军师",
+      "en": "STRATEGIST",
+      "resultMedia": null,
+      "shareMedia": null,
+      "archiveThumb": null
+    },
+    "SAGF": {
+      "name": "海军上校",
+      "en": "NAVAL CAPTAIN",
+      "resultMedia": null,
+      "shareMedia": null,
+      "archiveThumb": null
+    },
+    "SAGC": {
+      "name": "将军",
+      "en": "GENERAL",
+      "resultMedia": null,
+      "shareMedia": null,
+      "archiveThumb": null
+    },
+    "SAHF": {
+      "name": "猎手",
+      "en": "HUNTER",
+      "resultMedia": null,
+      "shareMedia": null,
+      "archiveThumb": null
+    },
+    "SAHC": {
+      "name": "指挥官",
+      "en": "COMMANDER",
+      "resultMedia": null,
+      "shareMedia": null,
+      "archiveThumb": null
+    }
+  },
+  "archivePolicy": "mount-only-when-all-16-approved-thumbnails-exist",
+  "notes": [
+    "Initial class only: first career transition, not evolved/final form.",
+    "Result media and share media may use different crops from the same approved character identity.",
+    "No placeholder character should be rendered when an asset is missing."
+  ]
+}
