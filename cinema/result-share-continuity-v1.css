@@ -1,0 +1,35 @@
+/* Trader DNA Result + Share Candidate
+   Donors: React Bits FlipCard interaction model + Codrops shared-element continuity.
+   Uses existing Detail04 v47 tilt/parallax and existing Material02 publish pipeline. */
+
+.result[data-rs-candidate="1"] .v47-identity-stack{overflow:visible}
+.rs-card-rotor{position:absolute;inset:0;transform-style:preserve-3d;transition:transform 680ms cubic-bezier(.2,.8,.2,1)}
+.v47-identity-plate[data-rs-flipped="1"] .rs-card-rotor{transform:rotateY(180deg)}
+.rs-card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform-style:preserve-3d}
+.rs-card-front{transform:rotateY(0)}
+.rs-card-back{transform:rotateY(180deg);overflow:hidden;color:#1c2116;background:linear-gradient(120deg,#fff9edb0,transparent 30%),repeating-linear-gradient(0deg,#51463106 0 1px,transparent 1px 4px),linear-gradient(135deg,#e3ddce,#f4eee1 50%,#d1cabc);border:1px solid #faf7eec7;border-radius:6px;box-shadow:3px 5px 0 #8c8778,8px 10px 0 #191d14;padding:8%}
+.rs-card-back::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--tc)}
+.rs-back-meta{display:flex;justify-content:space-between;gap:12px;padding-bottom:18px;border-bottom:1px solid #2b302421;font:7px/1.4 var(--mono);letter-spacing:.12em;color:#68705d}
+.rs-back-code{font:900 clamp(62px,7.4vw,122px)/.84 var(--sans);letter-spacing:-.075em;margin:14% 0 7%}
+.rs-back-name{font:650 clamp(20px,2.2vw,36px)/1.2 var(--serif)}
+.rs-back-hook{max-width:24em;margin:8% 0 0;font:12px/1.9 var(--serif);color:#58604e}
+.rs-back-foot{position:absolute;left:8%;right:8%;bottom:7%;display:flex;justify-content:space-between;gap:12px;padding-top:14px;border-top:1px solid #2b302421;font:6px/1.4 var(--mono);letter-spacing:.1em;color:#737b68}
+.rs-flip-control{position:absolute;right:5%;top:2%;z-index:12;border:1px solid #c9d9ab3f;background:#0d130ae8;color:#dfe9d2;padding:10px 13px;font:6px/1 var(--mono);letter-spacing:.11em;cursor:pointer;box-shadow:0 10px 25px #0005}
+.rs-flip-control:hover{background:#151c12}
+.rs-publish-bridge{display:inline-flex;align-items:center;gap:12px;margin-top:24px;padding:0;border:0;border-bottom:1px solid #b4c69b5e;background:none;color:#b5c6a2;font:8px/2.2 var(--mono);letter-spacing:.12em;cursor:pointer}
+.rs-publish-bridge i{font-style:normal;color:var(--tc);transition:transform .25s}
+.rs-publish-bridge:hover i{transform:translate(3px,3px)}
+.rs-flight-card{position:fixed!important;inset:auto!important;z-index:9999!important;margin:0!important;pointer-events:none!important;transform:none!important;filter:drop-shadow(0 28px 36px #0009)!important;transform-origin:top left!important}
+body[data-rs-travelling="1"]{overflow-x:hidden}
+.v3-share-stage[data-rs-target="1"]{outline:1px solid #d9e8c624;outline-offset:10px}
+@media(max-width:760px){
+  .rs-flip-control{right:0;top:-3%;font-size:5px;padding:9px 10px}
+  .rs-back-code{font-size:70px}
+  .rs-back-name{font-size:20px}
+  .rs-back-hook{font-size:10px}
+  .rs-publish-bridge{font-size:7px;margin-top:19px}
+}
+@media(prefers-reduced-motion:reduce){
+  .rs-card-rotor{transition:none!important}
+  .rs-flight-card{display:none!important}
+}
