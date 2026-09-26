@@ -1,3 +1,4 @@
+body[data-experience-candidate="1"]{--sans:"Noto Sans TC","Helvetica Neue",Arial,"PingFang TC",sans-serif;--serif:"Noto Serif TC","Songti TC",serif}
 /* Trader DNA EC-01
    Based directly on the approved web concept structure.
    No final character placeholders are rendered. */
@@ -47,3 +48,6 @@ body[data-experience-candidate="1"] .hero-meta{display:none}
 @media(prefers-reduced-motion:reduce){
   .ec-class-rail{scroll-behavior:auto}
 }
+/* EC-01 must not imply that the old photographic human face is the Species. */
+body[data-experience-candidate="1"] .hero .cinema-face{display:none!important}
+body[data-experience-candidate="1"] .hero .ec-species-media[data-ready="1"]{display:block!important}
