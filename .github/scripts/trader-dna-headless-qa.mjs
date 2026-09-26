@@ -192,6 +192,47 @@ try {
   receipt.motionLab = { ...labState, errors: labErrors };
   receipt.motionExport = { filename: suggested, bytes: videoStat.size, ext };
 
+  stage = 'production-result-share-candidate';
+  const candidateContext = await browser.newContext({
+    viewport: { width: 1440, height: 1000 },
+    deviceScaleFactor: 1,
+    reducedMotion: 'no-preference'
+  });
+  const candidate = await candidateContext.newPage();
+  const candidateErrors = [];
+  candidate.on('pageerror', err => candidateErrors.push('pageerror: ' + String(err)));
+  candidate.on('console', msg => { if (msg.type() === 'error') candidateErrors.push('console: ' + msg.text()); });
+  const candidateUrl = new URL('/cinema-detail-05-candidate.html', base).href;
+  await candidate.goto(candidateUrl, { waitUntil: 'networkidle', timeout: 30000 });
+  await candidate.locator('#start').click();
+  for (let i = 1; i <= 18; i++) {
+    const expected = 'Q' + String(i).padStart(2, '0');
+    await candidate.waitForFunction(q => document.querySelector('.question-index')?.textContent?.trim() === q, expected, { timeout: 15000 });
+    await candidate.locator('.option').first().click({ timeout: 15000 });
+  }
+  await candidate.locator('.result').waitFor({ state: 'visible', timeout: 20000 });
+  const flipControl = candidate.locator('.rs-flip-control');
+  await flipControl.waitFor({ state: 'visible', timeout: 15000 });
+  await candidate.screenshot({ path: out + '/candidate-result-front.png', fullPage: false });
+
+  await flipControl.click();
+  await candidate.waitForTimeout(760);
+  const plate = candidate.locator('.v47-identity-plate');
+  if ((await plate.getAttribute('data-rs-flipped')) !== '1') throw new Error('Production candidate flip did not reach back face');
+  await candidate.screenshot({ path: out + '/candidate-result-back.png', fullPage: false });
+
+  await flipControl.click();
+  await candidate.waitForTimeout(760);
+  const publishBridge = candidate.locator('.rs-publish-bridge');
+  await publishBridge.click();
+  await candidate.waitForFunction(() => document.querySelector('.v3-share-studio')?.dataset?.v48Publish === 'published', null, { timeout: 10000 });
+  const publishedState = await candidate.locator('.v3-share-studio').getAttribute('data-v48-publish');
+  if (publishedState !== 'published') throw new Error('Production candidate did not complete share publication');
+  await candidate.locator('.v3-share-studio').screenshot({ path: out + '/candidate-share-published.png' });
+  if (candidateErrors.length) throw new Error('Production candidate browser errors: ' + JSON.stringify(candidateErrors));
+  receipt.productionResultShareCandidate = { flip: true, publishedState, errors: candidateErrors };
+  await candidateContext.close();
+
   stage = 'result-share-donor-lab';
   const donorContext = await browser.newContext({
     viewport: { width: 1440, height: 1000 },
