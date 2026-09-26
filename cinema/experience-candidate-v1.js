@@ -118,7 +118,11 @@ function augmentMaterial02({canvas,ctx,data,format,W,H}){
   const entry=manifest?.classes?.[data?.code];
   if(!spriteImage||!entry||!Number.isInteger(entry.spriteIndex))return;
   const tall=H>1500;
-  const dx=tall?430:420,dy=tall?520:390,dw=tall?620:625,dh=tall?930:720;
+
+  // Keep the approved initial-class art secondary to the editorial card.
+  // The current visual-bible crop is intentionally not stretched to full-bleed;
+  // a future isolated render can replace this layer without changing layout.
+  const dx=tall?520:500,dy=tall?610:465,dw=tall?485:470,dh=tall?720:555;
 
   const pane=document.createElement('canvas');
   pane.width=Math.round(dw);pane.height=Math.round(dh);
@@ -127,30 +131,34 @@ function augmentMaterial02({canvas,ctx,data,format,W,H}){
   pctx.imageSmoothingQuality='high';
   drawSpriteCellCover(pctx,spriteImage,entry.spriteIndex,0,0,dw,dh);
 
+  // Four-side editorial feather: remove the pasted-rectangle feeling.
   pctx.globalCompositeOperation='destination-in';
   const maskX=pctx.createLinearGradient(0,0,dw,0);
   maskX.addColorStop(0,'rgba(0,0,0,0)');
-  maskX.addColorStop(.16,'rgba(0,0,0,.72)');
-  maskX.addColorStop(.28,'rgba(0,0,0,1)');
-  maskX.addColorStop(1,'rgba(0,0,0,1)');
+  maskX.addColorStop(.10,'rgba(0,0,0,.72)');
+  maskX.addColorStop(.20,'rgba(0,0,0,1)');
+  maskX.addColorStop(.84,'rgba(0,0,0,1)');
+  maskX.addColorStop(1,'rgba(0,0,0,0)');
   pctx.fillStyle=maskX;pctx.fillRect(0,0,dw,dh);
 
   const maskY=pctx.createLinearGradient(0,0,0,dh);
-  maskY.addColorStop(0,'rgba(0,0,0,.9)');
-  maskY.addColorStop(.78,'rgba(0,0,0,1)');
+  maskY.addColorStop(0,'rgba(0,0,0,.42)');
+  maskY.addColorStop(.09,'rgba(0,0,0,1)');
+  maskY.addColorStop(.80,'rgba(0,0,0,1)');
   maskY.addColorStop(1,'rgba(0,0,0,0)');
   pctx.fillStyle=maskY;pctx.fillRect(0,0,dw,dh);
 
   ctx.save();
-  ctx.globalAlpha=.98;
+  ctx.globalAlpha=.93;
   ctx.drawImage(pane,dx,dy,dw,dh);
   ctx.restore();
 
+  // A restrained registration mark instead of another UI panel.
   ctx.save();
-  ctx.font='11px ui-monospace, SFMono-Regular, Menlo, monospace';
-  ctx.fillStyle='rgba(72,68,60,.68)';
+  ctx.font='10px ui-monospace, SFMono-Regular, Menlo, monospace';
+  ctx.fillStyle='rgba(72,68,60,.54)';
   ctx.textAlign='right';
-  ctx.fillText('INITIAL CLASS / '+data.code,W-76,dy+18);
+  ctx.fillText('INITIAL CLASS / '+data.code,W-76,dy+14);
   ctx.restore();
 
   canvas.dataset.ecClassMedia='1';
