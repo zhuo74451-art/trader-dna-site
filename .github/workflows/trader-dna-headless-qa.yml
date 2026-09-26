@@ -1,0 +1,47 @@
+name: Trader DNA Headless QA
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scan01.html"
+      - "cinema-detail-04.html"
+      - "cinema/**"
+      - "data/questions-1.json"
+      - "data/types.json"
+      - "sw.js"
+      - ".github/scripts/trader-dna-headless-qa.mjs"
+      - ".github/workflows/trader-dna-headless-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  headless-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install browser runtime
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Start local preview
+        run: |
+          python3 -m http.server 4173 > /tmp/trader-dna-http.log 2>&1 &
+          echo $! > /tmp/trader-dna-http.pid
+          sleep 2
+          curl -f http://127.0.0.1:4173/scan01.html > /dev/null
+
+      - name: Run hidden browser QA
+        run: node .github/scripts/trader-dna-headless-qa.mjs
+
+      - name: Upload receipts
+        uses: actions/upload-artifact@v4
+        with:
+          name: trader-dna-headless-qa
+          path: trader-dna-headless-qa/**
+          if-no-files-found: error
+          retention-days: 7
