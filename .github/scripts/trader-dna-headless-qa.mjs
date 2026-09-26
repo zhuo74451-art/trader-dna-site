@@ -250,6 +250,63 @@ try {
   receipt.productionResultShareCandidate = { flip: true, publishedState, errors: candidateErrors };
   await candidateContext.close();
 
+  stage = 'experience-candidate';
+  const ecContext = await browser.newContext({
+    viewport: { width: 1440, height: 1000 },
+    deviceScaleFactor: 1,
+    reducedMotion: 'no-preference'
+  });
+  const ec = await ecContext.newPage();
+  const ecErrors = [];
+  ec.on('pageerror', err => ecErrors.push('pageerror: ' + String(err)));
+  ec.on('console', msg => { if (msg.type() === 'error') ecErrors.push('console: ' + msg.text()); });
+  const ecUrl = new URL('/cinema-detail-06-experience-candidate.html', base).href;
+  await ec.goto(ecUrl, { waitUntil: 'networkidle', timeout: 30000 });
+  await ec.locator('#start').waitFor({ state: 'visible', timeout: 15000 });
+
+  const heroText = await ec.locator('.hero').innerText();
+  for (const token of ['在更大的世界中','16','6','18','≈3']) {
+    if (!heroText.includes(token)) throw new Error('EC-01 hero missing token: ' + token);
+  }
+  const placeholderMedia = await ec.locator('.ec-species-media[data-ready="1"]').count();
+  if (placeholderMedia) throw new Error('EC-01 rendered an unapproved Species placeholder');
+  await ec.screenshot({ path: out + '/ec01-landing.png', fullPage: false });
+
+  await ec.locator('#start').click();
+  for (let i = 1; i <= 18; i++) {
+    const expected = 'Q' + String(i).padStart(2, '0');
+    await ec.waitForFunction(q => document.querySelector('.question-index')?.textContent?.trim() === q, expected, { timeout: 15000 });
+    await ec.locator('.option').first().click({ timeout: 15000 });
+  }
+  await ec.locator('.result').waitFor({ state: 'visible', timeout: 20000 });
+  const ecArchive = ec.locator('.ec-class-archive');
+  await ecArchive.waitFor({ state: 'attached', timeout: 10000 });
+  if (!(await ecArchive.getAttribute('hidden'))) throw new Error('EC-01 archive must stay hidden until all 16 approved thumbnails exist');
+
+  const ecFlip = ec.locator('.rs-flip-control');
+  await ecFlip.waitFor({ state: 'visible', timeout: 10000 });
+  await ecFlip.click();
+  await ec.waitForTimeout(720);
+  const ecFlipState = await ecFlip.evaluate(el => el.closest('.result')?.querySelector('.v47-identity-stack')?.getAttribute('data-rs-flipped'));
+  if (ecFlipState !== '1') throw new Error('EC-01 result flip failed');
+
+  await ecFlip.click();
+  await ec.waitForTimeout(720);
+  await ec.locator('.rs-publish-bridge').click();
+  await ec.waitForFunction(() => document.querySelector('.v3-share-studio')?.dataset?.v48Publish === 'published', null, { timeout: 10000 });
+  await ec.locator('.v3-share-studio').screenshot({ path: out + '/ec01-share.png' });
+
+  if (ecErrors.length) throw new Error('EC-01 browser errors: ' + JSON.stringify(ecErrors));
+  receipt.experienceCandidate = {
+    hero: true,
+    approvedPlaceholderPolicy: true,
+    archiveGated: true,
+    resultFlip: true,
+    sharePublished: true,
+    errors: ecErrors
+  };
+  await ecContext.close();
+
   stage = 'result-share-donor-lab';
   const donorContext = await browser.newContext({
     viewport: { width: 1440, height: 1000 },
