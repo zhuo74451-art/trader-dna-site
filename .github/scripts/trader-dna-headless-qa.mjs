@@ -229,8 +229,9 @@ try {
   await flipControl.click();
   await candidate.waitForTimeout(760);
   const flipState = await flipControl.evaluate(el => ({
-    state: el.closest('.v47-identity-stack')?.getAttribute('data-rs-flipped') || null,
+    state: el.closest('.result')?.querySelector('.v47-identity-stack')?.getAttribute('data-rs-flipped') || null,
     controlText: el.textContent?.trim() || '',
+    clickCount: el.getAttribute('data-rs-click-count') || '0',
     stackCount: document.querySelectorAll('.v47-identity-stack').length
   }));
   if (flipState.state !== '1') throw new Error('Production candidate flip did not reach back face: ' + JSON.stringify(flipState));
