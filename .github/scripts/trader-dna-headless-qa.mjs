@@ -30,6 +30,9 @@ try {
   page.on('console', msg => {
     if (msg.type() === 'error') errors.push('console: ' + msg.text());
   });
+  page.on('response', response => {
+    if (response.status() === 404) errors.push('http404: ' + response.url());
+  });
 
   stage = 'landing';
   await page.goto(base, { waitUntil: 'networkidle', timeout: 30000 });
