@@ -86,3 +86,14 @@ Owner-supplied `Trader_DNA_Quick_18_V1.2_台灣繁體版.docx` was mechanically 
 - B choices: 18/18 match.
 - Existing facet/pole metadata remains untouched.
 - Therefore no question-copy replacement is required for V1.2; active Quick-18 already carries the supplied final wording.
+
+
+## Initial-class copy layering · 2026-09-27
+
+Copy roles are now intentionally split:
+
+- **Initial-class tagline** = short profession-readable line from the approved 16-class visual bible (e.g. 狙擊手「等待最好的一擊。」). Used in Archive and EC-01 result as a secondary identity seal.
+- **Trader DNA hook/body/reminder** = existing model interpretation copy from `data/types.json`. Keep it as the explanation of the decision pattern; do not rewrite it merely to make the profession name more literal.
+- Share card remains restrained: role name + existing public hook + character art. Do not add every copy layer to the public artifact.
+
+This avoids a false choice between profession readability and measurement fidelity.
