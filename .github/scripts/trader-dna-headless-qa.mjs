@@ -288,9 +288,34 @@ try {
     await ec.locator('.option').first().click({ timeout: 15000 });
   }
   await ec.locator('.result').waitFor({ state: 'visible', timeout: 20000 });
+  const classArt = ec.locator('.ec-result-class-art[data-ready="1"]');
+  await classArt.waitFor({ state: 'visible', timeout: 10000 });
+  const classArtState = await classArt.evaluate(el => ({
+    spriteIndex: el.dataset.spriteIndex,
+    backgroundImage: getComputedStyle(el).backgroundImage
+  }));
+  if (classArtState.spriteIndex !== '1' || !classArtState.backgroundImage.includes('initial-class-sprite.webp')) {
+    throw new Error('EC-01 IWGC class visual study did not mount correctly: ' + JSON.stringify(classArtState));
+  }
+  await ec.locator('.result-hero').screenshot({ path: out + '/ec01-result-hero.png' });
+
   const ecArchive = ec.locator('.ec-class-archive');
-  await ecArchive.waitFor({ state: 'attached', timeout: 10000 });
-  if (!(await ecArchive.evaluate(el => el.hasAttribute('hidden') && el.hidden))) throw new Error('EC-01 archive must stay hidden until all 16 approved thumbnails exist');
+  await ecArchive.waitFor({ state: 'visible', timeout: 10000 });
+  const archiveState = await ecArchive.evaluate(el => ({
+    authority: el.dataset.visualAuthority,
+    hidden: el.hidden,
+    cards: el.querySelectorAll('.ec-class-card').length,
+    spriteCards: el.querySelectorAll('.ec-class-card-art[data-ready="1"]').length,
+    text: el.innerText
+  }));
+  if (archiveState.hidden || archiveState.authority !== 'candidate' || archiveState.cards !== 16 || archiveState.spriteCards !== 16) {
+    throw new Error('EC-01 candidate archive did not mount all 16 classes: ' + JSON.stringify(archiveState));
+  }
+  for (const token of ['哨兵','狙擊手','錦衣衛','指揮官']) {
+    if (!archiveState.text.includes(token)) throw new Error('EC-01 archive missing class label: ' + token);
+  }
+  await ecArchive.scrollIntoViewIfNeeded();
+  await ecArchive.screenshot({ path: out + '/ec01-initial-class-archive.png' });
 
   const ecFlip = ec.locator('.rs-flip-control');
   await ecFlip.waitFor({ state: 'visible', timeout: 10000 });
@@ -309,7 +334,8 @@ try {
   receipt.experienceCandidate = {
     hero: true,
     approvedOriginSpecies: originMediaState,
-    archiveGated: true,
+    classVisualStudy: classArtState,
+    initialClassArchive: archiveState,
     resultFlip: true,
     sharePublished: true,
     errors: ecErrors
@@ -349,10 +375,14 @@ try {
     scrollWidth: document.documentElement.scrollWidth,
     innerWidth: window.innerWidth,
     resultWidth: Math.round(document.querySelector('.result')?.getBoundingClientRect().width || 0),
-    archiveHidden: Boolean(document.querySelector('.ec-class-archive')?.hidden)
+    archiveHidden: Boolean(document.querySelector('.ec-class-archive')?.hidden),
+    archiveCards: document.querySelectorAll('.ec-class-archive .ec-class-card').length,
+    classArtReady: Boolean(document.querySelector('.ec-result-class-art[data-ready="1"]'))
   }));
   if (mobileResultMetrics.scrollWidth > mobileResultMetrics.innerWidth + 2) throw new Error('EC-01 mobile result has horizontal overflow: ' + JSON.stringify(mobileResultMetrics));
-  if (!mobileResultMetrics.archiveHidden) throw new Error('EC-01 mobile archive gate failed');
+  if (mobileResultMetrics.archiveHidden || mobileResultMetrics.archiveCards !== 16 || !mobileResultMetrics.classArtReady) {
+    throw new Error('EC-01 mobile class visual study failed: ' + JSON.stringify(mobileResultMetrics));
+  }
   await ecMobile.screenshot({ path: out + '/ec01-result-mobile.png', fullPage: true });
   if (ecMobileErrors.length) throw new Error('EC-01 mobile browser errors: ' + JSON.stringify(ecMobileErrors));
   receipt.experienceCandidateMobile = { ...mobileMetrics, ...mobileResultMetrics, reducedMotion: true, errors: ecMobileErrors };
