@@ -65,7 +65,7 @@ async function capture(version){
   await mobileContext.close();
 }
 
-for(const v of [17,18,19]) await capture(v);
+for(const v of [18,19,20]) await capture(v);
 fs.writeFileSync(path.join(out,"report.json"),JSON.stringify(report,null,2));
 console.log(JSON.stringify(report,null,2));
 
