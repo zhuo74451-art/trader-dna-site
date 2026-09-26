@@ -38,8 +38,9 @@ document.querySelectorAll('.relief').forEach(renderRelief);
 const tape=document.querySelector('.choice-tape');
 choices.forEach((v,i)=>{
   const bar=document.createElement('i');
-  bar.style.height=(v==='A'?-(20+(i%4)*7):(20+(i%4)*7))+'px';
+  bar.style.height=(20+(i%4)*7)+'px';
   bar.style.transform=v==='A'?'translateY(-50%)':'translateY(50%)';
+  bar.dataset.choice=v;
   tape.appendChild(bar);
 });
 
