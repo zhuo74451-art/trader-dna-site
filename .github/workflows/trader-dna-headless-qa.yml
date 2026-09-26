@@ -39,6 +39,7 @@ jobs:
         run: node .github/scripts/trader-dna-headless-qa.mjs
 
       - name: Upload receipts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: trader-dna-headless-qa
