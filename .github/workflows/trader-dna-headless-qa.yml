@@ -7,6 +7,7 @@ on:
       - "scan01.html"
       - "index.html"
       - "cinema-detail-04.html"
+      - "cinema-detail-05-candidate.html"
       - "result-share-donor-lab.html"
       - "cinema/**"
       - "data/questions-1.json"
