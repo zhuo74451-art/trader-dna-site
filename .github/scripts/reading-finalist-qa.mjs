@@ -25,8 +25,7 @@ await new Promise(r=>server.listen(port,"127.0.0.1",r));
 const browser=await chromium.launch({headless:true});
 const report={};
 
-async function capture(version){
-  const name=`reading-v${version}`;
+async function capture(name){
   const context=await browser.newContext({viewport:{width:1512,height:982}});
   const page=await context.newPage();
   const errors=[]; const failed=[];
@@ -65,7 +64,7 @@ async function capture(version){
   await mobileContext.close();
 }
 
-for(const v of [23,24]) await capture(v);
+for(const name of ["reading-v24","reading-v25-real","reading-v25-vector"]) await capture(name);
 fs.writeFileSync(path.join(out,"report.json"),JSON.stringify(report,null,2));
 console.log(JSON.stringify(report,null,2));
 
