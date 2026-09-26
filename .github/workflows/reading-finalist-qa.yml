@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - "82trade-motion-lab/reading-v15.html"
-      - "82trade-motion-lab/reading-v16.html"
+      - "82trade-motion-lab/reading-v18.html"
       - "82trade-motion-lab/reading-v17.html"
       - ".github/scripts/reading-finalist-qa.mjs"
       - ".github/workflows/reading-finalist-qa.yml"
