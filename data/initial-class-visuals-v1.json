@@ -14,14 +14,14 @@
       "archiveThumb": null
     },
     "IWGC": {
-      "name": "狙击手",
+      "name": "狙擊手",
       "en": "SNIPER",
       "resultMedia": null,
       "shareMedia": null,
       "archiveThumb": null
     },
     "IWHF": {
-      "name": "侦探",
+      "name": "偵探",
       "en": "DETECTIVE",
       "resultMedia": null,
       "shareMedia": null,
@@ -42,7 +42,7 @@
       "archiveThumb": null
     },
     "IAGC": {
-      "name": "快枪手",
+      "name": "快槍手",
       "en": "GUNSLINGER",
       "resultMedia": null,
       "shareMedia": null,
@@ -56,63 +56,63 @@
       "archiveThumb": null
     },
     "IAHC": {
-      "name": "突击手",
+      "name": "突擊手",
       "en": "ASSAULTER",
       "resultMedia": null,
       "shareMedia": null,
       "archiveThumb": null
     },
     "SWGF": {
-      "name": "拆弹专家",
+      "name": "拆彈專家",
       "en": "BOMB TECH",
       "resultMedia": null,
       "shareMedia": null,
       "archiveThumb": null
     },
     "SWGC": {
-      "name": "锦衣卫",
+      "name": "錦衣衛",
       "en": "IMPERIAL GUARD",
       "resultMedia": null,
       "shareMedia": null,
       "archiveThumb": null
     },
     "SWHF": {
-      "name": "情报官",
+      "name": "情報官",
       "en": "INTELLIGENCE",
       "resultMedia": null,
       "shareMedia": null,
       "archiveThumb": null
     },
     "SWHC": {
-      "name": "军师",
+      "name": "軍師",
       "en": "STRATEGIST",
       "resultMedia": null,
       "shareMedia": null,
       "archiveThumb": null
     },
     "SAGF": {
-      "name": "海军上校",
+      "name": "海軍上校",
       "en": "NAVAL CAPTAIN",
       "resultMedia": null,
       "shareMedia": null,
       "archiveThumb": null
     },
     "SAGC": {
-      "name": "将军",
+      "name": "將軍",
       "en": "GENERAL",
       "resultMedia": null,
       "shareMedia": null,
       "archiveThumb": null
     },
     "SAHF": {
-      "name": "猎手",
+      "name": "獵手",
       "en": "HUNTER",
       "resultMedia": null,
       "shareMedia": null,
       "archiveThumb": null
     },
     "SAHC": {
-      "name": "指挥官",
+      "name": "指揮官",
       "en": "COMMANDER",
       "resultMedia": null,
       "shareMedia": null,
