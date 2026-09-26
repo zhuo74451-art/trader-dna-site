@@ -50,3 +50,39 @@ Status:
 - **MECHANISM ACCEPTED / VISUAL NOT PROMOTED**.
 - Do not make this the stable QR/runtime target yet.
 - Final first-screen Species media and final share-card Species composition wait for approved initial-form character assets.
+
+
+## Experience candidate · EC-01 · 2026-09-27
+
+Isolated entry:
+- https://zhuo74451-art.github.io/trader-dna-site/cinema-detail-06-experience-candidate.html
+
+Frozen six-scene structure:
+1. Origin / unassigned Species
+2. 18-question assessment
+3. Q18 identity formation
+4. initial-class result
+5. Material 02 share artifact
+6. 16 Initial Classes archive
+
+Large-loop result:
+- no new runtime motion dependency is required;
+- current internal Q18 particle morph remains the primary signature reveal;
+- V47 remains result tilt/parallax authority;
+- RS-01 remains result flip + shared-object-to-share continuity;
+- Archive uses native scroll-snap once all 16 approved thumbnails exist.
+
+Current visual status:
+- EC-01 browser flow and asset-gating policy: PASS.
+- Base Species and class media are intentionally not faked when missing.
+- Do not promote EC-01 to the stable QR target until approved visual media has been mounted and static/mobile screenshots pass.
+
+## Final Quick-18 source seal · 2026-09-27
+
+Owner-supplied `Trader_DNA_Quick_18_V1.2_台灣繁體版.docx` was mechanically checked against active `data/questions-1.json`.
+
+- Q1-Q18 question text: 18/18 match after whitespace normalization.
+- A choices: 18/18 match.
+- B choices: 18/18 match.
+- Existing facet/pole metadata remains untouched.
+- Therefore no question-copy replacement is required for V1.2; active Quick-18 already carries the supplied final wording.
