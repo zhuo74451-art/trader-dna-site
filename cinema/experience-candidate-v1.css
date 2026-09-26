@@ -1,0 +1,49 @@
+/* Trader DNA EC-01
+   Based directly on the approved web concept structure.
+   No final character placeholders are rendered. */
+
+body[data-experience-candidate="1"] .hero{grid-template-columns:1.03fr 1.1fr;gap:3.5vw;padding-top:56px}
+body[data-experience-candidate="1"] .hero h1{font-size:clamp(54px,6.2vw,110px);line-height:1.06;max-width:7.8em;white-space:normal;text-wrap:balance}
+body[data-experience-candidate="1"] .hero h1 em{display:block;font-style:normal}
+body[data-experience-candidate="1"] .hero-copy{max-width:31em;font-size:clamp(15px,1.12vw,19px)}
+.ec-hero-subline{display:block;margin-top:9px;font:9px/1.4 var(--mono);letter-spacing:.15em;color:#8f9986}
+.ec-hero-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:34px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.ec-hero-stat{min-width:0;padding:18px 18px 17px 0}
+.ec-hero-stat+.ec-hero-stat{padding-left:18px;border-left:1px solid var(--rule)}
+.ec-hero-stat b{display:block;font:800 clamp(24px,2.5vw,42px)/1 var(--sans);letter-spacing:-.04em}
+.ec-hero-stat span{display:block;margin-top:8px;font:7px/1.5 var(--mono);letter-spacing:.09em;color:#8f9a82}
+body[data-experience-candidate="1"] .hero-meta{display:none}
+.ec-origin-badge{position:absolute;left:28px;bottom:28px;z-index:9;display:grid;gap:4px;font:7px/1.4 var(--mono);letter-spacing:.12em;color:#a9b59b}
+.ec-origin-badge b{font-weight:500;color:#d9e1ce}
+.ec-origin-badge i{font-style:normal;color:#77836e}
+.ec-species-media{position:absolute;inset:0;z-index:2;display:none}
+.ec-species-media[data-ready="1"]{display:block}
+.ec-species-media img,.ec-species-media video{width:100%;height:100%;object-fit:cover}
+.reveal[data-ec="1"] .reveal-label::after{content:" / INITIAL CLASS";color:var(--tc)}
+.reveal[data-ec="1"] .reveal-name{max-width:80vw}
+.result[data-ec="1"] .result-kicker::after{content:" / INITIAL CLASS";color:var(--tc)}
+.ec-class-media{position:absolute;inset:0;z-index:1;display:none;pointer-events:none}
+.ec-class-media[data-ready="1"]{display:block}
+.ec-class-media img,.ec-class-media video{width:100%;height:100%;object-fit:contain}
+.ec-class-archive{padding:90px 6vw 110px;background:#080a08;color:var(--paper);border-top:1px solid var(--rule)}
+.ec-class-archive[hidden]{display:none}
+.ec-class-archive-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:30px}
+.ec-class-archive-head h2{margin:0;font:800 clamp(34px,4vw,58px)/1 var(--sans);letter-spacing:-.04em}
+.ec-class-archive-head p{max-width:32em;margin:0;color:#8d9785;font-size:12px;line-height:1.8}
+.ec-class-rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,26vw);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 0 15px;overscroll-behavior-inline:contain}
+.ec-class-card{scroll-snap-align:start;position:relative;aspect-ratio:4/5;overflow:hidden;border:1px solid #e7eadc21;background:#11140f}
+.ec-class-card img{width:100%;height:100%;object-fit:cover}
+.ec-class-card::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#050605e8 0%,transparent 48%)}
+.ec-class-meta{position:absolute;left:18px;right:18px;bottom:17px;z-index:2}
+.ec-class-meta b{display:block;font-size:24px;line-height:1.1}.ec-class-meta span{display:block;margin-top:5px;font:8px/1.4 var(--mono);letter-spacing:.1em;color:#c7d0bd}
+@media(max-width:760px){
+  body[data-experience-candidate="1"] .hero{grid-template-columns:1fr;padding-top:38px}
+  body[data-experience-candidate="1"] .hero h1{font-size:clamp(46px,13vw,72px);max-width:none}
+  .ec-hero-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ec-hero-stat:nth-child(3){border-left:0;border-top:1px solid var(--rule);padding-left:0}
+  .ec-hero-stat:nth-child(4){border-top:1px solid var(--rule)}
+  .ec-class-rail{grid-auto-columns:minmax(220px,78vw)}
+}
+@media(prefers-reduced-motion:reduce){
+  .ec-class-rail{scroll-behavior:auto}
+}
