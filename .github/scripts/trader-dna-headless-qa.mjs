@@ -295,7 +295,7 @@ try {
     backgroundImage: getComputedStyle(el).backgroundImage,
     quality: document.body.dataset.ecSpriteQuality || ''
   }));
-  if (classArtState.spriteIndex !== '1' || classArtState.quality !== 'hq-packed' || !classArtState.backgroundImage.includes('blob:')) {
+  if (classArtState.spriteIndex !== '1' || classArtState.quality !== 'hq-binary' || !classArtState.backgroundImage.includes('initial-class-sprite-hq.webp')) {
     throw new Error('EC-01 IWGC HQ initial-class art did not mount correctly: ' + JSON.stringify(classArtState));
   }
   await ec.locator('.result-hero').screenshot({ path: out + '/ec01-result-hero.png' });
@@ -388,7 +388,7 @@ try {
     spriteQuality: document.body.dataset.ecSpriteQuality || ''
   }));
   if (mobileResultMetrics.scrollWidth > mobileResultMetrics.innerWidth + 2) throw new Error('EC-01 mobile result has horizontal overflow: ' + JSON.stringify(mobileResultMetrics));
-  if (mobileResultMetrics.archiveHidden || mobileResultMetrics.archiveCards !== 16 || !mobileResultMetrics.classArtReady || mobileResultMetrics.spriteQuality !== 'hq-packed') {
+  if (mobileResultMetrics.archiveHidden || mobileResultMetrics.archiveCards !== 16 || !mobileResultMetrics.classArtReady || mobileResultMetrics.spriteQuality !== 'hq-binary') {
     throw new Error('EC-01 mobile initial-class visual failed: ' + JSON.stringify(mobileResultMetrics));
   }
   await ecMobile.screenshot({ path: out + '/ec01-result-mobile.png', fullPage: true });
