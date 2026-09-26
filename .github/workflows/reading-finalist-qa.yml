@@ -3,9 +3,8 @@ name: Reading Finalist QA
 on:
   push:
     paths:
-      - "82trade-motion-lab/reading-v24.html"
       - "82trade-motion-lab/reading-v25-real.html"
-      - "82trade-motion-lab/reading-v25-vector.html"
+      - "82trade-motion-lab/reading-v26.html"
       - ".github/scripts/reading-finalist-qa.mjs"
       - ".github/workflows/reading-finalist-qa.yml"
 
