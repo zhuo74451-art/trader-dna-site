@@ -29,8 +29,14 @@ jobs:
 
       - name: Install browser runtime
         run: |
-          npm install --no-save playwright@1.55.0
-          npx playwright install --with-deps chromium
+          npm install --no-save playwright-core@1.55.0
+          BROWSER="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -z "$BROWSER" ]; then
+            echo "No Chromium browser found on runner"
+            exit 1
+          fi
+          echo "BROWSER=$BROWSER" >> "$GITHUB_ENV"
+          "$BROWSER" --version
 
       - name: Start local preview
         run: |
