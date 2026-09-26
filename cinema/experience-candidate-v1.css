@@ -84,3 +84,76 @@ body[data-experience-candidate="1"] .ec-species-media[data-ready="1"] + .ec-orig
   .ec-class-card,.ec-class-card-art{transition:none!important}
   .ec-class-card:hover,.ec-class-card:hover .ec-class-card-art{transform:none!important}
 }
+
+
+/* Approved 16-class sprite: same Species, first-career-transition only. */
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media){
+  background:#0b0d0b;
+  color:#f1eee5;
+  border-color:#d9dfd03a;
+  box-shadow:3px 5px 0 #6c685d,8px 10px 0 #050605;
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media)::before{z-index:7}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media)::after{z-index:7;color:#d7dfcf99}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-result-mark-meta,
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-face,
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .d4-plate-imprint{z-index:6}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-dna{color:#ffffff38;text-shadow:none}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-id{color:#f4f0e7;text-shadow:0 2px 14px #000}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-result-mark-meta,
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-seal{color:#d9e1d0a8}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-weave{opacity:.16}
+
+.ec-class-sprite-media{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  background-image:url('./assets/initial-class-sprite.webp');
+  background-repeat:no-repeat;
+  background-size:400% 400%;
+  background-position:var(--ec-sprite-x,0%) var(--ec-sprite-y,0%);
+  filter:saturate(.92) contrast(1.04) brightness(.9);
+  transform:translateZ(1px) scale(1.012);
+  transform-origin:center;
+}
+.ec-class-sprite-media::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(180deg,rgba(6,7,6,.08) 0%,rgba(6,7,6,.02) 48%,rgba(6,7,6,.68) 100%),
+    linear-gradient(90deg,rgba(7,8,7,.26) 0%,transparent 42%,rgba(5,6,5,.06) 100%);
+}
+
+/* Archive is a browseable visual index, not 16 placeholder cards. */
+.ec-class-archive{padding-top:82px}
+.ec-class-rail{
+  grid-auto-columns:minmax(300px,34vw);
+  gap:14px;
+  scrollbar-width:thin;
+  scrollbar-color:#6f7868 #0c0e0b;
+}
+.ec-class-card{
+  aspect-ratio:1.6/1;
+  background:#10120f;
+  box-shadow:0 18px 40px #0005;
+}
+.ec-class-card-art{
+  position:absolute;
+  inset:0;
+  background-image:url('./assets/initial-class-sprite.webp');
+  background-repeat:no-repeat;
+  background-size:400% 400%;
+  background-position:var(--ec-sprite-x,0%) var(--ec-sprite-y,0%);
+  filter:saturate(.92) contrast(1.03) brightness(.9);
+  transform:scale(1.01);
+  transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .45s;
+}
+.ec-class-card:hover .ec-class-card-art{transform:scale(1.035);filter:saturate(1) contrast(1.04) brightness(.96)}
+.ec-class-card::after{background:linear-gradient(0deg,#050605e8 0%,#050605a0 18%,transparent 58%)}
+.ec-class-meta b{font:700 clamp(24px,2.2vw,34px)/1.05 var(--serif)}
+.ec-class-meta span{font-size:8px;color:#d6ddcf}
+@media(max-width:760px){
+  .ec-class-rail{grid-auto-columns:minmax(280px,84vw)}
+  .ec-class-card{aspect-ratio:1.55/1}
+}
