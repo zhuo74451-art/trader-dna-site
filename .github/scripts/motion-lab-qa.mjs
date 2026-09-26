@@ -569,6 +569,53 @@ report.readingV10Mobile = await readingV10Mobile.evaluate(() => ({
 }));
 await readingV10Mobile.close();
 
+const readingV11Open = await openPage(
+  { width: 1512, height: 982, deviceScaleFactor: 1 },
+  false,
+  `${base}reading-v11.html?qa=visual-review`,
+);
+const readingV11 = readingV11Open.page;
+await settle(readingV11, 900);
+await shot(readingV11, "reading-v11-desktop-01");
+await readingV11.click('[data-tab="1"]');
+await readingV11.waitForFunction(
+  () => document.querySelector("[data-title]")?.textContent?.trim() === "技術分析聖經",
+  { timeout: 2600 },
+);
+await settle(readingV11, 760);
+await shot(readingV11, "reading-v11-desktop-02-market");
+await readingV11.click('[data-tab="2"]');
+await readingV11.waitForFunction(
+  () => document.querySelector("[data-title]")?.textContent?.trim() === "納瓦爾寶典",
+  { timeout: 2600 },
+);
+await settle(readingV11, 760);
+await shot(readingV11, "reading-v11-desktop-03-growth");
+report.readingV11 = await readingV11.evaluate(() => ({
+  title: document.querySelector("[data-title]")?.textContent?.trim() ?? null,
+  active: Array.from(document.querySelectorAll("[data-tab]")).findIndex(
+    (el) => el.getAttribute("data-active") === "true",
+  ),
+  scrollWidth: document.documentElement.scrollWidth,
+  clientWidth: document.documentElement.clientWidth,
+}));
+await readingV11.close();
+
+const readingV11MobileOpen = await openPage(
+  { width: 390, height: 844, deviceScaleFactor: 1 },
+  false,
+  `${base}reading-v11.html?qa=mobile-review`,
+);
+const readingV11Mobile = readingV11MobileOpen.page;
+await settle(readingV11Mobile, 900);
+await shot(readingV11Mobile, "reading-v11-mobile-01");
+report.readingV11Mobile = await readingV11Mobile.evaluate(() => ({
+  scrollWidth: document.documentElement.scrollWidth,
+  clientWidth: document.documentElement.clientWidth,
+  title: document.querySelector("[data-title]")?.textContent?.trim() ?? null,
+}));
+await readingV11Mobile.close();
+
 const mobileOpen = await openPage({ width: 390, height: 844, deviceScaleFactor: 1 }, false);
 const mobile = mobileOpen.page;
 await scrollTo(mobile, 0, 1100);
@@ -705,6 +752,8 @@ report.status = {
   readingV9Mobile: readingV9MobileOpen.status,
   readingV10: readingV10Open.status,
   readingV10Mobile: readingV10MobileOpen.status,
+  readingV11: readingV11Open.status,
+  readingV11Mobile: readingV11MobileOpen.status,
 };
 report.errors = errors;
 report.failures = failures;
@@ -767,6 +816,15 @@ if (report.readingV10?.title !== "納瓦爾寶典" || report.readingV10?.active 
 }
 if (report.readingV10Mobile?.scrollWidth !== report.readingV10Mobile?.clientWidth) {
   throw new Error(`reading V10 mobile overflow: ${JSON.stringify(report.readingV10Mobile)}`);
+}
+if (report.readingV11?.scrollWidth !== report.readingV11?.clientWidth) {
+  throw new Error(`reading V11 desktop overflow: ${JSON.stringify(report.readingV11)}`);
+}
+if (report.readingV11?.title !== "納瓦爾寶典" || report.readingV11?.active !== 2) {
+  throw new Error(`reading V11 switching failed: ${JSON.stringify(report.readingV11)}`);
+}
+if (report.readingV11Mobile?.scrollWidth !== report.readingV11Mobile?.clientWidth) {
+  throw new Error(`reading V11 mobile overflow: ${JSON.stringify(report.readingV11Mobile)}`);
 }
 if (!report.mobile.menuOpen) throw new Error("mobile menu did not open by keyboard");
 if (errors.length) throw new Error(`console/page errors: ${JSON.stringify(errors.slice(0, 8))}`);
