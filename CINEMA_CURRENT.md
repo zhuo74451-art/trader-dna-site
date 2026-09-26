@@ -30,3 +30,23 @@ Owner direction supersedes the older 54-question presentation freeze:
 - Species character/media integration remains a presentation-layer change; do not rewrite scoring to accommodate art.
 
 Continue from these files and the actual rendered site. Keep scoring semantics, backend/auth, and public 4-letter DNA mechanics unchanged unless the Owner explicitly changes them. Keep preview and exported PNG on the same artifact.
+
+
+## Result + Share candidate · RS-01 · 2026-09-27
+
+Isolated candidate entry:
+- https://zhuo74451-art.github.io/trader-dna-site/cinema-detail-05-candidate.html
+
+Verified behavior:
+- active assessment remains 18 questions only;
+- existing Detail04 V47 pointer/parallax is reused rather than replaced;
+- identity object can flip to a back face through an external accessible control;
+- the same issued identity visually travels into the existing share studio;
+- publication finishes through the existing Material 02 pipeline;
+- 4:5 / 9:16 export authority remains unchanged;
+- headless interaction receipt: PASS.
+
+Status:
+- **MECHANISM ACCEPTED / VISUAL NOT PROMOTED**.
+- Do not make this the stable QR/runtime target yet.
+- Final first-screen Species media and final share-card Species composition wait for approved initial-form character assets.
