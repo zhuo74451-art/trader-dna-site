@@ -1,9 +1,9 @@
 {
   "version": "initial-class-visuals-v1",
   "baseSpecies": {
-    "heroMedia": null,
-    "poster": null,
-    "status": "awaiting-approved-asset"
+    "heroMedia": "./cinema/assets/base-species-front.webp",
+    "poster": "./cinema/assets/base-species-front.webp",
+    "status": "approved-source-sheet-crop"
   },
   "classes": {
     "IWGF": {
