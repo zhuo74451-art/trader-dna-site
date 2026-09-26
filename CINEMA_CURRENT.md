@@ -97,3 +97,30 @@ Copy roles are now intentionally split:
 - Share card remains restrained: role name + existing public hook + character art. Do not add every copy layer to the public artifact.
 
 This avoids a false choice between profession readability and measurement fidelity.
+
+
+## EC-01 visual-bible integration seal · 2026-09-27
+
+Current isolated candidate:
+- https://zhuo74451-art.github.io/trader-dna-site/cinema-detail-06-experience-candidate.html
+
+Verified after mounting the approved Initial Class Visual Bible:
+- Origin uses the approved unassigned Species asset.
+- Q18 remains the only M2 identity-formation moment.
+- Result uses the approved initial-class crop plus the short profession-readable tagline.
+- Existing Trader DNA hook/body/reminder remain the interpretation layer.
+- Material 02 remains the warm-white public share authority and receives a restrained initial-class art layer.
+- 16 Initial Classes archive is mounted from the approved visual bible and uses the approved short class taglines.
+- Desktop, mobile, reduced-motion, flip, result-to-share continuity, 4:5/9:16 share publication: PASS.
+- Active assessment remains 18-only; dormant Q19-54 data is not requested.
+
+Stale-copy audit:
+- no public code hits for 風險工程師 / 精準狙擊手 / 落子手 / 趨勢追蹤官;
+- no public code hits for 繼續完整 54 題 / STANDARD 54.
+
+Current limitation:
+- The 16-class visual-bible crops are sufficient for candidate composition and archive browsing, but are still softer than future isolated high-resolution production renders when enlarged on the result hero.
+- Do not solve this by inventing a new character. Replace the manifest media slots with isolated approved renders later.
+
+Promotion status:
+- **EC-01 = END-TO-END CANDIDATE PASS / NOT YET STABLE-QR PROMOTED.**
