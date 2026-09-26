@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#10110f">
   <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&family=Noto+Serif+TC:wght@500;600;700&display=swap" rel="stylesheet">
   <title>82TRADE / Trader DNA - Result + Share Donor Lab</title>
   <meta name="description" content="Trader DNA result and share interaction donor lab.">
   <link rel="stylesheet" href="./cinema/result-share-donor-lab.css">
@@ -64,11 +67,6 @@
       </div>
     </section>
 
-    <section class="bridge">
-      <span>THE SAME OBJECT CONTINUES</span>
-      <p>不是重新渲染一張新卡。網頁首屏裡的身份物件，連續變成下面的分享物件。</p>
-    </section>
-
     <section class="share-scene" id="share-scene">
       <div class="share-copy">
         <span class="eyebrow">SHARE ARTIFACT / PUBLIC</span>
@@ -80,7 +78,9 @@
         </div>
         <button type="button" id="return-btn" class="secondary">回到首屏位置</button>
       </div>
-      <div class="share-dock" id="share-dock" aria-label="分享卡停靠區"></div>
+      <div class="share-dock" id="share-dock" aria-label="分享卡停靠區">
+        <div class="dock-mark" aria-hidden="true"><span>PUBLIC ARTIFACT</span><b>THE SAME IDENTITY OBJECT</b></div>
+      </div>
     </section>
   </main>
 
