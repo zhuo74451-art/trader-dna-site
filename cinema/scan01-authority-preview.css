@@ -148,3 +148,103 @@ body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition
 }
 /* Final Hero subtraction: technical session metadata stays out of the identity payoff. */
 body[data-edition="detail-04"] .result-hero>.result-foot{display:none!important}
+
+
+/* Result middle edit: Decision Scenes become one editorial triptych, not three long sticky pages. */
+body[data-edition="detail-04"] .v3-decision-scenes{
+  padding:82px 6vw 104px;
+}
+body[data-edition="detail-04"] .v3-scenes-grid{
+  max-width:1320px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+  align-items:stretch;
+}
+body[data-edition="detail-04"] .v3-scene-card{
+  position:relative!important;
+  top:auto!important;
+  min-height:430px!important;
+  margin:0!important;
+  padding:30px 28px 26px!important;
+  display:flex!important;
+  flex-direction:column;
+  gap:0!important;
+  grid-template:none!important;
+  box-shadow:0 14px 42px rgba(28,34,20,.045)!important;
+}
+body[data-edition="detail-04"] .v3-scene-no{
+  display:block;
+  font-size:8px;
+  line-height:1.4;
+  margin:0;
+}
+body[data-edition="detail-04"] .v3-scene-card h3{
+  display:block;
+  margin:24px 0 18px;
+  font-size:clamp(30px,2.7vw,44px);
+  line-height:1.24;
+  max-width:8em;
+}
+body[data-edition="detail-04"] .v3-scene-card p{
+  display:block;
+  margin:0;
+  font-size:14px;
+  line-height:1.82;
+  max-width:none;
+}
+body[data-edition="detail-04"] .v3-scene-axes{
+  display:grid;
+  grid-column:auto;
+  grid-row:auto;
+  gap:7px;
+  margin-top:auto;
+  padding-top:22px;
+}
+body[data-edition="detail-04"] .v3-scene-axes span{
+  font-size:8px;
+  line-height:1.55;
+}
+body[data-edition="detail-04"] .v3-scene-card::before{
+  right:18px;
+  bottom:15px;
+  font-size:96px;
+  opacity:.72;
+}
+
+@media(min-width:761px) and (max-width:899px){
+  body[data-edition="detail-04"] .v3-scenes-grid{grid-template-columns:1fr}
+  body[data-edition="detail-04"] .v3-scene-card{min-height:300px!important}
+  body[data-edition="detail-04"] .v3-scene-card h3{max-width:none}
+}
+@media(max-width:760px){
+  body[data-edition="detail-04"] .v3-decision-scenes{padding:68px 18px 76px}
+  body[data-edition="detail-04"] .v3-scenes-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:18px;
+  }
+  body[data-edition="detail-04"] .v3-scene-card{
+    min-height:0!important;
+    padding:25px 22px 22px!important;
+  }
+  body[data-edition="detail-04"] .v3-scene-card h3{
+    margin:18px 0 14px;
+    font-size:29px;
+    line-height:1.32;
+    max-width:8em;
+  }
+  body[data-edition="detail-04"] .v3-scene-card p{
+    font-size:13px;
+    line-height:1.78;
+  }
+  body[data-edition="detail-04"] .v3-scene-axes{
+    margin-top:24px;
+    padding-top:15px;
+  }
+  body[data-edition="detail-04"] .v3-scene-card::before{
+    font-size:78px;
+    bottom:13px;
+  }
+}
