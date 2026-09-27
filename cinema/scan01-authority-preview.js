@@ -2,7 +2,7 @@
 const root=document.querySelector('#view');
 const CARD_BASE='./cinema/assets/identity-cards';
 const CODES=new Set(['IWGF','IWGC','IWHF','IWHC','IAGF','IAGC','IAHF','IAHC','SWGF','SWGC','SWHF','SWHC','SAGF','SAGC','SAHF','SAHC']);
-let queued=false;
+let queued=false,warmCode='';
 function api(){return window.TraderDNAShareCard||null}
 function data(){return api()?.data?.()||null}
 function cardPath(code){
@@ -18,6 +18,14 @@ async function cardBlob(code){
   const blob=await response.blob();
   if(!blob.type.startsWith('image/'))throw new Error('Identity Edition asset is not an image');
   return {url,blob};
+}
+function warmRevealIdentity(){
+  const code=(root?.querySelector('.reveal-code')||root?.querySelector('.result-hero>.code'))?.textContent?.trim()?.toUpperCase();
+  if(!CODES.has(code)||warmCode===code)return;
+  warmCode=code;
+  const image=new Image();
+  image.decoding='async';
+  image.src=absolute(cardPath(code));
 }
 function mountHero(result){
   const hero=result?.querySelector('.result-hero');
@@ -35,7 +43,12 @@ function mountHero(result){
   }
   const image=figure.querySelector('img');
   const src=absolute(cardPath(code));
-  if(image.src!==src)image.src=src;
+  const ready=()=>{figure.dataset.ready='1';hero.dataset.characterReady='1'};
+  if(image.src!==src){
+    delete figure.dataset.ready;
+    image.onload=ready;
+    image.src=src;
+  }else if(image.complete&&image.naturalWidth)ready();
   image.onerror=()=>figure.remove();
 }
 function cleanLegacyShare(studio){
@@ -124,6 +137,7 @@ function mountShare(result){
 }
 function sync(){
   queued=false;
+  warmRevealIdentity();
   const result=root?.querySelector('.result');
   if(!result)return;
   result.dataset.authorityPreview='1';
