@@ -257,7 +257,7 @@ function makeBook(book,index){
     new THREE.MeshStandardMaterial({color:0xd9d1c4,roughness:.98}),                // +z
     new THREE.MeshStandardMaterial({color:0xd5cec1,roughness:.98})                 // -z
   ];
-  const pageGeom=new RoundedBoxGeometry(w-.10,h-.12,pageD,5,radius*.8);
+  const pageGeom=new THREE.BoxGeometry(w-.10,h-.12,pageD,1,1,1);
   const pageBlock=new THREE.Mesh(pageGeom,pageMaterials);
   pageBlock.position.x=.045;
   pageBlock.castShadow=true;
@@ -288,10 +288,12 @@ function makeBook(book,index){
   group.add(backBoard);
 
   // COVER ART sits on top of the physical board. No colored UI-like frame.
-  const artGeom=new RoundedBoxGeometry(w-.008,h-.008,.018,4,radius*.72);
-  const coverArt=new THREE.Mesh(artGeom,materialForCover(tex,book.coverColor));
-  coverArt.position.z=frontBoard.position.z+boardD/2+.013;
-  coverArt.castShadow=true;
+  const coverArt=new THREE.Mesh(
+    new THREE.PlaneGeometry(w-.018,h-.018),
+    materialForCover(tex,book.coverColor)
+  );
+  coverArt.position.z=frontBoard.position.z+boardD/2+.014;
+  coverArt.castShadow=false;
   group.add(coverArt);
 
   // Slightly darker back cloth, so side rotation reads as a book.
