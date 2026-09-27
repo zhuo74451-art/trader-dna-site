@@ -61,6 +61,7 @@ function mountHero(result){
     figure.innerHTML='<img alt="" decoding="async" fetchpriority="high">';
     hero.appendChild(figure);
   }
+  figure.dataset.code=code;
   const image=figure.querySelector('img');
   const src=absolute(heroPath(code));
   const ready=()=>{figure.dataset.ready='1';hero.dataset.characterReady='1'};
