@@ -123,7 +123,7 @@ function augmentMaterial02({canvas,ctx,data,format,W,H}){
 
   // The Visual Bible is landscape. Keep that native proportion so the art
   // stays crisp and reads as an editorial image field, not a stretched poster.
-  const dx=tall?155:210,dy=tall?930:690,dw=tall?820:790,dh=tall?500:480;
+  const dx=tall?250:330,dy=tall?990:720,dw=tall?700:650,dh=tall?425:395;
 
   const pane=document.createElement('canvas');
   pane.width=Math.round(dw);pane.height=Math.round(dh);
@@ -137,16 +137,16 @@ function augmentMaterial02({canvas,ctx,data,format,W,H}){
   pctx.globalCompositeOperation='destination-in';
   const maskX=pctx.createLinearGradient(0,0,dw,0);
   maskX.addColorStop(0,'rgba(0,0,0,0)');
-  maskX.addColorStop(.055,'rgba(0,0,0,.8)');
-  maskX.addColorStop(.12,'rgba(0,0,0,1)');
-  maskX.addColorStop(.90,'rgba(0,0,0,1)');
+  maskX.addColorStop(.028,'rgba(0,0,0,.9)');
+  maskX.addColorStop(.065,'rgba(0,0,0,1)');
+  maskX.addColorStop(.94,'rgba(0,0,0,1)');
   maskX.addColorStop(1,'rgba(0,0,0,0)');
   pctx.fillStyle=maskX;pctx.fillRect(0,0,dw,dh);
 
   const maskY=pctx.createLinearGradient(0,0,0,dh);
-  maskY.addColorStop(0,'rgba(0,0,0,.30)');
-  maskY.addColorStop(.08,'rgba(0,0,0,1)');
-  maskY.addColorStop(.82,'rgba(0,0,0,1)');
+  maskY.addColorStop(0,'rgba(0,0,0,.72)');
+  maskY.addColorStop(.035,'rgba(0,0,0,1)');
+  maskY.addColorStop(.91,'rgba(0,0,0,1)');
   maskY.addColorStop(1,'rgba(0,0,0,0)');
   pctx.fillStyle=maskY;pctx.fillRect(0,0,dw,dh);
 
@@ -154,16 +154,19 @@ function augmentMaterial02({canvas,ctx,data,format,W,H}){
   ctx.save();
   const wash=ctx.createLinearGradient(dx-70,0,dx+dw+60,0);
   wash.addColorStop(0,'rgba(236,231,220,0)');
-  wash.addColorStop(.10,'rgba(236,231,220,.88)');
-  wash.addColorStop(.88,'rgba(236,231,220,.88)');
+  wash.addColorStop(.05,'rgba(236,231,220,.76)');
+  wash.addColorStop(.95,'rgba(236,231,220,.76)');
   wash.addColorStop(1,'rgba(236,231,220,0)');
   ctx.fillStyle=wash;
   ctx.fillRect(dx-70,dy-35,dw+130,dh+70);
   ctx.restore();
 
   ctx.save();
-  ctx.globalAlpha=.96;
+  ctx.globalAlpha=.98;
   ctx.drawImage(pane,dx,dy,dw,dh);
+  ctx.strokeStyle='rgba(94,88,78,.22)';
+  ctx.lineWidth=1;
+  ctx.strokeRect(dx+.5,dy+.5,dw-1,dh-1);
   ctx.restore();
 
   // A restrained registration mark instead of another UI panel.
