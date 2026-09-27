@@ -97,12 +97,14 @@ function applySprite(el,index){
 }
 
 let spriteImage=null;
+let sharePreviewURL='';
+let sharePreviewBusy=false;
 function warmCandidateSprite(){
   const s=candidateSprite();
   if(!s?.media||spriteImage)return;
   const img=new Image();
   img.decoding='async';
-  img.onload=()=>{spriteImage=img};
+  img.onload=()=>{spriteImage=img;queue()};
   img.src=s.media;
 }
 function drawSpriteCellCover(ctx,img,index,dx,dy,dw,dh){
@@ -119,10 +121,9 @@ function augmentMaterial02({canvas,ctx,data,format,W,H}){
   if(!spriteImage||!entry||!Number.isInteger(entry.spriteIndex))return;
   const tall=H>1500;
 
-  // Keep the approved initial-class art secondary to the editorial card.
-  // The current visual-bible crop is intentionally not stretched to full-bleed;
-  // a future isolated render can replace this layer without changing layout.
-  const dx=tall?520:500,dy=tall?610:465,dw=tall?485:470,dh=tall?720:555;
+  // The Visual Bible is landscape. Keep that native proportion so the art
+  // stays crisp and reads as an editorial image field, not a stretched poster.
+  const dx=tall?155:210,dy=tall?930:690,dw=tall?820:790,dh=tall?500:480;
 
   const pane=document.createElement('canvas');
   pane.width=Math.round(dw);pane.height=Math.round(dh);
@@ -131,25 +132,37 @@ function augmentMaterial02({canvas,ctx,data,format,W,H}){
   pctx.imageSmoothingQuality='high';
   drawSpriteCellCover(pctx,spriteImage,entry.spriteIndex,0,0,dw,dh);
 
-  // Four-side editorial feather: remove the pasted-rectangle feeling.
+  // Four-side feather so the landscape becomes part of the paper rather than
+  // a rectangular screenshot pasted on top of it.
   pctx.globalCompositeOperation='destination-in';
   const maskX=pctx.createLinearGradient(0,0,dw,0);
   maskX.addColorStop(0,'rgba(0,0,0,0)');
-  maskX.addColorStop(.10,'rgba(0,0,0,.72)');
-  maskX.addColorStop(.20,'rgba(0,0,0,1)');
-  maskX.addColorStop(.84,'rgba(0,0,0,1)');
+  maskX.addColorStop(.055,'rgba(0,0,0,.8)');
+  maskX.addColorStop(.12,'rgba(0,0,0,1)');
+  maskX.addColorStop(.90,'rgba(0,0,0,1)');
   maskX.addColorStop(1,'rgba(0,0,0,0)');
   pctx.fillStyle=maskX;pctx.fillRect(0,0,dw,dh);
 
   const maskY=pctx.createLinearGradient(0,0,0,dh);
-  maskY.addColorStop(0,'rgba(0,0,0,.42)');
-  maskY.addColorStop(.09,'rgba(0,0,0,1)');
-  maskY.addColorStop(.80,'rgba(0,0,0,1)');
+  maskY.addColorStop(0,'rgba(0,0,0,.30)');
+  maskY.addColorStop(.08,'rgba(0,0,0,1)');
+  maskY.addColorStop(.82,'rgba(0,0,0,1)');
   maskY.addColorStop(1,'rgba(0,0,0,0)');
   pctx.fillStyle=maskY;pctx.fillRect(0,0,dw,dh);
 
+  // Quiet the Decision Relief behind the class image without deleting it.
   ctx.save();
-  ctx.globalAlpha=.93;
+  const wash=ctx.createLinearGradient(dx-70,0,dx+dw+60,0);
+  wash.addColorStop(0,'rgba(236,231,220,0)');
+  wash.addColorStop(.10,'rgba(236,231,220,.88)');
+  wash.addColorStop(.88,'rgba(236,231,220,.88)');
+  wash.addColorStop(1,'rgba(236,231,220,0)');
+  ctx.fillStyle=wash;
+  ctx.fillRect(dx-70,dy-35,dw+130,dh+70);
+  ctx.restore();
+
+  ctx.save();
+  ctx.globalAlpha=.96;
   ctx.drawImage(pane,dx,dy,dw,dh);
   ctx.restore();
 
@@ -164,6 +177,46 @@ function augmentMaterial02({canvas,ctx,data,format,W,H}){
   canvas.dataset.ecClassMedia='1';
   const studio=view?.querySelector('.v3-share-studio');
   if(studio)studio.dataset.ecClassShare='1';
+}
+
+async function buildSharePreview(result,format='4:5'){
+  const studio=result?.querySelector('.v3-share-studio');
+  const stage=studio?.querySelector('.v3-share-stage');
+  const image=stage?.querySelector(':scope > img');
+  if(!studio||!stage||!image||sharePreviewBusy)return;
+  if(studio.dataset.v48Publish==='published')return;
+  if(!spriteImage||typeof window.CinemaEdition?.poster!=='function')return;
+
+  sharePreviewBusy=true;
+  try{
+    await document.fonts?.ready?.catch?.(()=>{});
+    const canvas=window.CinemaEdition.poster(format);
+    const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('preview encode failed')),'image/png'));
+    if(sharePreviewURL)URL.revokeObjectURL(sharePreviewURL);
+    sharePreviewURL=URL.createObjectURL(blob);
+    image.src=sharePreviewURL;
+    image.alt='Trader DNA '+(window.TraderDNAShareCard?.data?.()?.code||'')+' / '+format;
+    if(image.decode)await image.decode().catch(()=>{});
+    stage.dataset.ecPreview='1';
+    studio.dataset.ecPreview='1';
+    studio.dataset.format=format;
+  }catch(err){
+    console.warn('EC share preview failed',err);
+  }finally{
+    sharePreviewBusy=false;
+  }
+}
+
+function bindSharePreview(result){
+  const studio=result?.querySelector('.v3-share-studio');
+  if(!studio||studio.dataset.ecPreviewBound==='1')return;
+  studio.dataset.ecPreviewBound='1';
+  buildSharePreview(result,studio.dataset.format||'4:5');
+  studio.addEventListener('click',event=>{
+    const button=event.target.closest?.('[data-share-format]');
+    if(!button)return;
+    setTimeout(()=>buildSharePreview(result,button.dataset.shareFormat||'4:5'),0);
+  });
 }
 
 function mountResult(){
@@ -207,6 +260,7 @@ function mountResult(){
   result.dataset.ec='1';
   result.dataset.ecMounted='1';
   mountArchive(result);
+  bindSharePreview(result);
 }
 
 function mountArchive(result){
@@ -255,6 +309,7 @@ function queue(){if(queued)return;queued=true;requestAnimationFrame(mount)}
   window.TraderDNAPosterAugment=augmentMaterial02;
   new MutationObserver(queue).observe(view,{subtree:true,childList:true,attributes:true});
   addEventListener('pageshow',queue);
+  addEventListener('beforeunload',()=>{if(sharePreviewURL)URL.revokeObjectURL(sharePreviewURL)});
   queue();
 })();
 })();
