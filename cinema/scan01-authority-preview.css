@@ -304,3 +304,94 @@ body[data-edition="detail-04"] .dims-section>.dims{grid-column:2}
   body[data-edition="detail-04"] .portrait-section>.portrait,
   body[data-edition="detail-04"] .dims-section>.dims{grid-column:auto}
 }
+
+
+/* Quiz continuity pass: M0 response polish. The payoff remains Q18 Reveal -> Result. */
+body[data-edition="detail-04"] .scan01-question-enter .quiz-stage{
+  animation:scan01-question-in .26s cubic-bezier(.16,1,.3,1) both;
+}
+body[data-edition="detail-04"] .scan01-question-enter .detail-register{
+  animation:scan01-register-in .28s .025s cubic-bezier(.16,1,.3,1) both;
+}
+body[data-edition="detail-04"] .scan01-question-commit .question,
+body[data-edition="detail-04"] .scan01-question-commit .detail-question-note{
+  opacity:.68;
+  transform:translateY(-3px);
+  transition:opacity .16s ease,transform .16s ease;
+}
+body[data-edition="detail-04"] .scan01-question-commit .option:not(.scan01-choice-commit){
+  opacity:.28!important;
+  transform:none!important;
+  transition:opacity .15s ease;
+}
+body[data-edition="detail-04"] .scan01-choice-commit{
+  animation:scan01-choice-lock .19s cubic-bezier(.2,.8,.2,1) both!important;
+}
+body[data-edition="detail-04"] .scan01-choice-commit .arrow{
+  animation:scan01-arrow-lock .19s ease-out both;
+}
+body[data-edition="detail-04"] .scan01-final-question .question-index::after{
+  content:' /  FINAL DECISION';
+  color:#bccb9c;
+}
+body[data-edition="detail-04"] .scan01-final-lock .detail-register{
+  animation:scan01-register-seal .2s cubic-bezier(.2,.8,.2,1) both;
+}
+body[data-edition="detail-04"] .scan01-final-lock .decision-cells .is-current.is-recorded{
+  background:#2d3927;
+  border-bottom-color:#d7e5aa;
+  transform:translateY(-1px) scale(1.05);
+}
+@keyframes scan01-question-in{
+  0%{opacity:.38;transform:translateY(9px)}
+  100%{opacity:1;transform:none}
+}
+@keyframes scan01-register-in{
+  0%{opacity:.58;transform:translateY(6px) rotate(.55deg)}
+  100%{opacity:1;transform:rotate(.55deg)}
+}
+@keyframes scan01-choice-lock{
+  0%{transform:translateY(0) scale(1)}
+  42%{transform:translateY(1px) scale(.992)}
+  100%{transform:translateY(1px) scale(1)}
+}
+@keyframes scan01-arrow-lock{
+  0%{transform:scale(1)}
+  48%{transform:scale(.86)}
+  100%{transform:scale(1)}
+}
+@keyframes scan01-register-seal{
+  0%{filter:brightness(1);transform:rotate(.55deg) scale(1)}
+  55%{filter:brightness(1.035);transform:rotate(.25deg) scale(.995)}
+  100%{filter:brightness(1);transform:rotate(.55deg) scale(1)}
+}
+@media(max-width:760px){
+  body[data-edition="detail-04"] .scan01-question-enter .detail-register{
+    animation-name:scan01-register-in-mobile;
+  }
+  body[data-edition="detail-04"] .scan01-final-lock .detail-register{
+    animation-name:scan01-register-seal-mobile;
+  }
+}
+@keyframes scan01-register-in-mobile{
+  0%{opacity:.58;transform:translateY(5px)}
+  100%{opacity:1;transform:none}
+}
+@keyframes scan01-register-seal-mobile{
+  0%{filter:brightness(1);transform:scale(1)}
+  55%{filter:brightness(1.035);transform:scale(.995)}
+  100%{filter:brightness(1);transform:scale(1)}
+}
+@media(prefers-reduced-motion:reduce){
+  body[data-edition="detail-04"] .scan01-question-enter .quiz-stage,
+  body[data-edition="detail-04"] .scan01-question-enter .detail-register,
+  body[data-edition="detail-04"] .scan01-choice-commit,
+  body[data-edition="detail-04"] .scan01-choice-commit .arrow,
+  body[data-edition="detail-04"] .scan01-final-lock .detail-register{
+    animation:none!important;
+  }
+  body[data-edition="detail-04"] .scan01-question-commit .question,
+  body[data-edition="detail-04"] .scan01-question-commit .detail-question-note{
+    opacity:1;transform:none;transition:none;
+  }
+}

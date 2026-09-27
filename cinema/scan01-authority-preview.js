@@ -33,6 +33,29 @@ function warmRevealIdentity(){
   image.decoding='async';
   image.src=absolute(heroPath(code));
 }
+function prefetchResolvedIdentity(){
+  try{
+    if(typeof window.scores!=='function'||typeof window.codeFrom!=='function')return;
+    const {dimScore}=window.scores();
+    const code=window.codeFrom(dimScore);
+    if(!CODES.has(code))return;
+    const image=new Image();
+    image.decoding='async';
+    image.fetchPriority='high';
+    image.src=absolute(heroPath(code));
+  }catch{}
+}
+function mountQuestionContinuity(){
+  const wrap=root?.querySelector('.quiz-wrap');
+  if(!wrap)return;
+  const q=Number(wrap.querySelector('.question-index')?.textContent?.replace(/\D/g,''))||0;
+  if(q)wrap.dataset.scan01Question=String(q).padStart(2,'0');
+  if(q===18)wrap.classList.add('scan01-final-question');
+  if(wrap.dataset.scan01MotionReady==='1')return;
+  wrap.dataset.scan01MotionReady='1';
+  wrap.classList.add('scan01-question-enter');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{if(wrap.isConnected)wrap.classList.add('is-settled')}));
+}
 function mountRevealCharacter(){
   const reveal=root?.querySelector('.reveal.d4-reveal');
   const material=reveal?.querySelector('.d4-reveal-material');
@@ -158,6 +181,7 @@ function mountShare(result){
 }
 function sync(){
   queued=false;
+  mountQuestionContinuity();
   warmRevealIdentity();
   mountRevealCharacter();
   const result=root?.querySelector('.result');
@@ -171,7 +195,21 @@ function schedule(){
   queued=true;
   requestAnimationFrame(sync);
 }
-if(root)new MutationObserver(schedule).observe(root,{childList:true,subtree:true,attributes:true,attributeFilter:['src','data-v4-ready']});
+if(root){
+  root.addEventListener('click',event=>{
+    const option=event.target.closest('.quiz-wrap .option');
+    if(!option||option.disabled)return;
+    const wrap=option.closest('.quiz-wrap');
+    wrap?.classList.add('scan01-question-commit');
+    option.classList.add('scan01-choice-commit');
+    const q=Number(wrap?.querySelector('.question-index')?.textContent?.replace(/\D/g,''))||0;
+    if(q===18){
+      wrap?.classList.add('scan01-final-lock');
+      queueMicrotask(prefetchResolvedIdentity);
+    }
+  },{capture:true});
+  new MutationObserver(schedule).observe(root,{childList:true,subtree:true,attributes:true,attributeFilter:['src','data-v4-ready']});
+}
 addEventListener('pageshow',schedule);
 schedule();
 })();
