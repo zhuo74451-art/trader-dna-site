@@ -44,6 +44,10 @@ jobs:
 
           curl -L --fail --retry 3             "https://ik.imagekit.io/panmac/tr:f-auto,di-placeholder_portrait_harriman_house_rKWEhE4VY.png,w-1200/edition/9781804093641.jpg"             -o 82trade-motion-lab/assets/books/hq-src/market-wizards-next-gen.jpg
 
+          curl -L --fail --retry 3             "https://ik.imagekit.io/panmac/tr:f-auto,di-placeholder_portrait_harriman_house_rKWEhE4VY.png,w-1200/edition/9781804094341.jpg"             -o 82trade-motion-lab/assets/books/hq-src/behavioral-investor.jpg
+
+          curl -L --fail --retry 3             "https://ik.imagekit.io/panmac/tr:f-auto,di-placeholder_portrait_harriman_house_rKWEhE4VY.png,w-1200/edition/9781804091517.jpg"             -o 82trade-motion-lab/assets/books/hq-src/lunch-break-investor.jpg
+
       - name: Normalize, upscale only when necessary, and sharpen lightly
         run: |
           python3 - <<'PY'
