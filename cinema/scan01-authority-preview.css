@@ -248,3 +248,59 @@ body[data-edition="detail-04"] .v3-scene-card::before{
     bottom:13px;
   }
 }
+
+
+/* Result portrait hierarchy: one lead judgment, then two supporting paragraphs. */
+body[data-edition="detail-04"] .portrait{
+  column-count:unset!important;
+  column-gap:0!important;
+  column-rule:0!important;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:0 42px;
+}
+body[data-edition="detail-04"] .portrait p{
+  margin:0;
+  break-inside:auto;
+}
+body[data-edition="detail-04"] .portrait p:first-child{
+  grid-column:1/-1;
+  padding:0 0 26px;
+  border-bottom:1px solid rgba(56,64,43,.18);
+  font-size:clamp(20px,1.8vw,27px);
+  line-height:1.76;
+  letter-spacing:-.012em;
+  color:#34402e;
+}
+body[data-edition="detail-04"] .portrait p:nth-child(n+2){
+  padding-top:24px;
+  font-size:14px;
+  line-height:1.95;
+  color:#56634a;
+}
+@media(max-width:760px){
+  body[data-edition="detail-04"] .portrait{
+    display:block;
+  }
+  body[data-edition="detail-04"] .portrait p:first-child{
+    padding-bottom:20px;
+    font-size:17px;
+    line-height:1.9;
+  }
+  body[data-edition="detail-04"] .portrait p:nth-child(n+2){
+    padding-top:19px;
+    font-size:14px;
+    line-height:1.9;
+  }
+}
+
+
+/* Remove superseded internal numbering; the Detail 04 folio rail is now the only section index. */
+body[data-edition="detail-04"] .portrait-section>h3,
+body[data-edition="detail-04"] .dims-section>h3{display:none!important}
+body[data-edition="detail-04"] .portrait-section>.portrait,
+body[data-edition="detail-04"] .dims-section>.dims{grid-column:2}
+@media(max-width:760px){
+  body[data-edition="detail-04"] .portrait-section>.portrait,
+  body[data-edition="detail-04"] .dims-section>.dims{grid-column:auto}
+}
