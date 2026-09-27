@@ -411,3 +411,37 @@ body[data-experience-candidate="1"] .ec-species-media[data-ready="1"] + .ec-orig
     aspect-ratio:1.18;
   }
 }
+
+
+/* EC-02 editorial crop pass — use the Visual Bible at native visual weight. */
+.result[data-ec="1"] .ec-class-sprite-media{
+  left:auto;
+  right:5.2%;
+  top:7%;
+  width:57%;
+  height:auto;
+  aspect-ratio:1.60/1;
+  background-color:#0b0d0c;
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-result-mark-meta{
+  width:33%;
+  right:auto;
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-id{
+  left:6%;
+  bottom:8%;
+  max-width:38%;
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media)::after{
+  right:5.5%;
+  bottom:7.5%;
+}
+@media(max-width:760px){
+  .result[data-ec="1"] .ec-class-sprite-media{
+    width:60%;
+    right:4.5%;
+  }
+  .result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-id{
+    max-width:42%;
+  }
+}
