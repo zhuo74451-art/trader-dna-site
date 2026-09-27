@@ -106,10 +106,12 @@ import * as THREE from "three";
 import { RoundedBoxGeometry } from "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/geometries/RoundedBoxGeometry.js";
 
 const BOOKS = [
-  {title:"股票作手回憶錄", cover:"./assets/books/reminiscences-real.webp", accent:[83,101,49], coverColor:0x2b331f, ratio:.705, thickness:.245, scale:.98},
-  {title:"新威科夫操盤法", cover:"./assets/books/wyckoff.webp", accent:[153,102,53], coverColor:0x70503a, ratio:.69, thickness:.215, scale:.95},
-  {title:"技術分析聖經", cover:"./assets/books/technical-analysis-real.webp", accent:[119,70,49], coverColor:0x3f2d27, ratio:.715, thickness:.275, scale:1.02},
-  {title:"納瓦爾寶典", cover:"./assets/books/naval.webp", accent:[46,75,116], coverColor:0x26394e, ratio:.675, thickness:.235, scale:.97}
+  // For this material study we intentionally use higher-resolution public
+  // catalog cover images. Final 82TRADE reading-list art will be frozen later.
+  {title:"股票作手回憶錄", cover:"https://covers.openlibrary.org/b/isbn/9780471770886-L.jpg", accent:[101,92,61], coverColor:0x373227, ratio:.685, thickness:.255, scale:.99},
+  {title:"技術分析與股市利潤", cover:"https://covers.openlibrary.org/b/isbn/9780857199171-L.jpg", accent:[142,94,51], coverColor:0x5a3d27, ratio:.695, thickness:.265, scale:1.01},
+  {title:"納瓦爾寶典", cover:"https://covers.openlibrary.org/b/isbn/9781544514215-L.jpg", accent:[49,73,111], coverColor:0x273848, ratio:.665, thickness:.225, scale:.97},
+  {title:"市場奇才", cover:"https://covers.openlibrary.org/b/isbn/9781118273050-L.jpg", accent:[122,55,49], coverColor:0x482b28, ratio:.675, thickness:.245, scale:.985}
 ];
 
 const stage=document.querySelector("#stage");
@@ -166,6 +168,7 @@ floor.receiveShadow=true;
 scene.add(floor);
 
 const loader=new THREE.TextureLoader();
+loader.setCrossOrigin("anonymous");
 const books=[];
 
 function makePageEdgeTexture(){
