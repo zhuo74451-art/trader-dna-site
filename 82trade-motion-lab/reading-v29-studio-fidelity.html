@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:,">
+<title>82TRADE — Reading V29 Studio Fidelity</title>
+<style>
+:root{--ink:#171717;--muted:#8a8a87}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:#efefed;color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei","Segoe UI",sans-serif}
+body{overflow:hidden}
+#stage{position:fixed;inset:0}
+canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+canvas.dragging{cursor:grabbing}
+.meta{
+  position:fixed;z-index:4;top:22px;left:28px;
+  font-size:8px;letter-spacing:.17em;text-transform:uppercase;
+  color:rgba(20,20,20,.36);pointer-events:none
+}
+.readout{
+  position:fixed;z-index:4;left:50%;bottom:21px;transform:translateX(-50%);
+  display:flex;align-items:baseline;gap:15px;pointer-events:none;color:#222
+}
+.count{font-size:8px;letter-spacing:.16em;color:rgba(20,20,20,.38)}
+.title{font-family:"Noto Serif CJK TC","Songti TC",Iowan Old Style,Georgia,serif;font-size:18px;font-weight:430;letter-spacing:-.015em}
+.hint{
+  position:fixed;right:28px;bottom:24px;z-index:4;
+  font-size:8px;letter-spacing:.13em;text-transform:uppercase;
+  color:rgba(20,20,20,.3);pointer-events:none
+}
+@media(max-width:760px){
+  .meta{top:17px;left:17px}
+  .readout{left:17px;bottom:22px;transform:none;gap:10px}
+  .title{font-size:16px}
+  .hint{display:none}
+}
+</style>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"}}
+</script>
+</head>
+<body>
+<div class="meta">82TRADE / READING V29 · STUDIO FIDELITY</div>
+<div id="stage" aria-label="Studio-grade 3D book carousel"></div>
+<div class="readout" aria-live="polite">
+  <span class="count" id="count">01 / 04</span>
+  <span class="title" id="title">股票作手回憶錄</span>
+</div>
+<div class="hint">drag · wheel · click</div>
+
+<script type="module">
+/*
+  V29 is a donor-fidelity material study.
+  The art direction deliberately mirrors the neutral Framer reference first:
+  pale studio, physical hardcovers, shallow arc, full-front cover visibility.
+
+  Interaction donor:
+  ICS INC. 230428_three_coverflow — MIT
+  https://github.com/ics-creative/230428_three_coverflow
+
+  Motion reference:
+  Ashish Gogula coverflow — MIT
+  https://github.com/ashishgogula/coverflow
+
+  Visual target:
+  Ameva "3D Book Carousel" Framer component.
+  No protected Ameva/Framer source is included.
+*/
+import * as THREE from "three";
+import { RoundedBoxGeometry } from "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/geometries/RoundedBoxGeometry.js";
+
+const BOOKS=[
+  {title:"股票作手回憶錄",cover:"./assets/books/hq/reminiscences.webp",cloth:0x7a2d20,thickness:.29,scale:1.00},
+  {title:"交易心理分析",cover:"./assets/books/hq/trading-in-the-zone.webp",cloth:0x40577b,thickness:.31,scale:1.015},
+  {title:"市場奇才",cover:"./assets/books/hq/market-wizards.webp",cloth:0x20251f,thickness:.34,scale:.995},
+  {title:"納瓦爾寶典",cover:"./assets/books/hq/naval.webp",cloth:0xc8c4b9,thickness:.27,scale:.98}
+];
+
+const stage=document.querySelector("#stage");
+const countEl=document.querySelector("#count");
+const titleEl=document.querySelector("#title");
+const reduceMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0xefefed);
+
+const camera=new THREE.PerspectiveCamera(28,innerWidth/innerHeight,.1,100);
+camera.position.set(0,.08,12.6);
+camera.lookAt(0,-.12,-.8);
+
+const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.08;
+stage.appendChild(renderer.domElement);
+
+const root=new THREE.Group();
+root.position.y=.07;
+scene.add(root);
+
+// Broad product-light setup.
+scene.add(new THREE.HemisphereLight(0xffffff,0xc9c7c2,1.55));
+
+const key=new THREE.DirectionalLight(0xfffdf8,4.35);
+key.position.set(-4.8,7.4,8.4);
+key.castShadow=true;
+key.shadow.mapSize.set(2048,2048);
+key.shadow.camera.left=-10;
+key.shadow.camera.right=10;
+key.shadow.camera.top=8;
+key.shadow.camera.bottom=-8;
+key.shadow.bias=-.00035;
+scene.add(key);
+
+const softLeft=new THREE.RectAreaLight(0xffffff,7.5,5.5,7);
+softLeft.position.set(-5.5,2.3,5.8);
+softLeft.lookAt(0,0,-1);
+scene.add(softLeft);
+
+const softRight=new THREE.RectAreaLight(0xf3f6ff,5.2,4.5,6);
+softRight.position.set(5.8,1.2,4.4);
+softRight.lookAt(0,-.2,-1);
+scene.add(softRight);
+
+const floor=new THREE.Mesh(
+  new THREE.PlaneGeometry(30,14),
+  new THREE.MeshStandardMaterial({color:0xefefed,roughness:1,metalness:0})
+);
+floor.rotation.x=-Math.PI/2;
+floor.position.set(0,-2.03,-1.15);
+floor.receiveShadow=true;
+scene.add(floor);
+
+const loader=new THREE.TextureLoader();
+
+function paperTexture(){
+  const c=document.createElement("canvas");
+  c.width=320;c.height=640;
+  const ctx=c.getContext("2d");
+  ctx.fillStyle="#e8e4dc";ctx.fillRect(0,0,c.width,c.height);
+  for(let y=2;y<c.height;y+=2.6){
+    const a=.035+Math.random()*.06;
+    ctx.fillStyle="rgba(81,74,65,"+a+")";
+    ctx.fillRect(0,y,c.width,Math.random()>.86?1.1:.45);
+  }
+  for(let i=0;i<1100;i++){
+    const g=Math.floor(150+Math.random()*60);
+    ctx.fillStyle="rgba("+g+","+g+","+g+","+(Math.random()*.035)+")";
+    ctx.fillRect(Math.random()*c.width,Math.random()*c.height,Math.random()*1.3+.25,Math.random()*.9+.2);
+  }
+  const t=new THREE.CanvasTexture(c);
+  t.colorSpace=THREE.SRGBColorSpace;
+  t.wrapS=t.wrapT=THREE.RepeatWrapping;
+  return t;
+}
+
+function clothTexture(){
+  const c=document.createElement("canvas");
+  c.width=320;c.height=320;
+  const ctx=c.getContext("2d");
+  const img=ctx.createImageData(c.width,c.height);
+  for(let i=0;i<img.data.length;i+=4){
+    const v=118+Math.floor(Math.random()*108);
+    img.data[i]=img.data[i+1]=img.data[i+2]=v;img.data[i+3]=255;
+  }
+  ctx.putImageData(img,0,0);
+  // faint woven structure
+  ctx.globalAlpha=.15;
+  ctx.strokeStyle="#777";
+  for(let x=0;x<c.width;x+=3){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,c.height);ctx.stroke()}
+  for(let y=0;y<c.height;y+=3){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(c.width,y);ctx.stroke()}
+  const t=new THREE.CanvasTexture(c);
+  t.wrapS=t.wrapT=THREE.RepeatWrapping;
+  t.repeat.set(5,7);
+  return t;
+}
+
+const pageTex=paperTexture();
+const clothTex=clothTexture();
+
+function clothMat(color){
+  return new THREE.MeshPhysicalMaterial({
+    color,
+    roughness:.79,
+    roughnessMap:clothTex,
+    bumpMap:clothTex,
+    bumpScale:.0045,
+    metalness:0,
+    clearcoat:.018,
+    clearcoatRoughness:.94,
+    sheen:.13,
+    sheenRoughness:.96,
+    sheenColor:new THREE.Color(color)
+  });
+}
+
+function coverMat(tex){
+  return new THREE.MeshPhysicalMaterial({
+    map:tex,
+    color:0xffffff,
+    roughness:.60,
+    roughnessMap:clothTex,
+    bumpMap:clothTex,
+    bumpScale:.002,
+    metalness:0,
+    clearcoat:.035,
+    clearcoatRoughness:.88,
+    sheen:.075,
+    sheenRoughness:.96,
+    side:THREE.FrontSide
+  });
+}
+
+const loaded=await Promise.all(BOOKS.map(async b=>{
+  const tex=await loader.loadAsync(b.cover);
+  tex.colorSpace=THREE.SRGBColorSpace;
+  tex.anisotropy=Math.min(12,renderer.capabilities.getMaxAnisotropy());
+  const iw=tex.image?.naturalWidth||tex.image?.width||800;
+  const ih=tex.image?.naturalHeight||tex.image?.height||1200;
+  return {...b,tex,ratio:iw/ih};
+}));
+
+const books=[];
+
+function makeBook(book,index){
+  const g=new THREE.Group();
+  g.userData.index=index;
+
+  const h=3.7*book.scale;
+  const w=h*book.ratio;
+  const totalD=book.thickness;
+  const boardD=.045;
+  const pageD=Math.max(.15,totalD-.078);
+  const over=.040;
+  const corner=.026;
+
+  // Inset page block.
+  const pages=new THREE.Mesh(
+    new THREE.BoxGeometry(w-.105,h-.115,pageD),
+    [
+      new THREE.MeshStandardMaterial({map:pageTex,color:0xe4dfd6,roughness:.98}),
+      new THREE.MeshStandardMaterial({color:0xc9c4bb,roughness:.98}),
+      new THREE.MeshStandardMaterial({map:pageTex,color:0xe8e4dc,roughness:.98}),
+      new THREE.MeshStandardMaterial({map:pageTex,color:0xded9cf,roughness:.99}),
+      new THREE.MeshStandardMaterial({color:0xd7d2c9,roughness:.99}),
+      new THREE.MeshStandardMaterial({color:0xd4cfc6,roughness:.99})
+    ]
+  );
+  pages.position.x=.032;
+  pages.castShadow=true;
+  pages.receiveShadow=true;
+  g.add(pages);
+
+  const boardGeom=new RoundedBoxGeometry(w+over*2,h+over*2,boardD,5,corner);
+  const boardMaterial=clothMat(book.cloth);
+
+  const frontBoard=new THREE.Mesh(boardGeom,boardMaterial);
+  frontBoard.position.z=pageD/2+boardD/2+.011;
+  frontBoard.castShadow=true;
+  frontBoard.receiveShadow=true;
+  g.add(frontBoard);
+
+  const backBoard=new THREE.Mesh(boardGeom,boardMaterial);
+  backBoard.position.z=-(pageD/2+boardD/2+.011);
+  backBoard.castShadow=true;
+  backBoard.receiveShadow=true;
+  g.add(backBoard);
+
+  // Full-bleed print lies almost flush on the board: no UI-like border.
+  const art=new THREE.Mesh(
+    new THREE.PlaneGeometry(w+.020,h+.020),
+    coverMat(book.tex)
+  );
+  art.position.z=frontBoard.position.z+boardD/2+.0025;
+  g.add(art);
+
+  // Rounded spine, physically separate from page deck.
+  const spineW=.095;
+  const spine=new THREE.Mesh(
+    new RoundedBoxGeometry(spineW,h+over*1.72,totalD+.052,8,.043),
+    clothMat(book.cloth)
+  );
+  spine.position.x=-(w/2+spineW*.22);
+  spine.castShadow=true;
+  spine.receiveShadow=true;
+  g.add(spine);
+
+  // Subtle hinge gutters.
+  const hingeMat=new THREE.MeshStandardMaterial({color:book.cloth,roughness:.82});
+  for(const z of [pageD/2+.034,-pageD/2-.034]){
+    const groove=new THREE.Mesh(new RoundedBoxGeometry(.022,h-.13,.022,3,.009),hingeMat);
+    groove.position.set(-(w/2-.040),0,z);
+    groove.castShadow=true;
+    g.add(groove);
+  }
+
+  // Head/tail bands. Tiny but visible at oblique angles.
+  const bandMat=new THREE.MeshStandardMaterial({color:0x8d8376,roughness:.9});
+  for(const y of [h/2-.050,-h/2+.050]){
+    const band=new THREE.Mesh(new RoundedBoxGeometry(.105,.026,pageD+.012,3,.009),bandMat);
+    band.position.set(-(w/2-.048),y,0);
+    g.add(band);
+  }
+
+  root.add(g);
+  books.push({group:g,w,h});
+}
+
+loaded.forEach(makeBook);
+
+const n=books.length;
+const ARC_RADIUS=12.8;
+const ARC_STEP=.255;
+const CENTER_SCALE=1.018;
+
+let position=0,velocity=0,target=0;
+let dragging=false,pointerId=null,dragStartX=0,dragStartPos=0,lastX=0,lastT=performance.now(),dragDistance=0;
+let selected=-1;
+
+function mod(v,m){return((v%m)+m)%m}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function shortestDelta(index,pos){
+  let d=index-mod(pos,n);
+  if(d>n/2)d-=n;
+  if(d<-n/2)d+=n;
+  return d;
+}
+
+function setSelected(i){
+  i=mod(i,n);
+  if(i===selected)return;
+  selected=i;
+  countEl.textContent=String(i+1).padStart(2,"0")+" / "+String(n).padStart(2,"0");
+  titleEl.textContent=BOOKS[i].title;
+}
+
+function layout(){
+  let nearest=0,nearestAbs=999;
+  books.forEach((item,i)=>{
+    const d=shortestDelta(i,position);
+    const theta=d*ARC_STEP;
+    const abs=Math.abs(d);
+    const x=Math.sin(theta)*ARC_RADIUS;
+    const z=(Math.cos(theta)*ARC_RADIUS-ARC_RADIUS)*.78;
+    const center=Math.max(0,1-abs);
+
+    item.group.position.set(x,-.08+abs*.018,z);
+    item.group.position.y+=center*.11;
+    item.group.rotation.y=-theta*.74;
+    item.group.rotation.z=THREE.MathUtils.degToRad((i%2?1:-1)*.12);
+    const s=(1-Math.min(abs*.035,.08))+(CENTER_SCALE-(1-Math.min(abs*.035,.08)))*center;
+    item.group.scale.setScalar(s);
+
+    if(abs<nearestAbs){nearestAbs=abs;nearest=i}
+  });
+  setSelected(nearest);
+}
+layout();
+
+renderer.domElement.addEventListener("pointerdown",e=>{
+  dragging=true;pointerId=e.pointerId;renderer.domElement.setPointerCapture(pointerId);
+  dragStartX=lastX=e.clientX;dragStartPos=position;lastT=performance.now();velocity=0;dragDistance=0;
+  renderer.domElement.classList.add("dragging");
+});
+renderer.domElement.addEventListener("pointermove",e=>{
+  if(!dragging||e.pointerId!==pointerId)return;
+  const now=performance.now(),dx=e.clientX-dragStartX;
+  const px=innerWidth<760?155:225;
+  position=dragStartPos-dx/px;
+  const dt=Math.max(8,now-lastT);
+  velocity=-(e.clientX-lastX)/px/(dt/1000);
+  dragDistance=Math.max(dragDistance,Math.abs(dx));
+  lastX=e.clientX;lastT=now;
+});
+function release(){
+  if(!dragging)return;
+  dragging=false;renderer.domElement.classList.remove("dragging");
+  try{renderer.domElement.releasePointerCapture(pointerId)}catch{}
+  if(reduceMotion){position=Math.round(position);target=position;velocity=0}
+  else target=Math.round(position+clamp(velocity*.14,-.75,.75));
+}
+renderer.domElement.addEventListener("pointerup",release);
+renderer.domElement.addEventListener("pointercancel",release);
+
+renderer.domElement.addEventListener("wheel",e=>{
+  e.preventDefault();
+  const delta=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;
+  target=Math.round(target+clamp(delta*.0022,-.7,.7));
+},{passive:false});
+
+const raycaster=new THREE.Raycaster();
+const pointer=new THREE.Vector2();
+renderer.domElement.addEventListener("click",e=>{
+  if(dragDistance>7)return;
+  const r=renderer.domElement.getBoundingClientRect();
+  pointer.x=((e.clientX-r.left)/r.width)*2-1;
+  pointer.y=-((e.clientY-r.top)/r.height)*2+1;
+  raycaster.setFromCamera(pointer,camera);
+  const hits=raycaster.intersectObjects(books.map(x=>x.group),true);
+  if(!hits.length)return;
+  let o=hits[0].object;
+  while(o.parent&&o.parent!==root)o=o.parent;
+  if(o.userData.index==null)return;
+  target=position+shortestDelta(o.userData.index,position);
+});
+
+addEventListener("keydown",e=>{
+  if(e.key==="ArrowLeft")target=Math.round(target)-1;
+  if(e.key==="ArrowRight")target=Math.round(target)+1;
+});
+
+function resize(){
+  renderer.setSize(innerWidth,innerHeight);
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  camera.aspect=innerWidth/innerHeight;
+  if(innerWidth<760){
+    camera.fov=42;camera.position.set(0,.07,13.4);root.scale.setScalar(.82);root.position.y=-.05;
+  }else{
+    camera.fov=28;camera.position.set(0,.08,12.6);root.scale.setScalar(1);root.position.y=.07;
+  }
+  camera.updateProjectionMatrix();
+}
+addEventListener("resize",resize);
+resize();
+
+let prev=performance.now();
+function tick(now){
+  requestAnimationFrame(tick);
+  const dt=Math.min(.033,(now-prev)/1000||.016);prev=now;
+  if(!dragging){
+    if(reduceMotion){position=target;velocity=0}
+    else{
+      velocity+=(target-position)*23.5*dt;
+      velocity*=Math.exp(-9.5*dt);
+      position+=velocity*dt;
+      if(Math.abs(target-position)<.0007&&Math.abs(velocity)<.0014){position=target;velocity=0}
+    }
+  }
+  layout();
+  renderer.render(scene,camera);
+}
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
