@@ -1,0 +1,36 @@
+name: Reading V28 QA
+
+on:
+  push:
+    paths:
+      - "82trade-motion-lab/reading-v28-real-book-carousel.html"
+      - ".github/scripts/reading-v28-qa.mjs"
+      - ".github/workflows/reading-v28-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  reading-v28:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Chromium QA runtime
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Run V28 desktop/mobile/reduced-motion QA
+        run: node .github/scripts/reading-v28-qa.mjs
+      - name: Print report
+        if: always()
+        run: |
+          if [ -f reading-v28-qa/report.json ]; then cat reading-v28-qa/report.json; fi
+      - name: Upload V28 screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reading-v28-qa
+          path: reading-v28-qa/**
+          if-no-files-found: error
+          retention-days: 7
