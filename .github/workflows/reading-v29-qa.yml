@@ -1,0 +1,37 @@
+name: Reading V29 QA
+
+on:
+  push:
+    paths:
+      - "82trade-motion-lab/reading-v29-studio-fidelity.html"
+      - "82trade-motion-lab/assets/books/hq/**"
+      - ".github/scripts/reading-v29-qa.mjs"
+      - ".github/workflows/reading-v29-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  reading-v29:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Chromium QA runtime
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Run V29 studio fidelity QA
+        run: node .github/scripts/reading-v29-qa.mjs
+      - name: Print report
+        if: always()
+        run: |
+          if [ -f reading-v29-qa/report.json ]; then cat reading-v29-qa/report.json; fi
+      - name: Upload V29 screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reading-v29-qa
+          path: reading-v29-qa/**
+          if-no-files-found: error
+          retention-days: 7
