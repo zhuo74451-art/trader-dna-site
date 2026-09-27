@@ -1,0 +1,116 @@
+/* Authority Preview — Result Hero and Identity Edition are intentionally separate. */
+body.v5-functional-preview .result.v4-issue .result-grid{
+  grid-template-columns:1fr!important;
+}
+body.v5-functional-preview .result.v4-issue .share-preview{
+  display:none!important;
+}
+body.v5-functional-preview .result.v4-issue .result-hero{
+  min-height:calc(100svh - 58px)!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 64% 42%,rgba(255,224,170,.10),transparent 24%),
+    radial-gradient(circle at 54% 50%,rgba(255,255,255,.045),transparent 36%),
+    #070707!important;
+}
+body.v5-functional-preview .result.v4-issue .result-hero .v47-identity-stack,
+body.v5-functional-preview .result.v4-issue .result-hero .v4-result-mark{
+  display:none!important;
+}
+body.v5-functional-preview .result.v4-issue .result-hero>.result-lock{
+  opacity:.28!important;
+  pointer-events:none!important;
+  position:absolute!important;
+  left:52%!important;
+  top:45%!important;
+  width:min(45vw,620px)!important;
+  transform:translate(-50%,-50%) scale(1.35)!important;
+}
+body.v5-functional-preview .result.v4-issue .result-hero>.code{
+  opacity:.12!important;
+  pointer-events:none!important;
+  position:absolute!important;
+  left:50%!important;
+  top:45%!important;
+  transform:translate(-50%,-50%)!important;
+  font-size:clamp(120px,24vw,360px)!important;
+  line-height:.8!important;
+  color:#f4f0e8!important;
+  white-space:nowrap!important;
+}
+body.v5-functional-preview .result.v4-issue .result-hero>.identity{
+  opacity:1!important;
+  pointer-events:none!important;
+  position:absolute!important;
+  left:clamp(22px,4vw,62px)!important;
+  bottom:20%!important;
+  color:#f4f0e8!important;
+  font-size:clamp(42px,6vw,92px)!important;
+  letter-spacing:-.04em!important;
+}
+body.v5-functional-preview .result.v4-issue .result-hero>.hook{
+  bottom:9%!important;
+  max-width:34em!important;
+}
+body.v5-functional-preview .result.v4-issue .v3-share-studio{
+  background:#070707!important;
+}
+body.v5-functional-preview .result.v4-issue .v3-share-stage{
+  aspect-ratio:4/5!important;
+  width:min(44vw,500px)!important;
+  transform:none!important;
+  border:0!important;
+  background:#efe9dc!important;
+  box-shadow:0 38px 92px rgba(0,0,0,.48)!important;
+}
+body.v5-functional-preview .result.v4-issue .v3-share-stage img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  background:#efe9dc!important;
+}
+body.v5-functional-preview .result.v4-issue .v3-share-stage[data-error]::before{
+  content:"IDENTITY EDITION / MASTER ASSET PENDING";
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  padding:40px;
+  color:#151515;
+  background:#efe9dc;
+  font:700 12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;
+  letter-spacing:.14em;
+  text-align:center;
+  z-index:2;
+}
+body.v5-functional-preview .result.v4-issue .v3-share-formats{
+  display:none!important;
+}
+@media(max-width:760px){
+  body.v5-functional-preview .result.v4-issue .result-hero>.result-lock{
+    width:min(82vw,390px)!important;
+    left:50%!important;
+    top:42%!important;
+  }
+  body.v5-functional-preview .result.v4-issue .result-hero>.code{
+    top:42%!important;
+    font-size:clamp(92px,30vw,160px)!important;
+  }
+  body.v5-functional-preview .result.v4-issue .result-hero>.identity{
+    left:18px!important;
+    bottom:19%!important;
+    font-size:clamp(38px,13vw,64px)!important;
+  }
+  body.v5-functional-preview .result.v4-issue .v3-share-stage{
+    width:min(82vw,360px)!important;
+  }
+}
+body.v5-functional-preview .result.v4-issue .result-hero .dossier-head,
+body.v5-functional-preview .result.v4-issue .result-hero .result-kicker,
+body.v5-functional-preview .result.v4-issue .result-hero>.code,
+body.v5-functional-preview .result.v4-issue .result-hero>.identity,
+body.v5-functional-preview .result.v4-issue .result-hero>.hook,
+body.v5-functional-preview .result.v4-issue .result-hero .result-foot{
+  z-index:3!important;
+}
