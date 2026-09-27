@@ -1,0 +1,71 @@
+name: Reading V29 Ingest HQ Covers
+
+on:
+  push:
+    paths:
+      - ".github/workflows/reading-v29-ingest-covers.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install image tooling
+        run: python3 -m pip install --disable-pip-version-check pillow
+
+      - name: Download highest quality available cover sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p 82trade-motion-lab/assets/books/hq-src 82trade-motion-lab/assets/books/hq
+
+          curl -L --fail --retry 3             "https://dynamic.indigoimages.ca/v1/books/books/0471770884/1.jpg?width=1600&quality=95"             -o 82trade-motion-lab/assets/books/hq-src/reminiscences.jpg           || curl -L --fail --retry 3             "https://application.wiley-vch.de/books/tis/cover_big/0471770884.jpg"             -o 82trade-motion-lab/assets/books/hq-src/reminiscences.jpg
+
+          curl -L --fail --retry 3             "https://dynamic.indigoimages.ca/v1/books/books/1118273052/1.jpg?width=1600&quality=95"             -o 82trade-motion-lab/assets/books/hq-src/market-wizards.jpg           || curl -L --fail --retry 3             "https://application.wiley-vch.de/books/tis/cover_big/1118273052.jpg"             -o 82trade-motion-lab/assets/books/hq-src/market-wizards.jpg
+
+          curl -L --fail --retry 3             "https://images1.penguinrandomhouse.com/cover/9780735201446"             -o 82trade-motion-lab/assets/books/hq-src/trading-in-the-zone.jpg
+
+          curl -L --fail --retry 3             "https://d28hgpri8am2if.cloudfront.net/book_images/onix/cvr9798893310948/the-almanack-of-naval-ravikant-9798893310948_hr.jpg"             -o 82trade-motion-lab/assets/books/hq-src/naval.jpg
+
+      - name: Normalize, upscale only when necessary, and sharpen lightly
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageFilter
+
+          src = Path("82trade-motion-lab/assets/books/hq-src")
+          out = Path("82trade-motion-lab/assets/books/hq")
+          out.mkdir(parents=True, exist_ok=True)
+
+          for p in sorted(src.glob("*.jpg")):
+              im = Image.open(p).convert("RGB")
+              ow, oh = im.size
+              target_w = max(1200, ow)
+              if target_w != ow:
+                  target_h = round(oh * target_w / ow)
+                  im = im.resize((target_w, target_h), Image.Resampling.LANCZOS)
+                  im = im.filter(ImageFilter.UnsharpMask(radius=1.2, percent=115, threshold=2))
+              im.save(out / (p.stem + ".webp"), "WEBP", quality=94, method=6)
+              print(f"{p.name}: source={ow}x{oh} final={im.width}x{im.height}")
+          PY
+
+      - name: Commit normalized covers
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "82TRADE Asset Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add 82trade-motion-lab/assets/books/hq-src 82trade-motion-lab/assets/books/hq
+          if git diff --cached --quiet; then
+            echo "No cover changes"
+            exit 0
+          fi
+          git commit -m "assets: ingest HQ reading cover sources"
+          git push
