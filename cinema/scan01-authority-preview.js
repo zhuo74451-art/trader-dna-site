@@ -1,6 +1,7 @@
 (()=>{'use strict';
 const root=document.querySelector('#view');
 const CARD_BASE='./cinema/assets/identity-cards';
+const HERO_BASE='./cinema/assets/hero-characters';
 const CODES=new Set(['IWGF','IWGC','IWHF','IWHC','IAGF','IAGC','IAHF','IAHC','SWGF','SWGC','SWHF','SWHC','SAGF','SAGC','SAHF','SAHC']);
 let queued=false,warmCode='';
 function api(){return window.TraderDNAShareCard||null}
@@ -9,6 +10,11 @@ function cardPath(code){
   const value=String(code||'').trim().toUpperCase();
   if(!CODES.has(value))throw new Error('Unknown Trader DNA identity: '+value);
   return `${CARD_BASE}/${value}.webp`;
+}
+function heroPath(code){
+  const value=String(code||'').trim().toUpperCase();
+  if(!CODES.has(value))throw new Error('Unknown Trader DNA identity: '+value);
+  return `${HERO_BASE}/${value}.webp`;
 }
 function absolute(path){return new URL(path,location.href).href}
 async function cardBlob(code){
@@ -25,7 +31,7 @@ function warmRevealIdentity(){
   warmCode=code;
   const image=new Image();
   image.decoding='async';
-  image.src=absolute(cardPath(code));
+  image.src=absolute(heroPath(code));
 }
 function mountHero(result){
   const hero=result?.querySelector('.result-hero');
@@ -42,7 +48,7 @@ function mountHero(result){
     hero.appendChild(figure);
   }
   const image=figure.querySelector('img');
-  const src=absolute(cardPath(code));
+  const src=absolute(heroPath(code));
   const ready=()=>{figure.dataset.ready='1';hero.dataset.characterReady='1'};
   if(image.src!==src){
     delete figure.dataset.ready;
