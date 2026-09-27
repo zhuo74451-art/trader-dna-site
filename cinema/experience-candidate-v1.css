@@ -178,3 +178,133 @@ body[data-experience-candidate="1"] .ec-species-media[data-ready="1"] + .ec-orig
   .ec-class-tagline{margin:10px 0 11px;gap:9px}
   .ec-class-tagline b{font-size:12px}
 }
+
+
+/* EC-02 correction pass: the real page follows the approved second mockup.
+   1) Result art keeps the Visual Bible's landscape crop instead of blowing it
+      up full-bleed.
+   2) Share section shows the real warm-white artifact immediately. */
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media){
+  background:
+    linear-gradient(180deg,#0b0c0b 0%,#0b0d0c 68%,#111310 100%);
+}
+.result[data-ec="1"] .ec-class-sprite-media{
+  inset:5.5% 5.5% auto 5.5%;
+  width:auto;
+  height:auto;
+  aspect-ratio:1.58/1;
+  transform:translateZ(1px);
+  border:1px solid rgba(238,232,216,.18);
+  box-shadow:0 14px 32px rgba(0,0,0,.35);
+  filter:saturate(.96) contrast(1.025) brightness(.97);
+}
+.result[data-ec="1"] .ec-class-sprite-media::after{
+  background:
+    linear-gradient(180deg,rgba(5,6,5,.02) 0%,rgba(5,6,5,0) 58%,rgba(5,6,5,.42) 100%);
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-result-mark-meta{
+  top:7.5%;
+  left:8%;
+  right:8%;
+  color:#ece9dfcc;
+  text-shadow:0 2px 8px #000;
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-dna{
+  left:7.5%;
+  top:auto;
+  bottom:18.5%;
+  opacity:1;
+  color:#f3efe6;
+  font-size:clamp(44px,4.2vw,70px);
+  text-shadow:0 2px 14px #000;
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-id{
+  left:7.5%;
+  bottom:9%;
+  z-index:6;
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-id b{
+  font-size:22px;
+  color:#f2eee5;
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-id span{
+  font-size:13px;
+  color:#d8d2c8;
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-weave,
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .d4-plate-imprint{
+  display:none;
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media)::after{
+  bottom:8.5%;
+  color:#bbb7ac99;
+}
+
+/* The share studio is an exhibition of the artifact, not a generator placeholder. */
+.result[data-ec="1"] .v3-share-studio{
+  min-height:calc(100svh - 74px);
+  grid-template-columns:minmax(300px,.78fr) minmax(480px,1.22fr);
+  gap:34px 6vw;
+  padding:90px 6vw 108px;
+}
+.result[data-ec="1"] .v3-share-studio-copy h3{
+  font-size:clamp(46px,4.6vw,76px);
+  line-height:1.24;
+  max-width:8.5em;
+  margin:25px 0 24px;
+}
+.result[data-ec="1"] .v3-share-studio-copy p{
+  max-width:32em;
+  font-size:15px;
+  line-height:1.95;
+}
+.result[data-ec="1"] .v3-share-stage{
+  max-width:650px;
+  width:min(46vw,650px);
+  justify-self:center;
+}
+.result[data-ec="1"] .v3-share-stage[data-ec-preview="1"]>img{
+  opacity:1!important;
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  transform:translateZ(42px) rotateZ(-1.25deg);
+  box-shadow:0 34px 70px rgba(0,0,0,.52),0 0 0 1px rgba(255,255,255,.12);
+  transition:transform .42s cubic-bezier(.2,.8,.2,1),opacity .25s;
+}
+.result[data-ec="1"] .v3-share-stage[data-ec-preview="1"] .cinema-share-cover{
+  display:none!important;
+}
+.result[data-ec="1"] .v3-share-stage[data-ec-preview="1"] .v47-share-back{
+  inset:5% 1% 2% 8%;
+  transform:translateZ(-48px) rotate(3.3deg);
+  opacity:.72;
+}
+.result[data-ec="1"] .v3-share-stage[data-ec-preview="1"] .v47-share-front{
+  top:5%;
+  right:-2%;
+  padding:13px 18px;
+  transform:translateZ(72px) rotate(1.4deg);
+}
+.result[data-ec="1"] .v3-share-studio[data-ec-preview="1"] .v3-share-generate{
+  background:#eee9df;
+  color:#11110f;
+}
+@media(max-width:760px){
+  .result[data-ec="1"] .v3-share-studio{
+    min-height:auto;
+    grid-template-columns:1fr;
+    padding:70px 22px 82px;
+  }
+  .result[data-ec="1"] .v3-share-stage{
+    width:min(88vw,520px);
+  }
+  .result[data-ec="1"] .v3-share-studio-copy h3{
+    font-size:clamp(36px,10vw,52px);
+    max-width:9em;
+  }
+  .result[data-ec="1"] .ec-class-sprite-media{
+    inset:6% 5% auto 5%;
+  }
+}
