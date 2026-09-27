@@ -123,7 +123,7 @@ function augmentMaterial02({canvas,ctx,data,format,W,H}){
 
   // The Visual Bible is landscape. Keep that native proportion so the art
   // stays crisp and reads as an editorial image field, not a stretched poster.
-  const dx=tall?250:330,dy=tall?990:720,dw=tall?700:650,dh=tall?425:395;
+  const dx=tall?420:500,dy=tall?1040:760,dw=tall?520:470,dh=tall?325:294;
 
   const pane=document.createElement('canvas');
   pane.width=Math.round(dw);pane.height=Math.round(dh);
@@ -174,7 +174,7 @@ function augmentMaterial02({canvas,ctx,data,format,W,H}){
   ctx.font='10px ui-monospace, SFMono-Regular, Menlo, monospace';
   ctx.fillStyle='rgba(72,68,60,.54)';
   ctx.textAlign='right';
-  ctx.fillText('INITIAL CLASS / '+data.code,W-76,dy+14);
+  ctx.fillText('INITIAL CLASS / '+data.code,dx+dw,dy-12);
   ctx.restore();
 
   canvas.dataset.ecClassMedia='1';
