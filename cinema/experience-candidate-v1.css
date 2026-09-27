@@ -349,3 +349,65 @@ body[data-experience-candidate="1"] .ec-species-media[data-ready="1"] + .ec-orig
 .result[data-ec="1"] .v3-share-stage[data-ec-preview="1"]>img{
   transform:translateZ(36px) rotateZ(-.8deg);
 }
+
+
+/* EC-02 result simplification: one image field + one identity lockup.
+   The signal rail is already repeated below in the dossier, so it is removed
+   from the hero object instead of competing with the character. */
+.result[data-ec="1"] .v47-identity-stack{
+  width:45vw;
+  max-width:760px;
+  aspect-ratio:1.26;
+}
+.result[data-ec="1"] .v47-identity-plate{
+  inset:0 2.5% 4% 0;
+}
+.result[data-ec="1"] .v47-identity-chip,
+.result[data-ec="1"] .v47-identity-rail{
+  display:none!important;
+}
+.result[data-ec="1"] .v47-identity-front{
+  pointer-events:none;
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media){
+  border:1px solid rgba(241,236,222,.22);
+  box-shadow:0 0 0 1px rgba(255,255,255,.025),0 24px 42px rgba(0,0,0,.38);
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media)::before{
+  width:3px;
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media)::after{
+  right:5.5%;
+  bottom:7%;
+  color:#b9b5aa78;
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-result-mark-meta{
+  top:5.5%;
+  left:5.5%;
+  right:5.5%;
+  font-size:6px;
+  letter-spacing:.12em;
+}
+.result[data-ec="1"] .ec-class-sprite-media{
+  inset:5.2% 5.2% auto 5.2%;
+  aspect-ratio:1.60/1;
+  border:0;
+  box-shadow:none;
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-id{
+  left:5.8%;
+  bottom:6.8%;
+  gap:5px;
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-id b{
+  font-size:clamp(36px,3.25vw,54px);
+}
+.result[data-ec="1"] .v4-result-mark:has(.ec-class-sprite-media) .v4-issued-id span{
+  font-size:clamp(17px,1.35vw,22px);
+}
+@media(max-width:760px){
+  .result[data-ec="1"] .v47-identity-stack{
+    width:min(94vw,560px);
+    aspect-ratio:1.18;
+  }
+}
