@@ -50,7 +50,6 @@ body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition
   .scan01-authority-character,.scan01-authority-native{transition:none!important}
   .result.d4-result-enter .scan01-authority-character,
   .result.d4-result-enter .scan01-authority-character img,
-  .result.d4-result-enter .scan01-authority-character::before,
   .result.d4-result-enter .result-kicker,
   .result.d4-result-enter .code,
   .result.d4-result-enter .identity,
@@ -66,23 +65,7 @@ body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition
 .result.d4-result-enter .scan01-authority-character[data-ready] img{
   animation:scan01-character-lens 1.18s cubic-bezier(.16,1,.3,1) both;
 }
-.result.d4-result-enter .scan01-authority-character::before{
-  content:"";
-  position:absolute;
-  z-index:3;
-  top:-10%;
-  bottom:-10%;
-  left:-36%;
-  width:24%;
-  opacity:0;
-  pointer-events:none;
-  background:linear-gradient(90deg,transparent,rgba(226,194,91,.18) 44%,rgba(255,244,196,.34) 50%,rgba(226,194,91,.11) 58%,transparent);
-  transform:skewX(-9deg) translateX(-120%);
-  animation:scan01-lock-sweep .9s .13s cubic-bezier(.22,.7,.18,1) both;
-}
-.result.d4-result-enter .result-kicker{
-  animation:scan01-copy-lock .52s .12s cubic-bezier(.16,1,.3,1) both!important;
-}
+.result.d4-result-enter .result-kicker{animation:none!important}
 .result.d4-result-enter .code{
   transform-origin:left center;
   animation:scan01-code-lock .72s .08s cubic-bezier(.16,1,.3,1) both!important;
@@ -93,9 +76,7 @@ body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition
 .result.d4-result-enter .hook{
   animation:scan01-copy-lock .62s .34s cubic-bezier(.16,1,.3,1) both!important;
 }
-.result.d4-result-enter .result-foot{
-  animation:scan01-copy-lock .52s .44s cubic-bezier(.16,1,.3,1) both;
-}
+.result.d4-result-enter .result-foot{animation:none!important}
 @keyframes scan01-character-arrive{
   0%{opacity:0;clip-path:inset(0 0 0 48%);filter:blur(9px)}
   42%{opacity:.52}
@@ -105,12 +86,6 @@ body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition
   0%{transform:scale(var(--hero-enter-scale,1.18));filter:brightness(.18) contrast(1.34) saturate(.55)}
   58%{filter:brightness(.35) contrast(1.28) saturate(.68)}
   100%{transform:scale(var(--hero-scale,1.08));filter:brightness(var(--hero-brightness,.46)) contrast(1.24) saturate(.76)}
-}
-@keyframes scan01-lock-sweep{
-  0%,8%{opacity:0;transform:skewX(-9deg) translateX(-125%)}
-  22%{opacity:.78}
-  72%{opacity:.36}
-  100%{opacity:0;transform:skewX(-9deg) translateX(690%)}
 }
 @keyframes scan01-code-lock{
   0%{opacity:0;filter:blur(5px);transform:translateY(17px) scale(.94);letter-spacing:-.12em}
@@ -128,7 +103,6 @@ body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition
     animation-name:scan01-character-lens-mobile;
     animation-duration:.96s;
   }
-  .result.d4-result-enter .scan01-authority-character[data-ready]::before{animation-duration:.72s}
 }
 
 /* Reveal shares the same role art as Result, but only as a quiet printed watermark. */
@@ -144,9 +118,10 @@ body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition
   opacity:.26;
   pointer-events:none;
   mix-blend-mode:multiply;
+  transform-origin:86% 66%;
   -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%,#000 100%);
   mask-image:linear-gradient(90deg,transparent 0,#000 30%,#000 100%);
-  animation:scan01-reveal-character-in 1.05s .18s cubic-bezier(.16,1,.3,1) both;
+  animation:scan01-reveal-character-transfer 2.86s .12s cubic-bezier(.16,1,.3,1) both;
 }
 .scan01-reveal-character img{
   width:100%;
@@ -158,9 +133,12 @@ body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition
 }
 
 .d4-reveal-imprint{z-index:3}
-@keyframes scan01-reveal-character-in{
-  0%{opacity:0;transform:translateX(18px) scale(1.025);filter:blur(4px)}
-  100%{opacity:.26;transform:none;filter:none}
+@keyframes scan01-reveal-character-transfer{
+  0%{opacity:0;transform:translateX(16px) scale(1.02);filter:blur(4px)}
+  12%{opacity:.26;transform:none;filter:none}
+  76%{opacity:.26;transform:none;filter:none}
+  90%{opacity:.20;transform:translateX(7%) scale(1.06);filter:contrast(1.04)}
+  100%{opacity:0;transform:translateX(24%) scale(1.16);filter:blur(3px) contrast(1.08)}
 }
 @media(max-width:760px){
   .scan01-reveal-character{right:-15%;bottom:-8%;width:76%;height:88%;opacity:.20}
@@ -168,3 +146,5 @@ body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition
 @media(prefers-reduced-motion:reduce){
   .scan01-reveal-character{animation:none!important;opacity:.24}
 }
+/* Final Hero subtraction: technical session metadata stays out of the identity payoff. */
+body[data-edition="detail-04"] .result-hero>.result-foot{display:none!important}
