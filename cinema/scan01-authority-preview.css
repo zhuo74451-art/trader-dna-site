@@ -395,3 +395,24 @@ body[data-edition="detail-04"] .scan01-final-lock .decision-cells .is-current.is
     opacity:1;transform:none;transition:none;
   }
 }
+
+
+/* Identity Edition owns its own publish action; do not inherit the legacy renderer's hidden-tools gate. */
+body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition"] .v3-share-tools{
+  display:flex!important;
+  visibility:visible!important;
+}
+body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition"] .v3-share-formats{
+  display:none!important;
+  visibility:hidden!important;
+}
+body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition"] .scan01-authority-native{
+  min-width:min(100%,320px);
+  border-color:#e8e3d3;
+}
+@media(max-width:760px){
+  body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition"] .scan01-authority-native{
+    width:100%;
+    min-width:0;
+  }
+}
