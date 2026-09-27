@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:,">
+<title>82TRADE — Reading V27 Book Carousel Donor</title>
+<style>
+:root{
+  --bg:#151112;
+  --accent:86,104,51;
+  --ink:#f4f1ea;
+  --muted:#77736f;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:#151112;color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei","Segoe UI",sans-serif}
+body{overflow:hidden;background:
+  radial-gradient(64% 72% at 50% 47%,rgba(var(--accent),.18),transparent 60%),
+  linear-gradient(180deg,#191415 0%,#110e0f 100%);
+  transition:background-color .5s ease;
+}
+#glow{
+  position:fixed;inset:-15%;pointer-events:none;
+  background:radial-gradient(42% 46% at 50% 48%,rgba(var(--accent),.23),transparent 70%);
+  filter:blur(34px);opacity:.95;transition:background .7s ease;
+}
+#stage{position:fixed;inset:0}
+canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+canvas.dragging{cursor:grabbing}
+.meta{
+  position:fixed;z-index:4;top:24px;left:30px;
+  font-size:8px;line-height:1;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.34);pointer-events:none
+}
+.info{
+  position:fixed;z-index:4;left:50%;bottom:24px;transform:translateX(-50%);
+  min-width:min(560px,calc(100vw - 40px));display:grid;grid-template-columns:46px 1fr auto;
+  align-items:end;gap:16px;pointer-events:none
+}
+.count{font-size:9px;letter-spacing:.16em;color:rgba(255,255,255,.38);padding-bottom:3px}
+.title{font-family:"Noto Serif CJK TC","Songti TC",Iowan Old Style,Georgia,serif;font-size:clamp(22px,2.2vw,34px);line-height:1;font-weight:430;letter-spacing:-.025em}
+.hint{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.34);padding-bottom:3px;white-space:nowrap}
+.progress{
+  position:fixed;z-index:4;left:30px;right:30px;bottom:14px;height:1px;background:rgba(255,255,255,.07);
+}
+.progress span{display:block;height:100%;width:25%;background:rgba(255,255,255,.42);transform-origin:left center;transition:transform .45s cubic-bezier(.22,.72,.18,1)}
+@media(max-width:760px){
+  .meta{top:18px;left:18px}
+  .info{left:18px;right:18px;bottom:28px;transform:none;min-width:0;grid-template-columns:36px 1fr}
+  .hint{display:none}
+  .title{font-size:26px}
+  .progress{left:18px;right:18px;bottom:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  #glow,.progress span{transition:none}
+}
+</style>
+</head>
+<body>
+<div id="glow"></div>
+<div class="meta">82TRADE / READING V27 · BOOK CAROUSEL DONOR</div>
+<div id="stage" aria-label="3D book carousel"></div>
+<div class="info" aria-live="polite">
+  <div class="count" id="count">01 / 04</div>
+  <div class="title" id="title">股票作手回憶錄</div>
+  <div class="hint">drag · wheel · click</div>
+</div>
+<div class="progress"><span id="progress"></span></div>
+
+<script type="module">
+/*
+  READING V27 — isolated donor transplant study.
+
+  Interaction/layout donor:
+  ICS INC. "230428_three_coverflow" (MIT)
+  Copyright (c) 2014-2025 ICS INC.
+  https://github.com/ics-creative/230428_three_coverflow
+
+  Physics reference:
+  Ashish Gogula "coverflow" (MIT)
+  Copyright (c) 2026 Ashish Gogula
+  https://github.com/ashishgogula/coverflow
+
+  Visual target reference:
+  Ameva "3D Book Carousel" on Framer Marketplace.
+  No Ameva/Framer source code is copied into this public repository.
+  We reproduce the observable product behavior with MIT/open primitives:
+  real 3D book volume, shallow arc, momentum drag, click-to-center,
+  studio lighting, contact shadow, responsive camera.
+*/
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+
+const BOOKS = [
+  {title:"股票作手回憶錄", cover:"./assets/books/reminiscences-real.webp", accent:[86,104,51], spine:0x29331d},
+  {title:"新威科夫操盤法", cover:"./assets/books/wyckoff.webp", accent:[172,118,54], spine:0x694822},
+  {title:"技術分析聖經", cover:"./assets/books/technical-analysis-real.webp", accent:[129,65,48], spine:0x4c2b25},
+  {title:"納瓦爾寶典", cover:"./assets/books/naval.webp", accent:[34,79,124], spine:0x1f3147}
+];
+
+const stage = document.querySelector("#stage");
+const titleEl = document.querySelector("#title");
+const countEl = document.querySelector("#count");
+const progressEl = document.querySelector("#progress");
+const glowEl = document.querySelector("#glow");
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(32, innerWidth/innerHeight, .1, 100);
+camera.position.set(0,.15,11);
+camera.lookAt(0,0,0);
+
+const renderer = new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:"high-performance"});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.08;
+stage.appendChild(renderer.domElement);
+
+const root = new THREE.Group();
+scene.add(root);
+
+// Studio light rig: quiet editorial light, not glossy tech-demo lighting.
+scene.add(new THREE.HemisphereLight(0xf5efe5,0x191315,1.55));
+const key = new THREE.DirectionalLight(0xfff4e9,5.6);
+key.position.set(-3.5,5.5,7);
+key.castShadow = true;
+key.shadow.mapSize.set(1024,1024);
+key.shadow.camera.left=-8;key.shadow.camera.right=8;key.shadow.camera.top=8;key.shadow.camera.bottom=-8;
+scene.add(key);
+const rim = new THREE.PointLight(0x9db4ff,18,18,2);
+rim.position.set(5,1.5,3.5);
+scene.add(rim);
+const warm = new THREE.PointLight(0xffb56b,9,14,2);
+warm.position.set(-5,-.5,4);
+scene.add(warm);
+
+// Invisible-ish floor whose only job is to catch book shadows.
+const floorMat = new THREE.ShadowMaterial({color:0x000000,opacity:.34});
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(24,10),floorMat);
+floor.rotation.x = -Math.PI/2;
+floor.position.y = -2.05;
+floor.position.z = -1.2;
+floor.receiveShadow = true;
+scene.add(floor);
+
+const loader = new THREE.TextureLoader();
+const bookObjects = [];
+
+function makeBook(book,index){
+  const g = new THREE.Group();
+  g.userData.index = index;
+
+  const tex = loader.load(book.cover);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = Math.min(8,renderer.capabilities.getMaxAnisotropy());
+
+  const page = new THREE.MeshStandardMaterial({color:0xe8e1d2,roughness:.72,metalness:0});
+  const pageDark = new THREE.MeshStandardMaterial({color:0xd7cfbf,roughness:.78,metalness:0});
+  const spine = new THREE.MeshStandardMaterial({color:book.spine,roughness:.58,metalness:0});
+  const front = new THREE.MeshPhysicalMaterial({
+    map:tex,color:0xffffff,roughness:.46,metalness:0,
+    clearcoat:.18,clearcoatRoughness:.42
+  });
+  const back = new THREE.MeshStandardMaterial({color:book.spine,roughness:.62,metalness:0});
+
+  // BoxGeometry material order: +x, -x, +y, -y, +z(front), -z(back)
+  const mesh = new THREE.Mesh(
+    new THREE.BoxGeometry(2.42,3.48,.28,1,1,1),
+    [page,spine,pageDark,pageDark,front,back]
+  );
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  mesh.position.z = 0;
+  g.add(mesh);
+
+  // Slight cover lip so it reads as a hardcover, not a texture on a block.
+  const lipMat = new THREE.MeshStandardMaterial({color:book.spine,roughness:.52});
+  const frontLip = new THREE.Mesh(new THREE.BoxGeometry(2.48,3.54,.045),lipMat);
+  frontLip.position.z = .162;
+  frontLip.castShadow = true;
+  g.add(frontLip);
+  // Put the actual cover image a hair in front of the lip.
+  const coverPlane = new THREE.Mesh(
+    new THREE.PlaneGeometry(2.40,3.46),
+    new THREE.MeshPhysicalMaterial({map:tex,roughness:.43,clearcoat:.16,clearcoatRoughness:.38})
+  );
+  coverPlane.position.z = .188;
+  g.add(coverPlane);
+
+  root.add(g);
+  bookObjects.push(g);
+}
+
+BOOKS.forEach(makeBook);
+
+const n = BOOKS.length;
+const ARC_RADIUS = 7.55;
+const ARC_STEP = .345;
+const CENTER_SCALE = 1.06;
+let position = 0;
+let velocity = 0;
+let target = 0;
+let dragging = false;
+let pointerId = null;
+let dragStartX = 0;
+let dragStartPos = 0;
+let lastX = 0;
+let lastT = performance.now();
+let dragDistance = 0;
+let selectedIndex = -1;
+let isVisible = true;
+
+function mod(v,m){return ((v%m)+m)%m}
+function shortestDelta(index,pos){
+  let d = index - mod(pos,n);
+  if(d>n/2)d-=n;
+  if(d<-n/2)d+=n;
+  return d;
+}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function ease01(v){return v*v*(3-2*v)}
+
+function setSelected(i){
+  i = mod(i,n);
+  if(i===selectedIndex)return;
+  selectedIndex=i;
+  const b=BOOKS[i];
+  titleEl.textContent=b.title;
+  countEl.textContent=String(i+1).padStart(2,"0")+" / "+String(n).padStart(2,"0");
+  progressEl.style.transform="scaleX("+((i+1)/n)+")";
+  document.documentElement.style.setProperty("--accent",b.accent.join(","));
+  glowEl.style.background="radial-gradient(42% 46% at 50% 48%,rgba("+b.accent.join(",")+",.24),transparent 70%)";
+  rim.color.setRGB(
+    clamp((b.accent[0]/255)*.8+.2,0,1),
+    clamp((b.accent[1]/255)*.8+.2,0,1),
+    clamp((b.accent[2]/255)*.8+.2,0,1)
+  );
+}
+
+function layoutBooks(){
+  let nearest=0,nearestAbs=999;
+  bookObjects.forEach((g,i)=>{
+    const d=shortestDelta(i,position);
+    const theta=d*ARC_STEP;
+    const x=Math.sin(theta)*ARC_RADIUS;
+    const z=Math.cos(theta)*ARC_RADIUS-ARC_RADIUS;
+    const abs=Math.abs(d);
+    const center=ease01(clamp(1-abs,0,1));
+    const sideScale=1-clamp(abs*.075,0,.17);
+    const s=sideScale+(CENTER_SCALE-sideScale)*center;
+
+    g.position.set(x,-.08+abs*.025,z);
+    g.rotation.set(-.015, -theta, d*.008);
+    g.scale.setScalar(s);
+
+    // Lift the center book just enough to feel selected.
+    g.position.y += center*.17;
+
+    if(abs<nearestAbs){nearestAbs=abs;nearest=i}
+  });
+  setSelected(nearest);
+}
+
+function snapToNearest(extra=0){
+  const projected=position+extra;
+  target=Math.round(projected);
+}
+
+renderer.domElement.addEventListener("pointerdown",e=>{
+  dragging=true;pointerId=e.pointerId;renderer.domElement.setPointerCapture(pointerId);
+  dragStartX=lastX=e.clientX;dragStartPos=position;lastT=performance.now();
+  velocity=0;dragDistance=0;renderer.domElement.classList.add("dragging");
+});
+renderer.domElement.addEventListener("pointermove",e=>{
+  if(!dragging||e.pointerId!==pointerId)return;
+  const now=performance.now();
+  const dx=e.clientX-dragStartX;
+  const scale=innerWidth<760?150:210;
+  position=dragStartPos-dx/scale;
+  const dt=Math.max(8,now-lastT);
+  velocity=-(e.clientX-lastX)/scale/(dt/1000);
+  dragDistance=Math.max(dragDistance,Math.abs(dx));
+  lastX=e.clientX;lastT=now;
+});
+function releasePointer(e){
+  if(!dragging)return;
+  dragging=false;renderer.domElement.classList.remove("dragging");
+  try{renderer.domElement.releasePointerCapture(pointerId)}catch{}
+  if(reduceMotion){position=Math.round(position);target=position;velocity=0}
+  else snapToNearest(clamp(velocity*.18,-.9,.9));
+}
+renderer.domElement.addEventListener("pointerup",releasePointer);
+renderer.domElement.addEventListener("pointercancel",releasePointer);
+
+renderer.domElement.addEventListener("wheel",e=>{
+  e.preventDefault();
+  const delta=(Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY);
+  target += clamp(delta*.0026,-.75,.75);
+  target=Math.round(target);
+},{passive:false});
+
+const raycaster=new THREE.Raycaster();
+const pointer=new THREE.Vector2();
+renderer.domElement.addEventListener("click",e=>{
+  if(dragDistance>7)return;
+  const rect=renderer.domElement.getBoundingClientRect();
+  pointer.x=((e.clientX-rect.left)/rect.width)*2-1;
+  pointer.y=-((e.clientY-rect.top)/rect.height)*2+1;
+  raycaster.setFromCamera(pointer,camera);
+  const hits=raycaster.intersectObjects(bookObjects,true);
+  if(!hits.length)return;
+  let o=hits[0].object;
+  while(o.parent && o.parent!==root)o=o.parent;
+  const index=o.userData.index;
+  if(index==null)return;
+  const d=shortestDelta(index,position);
+  target=position+d;
+});
+
+window.addEventListener("keydown",e=>{
+  if(e.key==="ArrowLeft")target=Math.round(target)-1;
+  if(e.key==="ArrowRight")target=Math.round(target)+1;
+});
+
+function resize(){
+  const w=innerWidth,h=innerHeight;
+  renderer.setSize(w,h);
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  camera.aspect=w/h;
+  if(w<760){
+    camera.fov=43;camera.position.z=12.7;root.scale.setScalar(.83);root.position.y=-.05;
+  }else{
+    camera.fov=32;camera.position.z=11;root.scale.setScalar(1);root.position.y=0;
+  }
+  camera.updateProjectionMatrix();
+}
+addEventListener("resize",resize);
+resize();
+layoutBooks();
+setSelected(0);
+
+const observer=new IntersectionObserver(([entry])=>{isVisible=entry.isIntersecting},{threshold:.01});
+observer.observe(stage);
+
+let prev=performance.now();
+function tick(now){
+  requestAnimationFrame(tick);
+  if(!isVisible)return;
+  const dt=Math.min(.033,(now-prev)/1000||.016);prev=now;
+
+  if(!dragging){
+    if(reduceMotion){
+      position=target;
+      velocity=0;
+    }else{
+      // Damped spring to the snapped slot. Tuned to feel weighty, not bouncy.
+      const stiffness=24;
+      const damping=9.2;
+      const force=(target-position)*stiffness;
+      velocity += force*dt;
+      velocity *= Math.exp(-damping*dt);
+      position += velocity*dt;
+      if(Math.abs(target-position)<.0007 && Math.abs(velocity)<.0015){
+        position=target;velocity=0;
+      }
+    }
+  }
+  layoutBooks();
+  renderer.render(scene,camera);
+}
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
