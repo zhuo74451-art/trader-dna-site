@@ -68,4 +68,5 @@ jobs:
             exit 0
           fi
           git commit -m "assets: ingest HQ reading cover sources"
+          git pull --rebase origin main
           git push
