@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:,">
+<title>82TRADE — Reading V28 Real Book Carousel</title>
+<style>
+:root{
+  --bg:#151112;
+  --accent:86,104,51;
+  --ink:#f3efe7;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:#151112;color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei","Segoe UI",sans-serif}
+body{
+  overflow:hidden;
+  background:
+    radial-gradient(56% 50% at 50% 52%,rgba(var(--accent),.11),transparent 68%),
+    linear-gradient(180deg,#1a1516 0%,#100d0e 100%);
+}
+#glow{
+  position:fixed;inset:-18%;pointer-events:none;
+  background:radial-gradient(40% 40% at 50% 50%,rgba(var(--accent),.15),transparent 72%);
+  filter:blur(46px);opacity:.82;transition:background .8s ease;
+}
+#stage{position:fixed;inset:0}
+canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+canvas.dragging{cursor:grabbing}
+.meta{
+  position:fixed;z-index:4;top:24px;left:30px;
+  font-size:8px;line-height:1;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.28);pointer-events:none
+}
+.info{
+  position:fixed;z-index:4;left:50%;bottom:24px;transform:translateX(-50%);
+  min-width:min(600px,calc(100vw - 40px));display:grid;grid-template-columns:52px 1fr auto;
+  align-items:end;gap:16px;pointer-events:none
+}
+.count{font-size:9px;letter-spacing:.16em;color:rgba(255,255,255,.34);padding-bottom:4px}
+.title{font-family:"Noto Serif CJK TC","Songti TC",Iowan Old Style,Georgia,serif;font-size:clamp(22px,2.2vw,34px);line-height:1;font-weight:430;letter-spacing:-.025em}
+.hint{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);padding-bottom:4px;white-space:nowrap}
+.progress{
+  position:fixed;z-index:4;left:30px;right:30px;bottom:14px;height:1px;background:rgba(255,255,255,.055)
+}
+.progress span{display:block;height:100%;width:25%;background:rgba(255,255,255,.35);transform-origin:left center;transition:transform .45s cubic-bezier(.22,.72,.18,1)}
+@media(max-width:760px){
+  .meta{top:18px;left:18px}
+  .info{left:18px;right:18px;bottom:28px;transform:none;min-width:0;grid-template-columns:36px 1fr}
+  .hint{display:none}
+  .title{font-size:26px}
+  .progress{left:18px;right:18px;bottom:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  #glow,.progress span{transition:none}
+}
+</style>
+
+<script type="importmap">
+{
+  "imports":{
+    "three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
+  }
+}
+</script>
+</head>
+<body>
+<div id="glow"></div>
+<div class="meta">82TRADE / READING V28 · MATERIAL STUDY</div>
+<div id="stage" aria-label="Realistic 3D book carousel"></div>
+<div class="info" aria-live="polite">
+  <div class="count" id="count">01 / 04</div>
+  <div class="title" id="title">股票作手回憶錄</div>
+  <div class="hint">drag · wheel · click</div>
+</div>
+<div class="progress"><span id="progress"></span></div>
+
+<script type="module">
+/*
+  Reading V28
+  Goal: fix the "cover pasted on a box" feeling from V27.
+
+  Interaction donor:
+  ICS INC. 230428_three_coverflow — MIT
+  https://github.com/ics-creative/230428_three_coverflow
+
+  Motion reference:
+  Ashish Gogula coverflow — MIT
+  https://github.com/ashishgogula/coverflow
+
+  Material target:
+  Ameva 3D Book Carousel (Framer marketplace)
+  No Ameva/Framer protected source copied here.
+
+  V28 changes:
+  - separate hardcover boards / page block / spine / hinges
+  - inset page block and real cover overhang
+  - procedural page-edge texture
+  - different physical dimensions per title
+  - rounded solids instead of flat BoxGeometry
+  - cloth/paper-like roughness and subdued studio light
+  - no decorative colored frame
+*/
+import * as THREE from "three";
+import { RoundedBoxGeometry } from "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/geometries/RoundedBoxGeometry.js";
+
+const BOOKS = [
+  {title:"股票作手回憶錄", cover:"./assets/books/reminiscences-real.webp", accent:[83,101,49], coverColor:0x2b331f, ratio:.705, thickness:.245, scale:.98},
+  {title:"新威科夫操盤法", cover:"./assets/books/wyckoff.webp", accent:[153,102,53], coverColor:0x70503a, ratio:.69, thickness:.215, scale:.95},
+  {title:"技術分析聖經", cover:"./assets/books/technical-analysis-real.webp", accent:[119,70,49], coverColor:0x3f2d27, ratio:.715, thickness:.275, scale:1.02},
+  {title:"納瓦爾寶典", cover:"./assets/books/naval.webp", accent:[46,75,116], coverColor:0x26394e, ratio:.675, thickness:.235, scale:.97}
+];
+
+const stage=document.querySelector("#stage");
+const titleEl=document.querySelector("#title");
+const countEl=document.querySelector("#count");
+const progressEl=document.querySelector("#progress");
+const glowEl=document.querySelector("#glow");
+const reduceMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(31,innerWidth/innerHeight,.1,100);
+camera.position.set(0,.18,11.6);
+camera.lookAt(0,-.05,0);
+
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:"high-performance"});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.0;
+stage.appendChild(renderer.domElement);
+
+const root=new THREE.Group();
+root.position.y=.02;
+scene.add(root);
+
+// Editorial studio light: broad and soft. The book should read as an object, not glow like UI.
+scene.add(new THREE.HemisphereLight(0xeee7de,0x130f11,1.08));
+const key=new THREE.SpotLight(0xfff1e2,56,30,Math.PI*.23,.72,1.35);
+key.position.set(-5.6,7.5,8.5);
+key.target.position.set(0,-.15,-1.2);
+key.castShadow=true;
+key.shadow.mapSize.set(1536,1536);
+key.shadow.bias=-.0004;
+scene.add(key,key.target);
+
+const fill=new THREE.PointLight(0xa9bbd6,8.5,20,2);
+fill.position.set(5.8,1.8,5.5);
+scene.add(fill);
+const warm=new THREE.PointLight(0xd49b73,5.5,18,2);
+warm.position.set(-5,-1,3);
+scene.add(warm);
+
+// Soft contact floor.
+const floor=new THREE.Mesh(
+  new THREE.PlaneGeometry(28,12),
+  new THREE.ShadowMaterial({color:0x000000,opacity:.30})
+);
+floor.rotation.x=-Math.PI/2;
+floor.position.set(0,-2.06,-1.15);
+floor.receiveShadow=true;
+scene.add(floor);
+
+const loader=new THREE.TextureLoader();
+const books=[];
+
+function makePageEdgeTexture(){
+  const c=document.createElement("canvas");
+  c.width=256;c.height=512;
+  const ctx=c.getContext("2d");
+  const g=ctx.createLinearGradient(0,0,c.width,0);
+  g.addColorStop(0,"#cfc7b7");
+  g.addColorStop(.28,"#eee8dc");
+  g.addColorStop(.72,"#e6dfd2");
+  g.addColorStop(1,"#c9c1b2");
+  ctx.fillStyle=g;ctx.fillRect(0,0,c.width,c.height);
+
+  // many tiny page lines; irregular so it does not read as a striped texture.
+  for(let y=2;y<c.height;y+=3){
+    const a=.035+Math.random()*.055;
+    ctx.fillStyle="rgba(74,66,55,"+a+")";
+    ctx.fillRect(0,y,c.width,Math.random()>.82?1.35:.7);
+  }
+  for(let i=0;i<900;i++){
+    const x=Math.random()*c.width,y=Math.random()*c.height;
+    const a=Math.random()*.045;
+    ctx.fillStyle="rgba(95,84,68,"+a+")";
+    ctx.fillRect(x,y,Math.random()*1.4+.3,Math.random()*1.2+.2);
+  }
+  const t=new THREE.CanvasTexture(c);
+  t.colorSpace=THREE.SRGBColorSpace;
+  t.wrapS=t.wrapT=THREE.RepeatWrapping;
+  return t;
+}
+
+function makeRoughnessTexture(){
+  const c=document.createElement("canvas");
+  c.width=256;c.height=256;
+  const ctx=c.getContext("2d");
+  const img=ctx.createImageData(c.width,c.height);
+  for(let i=0;i<img.data.length;i+=4){
+    const v=145+Math.floor(Math.random()*68);
+    img.data[i]=img.data[i+1]=img.data[i+2]=v;
+    img.data[i+3]=255;
+  }
+  ctx.putImageData(img,0,0);
+  const t=new THREE.CanvasTexture(c);
+  t.wrapS=t.wrapT=THREE.RepeatWrapping;
+  t.repeat.set(4,6);
+  return t;
+}
+
+const pageEdgeTex=makePageEdgeTexture();
+const roughTex=makeRoughnessTexture();
+
+function materialForCover(tex,color){
+  return new THREE.MeshPhysicalMaterial({
+    map:tex,
+    color:0xffffff,
+    roughness:.58,
+    roughnessMap:roughTex,
+    metalness:0,
+    clearcoat:.06,
+    clearcoatRoughness:.78,
+    sheen:.12,
+    sheenRoughness:.9,
+    sheenColor:new THREE.Color(color)
+  });
+}
+
+function makeBook(book,index){
+  const group=new THREE.Group();
+  group.userData.index=index;
+
+  const h=3.48*book.scale;
+  const w=h*book.ratio;
+  const totalD=book.thickness;
+  const pageD=Math.max(.125,totalD-.085);
+  const boardD=.045;
+  const boardOver=.045;
+  const radius=.035;
+
+  const tex=loader.load(book.cover);
+  tex.colorSpace=THREE.SRGBColorSpace;
+  tex.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
+
+  // PAPER BLOCK — deliberately smaller than the covers.
+  const pageMaterials=[
+    new THREE.MeshStandardMaterial({map:pageEdgeTex,color:0xf0eadf,roughness:.96}), // +x fore edge
+    new THREE.MeshStandardMaterial({color:0xd5cec0,roughness:.98}),                 // -x spine side
+    new THREE.MeshStandardMaterial({map:pageEdgeTex,color:0xeee8dc,roughness:.96}),// +y top
+    new THREE.MeshStandardMaterial({map:pageEdgeTex,color:0xddd6ca,roughness:.98}),// -y bottom
+    new THREE.MeshStandardMaterial({color:0xd9d1c4,roughness:.98}),                // +z
+    new THREE.MeshStandardMaterial({color:0xd5cec1,roughness:.98})                 // -z
+  ];
+  const pageGeom=new RoundedBoxGeometry(w-.10,h-.12,pageD,5,radius*.8);
+  const pageBlock=new THREE.Mesh(pageGeom,pageMaterials);
+  pageBlock.position.x=.045;
+  pageBlock.castShadow=true;
+  pageBlock.receiveShadow=true;
+  group.add(pageBlock);
+
+  // HARDCOVER BOARDS — separate pieces with real overhang.
+  const boardGeom=new RoundedBoxGeometry(w+boardOver*2,h+boardOver*2,boardD,5,radius);
+  const boardMat=new THREE.MeshPhysicalMaterial({
+    color:book.coverColor,
+    roughness:.68,
+    roughnessMap:roughTex,
+    clearcoat:.025,
+    clearcoatRoughness:.9,
+    sheen:.18,
+    sheenRoughness:.95,
+    sheenColor:new THREE.Color(book.coverColor)
+  });
+
+  const frontBoard=new THREE.Mesh(boardGeom,boardMat);
+  frontBoard.position.z=pageD/2+boardD/2+.012;
+  frontBoard.castShadow=true;frontBoard.receiveShadow=true;
+  group.add(frontBoard);
+
+  const backBoard=new THREE.Mesh(boardGeom,boardMat);
+  backBoard.position.z=-(pageD/2+boardD/2+.012);
+  backBoard.castShadow=true;backBoard.receiveShadow=true;
+  group.add(backBoard);
+
+  // COVER ART sits on top of the physical board. No colored UI-like frame.
+  const artGeom=new RoundedBoxGeometry(w-.008,h-.008,.018,4,radius*.72);
+  const coverArt=new THREE.Mesh(artGeom,materialForCover(tex,book.coverColor));
+  coverArt.position.z=frontBoard.position.z+boardD/2+.013;
+  coverArt.castShadow=true;
+  group.add(coverArt);
+
+  // Slightly darker back cloth, so side rotation reads as a book.
+  const backCloth=new THREE.Mesh(
+    new RoundedBoxGeometry(w-.012,h-.012,.015,4,radius*.7),
+    new THREE.MeshPhysicalMaterial({
+      color:book.coverColor,roughness:.76,roughnessMap:roughTex,
+      sheen:.14,sheenRoughness:.95,sheenColor:new THREE.Color(book.coverColor)
+    })
+  );
+  backCloth.position.z=backBoard.position.z-boardD/2-.012;
+  group.add(backCloth);
+
+  // SPINE: separate cloth volume, subtly rounded and thicker than the page block.
+  const spineW=.115;
+  const spine=new THREE.Mesh(
+    new RoundedBoxGeometry(spineW,h+boardOver*1.75,totalD+.055,6,.045),
+    new THREE.MeshPhysicalMaterial({
+      color:book.coverColor,
+      roughness:.70,roughnessMap:roughTex,
+      sheen:.22,sheenRoughness:.92,sheenColor:new THREE.Color(book.coverColor)
+    })
+  );
+  spine.position.x=-(w/2+spineW*.22);
+  spine.castShadow=true;
+  group.add(spine);
+
+  // Hinge grooves: two cloth ridges where the cover bends at the spine.
+  const hingeMat=new THREE.MeshStandardMaterial({color:book.coverColor,roughness:.62});
+  const hingeX=-(w/2-.045);
+  for(const z of [pageD/2+.038,-pageD/2-.038]){
+    const hinge=new THREE.Mesh(new RoundedBoxGeometry(.032,h-.13,.026,3,.012),hingeMat);
+    hinge.position.set(hingeX,0,z);
+    hinge.castShadow=true;
+    group.add(hinge);
+  }
+
+  // Head/tail bands — tiny details that help sell the object when seen obliquely.
+  const bandMat=new THREE.MeshStandardMaterial({color:0x8c715c,roughness:.85});
+  for(const y of [h/2-.055,-h/2+.055]){
+    const band=new THREE.Mesh(new RoundedBoxGeometry(.13,.035,pageD+.015,3,.012),bandMat);
+    band.position.set(-(w/2-.055),y,0);
+    group.add(band);
+  }
+
+  // Tiny randomized physical imperfection; not enough to look crooked.
+  group.rotation.z=(index%2===0?-1:1)*THREE.MathUtils.degToRad(.32+index*.05);
+
+  root.add(group);
+  books.push({group,w,h,totalD});
+}
+BOOKS.forEach(makeBook);
+
+const n=BOOKS.length;
+const ARC_RADIUS=7.8;
+const ARC_STEP=.335;
+const CENTER_SCALE=1.045;
+let position=0,velocity=0,target=0;
+let dragging=false,pointerId=null,dragStartX=0,dragStartPos=0,lastX=0,lastT=performance.now(),dragDistance=0;
+let selected=-1,isVisible=true;
+
+function mod(v,m){return((v%m)+m)%m}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function ease01(v){return v*v*(3-2*v)}
+function shortestDelta(index,pos){
+  let d=index-mod(pos,n);
+  if(d>n/2)d-=n;
+  if(d<-n/2)d+=n;
+  return d;
+}
+
+function setSelected(i){
+  i=mod(i,n);
+  if(i===selected)return;
+  selected=i;
+  const b=BOOKS[i];
+  titleEl.textContent=b.title;
+  countEl.textContent=String(i+1).padStart(2,"0")+" / "+String(n).padStart(2,"0");
+  progressEl.style.transform="scaleX("+((i+1)/n)+")";
+  document.documentElement.style.setProperty("--accent",b.accent.join(","));
+  glowEl.style.background="radial-gradient(40% 40% at 50% 50%,rgba("+b.accent.join(",")+",.16),transparent 72%)";
+  fill.color.setRGB(
+    clamp((b.accent[0]/255)*.72+.20,0,1),
+    clamp((b.accent[1]/255)*.72+.20,0,1),
+    clamp((b.accent[2]/255)*.72+.20,0,1)
+  );
+}
+
+function layoutBooks(){
+  let nearest=0,nearestAbs=999;
+  books.forEach((item,i)=>{
+    const g=item.group;
+    const d=shortestDelta(i,position);
+    const theta=d*ARC_STEP;
+    const abs=Math.abs(d);
+    const center=ease01(clamp(1-abs,0,1));
+    const x=Math.sin(theta)*ARC_RADIUS;
+    const z=Math.cos(theta)*ARC_RADIUS-ARC_RADIUS;
+
+    const sideScale=1-clamp(abs*.078,0,.17);
+    const s=(sideScale+(CENTER_SCALE-sideScale)*center);
+
+    g.position.set(x,-.10+abs*.022,z);
+    g.position.y+=center*.15;
+    g.rotation.y=-theta;
+    // very small dynamic roll: the object has mass while moving.
+    const motionRoll=clamp(velocity*.0028,-.014,.014)*(1-center*.6);
+    g.rotation.x=-.010+motionRoll;
+    g.scale.setScalar(s);
+
+    if(abs<nearestAbs){nearestAbs=abs;nearest=i}
+  });
+  setSelected(nearest);
+}
+layoutBooks();
+
+function snapToNearest(extra=0){target=Math.round(position+extra)}
+
+renderer.domElement.addEventListener("pointerdown",e=>{
+  dragging=true;pointerId=e.pointerId;renderer.domElement.setPointerCapture(pointerId);
+  dragStartX=lastX=e.clientX;dragStartPos=position;lastT=performance.now();
+  velocity=0;dragDistance=0;renderer.domElement.classList.add("dragging");
+});
+renderer.domElement.addEventListener("pointermove",e=>{
+  if(!dragging||e.pointerId!==pointerId)return;
+  const now=performance.now();
+  const dx=e.clientX-dragStartX;
+  const pxPerBook=innerWidth<760?154:215;
+  position=dragStartPos-dx/pxPerBook;
+  const dt=Math.max(8,now-lastT);
+  velocity=-(e.clientX-lastX)/pxPerBook/(dt/1000);
+  dragDistance=Math.max(dragDistance,Math.abs(dx));
+  lastX=e.clientX;lastT=now;
+});
+function release(e){
+  if(!dragging)return;
+  dragging=false;renderer.domElement.classList.remove("dragging");
+  try{renderer.domElement.releasePointerCapture(pointerId)}catch{}
+  if(reduceMotion){position=Math.round(position);target=position;velocity=0}
+  else snapToNearest(clamp(velocity*.16,-.82,.82));
+}
+renderer.domElement.addEventListener("pointerup",release);
+renderer.domElement.addEventListener("pointercancel",release);
+
+renderer.domElement.addEventListener("wheel",e=>{
+  e.preventDefault();
+  const delta=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;
+  target=Math.round(target+clamp(delta*.0025,-.72,.72));
+},{passive:false});
+
+const raycaster=new THREE.Raycaster();
+const pointer=new THREE.Vector2();
+renderer.domElement.addEventListener("click",e=>{
+  if(dragDistance>7)return;
+  const r=renderer.domElement.getBoundingClientRect();
+  pointer.x=((e.clientX-r.left)/r.width)*2-1;
+  pointer.y=-((e.clientY-r.top)/r.height)*2+1;
+  raycaster.setFromCamera(pointer,camera);
+  const hits=raycaster.intersectObjects(books.map(b=>b.group),true);
+  if(!hits.length)return;
+  let o=hits[0].object;
+  while(o.parent&&o.parent!==root)o=o.parent;
+  if(o.userData.index==null)return;
+  target=position+shortestDelta(o.userData.index,position);
+});
+
+addEventListener("keydown",e=>{
+  if(e.key==="ArrowLeft")target=Math.round(target)-1;
+  if(e.key==="ArrowRight")target=Math.round(target)+1;
+});
+
+function resize(){
+  renderer.setSize(innerWidth,innerHeight);
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  camera.aspect=innerWidth/innerHeight;
+  if(innerWidth<760){
+    camera.fov=43;
+    camera.position.set(0,.15,12.7);
+    root.scale.setScalar(.84);
+    root.position.y=-.08;
+  }else{
+    camera.fov=31;
+    camera.position.set(0,.18,11.6);
+    root.scale.setScalar(1);
+    root.position.y=.02;
+  }
+  camera.updateProjectionMatrix();
+}
+addEventListener("resize",resize);
+resize();
+
+const observer=new IntersectionObserver(([entry])=>{isVisible=entry.isIntersecting},{threshold:.01});
+observer.observe(stage);
+
+let prev=performance.now();
+function tick(now){
+  requestAnimationFrame(tick);
+  if(!isVisible){prev=now;return}
+  const dt=Math.min(.033,(now-prev)/1000||.016);prev=now;
+  if(!dragging){
+    if(reduceMotion){position=target;velocity=0}
+    else{
+      const stiffness=24.5,damping=9.5;
+      velocity+=(target-position)*stiffness*dt;
+      velocity*=Math.exp(-damping*dt);
+      position+=velocity*dt;
+      if(Math.abs(target-position)<.0007&&Math.abs(velocity)<.0014){position=target;velocity=0}
+    }
+  }
+  layoutBooks();
+  renderer.render(scene,camera);
+}
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
