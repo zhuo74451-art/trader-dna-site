@@ -122,3 +122,41 @@ body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition
   }
   .result.d4-result-enter .scan01-authority-character[data-ready]::before{animation-duration:.72s}
 }
+
+/* Reveal shares the same role art as Result, but only as a quiet printed watermark. */
+.d4-reveal-material{overflow:hidden}
+.scan01-reveal-character{
+  position:absolute;
+  z-index:1;
+  right:-5%;
+  bottom:-12%;
+  width:62%;
+  height:94%;
+  margin:0;
+  opacity:.26;
+  pointer-events:none;
+  mix-blend-mode:multiply;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%,#000 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 30%,#000 100%);
+  animation:scan01-reveal-character-in 1.05s .18s cubic-bezier(.16,1,.3,1) both;
+}
+.scan01-reveal-character img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:100% 76%;
+  transform:scale(1.08);
+  filter:grayscale(.18) saturate(.62) contrast(1.12);
+}
+
+.d4-reveal-imprint{z-index:3}
+@keyframes scan01-reveal-character-in{
+  0%{opacity:0;transform:translateX(18px) scale(1.025);filter:blur(4px)}
+  100%{opacity:.26;transform:none;filter:none}
+}
+@media(max-width:760px){
+  .scan01-reveal-character{right:-15%;bottom:-8%;width:76%;height:88%;opacity:.20}
+}
+@media(prefers-reduced-motion:reduce){
+  .scan01-reveal-character{animation:none!important;opacity:.24}
+}

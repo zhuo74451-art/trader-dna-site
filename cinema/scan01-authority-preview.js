@@ -33,6 +33,20 @@ function warmRevealIdentity(){
   image.decoding='async';
   image.src=absolute(heroPath(code));
 }
+function mountRevealCharacter(){
+  const reveal=root?.querySelector('.reveal.d4-reveal');
+  const material=reveal?.querySelector('.d4-reveal-material');
+  const code=reveal?.querySelector('.reveal-code')?.textContent?.trim()?.toUpperCase();
+  if(!material||!CODES.has(code)||material.querySelector('.scan01-reveal-character'))return;
+  const figure=document.createElement('figure');
+  figure.className='scan01-reveal-character';
+  figure.setAttribute('aria-hidden','true');
+  figure.innerHTML='<img alt="" decoding="async">';
+  const image=figure.querySelector('img');
+  image.src=absolute(heroPath(code));
+  image.onerror=()=>figure.remove();
+  material.appendChild(figure);
+}
 function mountHero(result){
   const hero=result?.querySelector('.result-hero');
   if(!hero)return;
@@ -144,6 +158,7 @@ function mountShare(result){
 function sync(){
   queued=false;
   warmRevealIdentity();
+  mountRevealCharacter();
   const result=root?.querySelector('.result');
   if(!result)return;
   result.dataset.authorityPreview='1';
