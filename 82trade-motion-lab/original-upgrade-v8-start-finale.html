@@ -176,12 +176,6 @@ button{font:inherit}
 .start-preview:before{
   content:"";position:absolute;inset:14px;border:1px dashed rgba(255,255,255,.055);border-radius:22px;pointer-events:none;z-index:1
 }
-.start-preview:after{
-  content:"";position:absolute;inset:-1px;pointer-events:none;z-index:0;
-  background:linear-gradient(118deg,transparent 20%,rgba(57,199,229,.055) 46%,transparent 66%);
-  transform:translateX(-58%);transition:transform .9s var(--ease)
-}
-.start-preview:hover:after{transform:translateX(55%)}
 .preview-chrome{
   position:relative;z-index:3;height:56px;border-bottom:1px solid rgba(255,255,255,.08);
   display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 21px;
