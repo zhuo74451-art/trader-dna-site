@@ -165,6 +165,7 @@ function mountRevealCharacter(){
   const figure=document.createElement('figure');
   figure.className='scan01-reveal-character';
   figure.setAttribute('aria-hidden','true');
+  applyHeroFrame(figure,code);
   figure.innerHTML='<img alt="" decoding="async">';
   const image=figure.querySelector('img');
   image.fetchPriority='high';
