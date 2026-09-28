@@ -1,0 +1,34 @@
+name: Original Upgrade V5 Team Review QA
+
+on:
+  push:
+    paths:
+      - "82trade-motion-lab/original-upgrade-v5-team-review.html"
+      - "82trade-motion-lab/original-learn-v2.html"
+      - "82trade-motion-lab/original-community-v2.html"
+      - ".github/scripts/original-upgrade-v5-qa.mjs"
+      - ".github/workflows/original-upgrade-v5-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  review-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Run V5 review QA
+        run: node .github/scripts/original-upgrade-v5-qa.mjs
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-upgrade-v5-qa
+          path: original-upgrade-v5-qa/**
+          if-no-files-found: error
+          retention-days: 7
