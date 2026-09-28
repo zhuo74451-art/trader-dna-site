@@ -12,7 +12,7 @@ body[data-edition="detail-04"] .result-hero>.result-foot{position:relative;z-ind
 .scan01-authority-character{position:absolute;z-index:1;right:-1%;top:0;width:min(57vw,850px);height:100%;margin:0;overflow:hidden;pointer-events:none;opacity:.96;background:#090a09;will-change:opacity,clip-path,filter;
   -webkit-mask-image:radial-gradient(ellipse 72% 76% at 68% 62%,#000 0 48%,rgba(0,0,0,.96) 64%,rgba(0,0,0,.5) 76%,transparent 94%);
   mask-image:radial-gradient(ellipse 72% 76% at 68% 62%,#000 0 48%,rgba(0,0,0,.96) 64%,rgba(0,0,0,.5) 76%,transparent 94%)}
-.scan01-authority-character img{width:100%;height:100%;object-fit:cover;object-position:var(--hero-x,100%) var(--hero-y,76%);transform:scale(var(--hero-scale,1.08));transform-origin:var(--hero-origin-x,100%) var(--hero-origin-y,70%);filter:brightness(var(--hero-brightness,.46)) contrast(1.24) saturate(.76)}
+.scan01-authority-character img{width:100%;height:100%;object-fit:cover;object-position:var(--hero-x,100%) var(--hero-y,76%);transform:scale(var(--hero-scale,1.08));transform-origin:var(--hero-origin-x,100%) var(--hero-origin-y,70%);filter:brightness(calc(var(--hero-brightness,.46) + .1)) contrast(1.18) saturate(.78)}
 .scan01-authority-character::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#090a09 0,rgba(9,10,9,.86) 16%,rgba(9,10,9,.28) 45%,rgba(9,10,9,.07) 76%,rgba(9,10,9,.22) 100%),linear-gradient(180deg,rgba(9,10,9,.58) 0,rgba(9,10,9,.12) 28%,transparent 48%),linear-gradient(0deg,#090a09 0 18%,rgba(9,10,9,.94) 29%,rgba(9,10,9,.45) 42%,transparent 58%);pointer-events:none}
 body[data-edition="detail-04"] .v3-share-studio .v3-share-formats,
 body[data-edition="detail-04"] .v3-share-studio .v3-share-generate,
@@ -48,7 +48,7 @@ body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition
 }
 @keyframes scan01-character-lens-mobile{
   0%{transform:scale(var(--hero-enter-scale-mobile,var(--hero-enter-scale,1.20)));filter:brightness(.18) contrast(1.34) saturate(.55)}
-  100%{transform:scale(var(--hero-scale-mobile,var(--hero-scale,1.12)));filter:brightness(var(--hero-brightness,.46)) contrast(1.24) saturate(.76)}
+  100%{transform:scale(var(--hero-scale-mobile,var(--hero-scale,1.12)));filter:brightness(calc(var(--hero-brightness,.46) + .1)) contrast(1.18) saturate(.78)}
 }
 @media(prefers-reduced-motion:reduce){
   .scan01-authority-character,.scan01-authority-native{transition:none!important}
@@ -91,8 +91,8 @@ body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition
 }
 @keyframes scan01-character-lens{
   0%{transform:scale(var(--hero-enter-scale,1.18));filter:brightness(.18) contrast(1.34) saturate(.55)}
-  58%{filter:brightness(.35) contrast(1.28) saturate(.68)}
-  100%{transform:scale(var(--hero-scale,1.08));filter:brightness(var(--hero-brightness,.46)) contrast(1.24) saturate(.76)}
+  58%{filter:brightness(.42) contrast(1.22) saturate(.72)}
+  100%{transform:scale(var(--hero-scale,1.08));filter:brightness(calc(var(--hero-brightness,.46) + .1)) contrast(1.18) saturate(.78)}
 }
 @keyframes scan01-code-lock{
   0%{opacity:0;filter:blur(5px);transform:translateY(17px) scale(.94);letter-spacing:-.12em}
