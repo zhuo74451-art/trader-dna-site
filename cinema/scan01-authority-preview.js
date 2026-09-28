@@ -65,11 +65,12 @@ function loadImage(image,src){
   if(pending?.src===src)return pending.promise;
   const promise=new Promise((resolve,reject)=>{
     const finish=()=>{
+      if(image.src!==src){image.src=src;return}
       const decoded=typeof image.decode==='function'?image.decode():Promise.resolve();
       decoded.catch(()=>{}).finally(resolve);
     };
     image.onload=finish;
-    image.onerror=reject;
+    image.onerror=()=>{if(image.src!==src)image.src=src;else reject()};
     if(image.src!==src)image.src=src;
     else if(image.complete&&image.naturalWidth)finish();
   });
