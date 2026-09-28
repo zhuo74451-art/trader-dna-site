@@ -2,6 +2,9 @@
 const root=document.querySelector('#view');
 const CARD_BASE='./cinema/assets/identity-cards';
 const HERO_BASE='./cinema/assets/hero-characters';
+const STORAGE_KEY='82trade-trader-dna:quick18-v1.2-2026-09-25';
+const TYPE_DATA='./data/types.json';
+const PORTRAIT_DATA='./cinema/portraits-detail04-card-0dca88dce1bb.json';
 const CODES=new Set(['IWGF','IWGC','IWHF','IWHC','IAGF','IAGC','IAHF','IAHC','SWGF','SWGC','SWHF','SWHC','SAGF','SAGC','SAHF','SAHC']);
 const HERO_FRAME={
   IWGF:{x:100,y:66,scale:1.07,originX:92,originY:68,brightness:.48,mobileX:100,mobileY:64,mobileScale:1.06,mobileOriginX:96,mobileOriginY:70},
@@ -21,7 +24,10 @@ const HERO_FRAME={
   SAHF:{x:100,y:67,scale:1.08,originX:93,originY:70,brightness:.50,mobileX:100,mobileY:65,mobileScale:1.06,mobileOriginX:97,mobileOriginY:71},
   SAHC:{x:100,y:69,scale:1.09,originX:93,originY:72,brightness:.51,mobileX:100,mobileY:67,mobileScale:1.06,mobileOriginX:97,mobileOriginY:73}
 };
-let queued=false,warmCode='';
+let queued=false,archiveDataPromise=null;
+const imageWarmups=new Map();
+const cardBlobWarmups=new Map();
+const elementLoads=new WeakMap();
 function api(){return window.TraderDNAShareCard||null}
 function data(){return api()?.data?.()||null}
 function cardPath(code){
@@ -35,6 +41,72 @@ function heroPath(code){
   return `${HERO_BASE}/${value}.webp`;
 }
 function absolute(path){return new URL(path,location.href).href}
+function warmImage(path,priority='auto'){
+  const src=absolute(path);
+  if(imageWarmups.has(src))return imageWarmups.get(src);
+  const image=new Image();
+  image.decoding='async';
+  image.fetchPriority=priority;
+  const promise=new Promise((resolve,reject)=>{
+    const finish=()=>{
+      const decoded=typeof image.decode==='function'?image.decode():Promise.resolve();
+      decoded.catch(()=>{}).finally(()=>resolve(image));
+    };
+    image.onload=finish;
+    image.onerror=reject;
+    image.src=src;
+    if(image.complete&&image.naturalWidth)finish();
+  }).catch(error=>{imageWarmups.delete(src);throw error});
+  imageWarmups.set(src,promise);
+  return promise;
+}
+function loadImage(image,src){
+  const pending=elementLoads.get(image);
+  if(pending?.src===src)return pending.promise;
+  const promise=new Promise((resolve,reject)=>{
+    const finish=()=>{
+      const decoded=typeof image.decode==='function'?image.decode():Promise.resolve();
+      decoded.catch(()=>{}).finally(resolve);
+    };
+    image.onload=finish;
+    image.onerror=reject;
+    if(image.src!==src)image.src=src;
+    else if(image.complete&&image.naturalWidth)finish();
+  });
+  elementLoads.set(image,{src,promise});
+  const clear=()=>{if(elementLoads.get(image)?.promise===promise)elementLoads.delete(image)};
+  promise.then(clear,clear);
+  return promise;
+}
+function archiveData(){
+  if(!archiveDataPromise){
+    archiveDataPromise=Promise.all([
+      fetch(TYPE_DATA,{cache:'force-cache'}).then(response=>response.ok?response.json():{}),
+      fetch(PORTRAIT_DATA,{cache:'force-cache'}).then(response=>response.ok?response.json():{})
+    ]).catch(()=>[{},{}]);
+  }
+  return archiveDataPromise;
+}
+async function warmArchive(code){
+  const [types,portraits]=await archiveData();
+  const people=types?.[code]?.people||[];
+  await Promise.allSettled(people.map(entry=>{
+    const name=String(entry).split('｜')[0].trim();
+    const source=portraits?.[name];
+    return source?.cardUrl||source?.url?warmImage(source.cardUrl||source.url):null;
+  }));
+}
+function warmIdentity(code){
+  const value=String(code||'').trim().toUpperCase();
+  if(!CODES.has(value))return;
+  warmImage(heroPath(value),'high').catch(()=>{});
+  warmImage(cardPath(value),'high').catch(()=>{});
+  cardBlob(value).catch(()=>{});
+  warmArchive(value).catch(()=>{});
+}
+function warmSavedIdentity(){
+  try{warmIdentity(JSON.parse(localStorage.getItem(STORAGE_KEY)||'null')?.completedRecord?.dna)}catch{}
+}
 function applyHeroFrame(figure,code){
   const frame=HERO_FRAME[code];
   if(!frame)return;
@@ -49,20 +121,20 @@ function applyHeroFrame(figure,code){
   Object.entries(values).forEach(([name,value])=>figure.style.setProperty(name,value));
 }
 async function cardBlob(code){
+  if(cardBlobWarmups.has(code))return cardBlobWarmups.get(code);
   const url=cardPath(code);
-  const response=await fetch(url,{cache:'force-cache'});
-  if(!response.ok)throw new Error(`Identity Edition asset missing: ${code}`);
-  const blob=await response.blob();
-  if(!blob.type.startsWith('image/'))throw new Error('Identity Edition asset is not an image');
-  return {url,blob};
+  const promise=fetch(url,{cache:'force-cache'}).then(async response=>{
+    if(!response.ok)throw new Error(`Identity Edition asset missing: ${code}`);
+    const blob=await response.blob();
+    if(!blob.type.startsWith('image/'))throw new Error('Identity Edition asset is not an image');
+    return {url,blob};
+  }).catch(error=>{cardBlobWarmups.delete(code);throw error});
+  cardBlobWarmups.set(code,promise);
+  return promise;
 }
 function warmRevealIdentity(){
   const code=(root?.querySelector('.reveal-code')||root?.querySelector('.result-hero>.code'))?.textContent?.trim()?.toUpperCase();
-  if(!CODES.has(code)||warmCode===code)return;
-  warmCode=code;
-  const image=new Image();
-  image.decoding='async';
-  image.src=absolute(heroPath(code));
+  warmIdentity(code);
 }
 function prefetchResolvedIdentity(){
   try{
@@ -70,10 +142,7 @@ function prefetchResolvedIdentity(){
     const {dimScore}=window.scores();
     const code=window.codeFrom(dimScore);
     if(!CODES.has(code))return;
-    const image=new Image();
-    image.decoding='async';
-    image.fetchPriority='high';
-    image.src=absolute(heroPath(code));
+    warmIdentity(code);
   }catch{}
 }
 function mountQuestionContinuity(){
@@ -97,6 +166,7 @@ function mountRevealCharacter(){
   figure.setAttribute('aria-hidden','true');
   figure.innerHTML='<img alt="" decoding="async">';
   const image=figure.querySelector('img');
+  image.fetchPriority='high';
   image.src=absolute(heroPath(code));
   image.onerror=()=>figure.remove();
   material.appendChild(figure);
@@ -119,13 +189,11 @@ function mountHero(result){
   applyHeroFrame(figure,code);
   const image=figure.querySelector('img');
   const src=absolute(heroPath(code));
-  const ready=()=>{figure.dataset.ready='1';hero.dataset.characterReady='1'};
-  if(image.src!==src){
-    delete figure.dataset.ready;
-    image.onload=ready;
-    image.src=src;
-  }else if(image.complete&&image.naturalWidth)ready();
-  image.onerror=()=>figure.remove();
+  if(figure.dataset.ready==='1'&&image.src===src)return;
+  delete figure.dataset.ready;
+  loadImage(image,src).then(()=>{
+    if(image.src===src){figure.dataset.ready='1';hero.dataset.characterReady='1'}
+  }).catch(()=>figure.remove());
 }
 function cleanLegacyShare(studio){
   studio.querySelectorAll('.cinema-share-cover,.cinema-system-share').forEach(node=>node.remove());
@@ -167,6 +235,7 @@ function mountCardDisplay(stage){
       stage.style.setProperty('--glare-y',`${(pointerY*100).toFixed(1)}%`);
       stage.style.setProperty('--shadow-x',`${((.5-pointerX)*12).toFixed(1)}px`);
       stage.style.setProperty('--shadow-y',`${((.5-pointerY)*8).toFixed(1)}px`);
+      stage.style.setProperty('--foil-angle',`${(108+(pointerX-.5)*18).toFixed(1)}deg`);
     };
     const move=event=>{
       if(event.pointerType==='touch'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
@@ -183,6 +252,7 @@ function mountCardDisplay(stage){
       stage.style.setProperty('--share-rx','0deg');stage.style.setProperty('--share-ry','0deg');
       stage.style.setProperty('--glare-x','50%');stage.style.setProperty('--glare-y','42%');
       stage.style.setProperty('--shadow-x','0px');stage.style.setProperty('--shadow-y','0px');
+      stage.style.setProperty('--foil-angle','108deg');
     };
     stage.addEventListener('pointerenter',()=>{box=stage.getBoundingClientRect()},{passive:true});
     stage.addEventListener('pointermove',move,{passive:true});
@@ -203,13 +273,13 @@ async function buildStatic(){
   stage.dataset.shareAuthority='identity-edition-master';
   cleanLegacyShare(studio);
   const src=absolute(cardPath(d.code));
-  if(image.src!==src)image.src=src;
   image.alt=`Trader DNA ${d.code} · ${d.name} Identity Edition`;
   image.dataset.identityCode=d.code;
+  stage.setAttribute('aria-busy','true');
+  const [{blob}]=await Promise.all([cardBlob(d.code),loadImage(image,src)]);
   stage.classList.add('is-ready');
   stage.removeAttribute('aria-busy');
   if(studio._authorityCode!==d.code||!studio._shareBlob){
-    const {blob}=await cardBlob(d.code);
     studio._shareBlob=blob;
     studio._shareFormat='4:5';
     studio._authorityCode=d.code;
@@ -280,6 +350,7 @@ function schedule(){
   requestAnimationFrame(sync);
 }
 if(root){
+  warmSavedIdentity();
   root.addEventListener('click',event=>{
     const option=event.target.closest('.quiz-wrap .option');
     if(!option||option.disabled)return;
