@@ -1,0 +1,36 @@
+name: Original Upgrade V8 Start Finale QA
+
+on:
+  push:
+    paths:
+      - "82trade-motion-lab/original-upgrade-v8-start-finale.html"
+      - ".github/scripts/original-upgrade-v8-start-qa.mjs"
+      - ".github/workflows/original-upgrade-v8-start-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  start-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Run start finale QA
+        run: node .github/scripts/original-upgrade-v8-start-qa.mjs
+      - name: Print report
+        if: always()
+        run: |
+          if [ -f original-upgrade-v8-start-qa/report.json ]; then cat original-upgrade-v8-start-qa/report.json; fi
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-upgrade-v8-start-qa
+          path: original-upgrade-v8-start-qa/**
+          if-no-files-found: error
+          retention-days: 7
