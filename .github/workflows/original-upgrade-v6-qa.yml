@@ -1,0 +1,41 @@
+name: Original Upgrade V6 Full Prototype QA
+
+on:
+  push:
+    paths:
+      - "82trade-motion-lab/original-upgrade-v6-team-review.html"
+      - "82trade-motion-lab/original-learn-v2.html"
+      - "82trade-motion-lab/original-community-v2.html"
+      - "82trade-motion-lab/original-academy-v1.html"
+      - "82trade-motion-lab/original-course-detail-v1.html"
+      - "82trade-motion-lab/original-trader-dna-v1.html"
+      - ".github/scripts/original-upgrade-v6-qa.mjs"
+      - ".github/workflows/original-upgrade-v6-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  prototype-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Run full prototype QA
+        run: node .github/scripts/original-upgrade-v6-qa.mjs
+      - name: Print report
+        if: always()
+        run: |
+          if [ -f original-upgrade-v6-qa/report.json ]; then cat original-upgrade-v6-qa/report.json; fi
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-upgrade-v6-qa
+          path: original-upgrade-v6-qa/**
+          if-no-files-found: error
+          retention-days: 7
