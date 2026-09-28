@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>82Trade — Original Site Upgrade V4 · Team Review</title>
+<style>
+:root{
+  --bg:#07090b;
+  --panel:#0c1013;
+  --panel2:#101519;
+  --line:rgba(255,255,255,.10);
+  --line2:rgba(57,199,229,.26);
+  --cyan:#39c7e5;
+  --cyan2:#92efff;
+  --text:#f5f7f8;
+  --muted:#9da6ab;
+  --ease:cubic-bezier(.2,.72,.18,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg);scroll-padding-top:86px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+.shell{position:relative;isolation:isolate;min-height:100vh;background:
+  radial-gradient(700px 520px at 82% 9%,rgba(57,199,229,.13),transparent 64%),
+  radial-gradient(460px 420px at 9% 34%,rgba(57,199,229,.05),transparent 70%),
+  #07090b}
+.shell:before{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.024) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.024) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:linear-gradient(to bottom,black 0%,rgba(0,0,0,.55) 55%,transparent 100%);
+}
+.shell:after{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.22;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E")
+}
+.header{
+  position:sticky;top:0;z-index:30;height:74px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(20px,4vw,64px);background:rgba(7,9,11,.72);backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.07)
+}
+.wordmark img{display:block;width:184px;height:auto;filter:url(#brand-white-ink)}
+.nav{display:flex;gap:30px;align-items:center;color:#c9d0d3;font-size:14px}
+.nav a{transition:color .2s ease}
+.nav a:hover{color:#fff}
+.nav-cta{border:1px solid rgba(57,199,229,.4);padding:10px 16px;border-radius:999px;color:#dffaff;background:rgba(57,199,229,.06);transition:background .2s,border-color .2s,transform .2s var(--ease)}
+.nav-cta:hover{background:rgba(57,199,229,.12);border-color:rgba(57,199,229,.7);transform:translateY(-1px)}
+.hero{min-height:calc(100svh - 74px);padding:clamp(48px,7vw,96px) clamp(20px,6vw,92px) 48px;display:grid;grid-template-columns:minmax(0,1.02fr) minmax(420px,.98fr);gap:clamp(36px,6vw,90px);align-items:center;position:relative}
+.hero-copy{max-width:760px}
+.kicker{display:flex;align-items:center;gap:10px;margin:0 0 24px;color:var(--cyan);font-size:12px;letter-spacing:.13em;text-transform:uppercase}
+.kicker:before{content:"";width:34px;height:1px;background:var(--cyan)}
+.hero h1{font-size:clamp(48px,5.9vw,86px);line-height:.96;letter-spacing:-.05em;margin:0;max-width:820px;font-weight:700}
+.hero h1 em{font-style:normal;color:var(--cyan)}
+.hero-lede{max-width:640px;color:#b8c1c5;font-size:clamp(17px,1.45vw,21px);line-height:1.72;margin:30px 0 0}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:11px;border-radius:999px;padding:14px 21px;font-size:14px;font-weight:650;transition:transform .22s var(--ease),background .22s,border-color .22s,box-shadow .22s;will-change:transform}
+.btn-primary{background:var(--cyan);color:#061015;box-shadow:0 0 0 1px rgba(57,199,229,.22),0 10px 40px rgba(57,199,229,.12)}
+.btn-primary:hover{background:#62d9ef;box-shadow:0 14px 42px rgba(57,199,229,.22)}
+.btn-secondary{border:1px solid var(--line);background:rgba(255,255,255,.025);color:#e8edef}
+.btn-secondary:hover{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.05)}
+.social-proof{display:flex;align-items:center;gap:18px;margin-top:34px}
+.community-stack{display:flex;align-items:center;padding-left:12px;height:52px;isolation:isolate}
+.community-stack a{--i:0;position:relative;width:44px;height:44px;margin-left:-12px;border-radius:50%;display:block;transition:transform .34s var(--ease),margin .34s var(--ease),filter .25s,opacity .25s;box-shadow:0 0 0 2px var(--bg);z-index:calc(10 - var(--i));will-change:transform}
+.community-stack img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;filter:saturate(.72) brightness(.86);transition:filter .25s}
+.community-stack .plus{display:grid;place-items:center;background:var(--cyan);color:#071015;font-size:11px;font-weight:800}
+.community-stack:hover a{margin-left:1px;transform:translateX(calc((var(--i) - 2.5) * 4px))}
+.community-stack a:hover,.community-stack a:focus-visible{z-index:20;transform:translateY(-10px) scale(1.34);outline:none}
+.community-stack a:hover img,.community-stack a:focus-visible img{filter:saturate(1.05) brightness(1.03)}
+.proof-copy strong{display:block;font-size:13px;color:#eef3f4;margin-bottom:4px}.proof-copy span{font-size:12px;color:#7f898e}
+.hero-media{position:relative;min-height:590px;display:grid;place-items:center}
+.media-frame{position:relative;width:min(100%,640px);aspect-ratio:1.04;border:1px solid var(--line);border-radius:28px;background:linear-gradient(180deg,#11171b,#0b0f12);overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.04);transform:perspective(1100px) rotateY(-2.8deg) rotateX(1.5deg);transition:transform .45s var(--ease),border-color .3s,box-shadow .3s}
+.media-frame:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 24%,rgba(255,255,255,.04) 42%,transparent 58%);transform:translateX(-80%);transition:transform .8s var(--ease);pointer-events:none;z-index:3}
+.media-frame:hover{transform:perspective(1100px) rotateY(0) rotateX(0) translateY(-5px);border-color:rgba(57,199,229,.35);box-shadow:0 50px 140px rgba(0,0,0,.58),0 0 70px rgba(57,199,229,.08)}
+.media-frame:hover:before{transform:translateX(80%)}
+.media-top{height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid var(--line);font-size:11px;color:#7f8a90}
+.dots{display:flex;gap:5px}.dots i{width:6px;height:6px;border-radius:50%;background:#354047}.dots i:first-child{background:var(--cyan)}
+.media-image{position:absolute;inset:46px 0 0;background:#07090b}
+.media-image img{width:100%;height:100%;object-fit:cover;opacity:.72;filter:saturate(.72) contrast(1.04)}
+.media-image:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 44%,rgba(5,7,8,.82) 100%),linear-gradient(90deg,rgba(7,9,11,.18),transparent)}
+.market-chip{position:absolute;z-index:5;left:14px;top:16%;width:190px;padding:15px 16px;border-radius:16px;border:1px solid var(--line);background:rgba(11,15,18,.90);backdrop-filter:blur(16px);box-shadow:0 18px 50px rgba(0,0,0,.35);transition:transform .32s var(--ease)}
+.media-frame:hover .market-chip{transform:translate(-7px,-4px)}
+.market-chip small{display:block;color:#718087;font-size:10px;letter-spacing:.08em;text-transform:uppercase}.market-chip strong{display:block;margin-top:7px;font-size:15px}.market-chip span{display:block;margin-top:8px;color:#99a6ab;font-size:11px}
+.live-dot{display:inline-block;width:7px;height:7px;background:#26d07c;border-radius:50%;margin-right:6px;box-shadow:0 0 0 4px rgba(38,208,124,.08)}
+.media-caption{position:absolute;z-index:4;left:22px;right:22px;bottom:20px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.media-caption h3{margin:0;font-size:22px}.media-caption p{margin:5px 0 0;color:#8b969b;font-size:12px}.media-caption .mini-link{font-size:12px;color:var(--cyan)}
+.section{padding:84px clamp(20px,6vw,92px);border-top:1px solid rgba(255,255,255,.07);position:relative}
+.section-head{display:flex;justify-content:space-between;gap:40px;align-items:end;margin-bottom:34px}
+.section-head h2{font-size:clamp(34px,4vw,58px);letter-spacing:-.04em;line-height:1.05;margin:0}.section-head p{max-width:420px;color:#8e999e;line-height:1.7;margin:0}
+.platform-rail{overflow:hidden;mask-image:linear-gradient(90deg,transparent,black 8%,black 92%,transparent);border-block:1px solid rgba(255,255,255,.06);padding:26px 0}
+.platform-track{display:flex;width:max-content;gap:70px;animation:marquee 28s linear infinite;will-change:transform}.platform-rail:hover .platform-track{animation-play-state:paused}
+.platform-item{display:flex;align-items:center;gap:10px;color:#899398;filter:saturate(.5);transition:color .22s,filter .22s,transform .22s var(--ease);font-size:18px;font-weight:700}.platform-item:hover{color:#fff;filter:none;transform:translateY(-2px)}.platform-item img{width:28px;height:28px;object-fit:contain}
+@keyframes marquee{to{transform:translateX(-50%)}}
+.learning{padding-top:100px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{group:card;position:relative;min-height:410px;border-radius:24px;border:1px solid var(--line);background:linear-gradient(180deg,#0e1316,#0a0e10);overflow:hidden;transition:transform .32s var(--ease),border-color .25s,box-shadow .32s var(--ease);transform:translateZ(0)}
+.card:hover{transform:translateY(-7px);border-color:rgba(57,199,229,.26);box-shadow:0 26px 80px rgba(0,0,0,.34),inset 0 0 0 1px rgba(57,199,229,.035)}
+.card-visual{height:255px;position:relative;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.065);background:#0a0d0f}
+.card-visual img{width:100%;height:100%;object-fit:cover;opacity:.72;filter:saturate(.68);transform:scale(1.01);transition:transform .55s var(--ease),filter .35s,opacity .35s}
+.card:hover .card-visual img{transform:scale(1.055);filter:saturate(.9);opacity:.86}
+.card-body{position:absolute;left:0;right:0;bottom:0;padding:22px 22px 20px;background:linear-gradient(180deg,rgba(10,14,16,.16),rgba(10,14,16,.97) 30%);transition:transform .32s var(--ease)}
+.card:hover .card-body{transform:translateY(-40px)}
+.card h3{font-size:21px;margin:0}.card p{font-size:13px;line-height:1.65;color:#8e999e;margin:9px 0 0}.card-cta{position:absolute;z-index:4;left:20px;bottom:15px;opacity:0;transform:translateY(12px);display:inline-flex;align-items:center;width:max-content;padding:7px 10px;border:1px solid rgba(57,199,229,.22);border-radius:999px;background:rgba(57,199,229,.055);font-size:11px;font-weight:700;color:#aaf3ff;transition:opacity .25s,transform .32s var(--ease),background .22s,border-color .22s}.card:hover .card-cta{opacity:1;transform:none;background:rgba(57,199,229,.09);border-color:rgba(57,199,229,.34)}
+.card-shine{position:absolute;inset:0;pointer-events:none;background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),rgba(57,199,229,.11),transparent 50%);opacity:0;transition:opacity .25s}.card:hover .card-shine{opacity:1}
+.convert{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:stretch}
+.convert-copy,.community-panel{border:1px solid var(--line);border-radius:26px;background:#0b0f12;padding:clamp(28px,4vw,52px);min-height:340px}
+.convert-copy{position:relative;overflow:hidden}.convert-copy:after{content:"";position:absolute;width:340px;height:340px;right:-120px;top:-150px;border-radius:50%;background:rgba(57,199,229,.07);filter:blur(34px)}
+.convert-copy h2{font-size:clamp(40px,5vw,72px);letter-spacing:-.05em;line-height:1;margin:0 0 20px;max-width:700px}.convert-copy p{max-width:560px;color:#9aa5aa;line-height:1.75}.convert-copy .hero-actions{margin-top:28px}
+.community-panel{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}.avatar-cloud{display:flex;flex-wrap:wrap;gap:9px;max-width:520px}.avatar-cloud img{width:46px;height:46px;border-radius:50%;object-fit:cover;filter:saturate(.68);opacity:.82;transition:transform .24s var(--ease),filter .24s,opacity .24s}.avatar-cloud img:hover{transform:translateY(-5px) scale(1.12);filter:none;opacity:1}.community-panel strong{font-size:30px}.community-panel p{color:#879398;line-height:1.6;margin:8px 0 0}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s var(--ease),transform .65s var(--ease)}.reveal.in{opacity:1;transform:none}
+
+/* Kaiyn-style direct conversion flow, translated into 82Trade facts. */
+.section-index{
+  position:absolute;top:24px;right:clamp(20px,6vw,92px);
+  color:#465158;font-size:10px;letter-spacing:.16em;text-transform:uppercase
+}
+.start-section{padding-top:96px}
+.start-grid{display:grid;grid-template-columns:.88fr 1.12fr;gap:42px;align-items:start}
+.start-copy h2{font-size:clamp(38px,4.5vw,64px);line-height:1.03;letter-spacing:-.045em;margin:0}
+.start-copy>p{color:#8c989d;line-height:1.75;max-width:560px;margin:18px 0 0}
+.start-list{margin-top:34px;border-top:1px solid var(--line)}
+.start-step{
+  appearance:none;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);
+  background:transparent;color:inherit;padding:20px 4px;display:grid;grid-template-columns:42px 1fr 22px;
+  gap:12px;align-items:start;cursor:pointer;transition:background .22s,color .22s,padding .28s var(--ease)
+}
+.start-step:hover,.start-step.is-active{background:rgba(255,255,255,.022);padding-left:12px;padding-right:10px}
+.start-step .num{font:600 11px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:#59656b;padding-top:3px}
+.start-step.is-active .num{color:var(--cyan)}
+.start-step strong{display:block;font-size:15px;margin-bottom:5px}
+.start-step span.copy{display:block;color:#7e898f;font-size:12.5px;line-height:1.55}
+.start-step .arrow{color:#4c585e;transition:transform .25s var(--ease),color .2s}
+.start-step:hover .arrow,.start-step.is-active .arrow{transform:translateX(4px);color:var(--cyan)}
+.start-preview{
+  position:sticky;top:104px;min-height:540px;border:1px solid var(--line);border-radius:26px;
+  background:
+    radial-gradient(420px 260px at 82% 10%,rgba(57,199,229,.08),transparent 70%),
+    linear-gradient(180deg,#0d1215,#090d0f);
+  overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.28)
+}
+.preview-chrome{height:48px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 17px;color:#6f7b80;font-size:10px;letter-spacing:.08em}
+.preview-content{position:absolute;inset:48px 0 0;padding:28px}
+.preview-scene{position:absolute;inset:28px;opacity:0;transform:translateY(14px) scale(.985);pointer-events:none;transition:opacity .32s var(--ease),transform .32s var(--ease)}
+.preview-scene.is-active{opacity:1;transform:none;pointer-events:auto}
+.mock-discord{display:grid;grid-template-columns:72px 1fr;height:100%;border:1px solid rgba(255,255,255,.08);border-radius:18px;overflow:hidden;background:#0b0f12}
+.mock-side{border-right:1px solid rgba(255,255,255,.07);padding:14px 12px;display:flex;flex-direction:column;gap:10px;background:#0a0d0f}
+.mock-side i{width:32px;height:32px;border-radius:10px;background:#161d21}.mock-side i:first-child{background:rgba(57,199,229,.16);box-shadow:inset 0 0 0 1px rgba(57,199,229,.25)}
+.mock-main{padding:20px}.mock-main small{color:#66737a}.mock-main h3{font-size:24px;margin:10px 0 7px}.mock-main p{color:#8d989d;line-height:1.65;font-size:13px;max-width:520px}
+.mock-card{margin-top:22px;border:1px solid rgba(255,255,255,.08);border-radius:15px;padding:16px;background:#0d1215}
+.mock-card .row{display:flex;align-items:center;gap:10px}.mock-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#2ac0df,#0f4958)}.mock-pill{display:inline-flex;margin-top:12px;border:1px solid rgba(57,199,229,.28);color:#9eefff;padding:7px 10px;border-radius:999px;font-size:10px}
+.uid-box{max-width:490px;margin:52px auto 0;border:1px solid rgba(255,255,255,.08);border-radius:20px;background:#0b0f12;padding:26px;box-shadow:0 24px 70px rgba(0,0,0,.28)}
+.uid-box .label{font-size:10px;color:#6f7c82;letter-spacing:.1em;text-transform:uppercase}.uid-box h3{font-size:26px;margin:9px 0 20px}.fake-input{height:48px;border:1px solid rgba(255,255,255,.11);border-radius:12px;display:flex;align-items:center;padding:0 14px;color:#a9b2b6;background:#090c0e}.fake-submit{margin-top:12px;height:48px;border-radius:12px;background:var(--cyan);color:#061015;display:flex;align-items:center;justify-content:center;font-weight:750;font-size:13px}
+.role-sync{height:100%;display:grid;place-items:center}.role-ring{position:relative;width:220px;height:220px;border-radius:50%;border:1px solid rgba(57,199,229,.25);display:grid;place-items:center;box-shadow:0 0 80px rgba(57,199,229,.06),inset 0 0 60px rgba(57,199,229,.04)}
+.role-ring:before,.role-ring:after{content:"";position:absolute;border-radius:50%;border:1px dashed rgba(255,255,255,.10)}.role-ring:before{inset:20px}.role-ring:after{inset:44px}
+.role-core{width:96px;height:96px;border-radius:50%;background:rgba(57,199,229,.13);border:1px solid rgba(57,199,229,.30);display:grid;place-items:center;text-align:center;color:#c9f8ff;font-size:12px;line-height:1.4;z-index:2}
+.sync-note{position:absolute;left:50%;bottom:52px;transform:translateX(-50%);white-space:nowrap;color:#7e8a90;font-size:11px}
+.start-footer{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+
+.footer{padding:30px clamp(20px,6vw,92px) 46px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;gap:20px;color:#667178;font-size:12px}
+@media(max-width:1000px){
+  .nav{display:none}.hero{grid-template-columns:1fr;padding-top:56px}.hero-media{min-height:500px}.media-frame{max-width:720px}.cards{grid-template-columns:1fr}.convert{grid-template-columns:1fr}.start-grid{grid-template-columns:1fr}.start-preview{position:relative;top:auto;min-height:500px}
+}
+@media(max-width:620px){
+  .header{height:66px;padding-inline:18px}.wordmark img{width:148px}.hero{min-height:auto;padding:44px 18px 58px;gap:36px}.hero h1{font-size:50px}.hero-lede{font-size:16px}.hero-media{min-height:390px}.media-frame{width:100%;border-radius:22px;transform:none}.market-chip{left:12px;top:14px;width:170px}.media-caption{left:16px;right:16px}.section{padding:66px 18px}.section-head{display:block}.section-head p{margin-top:14px}.cards{gap:12px}.social-proof{align-items:flex-start;gap:12px}.community-stack:hover a{margin-left:-12px;transform:none}.community-stack a:hover,.community-stack a:focus-visible{transform:none}.platform-track{gap:48px}.convert-copy,.community-panel{padding:26px 22px}.start-preview{min-height:430px}.preview-content{padding:16px}.preview-scene{inset:16px}.mock-discord{grid-template-columns:54px 1fr}.mock-side{padding:12px 9px}.mock-side i{width:28px;height:28px}.mock-main{padding:15px}.mock-main h3{font-size:20px}.uid-box{margin:28px auto 0;padding:20px}.role-ring{width:180px;height:180px}.sync-note{bottom:36px}.footer{padding-inline:18px;flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <defs>
+    <filter id="brand-white-ink" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="0 0 -0.8733031674 0 1 0 0 -0.2805429864 0 1 0 0 -0.1538461538 0 1 0 0 0 1 0"/>
+    </filter>
+  </defs>
+</svg>
+<div class="shell">
+<header class="header">
+  <a class="wordmark" href="https://82trade.com/"><img src="https://82trade.com/brand/82trade-wordmark-original.png" alt="82TRADE"></a>
+  <nav class="nav">
+    <a href="./original-learn-v1.html">學習內容</a>
+    <a href="#start">如何開始</a>
+    <a href="./original-community-v1.html">社群</a>
+    <a class="nav-cta magnetic" href="https://discord.gg/n74xbzjwrN" target="_blank" rel="noopener">加入社群 ↗</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero">
+  <div class="hero-copy">
+    <p class="kicker">TRADING · LEARNING · COMMUNITY</p>
+    <h1>看懂市場，<br>建立自己的<em>判斷。</em></h1>
+    <p class="hero-lede">從 JJ 行情分析、公開課程到學員交流，直接找到你下一步需要看的內容，並加入正在交易與複盤的 82Trade 社群。</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary magnetic" href="https://discord.gg/n74xbzjwrN" target="_blank" rel="noopener">加入 82Trade 社群 <span>↗</span></a>
+      <a class="btn btn-secondary magnetic" href="https://www.youtube.com/@82TRADE/playlists" target="_blank" rel="noopener">查看公開課程 <span>→</span></a>
+    </div>
+    <div class="social-proof">
+      <div class="community-stack" aria-label="82Trade 社群成員">
+        <a style="--i:0" href="https://discord.gg/n74xbzjwrN"><img src="https://82trade.com/brand/members/member-1.png" alt=""></a>
+        <a style="--i:1" href="https://discord.gg/n74xbzjwrN"><img src="https://82trade.com/brand/members/member-2.png" alt=""></a>
+        <a style="--i:2" href="https://discord.gg/n74xbzjwrN"><img src="https://82trade.com/brand/members/member-3.png" alt=""></a>
+        <a style="--i:3" href="https://discord.gg/n74xbzjwrN"><img src="https://82trade.com/brand/members/member-4.png" alt=""></a>
+        <a style="--i:4" href="https://discord.gg/n74xbzjwrN"><img src="https://82trade.com/brand/members/member-5.png" alt=""></a>
+        <a style="--i:5" class="plus" href="https://discord.gg/n74xbzjwrN">999+</a>
+      </div>
+      <div class="proof-copy"><strong>真實社群，不只看內容</strong><span>一起交流、學習、複盤</span></div>
+    </div>
+  </div>
+
+  <div class="hero-media">
+    <div class="media-frame" data-tilt>
+      <div class="media-top"><span class="dots"><i></i><i></i><i></i></span><span>82TRADE / MARKET BRIEF</span></div>
+      <div class="media-image"><img src="https://82trade.com/brand/courses/gd2pg2VqxdE.jpg" alt="82Trade 市場內容"></div>
+      <div class="market-chip"><small><span class="live-dot"></span>Latest market brief</small><strong>先看結構，再找機會</strong><span>行情不是訊號牆，而是判斷材料。</span></div>
+      <div class="media-caption"><div><h3>JJ 行情分析</h3><p>市場結構 · 量價 · 交易脈絡</p></div><a class="mini-link" href="https://www.youtube.com/@82TRADE">查看最新內容 ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="platform-rail" aria-label="82Trade platforms">
+    <div class="platform-track">
+      <a class="platform-item" href="https://www.youtube.com/@82TRADE" target="_blank" rel="noopener"><img src="https://82trade.com/brand/icons/logo-youtube.svg" alt=""><span>YouTube</span></a><a class="platform-item" href="https://discord.gg/n74xbzjwrN" target="_blank" rel="noopener"><img src="https://82trade.com/brand/icons/logo-discord.svg" alt=""><span>Discord</span></a><a class="platform-item" href="https://line.me/R/ti/p/@827egjii" target="_blank" rel="noopener"><img src="https://82trade.com/brand/icons/logo-line.svg" alt=""><span>LINE</span></a><a class="platform-item" href="https://okx.com/join/82TRADE" target="_blank" rel="noopener"><img src="https://82trade.com/brand/icons/logo-okx.svg" alt=""><span>OKX</span></a><a class="platform-item" href="https://www.instagram.com/82trade.co/" target="_blank" rel="noopener"><img src="https://82trade.com/brand/icons/logo-instagram.svg" alt=""><span>Instagram</span></a><a class="platform-item" href="https://www.youtube.com/@82TRADE" target="_blank" rel="noopener"><img src="https://82trade.com/brand/icons/logo-youtube.svg" alt=""><span>YouTube</span></a><a class="platform-item" href="https://discord.gg/n74xbzjwrN" target="_blank" rel="noopener"><img src="https://82trade.com/brand/icons/logo-discord.svg" alt=""><span>Discord</span></a><a class="platform-item" href="https://line.me/R/ti/p/@827egjii" target="_blank" rel="noopener"><img src="https://82trade.com/brand/icons/logo-line.svg" alt=""><span>LINE</span></a><a class="platform-item" href="https://okx.com/join/82TRADE" target="_blank" rel="noopener"><img src="https://82trade.com/brand/icons/logo-okx.svg" alt=""><span>OKX</span></a><a class="platform-item" href="https://www.instagram.com/82trade.co/" target="_blank" rel="noopener"><img src="https://82trade.com/brand/icons/logo-instagram.svg" alt=""><span>Instagram</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="section learning" id="learn">
+  <div class="section-index">02 / LEARN</div><div class="section-head reveal"><h2>從看懂，到懂得做。</h2><p>先看行情、再補基礎、最後進社群複盤。三個入口都直接放在首頁，不需要猜下一步去哪裡。</p></div>
+  <div class="cards">
+    <a class="card reveal" href="https://www.youtube.com/@82TRADE" target="_blank" rel="noopener">
+      <div class="card-visual"><img src="https://82trade.com/brand/courses/gd2pg2VqxdE.jpg" alt=""></div>
+      <div class="card-body"><h3>行情分析</h3><p>理解市場結構、量價與行情脈絡，建立自己的盤面判斷。</p></div><span class="card-cta">查看最新分析 →</span><i class="card-shine"></i>
+    </a>
+    <a class="card reveal" href="https://www.youtube.com/@82TRADE/playlists" target="_blank" rel="noopener">
+      <div class="card-visual"><img src="https://82trade.com/brand/courses/MlU1NAyeZKA.jpg" alt=""></div>
+      <div class="card-body"><h3>公開課程</h3><p>從公開內容開始，循序理解交易基礎、型態與風險管理。</p></div><span class="card-cta">開始學習 →</span><i class="card-shine"></i>
+    </a>
+    <a class="card reveal" href="https://discord.gg/n74xbzjwrN" target="_blank" rel="noopener">
+      <div class="card-visual"><img src="https://82trade.com/brand/courses/6GR2BT6cWqA.jpg" alt=""></div>
+      <div class="card-body"><h3>學員交流群</h3><p>課程討論、學習心得與交易複盤，把內容真正用到市場裡。</p></div><span class="card-cta">加入 Discord →</span><i class="card-shine"></i>
+    </a>
+  </div>
+</section>
+
+
+<section class="section start-section" id="start">
+  <div class="section-index">03 / START</div>
+  <div class="start-grid">
+    <div class="start-copy reveal">
+      <p class="kicker">START WITH THE COMMUNITY</p>
+      <h2>三步開始，<br>不用繞路。</h2>
+      <p>先進社群，再綁定帳戶。符合學員資格後，對應身分組與學員權限會自動同步。</p>
+      <div class="start-list" role="tablist" aria-label="82Trade 加入流程">
+        <button class="start-step is-active" type="button" data-step="0" role="tab" aria-selected="true">
+          <span class="num">01</span><span><strong>加入 Discord 社群</strong><span class="copy">先進入公開社群，看公告、內容與交流。</span></span><span class="arrow">→</span>
+        </button>
+        <button class="start-step" type="button" data-step="1" role="tab" aria-selected="false">
+          <span class="num">02</span><span><strong>帳戶中心綁定 UID</strong><span class="copy">在 Discord 帳戶中心完成 UID 綁定。</span></span><span class="arrow">→</span>
+        </button>
+        <button class="start-step" type="button" data-step="2" role="tab" aria-selected="false">
+          <span class="num">03</span><span><strong>同步學員身分</strong><span class="copy">符合資格後，自動同步對應身分組與學員權限。</span></span><span class="arrow">→</span>
+        </button>
+      </div>
+      <div class="start-footer">
+        <a class="btn btn-primary magnetic" href="https://discord.gg/n74xbzjwrN" target="_blank" rel="noopener">加入 Discord ↗</a>
+        <a class="btn btn-secondary magnetic" href="https://line.me/R/ti/p/@827egjii" target="_blank" rel="noopener">需要協助？LINE ↗</a>
+      </div>
+    </div>
+    <div class="start-preview reveal" aria-live="polite">
+      <div class="preview-chrome"><span>82TRADE / ONBOARDING</span><span>STEP <b data-step-count>01</b> / 03</span></div>
+      <div class="preview-content">
+        <div class="preview-scene is-active" data-scene="0">
+          <div class="mock-discord">
+            <div class="mock-side"><i></i><i></i><i></i><i></i></div>
+            <div class="mock-main">
+              <small>82TRADE DISCORD</small>
+              <h3>先進社群，再決定下一步。</h3>
+              <p>公告、公開內容與學員交流都在同一個入口，不把使用者先丟進複雜流程。</p>
+              <div class="mock-card"><div class="row"><span class="mock-avatar"></span><div><strong>82Trade 社群</strong><br><small>online · learning · review</small></div></div><span class="mock-pill">JOIN COMMUNITY ↗</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="preview-scene" data-scene="1">
+          <div class="uid-box">
+            <span class="label">ACCOUNT CENTER</span>
+            <h3>綁定你的交易所 UID</h3>
+            <div class="fake-input">輸入 UID</div>
+            <div class="fake-submit">確認綁定</div>
+          </div>
+        </div>
+        <div class="preview-scene" data-scene="2">
+          <div class="role-sync">
+            <div class="role-ring"><div class="role-core">ROLE<br>SYNCED</div></div>
+            <div class="sync-note">符合資格後自動同步學員身分組</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="community">
+  <div class="section-index">04 / COMMUNITY</div><div class="convert">
+    <div class="convert-copy reveal">
+      <p class="kicker">A COMMUNITY TO GROW WITH</p>
+      <h2>交易這條路，<br>一起走。</h2>
+      <p>加入 Discord，和其他學員一起聊課程、盤面與複盤；需要協助時，也可以直接從 LINE 找到官方客服。</p>
+      <div class="hero-actions"><a class="btn btn-primary magnetic" href="https://discord.gg/n74xbzjwrN">加入 82Trade 社群 ↗</a><a class="btn btn-secondary magnetic" href="https://line.me/R/ti/p/@827egjii">LINE 客服 ↗</a></div>
+    </div>
+    <div class="community-panel reveal">
+      <div><strong>不是一個人盯盤。</strong><p>真實的人、真實的討論、真實的複盤。社群本身就是 82Trade 產品的一部分。</p></div>
+      <div class="avatar-cloud">
+        <img src="https://82trade.com/brand/community/member-01.webp" alt=""><img src="https://82trade.com/brand/community/member-02.webp" alt=""><img src="https://82trade.com/brand/community/member-03.webp" alt=""><img src="https://82trade.com/brand/community/member-04.webp" alt=""><img src="https://82trade.com/brand/community/member-05.webp" alt=""><img src="https://82trade.com/brand/community/member-06.webp" alt=""><img src="https://82trade.com/brand/community/member-07.webp" alt=""><img src="https://82trade.com/brand/community/member-08.webp" alt=""><img src="https://82trade.com/brand/community/member-09.webp" alt=""><img src="https://82trade.com/brand/community/member-10.webp" alt=""><img src="https://82trade.com/brand/community/member-11.webp" alt=""><img src="https://82trade.com/brand/community/member-12.webp" alt=""><img src="https://82trade.com/brand/community/member-13.webp" alt=""><img src="https://82trade.com/brand/community/member-14.webp" alt=""><img src="https://82trade.com/brand/community/member-15.webp" alt=""><img src="https://82trade.com/brand/community/member-16.webp" alt=""><img src="https://82trade.com/brand/community/member-17.webp" alt=""><img src="https://82trade.com/brand/community/member-18.webp" alt="">
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer"><span>82Trade / Original Site Upgrade V4 · Team Review</span><span>Prototype · direction study · not production</span></footer>
+</div>
+
+<script>
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if(!reduce){
+  document.querySelectorAll(".magnetic").forEach(el=>{
+    el.addEventListener("pointermove",e=>{
+      const r=el.getBoundingClientRect(),x=(e.clientX-r.left-r.width/2)*.12,y=(e.clientY-r.top-r.height/2)*.18;
+      el.style.transform=`translate(${x}px,${y}px)`;
+    });
+    el.addEventListener("pointerleave",()=>el.style.transform="");
+  });
+
+  const frame=document.querySelector("[data-tilt]");
+  if(frame){
+    frame.addEventListener("pointermove",e=>{
+      const r=frame.getBoundingClientRect(),nx=(e.clientX-r.left)/r.width-.5,ny=(e.clientY-r.top)/r.height-.5;
+      frame.style.transform=`perspective(1100px) rotateY(${nx*3.2}deg) rotateX(${-ny*2.4}deg) translateY(-5px)`;
+    });
+    frame.addEventListener("pointerleave",()=>frame.style.transform="");
+  }
+
+  document.querySelectorAll(".card").forEach(card=>{
+    card.addEventListener("pointermove",e=>{
+      const r=card.getBoundingClientRect();
+      card.style.setProperty("--mx",((e.clientX-r.left)/r.width*100)+"%");
+      card.style.setProperty("--my",((e.clientY-r.top)/r.height*100)+"%");
+    });
+  });
+}
+
+document.querySelectorAll(".start-step").forEach(btn=>{
+  const activate=()=>{
+    const id=btn.dataset.step;
+    document.querySelectorAll(".start-step").forEach(x=>{x.classList.toggle("is-active",x===btn);x.setAttribute("aria-selected",x===btn?"true":"false")});
+    document.querySelectorAll(".preview-scene").forEach(x=>x.classList.toggle("is-active",x.dataset.scene===id));
+    const count=document.querySelector("[data-step-count]");
+    if(count)count.textContent=String(Number(id)+1).padStart(2,"0");
+  };
+  btn.addEventListener("mouseenter",()=>{if(matchMedia("(pointer:fine)").matches)activate()});
+  btn.addEventListener("focus",activate);
+  btn.addEventListener("click",activate);
+});
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
