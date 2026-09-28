@@ -1,0 +1,36 @@
+name: Original Upgrade V1 Visual QA
+
+on:
+  push:
+    paths:
+      - "82trade-motion-lab/original-upgrade-v1.html"
+      - ".github/scripts/original-upgrade-v1-qa.mjs"
+      - ".github/workflows/original-upgrade-v1-qa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  visual-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Run visual QA
+        run: node .github/scripts/original-upgrade-v1-qa.mjs
+      - name: Print report
+        if: always()
+        run: |
+          if [ -f original-upgrade-v1-qa/report.json ]; then cat original-upgrade-v1-qa/report.json; fi
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-upgrade-v1-qa
+          path: original-upgrade-v1-qa/**
+          if-no-files-found: error
+          retention-days: 7
