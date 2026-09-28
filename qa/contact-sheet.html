@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><link rel="icon" href="data:,"><style>
+*{box-sizing:border-box}body{margin:0;background:#111;color:#eee;font:700 18px Arial;padding:20px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.tile{background:#090a09;border:1px solid #333}.tile b{display:block;padding:8px 10px}.tile img{display:block;width:100%;height:auto}
+</style></head><body><div class="grid" id="grid"></div><script>
+const params=new URLSearchParams(location.search);const mode=params.get('mode')||'desktop';const phase=params.get('phase')||'before';const codes=['IWGF','IWGC','IWHF','IWHC','IAGF','IAGC','IAHF','IAHC','SWGF','SWGC','SWHF','SWHC','SAGF','SAGC','SAHF','SAHC'];
+grid.innerHTML=codes.map(code=>`<div class="tile"><b>${code}</b><img src="${mode==='asset'?`/cinema/assets/hero-characters/${code}.webp`:`./${phase}/${code}-${mode}.png`}"></div>`).join('');
+</script></body></html>

@@ -3,6 +3,24 @@ const root=document.querySelector('#view');
 const CARD_BASE='./cinema/assets/identity-cards';
 const HERO_BASE='./cinema/assets/hero-characters';
 const CODES=new Set(['IWGF','IWGC','IWHF','IWHC','IAGF','IAGC','IAHF','IAHC','SWGF','SWGC','SWHF','SWHC','SAGF','SAGC','SAHF','SAHC']);
+const HERO_FRAME={
+  IWGF:{x:100,y:66,scale:1.07,originX:92,originY:68,brightness:.48,mobileX:100,mobileY:64,mobileScale:1.06,mobileOriginX:96,mobileOriginY:70},
+  IWGC:{x:100,y:61,scale:1.02,originX:91,originY:64,brightness:.48,mobileX:100,mobileY:59,mobileScale:1.01,mobileOriginX:96,mobileOriginY:65},
+  IWHF:{x:100,y:64,scale:1.05,originX:92,originY:66,brightness:.48,mobileX:100,mobileY:61,mobileScale:1.03,mobileOriginX:96,mobileOriginY:67},
+  IWHC:{x:100,y:65,scale:1.04,originX:92,originY:68,brightness:.48,mobileX:100,mobileY:63,mobileScale:1.03,mobileOriginX:96,mobileOriginY:69},
+  IAGF:{x:100,y:66,scale:1.05,originX:92,originY:68,brightness:.49,mobileX:100,mobileY:63,mobileScale:1.04,mobileOriginX:96,mobileOriginY:69},
+  IAGC:{x:100,y:65,scale:1.04,originX:92,originY:67,brightness:.48,mobileX:100,mobileY:62,mobileScale:1.03,mobileOriginX:96,mobileOriginY:68},
+  IAHF:{x:100,y:65,scale:1.04,originX:92,originY:67,brightness:.48,mobileX:100,mobileY:62,mobileScale:1.03,mobileOriginX:96,mobileOriginY:68},
+  IAHC:{x:100,y:64,scale:1.05,originX:92,originY:66,brightness:.48,mobileX:100,mobileY:61,mobileScale:1.04,mobileOriginX:96,mobileOriginY:67},
+  SWGF:{x:100,y:75,scale:1.16,originX:94,originY:78,brightness:.54,mobileX:100,mobileY:74,mobileScale:1.11,mobileOriginX:97,mobileOriginY:78},
+  SWGC:{x:100,y:69,scale:1.11,originX:93,originY:72,brightness:.51,mobileX:100,mobileY:67,mobileScale:1.08,mobileOriginX:97,mobileOriginY:73},
+  SWHF:{x:100,y:72,scale:1.13,originX:94,originY:75,brightness:.52,mobileX:100,mobileY:70,mobileScale:1.09,mobileOriginX:97,mobileOriginY:75},
+  SWHC:{x:100,y:74,scale:1.12,originX:94,originY:77,brightness:.52,mobileX:100,mobileY:72,mobileScale:1.09,mobileOriginX:97,mobileOriginY:77},
+  SAGF:{x:100,y:68,scale:1.10,originX:93,originY:71,brightness:.51,mobileX:100,mobileY:66,mobileScale:1.07,mobileOriginX:97,mobileOriginY:72},
+  SAGC:{x:100,y:69,scale:1.16,originX:94,originY:73,brightness:.52,mobileX:100,mobileY:67,mobileScale:1.11,mobileOriginX:97,mobileOriginY:74},
+  SAHF:{x:100,y:67,scale:1.08,originX:93,originY:70,brightness:.50,mobileX:100,mobileY:65,mobileScale:1.06,mobileOriginX:97,mobileOriginY:71},
+  SAHC:{x:100,y:69,scale:1.09,originX:93,originY:72,brightness:.51,mobileX:100,mobileY:67,mobileScale:1.06,mobileOriginX:97,mobileOriginY:73}
+};
 let queued=false,warmCode='';
 function api(){return window.TraderDNAShareCard||null}
 function data(){return api()?.data?.()||null}
@@ -17,6 +35,19 @@ function heroPath(code){
   return `${HERO_BASE}/${value}.webp`;
 }
 function absolute(path){return new URL(path,location.href).href}
+function applyHeroFrame(figure,code){
+  const frame=HERO_FRAME[code];
+  if(!frame)return;
+  const values={
+    '--hero-x':frame.x+'%','--hero-y':frame.y+'%','--hero-scale':frame.scale,
+    '--hero-enter-scale':frame.scale+.1,'--hero-origin-x':frame.originX+'%',
+    '--hero-origin-y':frame.originY+'%','--hero-brightness':frame.brightness,
+    '--hero-x-mobile':frame.mobileX+'%','--hero-y-mobile':frame.mobileY+'%',
+    '--hero-scale-mobile':frame.mobileScale,'--hero-enter-scale-mobile':frame.mobileScale+.08,
+    '--hero-origin-x-mobile':frame.mobileOriginX+'%','--hero-origin-y-mobile':frame.mobileOriginY+'%'
+  };
+  Object.entries(values).forEach(([name,value])=>figure.style.setProperty(name,value));
+}
 async function cardBlob(code){
   const url=cardPath(code);
   const response=await fetch(url,{cache:'force-cache'});
@@ -85,6 +116,7 @@ function mountHero(result){
     hero.appendChild(figure);
   }
   figure.dataset.code=code;
+  applyHeroFrame(figure,code);
   const image=figure.querySelector('img');
   const src=absolute(heroPath(code));
   const ready=()=>{figure.dataset.ready='1';hero.dataset.characterReady='1'};
@@ -107,12 +139,63 @@ function cleanLegacyShare(studio){
     native.innerHTML='分享 / 保存身份卡 <span>↗</span>';
   }
 }
+function mountCardDisplay(stage){
+  if(!stage)return null;
+  let shell=stage.querySelector(':scope > .identity-card-shell');
+  if(!shell){
+    const image=stage.querySelector(':scope > img');
+    if(!image)return null;
+    const shadow=document.createElement('div');
+    shadow.className='identity-card-depth-shadow';
+    shadow.setAttribute('aria-hidden','true');
+    shell=document.createElement('div');
+    shell.className='identity-card-shell';
+    image.classList.add('identity-card-master');
+    stage.insertBefore(shadow,image);
+    stage.insertBefore(shell,image);
+    shell.append(image);
+    shell.insertAdjacentHTML('beforeend','<div class="identity-card-foil" aria-hidden="true"></div><div class="identity-card-specular" aria-hidden="true"></div>');
+  }
+  if(stage.dataset.identityTiltBound!=='1'){
+    stage.dataset.identityTiltBound='1';
+    let frame=0,box=null,pointerX=.5,pointerY=.5;
+    const commit=()=>{
+      frame=0;
+      stage.style.setProperty('--share-rx',`${((.5-pointerY)*8).toFixed(2)}deg`);
+      stage.style.setProperty('--share-ry',`${((pointerX-.5)*12).toFixed(2)}deg`);
+      stage.style.setProperty('--glare-x',`${(pointerX*100).toFixed(1)}%`);
+      stage.style.setProperty('--glare-y',`${(pointerY*100).toFixed(1)}%`);
+      stage.style.setProperty('--shadow-x',`${((.5-pointerX)*12).toFixed(1)}px`);
+      stage.style.setProperty('--shadow-y',`${((.5-pointerY)*8).toFixed(1)}px`);
+    };
+    const move=event=>{
+      if(event.pointerType==='touch'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+      box=box||stage.getBoundingClientRect();
+      pointerX=Math.max(0,Math.min(1,(event.clientX-box.left)/Math.max(1,box.width)));
+      pointerY=Math.max(0,Math.min(1,(event.clientY-box.top)/Math.max(1,box.height)));
+      stage.dataset.identityTiltActive='1';
+      if(!frame)frame=requestAnimationFrame(commit);
+    };
+    const reset=()=>{
+      if(frame)cancelAnimationFrame(frame);
+      frame=0;box=null;
+      delete stage.dataset.identityTiltActive;
+      stage.style.setProperty('--share-rx','0deg');stage.style.setProperty('--share-ry','0deg');
+      stage.style.setProperty('--glare-x','50%');stage.style.setProperty('--glare-y','42%');
+      stage.style.setProperty('--shadow-x','0px');stage.style.setProperty('--shadow-y','0px');
+    };
+    stage.addEventListener('pointerenter',()=>{box=stage.getBoundingClientRect()},{passive:true});
+    stage.addEventListener('pointermove',move,{passive:true});
+    stage.addEventListener('pointerleave',reset,{passive:true});
+  }
+  return shell.querySelector('.identity-card-master');
+}
 async function buildStatic(){
   const studio=root?.querySelector('.v3-share-studio');
   const d=data();
   if(!studio||!d)return null;
   const stage=studio.querySelector('.v3-share-stage');
-  const image=stage?.querySelector(':scope > img');
+  const image=mountCardDisplay(stage);
   if(!stage||!image)return null;
   studio.dataset.authority='identity-edition';
   studio.dataset.format='4:5';
@@ -164,6 +247,7 @@ function mountShare(result){
   const studio=result?.querySelector('.v3-share-studio');
   if(!studio)return;
   cleanLegacyShare(studio);
+  mountCardDisplay(studio.querySelector('.v3-share-stage'));
   const copy=studio.querySelector('.v3-share-studio-copy');
   const title=copy?.querySelector('h3');
   const paragraph=copy?.querySelector('p');
