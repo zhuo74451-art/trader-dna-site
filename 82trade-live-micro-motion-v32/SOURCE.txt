@@ -1,0 +1,5 @@
+82trade-team/82trade-web
+branch=lab/live-site-micro-motion-v3-1-20260929
+commit=cc69884
+production_geometry=https://82trade.com/
+preview_contract=hover-first compact desktop + mobile tap
