@@ -1,0 +1,5 @@
+82trade-team/82trade-web
+branch=lab/live-site-micro-motion-v3-1-20260929
+commit=324c2974de3554205b0cde2a79d4d24b24f069ec
+production_geometry=https://82trade.com/
+preview_contract=hover-first menu + Learn/Community/Footer M0 polish + mobile tap
