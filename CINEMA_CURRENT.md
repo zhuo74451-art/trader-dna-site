@@ -5,7 +5,7 @@ Public presentation URL: https://zhuo74451-art.github.io/trader-dna-site/cinema-
 Stable runtime alias: `scan01.html`.
 Permanent printed QR entry: https://82trade-team.github.io/dna/
 
-The printed QR belongs to the separate public gateway repository `82trade-team/dna`. That URL is the only long-lived QR authority. It currently redirects to this repository's `scan01.html` alias. Future V5/V6 visual releases should update the gateway target and/or `scan01.html`; do not create a second printed QR.
+The printed QR belongs to the separate public gateway repository `82trade-team/dna`. That URL is the only long-lived QR authority. It currently redirects to this repository's `scan01-authority-preview.html`; `scan01.html` loads the same authority release. Future V5/V6 visual releases should update the gateway target and stable alias; do not create a second printed QR.
 
 `scan01.html` and `cinema-detail-04.html` now share the same active 18-question core runtime: `cinema/core-app18-20260927.js`. `cinema-detail-03.html` is preserved for rollback. The repository root `index.html` no longer exposes the legacy product and forwards to `scan01.html`.
 
