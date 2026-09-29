@@ -1,0 +1,6 @@
+82trade-team/82trade-web
+branch=lab/live-site-micro-motion-v3-1-20260929
+commit=af6d25cd719e1056f02a75c37cb102f01be8ce02
+production_geometry=https://82trade.com/
+preview_contract=hover-first menu + platform rail / onboarding disclosure / Learn / Community / Footer M0 polish + mobile tap
+production_touched=false
