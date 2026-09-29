@@ -1,0 +1,4 @@
+82trade-team/82trade-web
+branch=lab/live-site-micro-motion-v3-1-20260929
+commit=165b1be6a699fa42c6d89e19f8cbf345b972005d
+production_geometry=https://82trade.com/
