@@ -9,6 +9,17 @@ body[data-edition="detail-04"] .result-hero>.code,
 body[data-edition="detail-04"] .result-hero>.identity,
 body[data-edition="detail-04"] .result-hero>.hook,
 body[data-edition="detail-04"] .result-hero>.result-foot{position:relative;z-index:4}
+body[data-edition="detail-04"] .result-hero>.hook[data-copy-role="classical-verse"]{
+  max-width:22em;
+  font-family:var(--serif);
+  font-size:clamp(17px,1.45vw,22px);
+  line-height:1.72;
+  letter-spacing:.025em;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  word-break:break-all;
+  text-wrap:balance;
+}
 .scan01-authority-character{position:absolute;z-index:1;right:-1%;top:0;width:min(57vw,850px);height:100%;margin:0;overflow:hidden;pointer-events:none;opacity:1;background:#090a09;will-change:opacity,clip-path,filter;
   -webkit-mask-image:radial-gradient(ellipse 72% 76% at 68% 62%,#000 0 48%,rgba(0,0,0,.96) 64%,rgba(0,0,0,.5) 76%,transparent 94%);
   mask-image:radial-gradient(ellipse 72% 76% at 68% 62%,#000 0 48%,rgba(0,0,0,.96) 64%,rgba(0,0,0,.5) 76%,transparent 94%)}
@@ -105,6 +116,11 @@ body[data-edition="detail-04"] .v3-share-studio[data-authority="identity-edition
 }
 
 @media(max-width:760px){
+  body[data-edition="detail-04"] .result-hero>.hook[data-copy-role="classical-verse"]{
+    max-width:18em;
+    font-size:15px;
+    line-height:1.75;
+  }
   .result.d4-result-enter .scan01-authority-character[data-ready]{animation-duration:.86s}
   .result.d4-result-enter .scan01-authority-character[data-ready] img{
     animation-name:scan01-character-lens-mobile;

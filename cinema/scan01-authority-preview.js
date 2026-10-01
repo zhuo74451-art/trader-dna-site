@@ -27,6 +27,7 @@ const HERO_FRAME={
 let queued=false,archiveDataPromise=null;
 const imageWarmups=new Map();
 const cardBlobWarmups=new Map();
+const classicalCardWarmups=new Map();
 const elementLoads=new WeakMap();
 function api(){return window.TraderDNAShareCard||null}
 function data(){return api()?.data?.()||null}
@@ -133,6 +134,62 @@ async function cardBlob(code){
   cardBlobWarmups.set(code,promise);
   return promise;
 }
+function verseLines(context,text,maxWidth){
+  const clauses=String(text||'').match(/[^，。！？；]+[，。！？；]?/g)||[];
+  const lines=[];
+  let line='';
+  clauses.forEach(clause=>{
+    const candidate=line+clause;
+    if(line&&context.measureText(candidate).width>maxWidth){lines.push(line);line=clause}
+    else line=candidate;
+  });
+  if(line)lines.push(line);
+  if(lines.length<=2)return lines;
+  const compact=[];
+  let value='';
+  Array.from(String(text||'')).forEach(character=>{
+    if(value&&context.measureText(value+character).width>maxWidth){compact.push(value);value=character}
+    else value+=character;
+  });
+  if(value)compact.push(value);
+  return compact;
+}
+async function classicalCard(code){
+  const value=String(code||'').trim().toUpperCase();
+  if(classicalCardWarmups.has(value))return classicalCardWarmups.get(value);
+  const promise=Promise.all([warmImage(cardPath(value),'high'),archiveData()]).then(async([source,[types]])=>{
+    const verse=types?.[value]?.classicalVerseHans||types?.[value]?.classicalVerse;
+    if(!verse)return cardBlob(value);
+    const canvas=document.createElement('canvas');
+    canvas.width=source.naturalWidth||1080;
+    canvas.height=source.naturalHeight||1350;
+    const context=canvas.getContext('2d',{alpha:false});
+    context.drawImage(source,0,0,canvas.width,canvas.height);
+    const scale=canvas.width/1080;
+    const sample=context.getImageData(Math.round(88*scale),Math.round(558*scale),Math.max(1,Math.round(12*scale)),Math.max(1,Math.round(12*scale))).data;
+    let red=0,green=0,blue=0,count=0;
+    for(let index=0;index<sample.length;index+=4){red+=sample[index];green+=sample[index+1];blue+=sample[index+2];count++}
+    red=Math.round(red/count);green=Math.round(green/count);blue=Math.round(blue/count);
+    const paper=context.createLinearGradient(0,558*scale,0,690*scale);
+    paper.addColorStop(0,`rgb(${red},${green},${blue})`);
+    paper.addColorStop(1,`rgb(${Math.max(0,red-1)},${Math.max(0,green-1)},${Math.max(0,blue-2)})`);
+    context.fillStyle=paper;
+    context.fillRect(66*scale,558*scale,500*scale,132*scale);
+    const length=Array.from(verse).length;
+    const size=(length>22?32:length>17?35:length>12?39:42)*scale;
+    context.font=`600 ${size}px "Songti TC","STSong","Noto Serif CJK SC",serif`;
+    context.fillStyle='#0a0a09';
+    context.textBaseline='alphabetic';
+    const lines=verseLines(context,verse,468*scale).slice(0,2);
+    const lineHeight=(lines.length>1?57:60)*scale;
+    const firstBaseline=(lines.length>1?607:628)*scale;
+    lines.forEach((line,index)=>context.fillText(line,77*scale,firstBaseline+index*lineHeight));
+    const blob=await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error('Identity Edition render failed')),'image/webp',.96));
+    return {url:cardPath(value),blob};
+  }).catch(error=>{classicalCardWarmups.delete(value);throw error});
+  classicalCardWarmups.set(value,promise);
+  return promise;
+}
 function warmRevealIdentity(){
   const code=(root?.querySelector('.reveal-code')||root?.querySelector('.result-hero>.code'))?.textContent?.trim()?.toUpperCase();
   warmIdentity(code);
@@ -179,6 +236,17 @@ function mountHero(result){
   hero.dataset.authority='character-reveal';
   const code=hero.querySelector('.code')?.textContent?.trim()?.toUpperCase();
   if(!CODES.has(code))return;
+  const hook=hero.querySelector(':scope>.hook');
+  if(hook&&hook.dataset.classicalVerse!==code){
+    hook.dataset.classicalVerse=code;
+    archiveData().then(([types])=>{
+      const verse=types?.[code]?.classicalVerse;
+      if(verse&&hook.isConnected&&hero.querySelector(':scope>.code')?.textContent?.trim()?.toUpperCase()===code){
+        hook.textContent=verse;
+        hook.dataset.copyRole='classical-verse';
+      }
+    }).catch(()=>{});
+  }
   let figure=hero.querySelector('.scan01-authority-character');
   if(!figure){
     figure=document.createElement('figure');
@@ -274,19 +342,21 @@ async function buildStatic(){
   studio.dataset.cinemaExport='authority';
   stage.dataset.shareAuthority='identity-edition-master';
   cleanLegacyShare(studio);
-  const src=absolute(cardPath(d.code));
   image.alt=`Trader DNA ${d.code} · ${d.name} Identity Edition`;
   image.dataset.identityCode=d.code;
   stage.setAttribute('aria-busy','true');
-  const [{blob}]=await Promise.all([cardBlob(d.code),loadImage(image,src)]);
-  stage.classList.add('is-ready');
-  stage.removeAttribute('aria-busy');
-  if(studio._authorityCode!==d.code||!studio._shareBlob){
+  const {blob}=await classicalCard(d.code);
+  if(studio._authorityCode!==d.code||!studio._shareBlob||!studio._shareUrl){
+    if(studio._shareUrl)URL.revokeObjectURL(studio._shareUrl);
     studio._shareBlob=blob;
+    studio._shareUrl=URL.createObjectURL(blob);
     studio._shareFormat='4:5';
     studio._authorityCode=d.code;
   }
-  return {blob:studio._shareBlob,url:src};
+  await loadImage(image,studio._shareUrl);
+  stage.classList.add('is-ready');
+  stage.removeAttribute('aria-busy');
+  return {blob:studio._shareBlob,url:studio._shareUrl};
 }
 async function shareStatic(){
   const studio=root?.querySelector('.v3-share-studio');
@@ -303,10 +373,12 @@ async function shareStatic(){
     }catch(error){if(error?.name==='AbortError')return}
   }
   const a=document.createElement('a');
-  a.href=cardPath(d.code);
+  const downloadUrl=URL.createObjectURL(blob);
+  a.href=downloadUrl;
   a.download=file.name;
   a.rel='noopener';
   a.click();
+  setTimeout(()=>URL.revokeObjectURL(downloadUrl),1000);
 }
 function installAuthorityApi(){
   const current=api();
