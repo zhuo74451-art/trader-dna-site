@@ -165,9 +165,20 @@ function verseLines(context,text,maxWidth){
   if(value)compact.push(value);
   return compact;
 }
-async function classicalCard(code){
+function simplifiedSignal(value){
+  return ({'直覺':'直觉','結構':'结构','蓄勢':'蓄势','出擊':'出击','守界':'守界','捕獵':'捕猎','穩態':'稳态','敏銳':'敏锐','變陣':'变阵','定見':'定见','獨行':'独行','共振':'共振'})[value]||value;
+}
+function profileSignals(snapshot){
+  return (snapshot?.pronounced||[]).slice(0,3).map(entry=>({
+    label:simplifiedSignal(entry?.side||''),
+    percent:Math.max(0,Math.min(100,Math.round(Number(entry?.sidePct)||0)))
+  })).filter(entry=>entry.label);
+}
+async function classicalCard(code,snapshot=null){
   const value=String(code||'').trim().toUpperCase();
-  if(classicalCardWarmups.has(value))return classicalCardWarmups.get(value);
+  const signals=profileSignals(snapshot);
+  const cacheKey=`${value}:${signals.map(entry=>`${entry.label}-${entry.percent}`).join('|')}`;
+  if(classicalCardWarmups.has(cacheKey))return classicalCardWarmups.get(cacheKey);
   const promise=Promise.all([warmImage(cardPath(value),'high'),archiveData()]).then(async([source,[types]])=>{
     const verse=classicalVerse(types,value,'hans');
     if(!verse)return cardBlob(value);
@@ -215,10 +226,77 @@ async function classicalCard(code){
     const lineHeight=(lines.length>1?47:52)*scale;
     const firstBaseline=(lines.length>1?606:626)*scale;
     lines.forEach((line,index)=>context.fillText(line,77*scale,firstBaseline+index*lineHeight));
+    if(signals.length){
+      const signalPatch=document.createElement('canvas');
+      signalPatch.width=Math.round(260*scale);
+      signalPatch.height=Math.round(220*scale);
+      const signalContext=signalPatch.getContext('2d');
+      const signalPaper=signalContext.createLinearGradient(0,0,0,signalPatch.height);
+      signalPaper.addColorStop(0,sampleColor(696));
+      signalPaper.addColorStop(1,sampleColor(904));
+      signalContext.fillStyle=signalPaper;
+      signalContext.fillRect(0,0,signalPatch.width,signalPatch.height);
+      signalContext.globalCompositeOperation='destination-in';
+      const signalEdge=signalContext.createLinearGradient(0,0,signalPatch.width,0);
+      signalEdge.addColorStop(0,'rgba(0,0,0,1)');
+      signalEdge.addColorStop(.9,'rgba(0,0,0,1)');
+      signalEdge.addColorStop(1,'rgba(0,0,0,0)');
+      signalContext.fillStyle=signalEdge;
+      signalContext.fillRect(0,0,signalPatch.width,signalPatch.height);
+      const signalVertical=signalContext.createLinearGradient(0,0,0,signalPatch.height);
+      signalVertical.addColorStop(0,'rgba(0,0,0,0)');
+      signalVertical.addColorStop(.04,'rgba(0,0,0,1)');
+      signalVertical.addColorStop(.96,'rgba(0,0,0,1)');
+      signalVertical.addColorStop(1,'rgba(0,0,0,0)');
+      signalContext.fillStyle=signalVertical;
+      signalContext.fillRect(0,0,signalPatch.width,signalPatch.height);
+      context.drawImage(signalPatch,64*scale,690*scale);
+
+      context.fillStyle='#65635e';
+      context.font=`600 ${13*scale}px ui-monospace, Menlo, monospace`;
+      context.fillText('PROFILE SIGNALS / TOP 03',77*scale,720*scale);
+      signals.forEach((entry,index)=>{
+        const y=(762+index*46)*scale;
+        context.fillStyle='#0a0a09';
+        context.font=`650 ${23*scale}px "Noto Sans CJK SC","PingFang SC",sans-serif`;
+        context.fillText(entry.label,77*scale,y);
+        context.fillStyle='#77736b';
+        context.font=`600 ${14*scale}px ui-monospace, Menlo, monospace`;
+        context.fillText(`${entry.percent}%`,190*scale,y);
+      });
+
+      const footerPatch=document.createElement('canvas');
+      footerPatch.width=Math.round(500*scale);
+      footerPatch.height=Math.round(72*scale);
+      const footerContext=footerPatch.getContext('2d');
+      const footerPaper=footerContext.createLinearGradient(0,0,0,footerPatch.height);
+      footerPaper.addColorStop(0,sampleColor(1228));
+      footerPaper.addColorStop(1,sampleColor(1294));
+      footerContext.fillStyle=footerPaper;
+      footerContext.fillRect(0,0,footerPatch.width,footerPatch.height);
+      footerContext.globalCompositeOperation='destination-in';
+      const footerEdge=footerContext.createLinearGradient(0,0,footerPatch.width,0);
+      footerEdge.addColorStop(0,'rgba(0,0,0,1)');
+      footerEdge.addColorStop(.92,'rgba(0,0,0,1)');
+      footerEdge.addColorStop(1,'rgba(0,0,0,0)');
+      footerContext.fillStyle=footerEdge;
+      footerContext.fillRect(0,0,footerPatch.width,footerPatch.height);
+      const footerVertical=footerContext.createLinearGradient(0,0,0,footerPatch.height);
+      footerVertical.addColorStop(0,'rgba(0,0,0,0)');
+      footerVertical.addColorStop(.12,'rgba(0,0,0,1)');
+      footerVertical.addColorStop(.88,'rgba(0,0,0,1)');
+      footerVertical.addColorStop(1,'rgba(0,0,0,0)');
+      footerContext.fillStyle=footerVertical;
+      footerContext.fillRect(0,0,footerPatch.width,footerPatch.height);
+      context.drawImage(footerPatch,64*scale,1226*scale);
+      context.fillStyle='#22211f';
+      context.font=`600 ${22*scale}px "Noto Sans CJK SC","PingFang SC",sans-serif`;
+      context.fillText(signals.map(entry=>entry.label).join('  /  '),77*scale,1272*scale);
+    }
     const blob=await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error('Identity Edition render failed')),'image/webp',.96));
     return {url:cardPath(value),blob};
-  }).catch(error=>{classicalCardWarmups.delete(value);throw error});
-  classicalCardWarmups.set(value,promise);
+  }).catch(error=>{classicalCardWarmups.delete(cacheKey);throw error});
+  classicalCardWarmups.set(cacheKey,promise);
   return promise;
 }
 function warmRevealIdentity(){
@@ -376,7 +454,7 @@ async function buildStatic(){
   image.alt=`Trader DNA ${d.code} · ${d.name} Identity Edition`;
   image.dataset.identityCode=d.code;
   stage.setAttribute('aria-busy','true');
-  const {blob}=await classicalCard(d.code);
+  const {blob}=await classicalCard(d.code,d.snapshot);
   if(studio._authorityCode!==d.code||!studio._shareBlob||!studio._shareUrl){
     if(studio._shareUrl)URL.revokeObjectURL(studio._shareUrl);
     studio._shareBlob=blob;
