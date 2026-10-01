@@ -2,6 +2,7 @@
 const root=document.querySelector('#view');
 const CARD_BASE='./cinema/assets/identity-cards';
 const HERO_BASE='./cinema/assets/hero-characters';
+const AUTHORITY_ASSET_VERSION='20261002-07';
 const STORAGE_KEY='82trade-trader-dna:quick18-v1.2-2026-09-25';
 const TYPE_DATA='./data/types.json';
 const PORTRAIT_DATA='./cinema/portraits-detail04-card-0dca88dce1bb.json';
@@ -39,12 +40,12 @@ function data(){return api()?.data?.()||null}
 function cardPath(code){
   const value=String(code||'').trim().toUpperCase();
   if(!CODES.has(value))throw new Error('Unknown Trader DNA identity: '+value);
-  return `${CARD_BASE}/${value}.webp`;
+  return `${CARD_BASE}/${value}.webp?v=${AUTHORITY_ASSET_VERSION}`;
 }
 function heroPath(code){
   const value=String(code||'').trim().toUpperCase();
   if(!CODES.has(value))throw new Error('Unknown Trader DNA identity: '+value);
-  return `${HERO_BASE}/${value}.webp`;
+  return `${HERO_BASE}/${value}.webp?v=${AUTHORITY_ASSET_VERSION}`;
 }
 function absolute(path){return new URL(path,location.href).href}
 function warmImage(path,priority='auto'){
@@ -112,7 +113,6 @@ function warmIdentity(code){
   const value=String(code||'').trim().toUpperCase();
   if(!CODES.has(value))return;
   warmImage(heroPath(value),'high').catch(()=>{});
-  warmImage(cardPath(value),'high').catch(()=>{});
   cardBlob(value).catch(()=>{});
   warmArchive(value).catch(()=>{});
 }
@@ -136,7 +136,7 @@ function applyHeroFrame(figure,code){
 async function cardBlob(code){
   if(cardBlobWarmups.has(code))return cardBlobWarmups.get(code);
   const url=cardPath(code);
-  const promise=fetch(url,{cache:'force-cache'}).then(async response=>{
+  const promise=fetch(url,{cache:'no-store'}).then(async response=>{
     if(!response.ok)throw new Error(`Identity Edition asset missing: ${code}`);
     const blob=await response.blob();
     if(!blob.type.startsWith('image/'))throw new Error('Identity Edition asset is not an image');
@@ -144,6 +144,19 @@ async function cardBlob(code){
   }).catch(error=>{cardBlobWarmups.delete(code);throw error});
   cardBlobWarmups.set(code,promise);
   return promise;
+}
+async function decodeImageBlob(blob){
+  if(typeof createImageBitmap==='function')return createImageBitmap(blob);
+  const url=URL.createObjectURL(blob);
+  try{
+    const image=new Image();
+    await new Promise((resolve,reject)=>{
+      image.onload=resolve;
+      image.onerror=reject;
+      image.src=url;
+    });
+    return image;
+  }finally{URL.revokeObjectURL(url)}
 }
 function verseLines(context,text,maxWidth){
   const clauses=String(text||'').match(/[^，。！？；]+[，。！？；]?/g)||[];
@@ -179,14 +192,16 @@ async function classicalCard(code,snapshot=null){
   const signals=profileSignals(snapshot);
   const cacheKey=`${value}:${signals.map(entry=>`${entry.label}-${entry.percent}`).join('|')}`;
   if(classicalCardWarmups.has(cacheKey))return classicalCardWarmups.get(cacheKey);
-  const promise=Promise.all([warmImage(cardPath(value),'high'),archiveData()]).then(async([source,[types]])=>{
+  const promise=Promise.all([cardBlob(value),archiveData()]).then(async([{blob:sourceBlob},[types]])=>{
+    const source=await decodeImageBlob(sourceBlob);
     const verse=classicalVerse(types,value,'hans');
     if(!verse)return cardBlob(value);
     const canvas=document.createElement('canvas');
-    canvas.width=source.naturalWidth||1080;
-    canvas.height=source.naturalHeight||1350;
+    canvas.width=source.naturalWidth||source.width||1080;
+    canvas.height=source.naturalHeight||source.height||1350;
     const context=canvas.getContext('2d',{alpha:false,willReadFrequently:true});
     context.drawImage(source,0,0,canvas.width,canvas.height);
+    source.close?.();
     const scale=canvas.width/1080;
     const patchWidth=value==='SAHF'?340:380;
     const patchCanvas=document.createElement('canvas');
@@ -293,7 +308,7 @@ async function classicalCard(code,snapshot=null){
       context.font=`600 ${22*scale}px "Noto Sans CJK SC","PingFang SC",sans-serif`;
       context.fillText(signals.map(entry=>entry.label).join('  /  '),77*scale,1272*scale);
     }
-    const blob=await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error('Identity Edition render failed')),'image/webp',.96));
+    const blob=await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error('Identity Edition render failed')),'image/png'));
     return {url:cardPath(value),blob};
   }).catch(error=>{classicalCardWarmups.delete(cacheKey);throw error});
   classicalCardWarmups.set(cacheKey,promise);
@@ -379,11 +394,15 @@ function cleanLegacyShare(studio){
   studio.querySelectorAll('[data-share-format]').forEach(button=>button.removeAttribute('data-share-format'));
   const generate=studio.querySelector('.v3-share-generate');
   if(generate){generate.classList.remove('v3-share-generate');generate.hidden=true}
-  const native=studio.querySelector('.v3-share-native');
-  if(native){
+  const legacyNative=studio.querySelector('.v3-share-native');
+  if(legacyNative){
+    // The legacy renderer attached a direct listener to this node. Replacing the
+    // node is the only reliable way to prevent one click exporting both cards.
+    const native=legacyNative.cloneNode(true);
     native.classList.remove('v3-share-native');
     native.classList.add('scan01-authority-native');
     native.innerHTML='分享 / 保存身份卡 <span>↗</span>';
+    legacyNative.replaceWith(native);
   }
 }
 function mountCardDisplay(stage){
@@ -455,13 +474,16 @@ async function buildStatic(){
   image.dataset.identityCode=d.code;
   stage.setAttribute('aria-busy','true');
   const {blob}=await classicalCard(d.code,d.snapshot);
-  if(studio._authorityCode!==d.code||!studio._shareBlob||!studio._shareUrl){
+  if(studio._authorityBlob!==blob||!studio._shareUrl){
     if(studio._shareUrl)URL.revokeObjectURL(studio._shareUrl);
-    studio._shareBlob=blob;
     studio._shareUrl=URL.createObjectURL(blob);
-    studio._shareFormat='4:5';
-    studio._authorityCode=d.code;
+    studio._authorityBlob=blob;
   }
+  // Legacy renderers can finish later and overwrite `_shareBlob`. Reassert the
+  // authority artifact every time the result synchronises.
+  studio._shareBlob=blob;
+  studio._shareFormat='4:5';
+  studio._authorityCode=d.code;
   await loadImage(image,studio._shareUrl);
   stage.classList.add('is-ready');
   stage.removeAttribute('aria-busy');
@@ -471,8 +493,8 @@ async function shareStatic(){
   const studio=root?.querySelector('.v3-share-studio');
   const d=data();
   if(!studio||!d)return;
-  if(!studio._shareBlob||studio._authorityCode!==d.code)await buildStatic();
-  const blob=studio._shareBlob;
+  const artifact=await buildStatic();
+  const blob=artifact?.blob;
   if(!blob)return;
   const mime=blob.type==='image/webp'?'image/webp':'image/png';
   const extension=mime==='image/webp'?'webp':'png';
@@ -513,7 +535,11 @@ function mountShare(result){
   const button=studio.querySelector('.scan01-authority-native');
   if(button&&!button.dataset.authorityBound){
     button.dataset.authorityBound='1';
-    button.addEventListener('click',event=>{event.preventDefault();shareStatic().catch(console.error)});
+    button.addEventListener('click',event=>{
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      shareStatic().catch(console.error);
+    });
   }
   installAuthorityApi();
   buildStatic().catch(console.error);
@@ -534,6 +560,24 @@ function schedule(){
   queued=true;
   requestAnimationFrame(sync);
 }
+function refreshAuthorityAssets(){
+  imageWarmups.clear();
+  cardBlobWarmups.clear();
+  classicalCardWarmups.clear();
+  const studio=root?.querySelector('.v3-share-studio');
+  if(studio){
+    if(studio._shareUrl)URL.revokeObjectURL(studio._shareUrl);
+    studio._shareBlob=null;
+    studio._shareUrl=null;
+    studio._authorityBlob=null;
+    studio._authorityCode=null;
+    const stage=studio.querySelector('.v3-share-stage');
+    stage?.classList.remove('is-ready');
+    stage?.setAttribute('aria-busy','true');
+    stage?.querySelector('.identity-card-master')?.removeAttribute('src');
+  }
+  schedule();
+}
 if(root){
   warmSavedIdentity();
   root.addEventListener('click',event=>{
@@ -549,6 +593,9 @@ if(root){
     }
   },{capture:true});
   new MutationObserver(schedule).observe(root,{childList:true,subtree:true,attributes:true,attributeFilter:['src','data-v4-ready']});
+}
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.addEventListener('controllerchange',refreshAuthorityAssets,{once:true});
 }
 addEventListener('pageshow',schedule);
 schedule();
