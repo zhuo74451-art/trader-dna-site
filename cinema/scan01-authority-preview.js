@@ -5,6 +5,11 @@ const HERO_BASE='./cinema/assets/hero-characters';
 const STORAGE_KEY='82trade-trader-dna:quick18-v1.2-2026-09-25';
 const TYPE_DATA='./data/types.json';
 const PORTRAIT_DATA='./cinema/portraits-detail04-card-0dca88dce1bb.json';
+const CLASSICAL_VERSE_OVERRIDES={
+  SAGF:{hant:'封侯非我意，但願海波平。',hans:'封侯非我意，但愿海波平。'},
+  SAHF:{hant:'草枯鷹眼疾，雪盡馬蹄輕。',hans:'草枯鹰眼疾，雪尽马蹄轻。'},
+  SAHC:{hant:'長風破浪會有時，直掛雲帆濟滄海。',hans:'长风破浪会有时，直挂云帆济沧海。'}
+};
 const CODES=new Set(['IWGF','IWGC','IWHF','IWHC','IAGF','IAGC','IAHF','IAHC','SWGF','SWGC','SWHF','SWHC','SAGF','SAGC','SAHF','SAHC']);
 const HERO_FRAME={
   IWGF:{x:100,y:66,scale:1.07,originX:92,originY:68,brightness:.48,mobileX:100,mobileY:64,mobileScale:1.06,mobileOriginX:96,mobileOriginY:70},
@@ -89,6 +94,11 @@ function archiveData(){
   }
   return archiveDataPromise;
 }
+function classicalVerse(types,code,script='hant'){
+  const override=CLASSICAL_VERSE_OVERRIDES[code]?.[script];
+  if(override)return override;
+  return script==='hans'?(types?.[code]?.classicalVerseHans||types?.[code]?.classicalVerse):types?.[code]?.classicalVerse;
+}
 async function warmArchive(code){
   const [types,portraits]=await archiveData();
   const people=types?.[code]?.people||[];
@@ -158,7 +168,7 @@ async function classicalCard(code){
   const value=String(code||'').trim().toUpperCase();
   if(classicalCardWarmups.has(value))return classicalCardWarmups.get(value);
   const promise=Promise.all([warmImage(cardPath(value),'high'),archiveData()]).then(async([source,[types]])=>{
-    const verse=types?.[value]?.classicalVerseHans||types?.[value]?.classicalVerse;
+    const verse=classicalVerse(types,value,'hans');
     if(!verse)return cardBlob(value);
     const canvas=document.createElement('canvas');
     canvas.width=source.naturalWidth||1080;
@@ -240,7 +250,7 @@ function mountHero(result){
   if(hook&&hook.dataset.classicalVerse!==code){
     hook.dataset.classicalVerse=code;
     archiveData().then(([types])=>{
-      const verse=types?.[code]?.classicalVerse;
+      const verse=classicalVerse(types,code);
       if(verse&&hook.isConnected&&hero.querySelector(':scope>.code')?.textContent?.trim()?.toUpperCase()===code){
         hook.textContent=verse;
         hook.dataset.copyRole='classical-verse';

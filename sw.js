@@ -1,5 +1,5 @@
-const CACHE_NAME="trader-dna-event-classical-verse-20261002";
-const PRECACHE=["./scan01.html","./scan01-authority-preview.html","./index.html","./cinema/detail04-a4b0c970666f.css","./cinema/scan01-authority-preview.css?v=20261002-01","./cinema/core-event-persistence-0379480c0f31.js","./cinema/core-app18-20260927.js","./cinema/visual04-3e3d37bdb302.js","./cinema/detail-refine04-e55404caac86.js","./cinema/detail-weave-d39631e4ddf5.js","./cinema/core-visual-v4-result-365ae6c4bde4.js","./cinema/detail04-18only-20260927.js","./cinema/detail-update-f0ae51e6da72.js","./cinema/scan01-authority-preview.js?v=20261002-01","./cinema/portraits-detail04-card-0dca88dce1bb.json","./cinema/assets/scan-study.webp","./cinema/assets/terrain.webp","./data/questions-1.json","./data/types.json"];
+const CACHE_NAME="trader-dna-event-classical-verse-20261002-02";
+const PRECACHE=["./scan01.html","./scan01-authority-preview.html","./index.html","./cinema/detail04-a4b0c970666f.css","./cinema/scan01-authority-preview.css?v=20261002-01","./cinema/core-event-persistence-0379480c0f31.js","./cinema/core-app18-20260927.js","./cinema/visual04-3e3d37bdb302.js","./cinema/detail-refine04-e55404caac86.js","./cinema/detail-weave-d39631e4ddf5.js","./cinema/core-visual-v4-result-365ae6c4bde4.js","./cinema/detail04-18only-20260927.js","./cinema/detail-update-f0ae51e6da72.js","./cinema/scan01-authority-preview.js?v=20261002-02","./cinema/portraits-detail04-card-0dca88dce1bb.json","./cinema/assets/scan-study.webp","./cinema/assets/terrain.webp","./data/questions-1.json","./data/types.json"];
 const CACHE_PREFIX='trader-dna-event-';
 
 self.addEventListener('install',event=>{
@@ -36,7 +36,8 @@ self.addEventListener('fetch',event=>{
       return response;
     }
     const isVisualPreview=/\/(?:scan01(?:-authority-preview)?\.html|editorial-(?:preview|reset)|cinema)/.test(url.pathname);
-    if(isVisualPreview){
+    const isLiveData=/\/data\/(?:types|questions-1)\.json$/.test(url.pathname);
+    if(isVisualPreview||isLiveData){
       try{
         const fresh=await fetch(request,{cache:'no-store'});if(fresh.ok){const c=await caches.open(CACHE_NAME);await c.put(request,fresh.clone());}return fresh;
       }catch(error){
