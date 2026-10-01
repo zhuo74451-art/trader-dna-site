@@ -2,7 +2,7 @@
 const root=document.querySelector('#view');
 const CARD_BASE='./cinema/assets/identity-cards';
 const HERO_BASE='./cinema/assets/hero-characters';
-const AUTHORITY_ASSET_VERSION='20261002-08';
+const AUTHORITY_ASSET_VERSION='20261002-09';
 const STORAGE_KEY='82trade-trader-dna:quick18-v1.2-2026-09-25';
 const TYPE_DATA='./data/types.json';
 const PORTRAIT_DATA='./cinema/portraits-detail04-card-0dca88dce1bb.json';

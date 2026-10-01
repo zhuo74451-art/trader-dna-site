@@ -191,6 +191,51 @@ try {
   await page.setViewportSize({ width: 1440, height: 1100 });
   await page.screenshot({ path: out + '/desktop-result.png', fullPage: true });
 
+  stage = 'responsive-result-layout';
+  const layoutChecks = [];
+  for (const width of [2390, 1440, 1024, 768, 390]) {
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 1024 });
+    await page.waitForTimeout(80);
+    const layout = await page.evaluate(() => {
+      const portrait = [...document.querySelectorAll('.portrait p')].map(element => {
+        const rect = element.getBoundingClientRect();
+        return { x: rect.x, y: rect.y, right: rect.right, bottom: rect.bottom };
+      });
+      const supportGap = portrait.length >= 3
+        ? (Math.abs(portrait[1].y - portrait[2].y) < 1 ? portrait[2].x - portrait[1].right : portrait[2].y - portrait[1].bottom)
+        : null;
+      const textOverflow = [...document.querySelectorAll('.portrait p,.v3-scene-card p,.v3-person-desc,.reminder p,.dim-top')]
+        .filter(element => element.scrollWidth > element.clientWidth + 2)
+        .map(element => ({ className: element.className, text: (element.textContent || '').trim().slice(0, 60) }));
+      const dimensionOverlap = [...document.querySelectorAll('.dim-top')].map(row => {
+        const [label, value] = row.children;
+        const labelRect = label.getBoundingClientRect();
+        const valueRect = value.getBoundingClientRect();
+        return Math.max(0, labelRect.right - valueRect.left);
+      });
+      const shareRect = document.querySelector('.v3-share-stage')?.getBoundingClientRect();
+      const personCopyRect = document.querySelector('.v3-person-copy')?.getBoundingClientRect();
+      return {
+        width: innerWidth,
+        documentOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        supportGap,
+        textOverflow,
+        dimensionOverlap: Math.max(0, ...dimensionOverlap),
+        shareWidth: shareRect?.width || 0,
+        personCopyWidth: personCopyRect?.width || 0
+      };
+    });
+    if (layout.documentOverflow > 1) throw new Error(`Result layout overflows by ${layout.documentOverflow}px at ${width}px`);
+    if (layout.supportGap !== null && layout.supportGap < 0) throw new Error(`Decision portrait paragraphs overlap by ${Math.abs(layout.supportGap)}px at ${width}px`);
+    if (width > 899 && layout.supportGap < 24) throw new Error(`Decision portrait column gap is only ${layout.supportGap}px at ${width}px`);
+    if (layout.textOverflow.length) throw new Error(`Result text overflow at ${width}px: ${JSON.stringify(layout.textOverflow)}`);
+    if (layout.dimensionOverlap > 1) throw new Error(`Dimension labels overlap by ${layout.dimensionOverlap}px at ${width}px`);
+    if (!layout.shareWidth || (width <= 390 && layout.shareWidth > width - 24)) throw new Error(`Share card width is invalid at ${width}px: ${layout.shareWidth}px`);
+    if (width >= 761 && width <= 899 && layout.personCopyWidth < 260) throw new Error(`Same-type profile copy is too narrow at ${width}px: ${layout.personCopyWidth}px`);
+    layoutChecks.push(layout);
+  }
+  receipt.responsiveResultLayout = layoutChecks;
+
   receipt.localStorageKeys = await page.evaluate(() => Object.keys(localStorage));
 
   stage = 'root-redirect';

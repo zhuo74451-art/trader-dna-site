@@ -278,11 +278,11 @@ body[data-edition="detail-04"] .v3-scene-card::before{
 /* Result portrait hierarchy: one lead judgment, then two supporting paragraphs. */
 body[data-edition="detail-04"] .portrait{
   column-count:unset!important;
-  column-gap:0!important;
+  column-gap:clamp(32px,3vw,56px)!important;
   column-rule:0!important;
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:0 42px;
+  row-gap:0;
 }
 body[data-edition="detail-04"] .portrait p{
   margin:0;
@@ -302,6 +302,27 @@ body[data-edition="detail-04"] .portrait p:nth-child(n+2){
   font-size:14px;
   line-height:1.95;
   color:#56634a;
+}
+@media(min-width:761px) and (max-width:899px){
+  body[data-edition="detail-04"] .portrait{
+    grid-template-columns:1fr;
+    column-gap:0!important;
+  }
+  body[data-edition="detail-04"] .portrait p:first-child{grid-column:auto}
+  body[data-edition="detail-04"] .people,
+  body[data-edition="detail-04"] .examples .people{
+    grid-template-columns:1fr;
+    gap:42px;
+  }
+  body[data-edition="detail-04"] .person,
+  body[data-edition="detail-04"] .examples .person{
+    width:100%;
+    max-width:720px;
+    min-height:430px;
+    margin-inline:auto;
+  }
+  body[data-edition="detail-04"] .v3-person-name,
+  body[data-edition="detail-04"] .examples .v3-person-name{font-size:30px}
 }
 @media(max-width:760px){
   body[data-edition="detail-04"] .portrait{
