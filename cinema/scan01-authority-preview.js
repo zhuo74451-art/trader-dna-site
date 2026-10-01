@@ -14,12 +14,12 @@ const CODES=new Set(['IWGF','IWGC','IWHF','IWHC','IAGF','IAGC','IAHF','IAHC','SW
 const HERO_FRAME={
   IWGF:{x:100,y:66,scale:1.07,originX:92,originY:68,brightness:.48,mobileX:100,mobileY:64,mobileScale:1.06,mobileOriginX:96,mobileOriginY:70},
   IWGC:{x:100,y:61,scale:1.02,originX:91,originY:64,brightness:.48,mobileX:100,mobileY:59,mobileScale:1.01,mobileOriginX:96,mobileOriginY:65},
-  IWHF:{x:100,y:64,scale:1.05,originX:92,originY:66,brightness:.48,mobileX:100,mobileY:61,mobileScale:1.03,mobileOriginX:96,mobileOriginY:67},
+  IWHF:{x:100,y:64,scale:1.05,originX:92,originY:66,brightness:.48,mobileX:100,mobileY:62,mobileScale:.98,mobileOriginX:96,mobileOriginY:67,mobileHeight:68,mobileTop:7},
   IWHC:{x:100,y:65,scale:1.04,originX:92,originY:68,brightness:.48,mobileX:100,mobileY:63,mobileScale:1.03,mobileOriginX:96,mobileOriginY:69},
   IAGF:{x:100,y:66,scale:1.05,originX:92,originY:68,brightness:.49,mobileX:100,mobileY:63,mobileScale:1.04,mobileOriginX:96,mobileOriginY:69},
-  IAGC:{x:100,y:65,scale:1.04,originX:92,originY:67,brightness:.48,mobileX:100,mobileY:62,mobileScale:1.03,mobileOriginX:96,mobileOriginY:68},
+  IAGC:{x:100,y:65,scale:1.04,originX:92,originY:67,brightness:.48,mobileX:100,mobileY:63,mobileScale:.96,mobileOriginX:96,mobileOriginY:68,mobileHeight:64,mobileTop:8},
   IAHF:{x:100,y:65,scale:1.04,originX:92,originY:67,brightness:.48,mobileX:100,mobileY:62,mobileScale:1.03,mobileOriginX:96,mobileOriginY:68},
-  IAHC:{x:100,y:64,scale:1.05,originX:92,originY:66,brightness:.48,mobileX:100,mobileY:61,mobileScale:1.04,mobileOriginX:96,mobileOriginY:67},
+  IAHC:{x:100,y:64,scale:1.05,originX:92,originY:66,brightness:.48,mobileX:100,mobileY:63,mobileScale:.96,mobileOriginX:96,mobileOriginY:67,mobileHeight:64,mobileTop:8},
   SWGF:{x:100,y:75,scale:1.16,originX:94,originY:78,brightness:.54,mobileX:100,mobileY:74,mobileScale:1.11,mobileOriginX:97,mobileOriginY:78},
   SWGC:{x:100,y:69,scale:1.11,originX:93,originY:72,brightness:.51,mobileX:100,mobileY:67,mobileScale:1.08,mobileOriginX:97,mobileOriginY:73},
   SWHF:{x:100,y:72,scale:1.13,originX:94,originY:75,brightness:.52,mobileX:100,mobileY:70,mobileScale:1.09,mobileOriginX:97,mobileOriginY:75},
@@ -128,7 +128,8 @@ function applyHeroFrame(figure,code){
     '--hero-origin-y':frame.originY+'%','--hero-brightness':frame.brightness,
     '--hero-x-mobile':frame.mobileX+'%','--hero-y-mobile':frame.mobileY+'%',
     '--hero-scale-mobile':frame.mobileScale,'--hero-enter-scale-mobile':frame.mobileScale+.08,
-    '--hero-origin-x-mobile':frame.mobileOriginX+'%','--hero-origin-y-mobile':frame.mobileOriginY+'%'
+    '--hero-origin-x-mobile':frame.mobileOriginX+'%','--hero-origin-y-mobile':frame.mobileOriginY+'%',
+    '--hero-height-mobile':(frame.mobileHeight||72)+'%','--hero-top-mobile':(frame.mobileTop||6)+'%'
   };
   Object.entries(values).forEach(([name,value])=>figure.style.setProperty(name,value));
 }
@@ -173,7 +174,7 @@ async function classicalCard(code){
     const canvas=document.createElement('canvas');
     canvas.width=source.naturalWidth||1080;
     canvas.height=source.naturalHeight||1350;
-    const context=canvas.getContext('2d',{alpha:false});
+    const context=canvas.getContext('2d',{alpha:false,willReadFrequently:true});
     context.drawImage(source,0,0,canvas.width,canvas.height);
     const scale=canvas.width/1080;
     const patchWidth=value==='SAHF'?340:380;
@@ -395,7 +396,9 @@ async function shareStatic(){
   if(!studio._shareBlob||studio._authorityCode!==d.code)await buildStatic();
   const blob=studio._shareBlob;
   if(!blob)return;
-  const file=new File([blob],`82TRADE-${d.code}-Identity-Edition-4x5.webp`,{type:blob.type||'image/webp'});
+  const mime=blob.type==='image/webp'?'image/webp':'image/png';
+  const extension=mime==='image/webp'?'webp':'png';
+  const file=new File([blob],`82TRADE-${d.code}-Identity-Edition-4x5.${extension}`,{type:mime});
   if(navigator.share&&navigator.canShare?.({files:[file]})){
     try{
       await navigator.share({files:[file],title:`${d.code} · ${d.name}`,text:'82TRADE / Trader DNA'});
