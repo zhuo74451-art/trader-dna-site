@@ -22,6 +22,30 @@ function sigil(code){return `<div class="sigil" aria-hidden="true"><span class="
 function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch{}}
 function clearState(){try{localStorage.removeItem(STORAGE_KEY)}catch{}}
 function loadState(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');if(!x||x.mode!=='quick'||!x.answers||typeof x.answers!=='object')return null;return x}catch{return null}}
+function normalizeSavedState(saved){
+ const answers={};
+ for(const q of QUESTIONS){
+   const choice=saved.answers?.[q.id];
+   if(choice!=='A'&&choice!=='B')break;
+   answers[q.id]=choice;
+ }
+ const answered=Object.keys(answers).length;
+ const completed=answered===QUESTIONS.length;
+ const record=saved.completedRecord;
+ const recordAnswersValid=completed&&record?.answers&&QUESTIONS.every(q=>record.answers[q.id]===answers[q.id]);
+ const completedRecord=recordAnswersValid&&record.assessmentVersion===ASSESSMENT_VERSION&&record.questionCount===QUESTIONS.length&&TYPES[record.dna]?record:null;
+ return {
+   ...state,
+   ...saved,
+   mode:'quick',
+   index:completed?QUESTIONS.length-1:answered,
+   answers,
+   completed,
+   completedRecord,
+   startedAt:typeof saved.startedAt==='string'?saved.startedAt:null,
+   sessionId:typeof saved.sessionId==='string'?saved.sessionId:null
+ };
+}
 function newSessionId(){try{return crypto.randomUUID()}catch{return `tdna-${Date.now()}-${Math.random().toString(36).slice(2)}`}}
 function reset(){clearState();state={mode:null,index:0,answers:{},startedAt:null,sessionId:null,completed:false,completedRecord:null};renderLanding();scrollTo({top:0,behavior:'smooth'})}
 
@@ -207,7 +231,16 @@ async function boot(){
    }
    if(!Array.isArray(q1)||q1.length!==18)throw new Error('active assessment must contain exactly 18 questions');
    QUESTIONS=q1;TYPES=types;
-   if(saved){state={...state,...saved};const answered=Object.keys(state.answers).length;const total=18;if(state.completed||answered>=total){renderResult()}else{state.index=answered;renderQuestion()}}
+   if(saved){
+     state=normalizeSavedState(saved);
+     if(state.completedRecord){
+       const {dimScore}=scores(),expectedCode=codeFrom(dimScore),recordDimensions=state.completedRecord.dimensions;
+       const dimensionsMatch=recordDimensions&&Object.keys(DIMENSIONS).every(key=>Number.isFinite(recordDimensions[key])&&Math.abs(recordDimensions[key]-dimScore[key])<1e-9);
+       if(state.completedRecord.dna!==expectedCode||!dimensionsMatch)state.completedRecord=null;
+     }
+     saveState();
+     if(state.completed){renderResult()}else{renderQuestion()}
+   }
    else if(new URLSearchParams(location.search).get('start')==='scan01'){start('quick')}
    else{renderLanding()}
  }catch(err){console.error(err);view.innerHTML='<section class="load-error"><div class="kicker">82TRADE / TRADER DNA</div><h2>載入失敗</h2><p>請重新整理頁面。</p></section>'}

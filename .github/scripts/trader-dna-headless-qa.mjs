@@ -52,7 +52,32 @@ try {
     await page.evaluate(() => document.querySelector('.cinema-dialog')?.close());
   }
 
-  await start.click();
+  stage = 'corrupt-state-recovery';
+  await page.evaluate(() => {
+    const key = '82trade-trader-dna:quick18-v1.2-2026-09-25';
+    localStorage.setItem(key, JSON.stringify({
+      mode: 'quick',
+      index: 17,
+      answers: { 1: 'A', 3: 'B' },
+      completed: true,
+      completedRecord: { questionCount: 1, dna: 'SAGC' }
+    }));
+  });
+  await page.reload({ waitUntil: 'networkidle', timeout: 30000 });
+  await page.waitForFunction(() => document.querySelector('.question-index')?.textContent?.trim() === 'Q02', null, { timeout: 15000 });
+  if (await page.locator('.result').count()) throw new Error('Corrupt incomplete state was accepted as a completed result');
+  const repairedState = await page.evaluate(() => {
+    const value = localStorage.getItem('82trade-trader-dna:quick18-v1.2-2026-09-25');
+    return value ? JSON.parse(value) : null;
+  });
+  if (!repairedState || repairedState.completed || repairedState.index !== 1 || Object.keys(repairedState.answers).join(',') !== '1') {
+    throw new Error('Corrupt state was not normalized to its contiguous valid answer prefix: ' + JSON.stringify(repairedState));
+  }
+  await page.evaluate(() => Object.keys(localStorage).filter(key => key.startsWith('82trade-trader-dna:quick18-')).forEach(key => localStorage.removeItem(key)));
+  await page.reload({ waitUntil: 'networkidle', timeout: 30000 });
+  await page.locator('#start').waitFor({ state: 'visible', timeout: 15000 });
+
+  await page.locator('#start').click();
 
   stage = 'questions';
   for (let i = 1; i <= 18; i++) {
@@ -98,31 +123,47 @@ try {
   };
 
   stage = 'share-4x5';
-  await page.waitForFunction(() => Boolean(window.CinemaEdition?.poster || window.TraderDNAShareCard?.render), null, { timeout: 10000 });
-  const card = await page.evaluate(() => {
-    const canvas = window.CinemaEdition?.poster?.('4:5') || window.TraderDNAShareCard?.render?.('4:5');
-    if (!canvas) return null;
+  await page.waitForFunction(() => Boolean(window.TraderDNAShareCard?.build && document.querySelector('.scan01-authority-native')), null, { timeout: 10000 });
+  const card = await page.evaluate(async () => {
+    const artifact = await window.TraderDNAShareCard.build();
+    if (!artifact?.blob) return null;
+    const bitmap = await createImageBitmap(artifact.blob);
+    const canvas = document.createElement('canvas');
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
     const ctx = canvas.getContext('2d');
-    const probes = [
-      [Math.floor(canvas.width * .5), 24],
-      [Math.floor(canvas.width * .5), Math.floor(canvas.height * .5)],
-      [100, 100]
-    ].map(([x,y]) => {
-      const px = ctx.getImageData(x, y, 1, 1).data;
-      const luminance = .2126 * px[0] + .7152 * px[1] + .0722 * px[2];
-      return { x, y, pixel: Array.from(px), luminance };
-    });
+    ctx.drawImage(bitmap, 0, 0);
+    bitmap.close();
+    const pixels = ctx.getImageData(Math.floor(canvas.width * .48), Math.floor(canvas.height * .3), Math.floor(canvas.width * .5), Math.floor(canvas.height * .62)).data;
+    let dark = 0;
+    let sum = 0;
+    let sumSquares = 0;
+    let sampled = 0;
+    for (let i = 0; i < pixels.length; i += 64) {
+      const luminance = .2126 * pixels[i] + .7152 * pixels[i + 1] + .0722 * pixels[i + 2];
+      if (luminance < 125) dark++;
+      sum += luminance;
+      sumSquares += luminance * luminance;
+      sampled++;
+    }
+    const mean = sum / sampled;
+    const standardDeviation = Math.sqrt(Math.max(0, sumSquares / sampled - mean * mean));
+    const studio = document.querySelector('.v3-share-studio');
     return {
       width: canvas.width,
       height: canvas.height,
-      probes,
-      meanLuminance: probes.reduce((s,p)=>s+p.luminance,0)/probes.length,
-      artifact: canvas.dataset.artifact || ''
+      type: artifact.blob.type,
+      size: artifact.blob.size,
+      darkRatio: dark / sampled,
+      standardDeviation,
+      authorityBlobActive: studio?._shareBlob === studio?._authorityBlob
     };
   });
   if (!card) throw new Error('Share card renderer unavailable');
   if (card.width !== 1080 || card.height !== 1350) throw new Error('Unexpected 4:5 card dimensions: ' + JSON.stringify(card));
-  if (card.meanLuminance < 120) throw new Error('Share card is not the restored light editorial Identity Edition: ' + JSON.stringify(card));
+  if (card.type !== 'image/png' || card.size < 500000) throw new Error('Share card PNG payload is incomplete: ' + JSON.stringify(card));
+  if (card.darkRatio < .08 || card.standardDeviation < 35) throw new Error('Share card character artwork is missing or visually blank: ' + JSON.stringify(card));
+  if (!card.authorityBlobActive) throw new Error('Legacy renderer overwrote the authority share artifact: ' + JSON.stringify(card));
   receipt.shareCard = card;
 
   const share = page.locator('.v3-share-studio');
