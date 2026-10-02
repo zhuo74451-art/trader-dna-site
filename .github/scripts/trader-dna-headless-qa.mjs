@@ -55,6 +55,7 @@ try {
   stage = 'corrupt-state-recovery';
   await page.evaluate(() => {
     const key = '82trade-trader-dna:quick18-v1.2-2026-09-25';
+    sessionStorage.removeItem(key);
     localStorage.setItem(key, JSON.stringify({
       mode: 'quick',
       index: 17,
@@ -67,13 +68,17 @@ try {
   await page.waitForFunction(() => document.querySelector('.question-index')?.textContent?.trim() === 'Q02', null, { timeout: 15000 });
   if (await page.locator('.result').count()) throw new Error('Corrupt incomplete state was accepted as a completed result');
   const repairedState = await page.evaluate(() => {
-    const value = localStorage.getItem('82trade-trader-dna:quick18-v1.2-2026-09-25');
+    const value = sessionStorage.getItem('82trade-trader-dna:quick18-v1.2-2026-09-25');
     return value ? JSON.parse(value) : null;
   });
   if (!repairedState || repairedState.completed || repairedState.index !== 1 || Object.keys(repairedState.answers).join(',') !== '1') {
     throw new Error('Corrupt state was not normalized to its contiguous valid answer prefix: ' + JSON.stringify(repairedState));
   }
-  await page.evaluate(() => Object.keys(localStorage).filter(key => key.startsWith('82trade-trader-dna:quick18-')).forEach(key => localStorage.removeItem(key)));
+  await page.evaluate(() => {
+    for (const storage of [sessionStorage, localStorage]) {
+      Object.keys(storage).filter(key => key.startsWith('82trade-trader-dna:quick18-')).forEach(key => storage.removeItem(key));
+    }
+  });
   await page.reload({ waitUntil: 'networkidle', timeout: 30000 });
   await page.locator('#start').waitFor({ state: 'visible', timeout: 15000 });
 
@@ -237,6 +242,58 @@ try {
   receipt.responsiveResultLayout = layoutChecks;
 
   receipt.localStorageKeys = await page.evaluate(() => Object.keys(localStorage));
+
+  stage = 'multi-tab-state-isolation';
+  const tabContext = await browser.newContext({
+    viewport: { width: 1280, height: 900 },
+    deviceScaleFactor: 1,
+    reducedMotion: 'reduce'
+  });
+  const tabA = await tabContext.newPage();
+  const storageKey = '82trade-trader-dna:quick18-v1.2-2026-09-25';
+  const answersFor = code => {
+    const answers = Object.fromEntries(Array.from({ length: 18 }, (_, index) => [index + 1, 'A']));
+    for (const id of [5, 10, 15]) answers[id] = code[0] === 'S' ? 'B' : 'A';
+    [answers[3], answers[4], answers[14]] = code[1] === 'A' ? ['B', 'A', 'B'] : ['A', 'B', 'A'];
+    [answers[1], answers[7], answers[16]] = code[2] === 'H' ? ['B', 'A', 'B'] : ['A', 'B', 'A'];
+    [answers[6], answers[9], answers[17]] = code[3] === 'C' ? ['B', 'A', 'A'] : ['A', 'B', 'B'];
+    return answers;
+  };
+  const loadIdentity = async (target, code) => {
+    await target.goto(base, { waitUntil: 'networkidle', timeout: 30000 });
+    await target.evaluate(({ key, answers, code }) => {
+      sessionStorage.removeItem(key);
+      localStorage.setItem(key, JSON.stringify({
+        mode: 'quick', index: 17, answers, startedAt: '2026-10-02T00:00:00.000Z',
+        sessionId: 'qa-' + code.toLowerCase(), completed: true, completedRecord: null
+      }));
+    }, { key: storageKey, answers: answersFor(code), code });
+    await target.reload({ waitUntil: 'networkidle', timeout: 30000 });
+    await target.waitForFunction(expected => document.querySelector('.code')?.textContent?.trim() === expected, code, { timeout: 15000 });
+  };
+  await loadIdentity(tabA, 'SAHF');
+  const tabB = await tabContext.newPage();
+  await loadIdentity(tabB, 'SAGF');
+  await tabA.reload({ waitUntil: 'networkidle', timeout: 30000 });
+  await tabB.reload({ waitUntil: 'networkidle', timeout: 30000 });
+  const tabIdentity = target => target.evaluate(key => ({
+    visible: document.querySelector('.code')?.textContent?.trim() || '',
+    name: document.querySelector('.identity')?.textContent?.trim() || '',
+    verse: document.querySelector('.hook')?.textContent?.trim() || '',
+    hero: document.querySelector('.scan01-authority-character')?.dataset?.code || '',
+    share: window.TraderDNAShareCard?.data?.()?.code || '',
+    session: JSON.parse(sessionStorage.getItem(key) || 'null')?.completedRecord?.dna || '',
+    sharedRecovery: JSON.parse(localStorage.getItem(key) || 'null')?.completedRecord?.dna || ''
+  }), storageKey);
+  const [identityA, identityB] = await Promise.all([tabIdentity(tabA), tabIdentity(tabB)]);
+  if (identityA.visible !== 'SAHF' || identityA.name !== '獵手' || identityA.verse !== '草枯鷹眼疾，雪盡馬蹄輕。' || identityA.hero !== 'SAHF' || identityA.share !== 'SAHF' || identityA.session !== 'SAHF') {
+    throw new Error('First result tab was overwritten after another tab completed: ' + JSON.stringify(identityA));
+  }
+  if (identityB.visible !== 'SAGF' || identityB.name !== '海軍上校' || identityB.verse !== '封侯非我意，但願海波平。' || identityB.hero !== 'SAGF' || identityB.share !== 'SAGF' || identityB.session !== 'SAGF') {
+    throw new Error('Second result tab did not preserve its own result: ' + JSON.stringify(identityB));
+  }
+  receipt.multiTabStateIsolation = { tabA: identityA, tabB: identityB };
+  await tabContext.close();
 
   stage = 'root-redirect';
   const rootContext = await browser.newContext({

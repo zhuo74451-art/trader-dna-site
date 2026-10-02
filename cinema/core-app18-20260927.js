@@ -19,9 +19,18 @@ let state={mode:null,index:0,answers:{},startedAt:null,sessionId:null,completed:
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 function setStatus(t){statusEl.textContent=t}
 function sigil(code){return `<div class="sigil" aria-hidden="true"><span class="sigil-rule h"></span><span class="sigil-rule v"></span><b class="notranslate" translate="no">${code.slice(0,2)}</b><small class="notranslate" translate="no">${code.slice(2)}</small></div>`}
-function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch{}}
-function clearState(){try{localStorage.removeItem(STORAGE_KEY)}catch{}}
-function loadState(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');if(!x||x.mode!=='quick'||!x.answers||typeof x.answers!=='object')return null;return x}catch{return null}}
+function isStoredState(x){return Boolean(x&&x.mode==='quick'&&x.answers&&typeof x.answers==='object')}
+function storedState(storage){try{const x=JSON.parse(storage?.getItem(STORAGE_KEY)||'null');return isStoredState(x)?x:null}catch{return null}}
+function saveState(){
+ const value=JSON.stringify(state);
+ try{sessionStorage.setItem(STORAGE_KEY,value)}catch{}
+ try{localStorage.setItem(STORAGE_KEY,value)}catch{}
+}
+function clearState(){
+ try{sessionStorage.removeItem(STORAGE_KEY)}catch{}
+ try{localStorage.removeItem(STORAGE_KEY)}catch{}
+}
+function loadState(){return storedState(sessionStorage)||storedState(localStorage)}
 function normalizeSavedState(saved){
  const answers={};
  for(const q of QUESTIONS){

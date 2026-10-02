@@ -34,7 +34,10 @@ const SIGNAL_DIMENSIONS={
 };
 
 function state(){
-  try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'null')}catch{return null}
+  for(const storage of [sessionStorage,localStorage]){
+    try{const value=JSON.parse(storage.getItem(STORAGE_KEY)||'null');if(value)return value}catch{}
+  }
+  return null;
 }
 
 function initials(name){

@@ -2,7 +2,7 @@
 const root=document.querySelector('#view');
 const CARD_BASE='./cinema/assets/identity-cards';
 const HERO_BASE='./cinema/assets/hero-characters';
-const AUTHORITY_ASSET_VERSION='20261002-09';
+const AUTHORITY_ASSET_VERSION='20261002-10';
 const STORAGE_KEY='82trade-trader-dna:quick18-v1.2-2026-09-25';
 const TYPE_DATA='./data/types.json';
 const PORTRAIT_DATA='./cinema/portraits-detail04-card-0dca88dce1bb.json';
@@ -117,7 +117,12 @@ function warmIdentity(code){
   warmArchive(value).catch(()=>{});
 }
 function warmSavedIdentity(){
-  try{warmIdentity(JSON.parse(localStorage.getItem(STORAGE_KEY)||'null')?.completedRecord?.dna)}catch{}
+  for(const storage of [sessionStorage,localStorage]){
+    try{
+      const code=JSON.parse(storage.getItem(STORAGE_KEY)||'null')?.completedRecord?.dna;
+      if(code){warmIdentity(code);return}
+    }catch{}
+  }
 }
 function applyHeroFrame(figure,code){
   const frame=HERO_FRAME[code];
