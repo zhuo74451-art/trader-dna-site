@@ -174,7 +174,7 @@ function renderResult(){
  document.querySelector('#copy').onclick=()=>copyShare(code,t);
  scrollTo({top:0,behavior:REDUCED_MOTION?'auto':'smooth'});
 }
-async function copyShare(code,t){const txt=`82TRADE 交易 DNA\n${code} · ${t.name}\n\n${t.hook}\n\n${t.body.join('\n\n')}\n\n同型人物：\n${t.people.join('\n')}\n\n#82TRADE #TraderDNA`;try{await navigator.clipboard.writeText(txt);showToast('分享文案已複製')}catch{const ta=document.createElement('textarea');ta.value=txt;document.body.append(ta);ta.select();document.execCommand('copy');ta.remove();showToast('分享文案已複製')}}
+async function copyShare(code,t){const txt=`82TRADE 交易 DNA\n${code} · ${t.name}\n\n${t.hook}\n\n${t.body.join('\n\n')}\n\n同型人物：\n${t.people.join('\n')}\n\n#82TRADE #TraderDNA\n\n18 個選擇，測你的交易 DNA →\nhttps://82trade-team.github.io/dna/`;try{await navigator.clipboard.writeText(txt);showToast('分享文案已複製')}catch{const ta=document.createElement('textarea');ta.value=txt;document.body.append(ta);ta.select();document.execCommand('copy');ta.remove();showToast('分享文案已複製')}}
 function showToast(t){toast.textContent=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1400)}
 function readCanonicalDataCache(){
   try{

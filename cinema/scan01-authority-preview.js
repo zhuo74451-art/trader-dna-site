@@ -2,7 +2,10 @@
 const root=document.querySelector('#view');
 const CARD_BASE='./cinema/assets/identity-cards';
 const HERO_BASE='./cinema/assets/hero-characters';
-const AUTHORITY_ASSET_VERSION='20261002-10';
+const AUTHORITY_ASSET_VERSION='20261002-11';
+// Identity cards ship with the Traditional name, classical verse and entry QR baked in.
+const CARD_TEXT_BAKED=true;
+const ENTRY_URL='https://82trade-team.github.io/dna/';
 const STORAGE_KEY='82trade-trader-dna:quick18-v1.2-2026-09-25';
 const TYPE_DATA='./data/types.json';
 const PORTRAIT_DATA='./cinema/portraits-detail04-card-0dca88dce1bb.json';
@@ -184,6 +187,7 @@ function verseLines(context,text,maxWidth){
   return compact;
 }
 function simplifiedSignal(value){
+  return value;
   return ({'直覺':'直觉','結構':'结构','蓄勢':'蓄势','出擊':'出击','守界':'守界','捕獵':'捕猎','穩態':'稳态','敏銳':'敏锐','變陣':'变阵','定見':'定见','獨行':'独行','共振':'共振'})[value]||value;
 }
 function profileSignals(snapshot){
@@ -199,7 +203,7 @@ async function classicalCard(code,snapshot=null){
   if(classicalCardWarmups.has(cacheKey))return classicalCardWarmups.get(cacheKey);
   const promise=Promise.all([cardBlob(value),archiveData()]).then(async([{blob:sourceBlob},[types]])=>{
     const source=await decodeImageBlob(sourceBlob);
-    const verse=classicalVerse(types,value,'hans');
+    const verse=classicalVerse(types,value,'hant');
     if(!verse)return cardBlob(value);
     const canvas=document.createElement('canvas');
     canvas.width=source.naturalWidth||source.width||1080;
@@ -208,15 +212,16 @@ async function classicalCard(code,snapshot=null){
     context.drawImage(source,0,0,canvas.width,canvas.height);
     source.close?.();
     const scale=canvas.width/1080;
+    const sampleColor=y=>{
+      const pixel=context.getImageData(Math.round(70*scale),Math.round(y*scale),1,1).data;
+      return `rgb(${pixel[0]},${pixel[1]},${pixel[2]})`;
+    };
+    if(!CARD_TEXT_BAKED){
     const patchWidth=value==='SAHF'?340:380;
     const patchCanvas=document.createElement('canvas');
     patchCanvas.width=Math.round(patchWidth*scale);
     patchCanvas.height=Math.round(132*scale);
     const patchContext=patchCanvas.getContext('2d');
-    const sampleColor=y=>{
-      const pixel=context.getImageData(Math.round(70*scale),Math.round(y*scale),1,1).data;
-      return `rgb(${pixel[0]},${pixel[1]},${pixel[2]})`;
-    };
     const paper=patchContext.createLinearGradient(0,0,0,patchCanvas.height);
     paper.addColorStop(0,sampleColor(552));
     paper.addColorStop(1,sampleColor(684));
@@ -246,6 +251,7 @@ async function classicalCard(code,snapshot=null){
     const lineHeight=(lines.length>1?47:52)*scale;
     const firstBaseline=(lines.length>1?606:626)*scale;
     lines.forEach((line,index)=>context.fillText(line,77*scale,firstBaseline+index*lineHeight));
+    }
     if(signals.length){
       const signalPatch=document.createElement('canvas');
       signalPatch.width=Math.round(260*scale);
@@ -278,7 +284,7 @@ async function classicalCard(code,snapshot=null){
       signals.forEach((entry,index)=>{
         const y=(762+index*46)*scale;
         context.fillStyle='#0a0a09';
-        context.font=`650 ${23*scale}px "Noto Sans CJK SC","PingFang SC",sans-serif`;
+        context.font=`650 ${23*scale}px "PingFang TC","Noto Sans CJK TC","Noto Sans TC","Microsoft JhengHei",sans-serif`;
         context.fillText(entry.label,77*scale,y);
         context.fillStyle='#77736b';
         context.font=`600 ${14*scale}px ui-monospace, Menlo, monospace`;
@@ -310,7 +316,7 @@ async function classicalCard(code,snapshot=null){
       footerContext.fillRect(0,0,footerPatch.width,footerPatch.height);
       context.drawImage(footerPatch,64*scale,1226*scale);
       context.fillStyle='#22211f';
-      context.font=`600 ${22*scale}px "Noto Sans CJK SC","PingFang SC",sans-serif`;
+      context.font=`600 ${22*scale}px "PingFang TC","Noto Sans CJK TC","Noto Sans TC","Microsoft JhengHei",sans-serif`;
       context.fillText(signals.map(entry=>entry.label).join('  /  '),77*scale,1272*scale);
     }
     const blob=await new Promise((resolve,reject)=>canvas.toBlob(value=>value?resolve(value):reject(new Error('Identity Edition render failed')),'image/png'));
@@ -363,6 +369,17 @@ function mountHero(result){
   const hero=result?.querySelector('.result-hero');
   if(!hero)return;
   hero.dataset.authority='character-reveal';
+  if(!hero.querySelector('.scan01-scroll-cue')){
+    const cue=document.createElement('button');
+    cue.type='button';
+    cue.className='scan01-scroll-cue';
+    cue.innerHTML='<span>往下看完整解讀</span><i aria-hidden="true">↓</i>';
+    cue.addEventListener('click',()=>{
+      const next=hero.nextElementSibling;
+      if(next)next.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});
+    });
+    hero.append(cue);
+  }
   const code=hero.querySelector('.code')?.textContent?.trim()?.toUpperCase();
   if(!CODES.has(code))return;
   const hook=hero.querySelector(':scope>.hook');
@@ -506,17 +523,63 @@ async function shareStatic(){
   const file=new File([blob],`82TRADE-${d.code}-Identity-Edition-4x5.${extension}`,{type:mime});
   if(navigator.share&&navigator.canShare?.({files:[file]})){
     try{
-      await navigator.share({files:[file],title:`${d.code} · ${d.name}`,text:'82TRADE / Trader DNA'});
+      await navigator.share({files:[file],title:`${d.code} · ${d.name}`,text:`我的交易 DNA 是 ${d.code} · ${d.name}。18 個選擇，測你的 → ${ENTRY_URL}`});
       return;
     }catch(error){if(error?.name==='AbortError')return}
   }
-  const a=document.createElement('a');
-  const downloadUrl=URL.createObjectURL(blob);
-  a.href=downloadUrl;
-  a.download=file.name;
-  a.rel='noopener';
-  a.click();
-  setTimeout(()=>URL.revokeObjectURL(downloadUrl),1000);
+  openSaveSheet(blob,file.name,d);
+}
+function isInAppBrowser(){
+  return /Line\/|FBAN|FBAV|Instagram|MicroMessenger|WhatsApp|Messenger|KAKAOTALK|; wv\)/i.test(navigator.userAgent||'');
+}
+function closeSaveSheet(){
+  const sheet=document.querySelector('.scan01-save-sheet');
+  if(!sheet)return;
+  const url=sheet.dataset.url;
+  sheet.remove();
+  document.documentElement.classList.remove('scan01-save-open');
+  if(url)setTimeout(()=>URL.revokeObjectURL(url),500);
+  sheet._returnFocus?.focus?.();
+}
+function openSaveSheet(blob,filename,d){
+  closeSaveSheet();
+  const url=URL.createObjectURL(blob);
+  const touch=matchMedia('(pointer:coarse)').matches;
+  const sheet=document.createElement('div');
+  sheet.className='scan01-save-sheet';
+  sheet.dataset.url=url;
+  sheet.setAttribute('role','dialog');
+  sheet.setAttribute('aria-modal','true');
+  sheet.setAttribute('aria-label','保存身份卡');
+  sheet._returnFocus=document.activeElement;
+  const hint=touch?'長按圖片，選擇「儲存圖片」或「加入照片」':'右鍵圖片另存，或按下方按鈕下載';
+  sheet.innerHTML=`<div class="scan01-save-panel"><div class="scan01-save-head"><span>${touch?'長按保存':'保存身份卡'}</span><button type="button" class="scan01-save-close" aria-label="關閉">×</button></div><img class="scan01-save-image" alt=""><p class="scan01-save-hint"></p><div class="scan01-save-actions"></div></div>`;
+  const img=sheet.querySelector('img');
+  img.src=url;
+  // data: URLs survive long-press "save image" in in-app webviews more reliably than blob: URLs.
+  try{const reader=new FileReader();reader.onload=()=>{if(sheet.isConnected&&typeof reader.result==='string')img.src=reader.result};reader.readAsDataURL(blob)}catch{}
+  img.alt=`Trader DNA ${d?.code||''} ${d?.name||''} 身份卡`;
+  sheet.querySelector('.scan01-save-hint').textContent=hint;
+  const actions=sheet.querySelector('.scan01-save-actions');
+  if(!isInAppBrowser()){
+    const a=document.createElement('a');
+    a.href=url;a.download=filename;a.className='scan01-save-download';a.textContent='下載圖片';
+    actions.append(a);
+  }
+  const copy=document.createElement('button');
+  copy.type='button';copy.className='scan01-save-copy';copy.textContent='複製測驗連結';
+  copy.addEventListener('click',async()=>{
+    const text=`我的交易 DNA 是 ${d?.code||''} · ${d?.name||''}。18 個選擇，測你的 → ${ENTRY_URL}`;
+    try{await navigator.clipboard.writeText(text)}catch{const ta=document.createElement('textarea');ta.value=text;document.body.append(ta);ta.select();document.execCommand('copy');ta.remove()}
+    copy.textContent='已複製 ✓';
+  });
+  actions.append(copy);
+  sheet.addEventListener('click',event=>{if(event.target===sheet)closeSaveSheet()});
+  sheet.querySelector('.scan01-save-close').addEventListener('click',closeSaveSheet);
+  sheet.addEventListener('keydown',event=>{if(event.key==='Escape')closeSaveSheet()});
+  document.body.append(sheet);
+  document.documentElement.classList.add('scan01-save-open');
+  sheet.querySelector('.scan01-save-close').focus();
 }
 function installAuthorityApi(){
   const current=api();
@@ -534,9 +597,9 @@ function mountShare(result){
   const title=copy?.querySelector('h3');
   const paragraph=copy?.querySelector('p');
   if(title)title.textContent='你的正式身份卡。';
-  if(paragraph)paragraph.textContent='這裡直接使用對應 DNA 的 4:5 Identity Edition 母版；分享出去的，就是這一張。';
+  if(paragraph)paragraph.textContent='保存這張卡分享給朋友。卡片右下角的 QR 碼，掃了就能直接開始測驗。';
   const note=studio.querySelector('.v3-share-tools>span');
-  if(note){note.classList.add('scan01-authority-note');note.textContent='PUBLIC / 4:5 IDENTITY EDITION · 私人提醒不進入分享卡。'}
+  if(note){note.classList.add('scan01-authority-note');note.textContent='4:5 身份卡 · 適合 IG 限動、LINE、貼文'}
   const button=studio.querySelector('.scan01-authority-native');
   if(button&&!button.dataset.authorityBound){
     button.dataset.authorityBound='1';
